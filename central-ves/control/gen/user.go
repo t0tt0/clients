@@ -27,7 +27,7 @@ func DescribeUserService(base string) artisan.ProposingService {
 					codeField,
 					artisan.ArrayParam(artisan.Param("users", artisan.Object(
 						"ListUserReply",
-						artisan.SPsC(&vUserModel.NickName, &vUserModel.LastLogin),
+						artisan.SPsC(&vUserModel.ID, &vUserModel.LastLogin),
 					))),
 				),
 			),
@@ -35,12 +35,12 @@ func DescribeUserService(base string) artisan.ProposingService {
 			Path("login").
 			Method(artisan.POST, "Login",
 				artisan.Request(
-					artisan.SPsC(&userModel.ID, &userModel.NickName, &userModel.Phone),
+					artisan.SPsC(&userModel.ID, &userModel.Name),
 					artisan.Param("password", artisan.String, required),
 				),
 				artisan.Reply(
 					codeField,
-					artisan.SPsC(&userModel.ID, &userModel.Phone, &userModel.NickName, &userModel.Name),
+					artisan.SPsC(&userModel.ID, &userModel.Name),
 					artisan.Param("identity", artisan.Strings),
 					artisan.Param("token", artisan.String),
 					artisan.Param("refresh_token", artisan.String),
@@ -50,7 +50,7 @@ func DescribeUserService(base string) artisan.ProposingService {
 			Path("register").
 			Method(artisan.POST, "Register",
 				artisan.Request(
-					artisan.SPs(artisan.C(&userModel.Name, &userModel.NickName, &userModel.Phone), required),
+					artisan.SPs(artisan.C(&userModel.Name), required),
 					artisan.Param("password", artisan.String, required),
 				),
 				artisan.Reply(
@@ -77,11 +77,11 @@ func DescribeUserService(base string) artisan.ProposingService {
 			Method(artisan.GET, "GetUser",
 				artisan.Reply(
 					codeField,
-					artisan.SPsC(&userModel.NickName, &userModel.LastLogin),
+					artisan.SPsC(&userModel.ID, &userModel.LastLogin),
 				)).
 			Method(artisan.PUT, "PutUser",
 				artisan.Request(
-					artisan.Param("phone", &userModel.Phone),
+					//artisan.Param("phone", &userModel.Phone),
 				)).
 			Method(artisan.DELETE, "Delete"),
 	}

@@ -18,30 +18,17 @@ func (srv *Service) Register(c controller.MContext) {
 		return
 	}
 
-	if sug := CheckStrongPassword(req.Password); len(sug) != 0 {
-		c.AbortWithStatusJSON(http.StatusOK, serial.ErrorSerializer{
-			Code:  types.CodeWeakPassword,
-			Error: sug,
-		})
-		return
-	}
-
-	if sug := CheckPhone(req.Phone); len(sug) != 0 {
-		c.AbortWithStatusJSON(http.StatusOK, serial.ErrorSerializer{
-			Code:  types.CodeBadPhone,
-			Error: sug,
-		})
-		return
-	}
+	//if sug := CheckStrongPassword(req.Password); len(sug) != 0 {
+	//	c.AbortWithStatusJSON(http.StatusOK, serial.ErrorSerializer{
+	//		Code:  types.CodeWeakPassword,
+	//		Error: sug,
+	//	})
+	//	return
+	//}
 
 	var user = new(model.User)
 	user.Name = req.Name
 	user.Password = req.Password
-
-	user.NickName = req.NickName
-	user.Phone = req.Phone
-	//user.Gender = req.Gender
-	//user.Email = req.Email
 
 	// check default value
 	aff, err := user.Register()

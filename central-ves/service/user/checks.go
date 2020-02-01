@@ -6,10 +6,6 @@ func CheckStrongPassword(pwd string) string {
 	return ""
 }
 
-func CheckPhone(phone string) string {
-	return ""
-}
-
 func SumDigit(s string) int {
 	var t int
 	for i := range s {

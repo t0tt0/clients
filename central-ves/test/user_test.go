@@ -13,7 +13,6 @@ func TestUser(t *testing.T) {
 		t.Run("ChangePassword", srv.HandleTestWithOutError(testUserChangePassword)) &&
 		t.Run("Put", srv.HandleTestWithOutError(testUserPut)) &&
 		t.Run("Delete", srv.HandleTestWithOutError(testUserDelete))
-
 }
 
 func testUserInspect(t *tester.TesterContext) {

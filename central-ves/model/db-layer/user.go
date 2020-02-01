@@ -10,16 +10,12 @@ import (
 var (
 	userTraits            Traits
 	userQueryNameFunc     where1Func
-	userQueryNickNameFunc where1Func
-	userQueryPhoneFunc    where1Func
 )
 
 func injectUserTraits() error {
 	userTraits = NewTraits(User{})
 
 	userQueryNameFunc = userTraits.Where1("name = ?")
-	userQueryNickNameFunc = userTraits.Where1("nick_name = ?")
-	userQueryPhoneFunc = userTraits.Where1("phone = ?")
 	return nil
 }
 
@@ -31,15 +27,13 @@ func wrapToUser(user interface{}, err error) (*User, error) {
 }
 
 type User struct {
-	ID        uint      `dorm:"id" gorm:"column:id;primary_key;not_null"`
+	ID        uint      `dorm:"id" gorm:"column:id;primary_key;not_null" json:"id"`
 	CreatedAt time.Time `dorm:"created_at" gorm:"column:created_at;default:CURRENT_TIMESTAMP;not null" json:"created_at"`
 	UpdatedAt time.Time `dorm:"updated_at" gorm:"column:updated_at;default:CURRENT_TIMESTAMP;not null;" json:"updated_at"`
 	LastLogin time.Time `dorm:"last_login" gorm:"column:last_login;default:CURRENT_TIMESTAMP;not null;" json:"last_login"`
 
-	NickName string `dorm:"nick_name" gorm:"column:nick_name;unique;not_null"`
-	Name     string `dorm:"name" gorm:"column:name;not_null"`
-	Password string `dorm:"password" gorm:"column:password;not_null"`
-	Phone    string `dorm:"phone" gorm:"column:phone;unique;not_null"`
+	Name     string `dorm:"name" gorm:"column:name;not_null" json:"name"`
+	Password string `dorm:"password" gorm:"column:password;not_null" json:"password"`
 }
 
 // TableName specification
@@ -160,12 +154,4 @@ func (userDB *UserDB) Query(id uint) (user *User, err error) {
 
 func (userDB *UserDB) QueryName(id string) (user *User, err error) {
 	return wrapToUser(userQueryNameFunc(id))
-}
-
-func (userDB *UserDB) QueryNickName(id string) (user *User, err error) {
-	return wrapToUser(userQueryNickNameFunc(id))
-}
-
-func (userDB *UserDB) QueryPhone(id string) (user *User, err error) {
-	return wrapToUser(userQueryPhoneFunc(id))
 }

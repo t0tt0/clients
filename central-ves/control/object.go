@@ -38,7 +38,7 @@ type PostObjectReply struct {
 }
 
 type InspectObjectReply struct {
-    Code int `form:"code" json:"code"`
+    Code int `json:"code" form:"code"`
     Object *dblayer.Object `json:"object" form:"object"`
 }
 

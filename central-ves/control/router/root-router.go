@@ -33,6 +33,7 @@ type RootRouter struct {
 
 	//ObjectRouter *ObjectRouter
 	UserRouter *UserRouter
+	ChainInfoRouter *ChainInfoRouter
 	AuthRouter *AuthRouter
 
 	Ping *LeafRouter
@@ -68,6 +69,7 @@ func NewRootRouter(m module.Module) (r *RootRouter) {
 	serviceProvider := m.Require(config.ModulePath.Provider.Service).(*service.Provider)
 
 	r.UserRouter = BuildUserRouter(r, serviceProvider)
+	r.ChainInfoRouter = BuildChainInfoRouter(r, serviceProvider)
 
 	ApplyAuth(r)
 	return

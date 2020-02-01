@@ -1,6 +1,7 @@
 package dblayer
 
 import (
+	"github.com/HyperService-Consortium/go-uip/uiptypes"
 	"github.com/Myriad-Dreamin/dorm"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"github.com/jinzhu/gorm"
@@ -24,9 +25,13 @@ func wrapToChainInfo(chainInfo interface{}, err error) (*ChainInfo, error) {
 }
 
 type ChainInfo struct {
-	ID        uint      `dorm:"id" gorm:"column:id;primary_key;not_null"`
+	ID        uint      `dorm:"id" gorm:"column:id;primary_key;not_null" json:"id"`
 	CreatedAt time.Time `dorm:"created_at" gorm:"column:created_at;default:CURRENT_TIMESTAMP;not null" json:"created_at"`
 	UpdatedAt time.Time `dorm:"updated_at" gorm:"column:updated_at;default:CURRENT_TIMESTAMP;not null;" json:"updated_at"`
+
+	UserID  uint                           `dorm:"user_id" gorm:"column:user_id;not_null" json:"user_id"`
+	Address string                         `dorm:"address" gorm:"address;not_null" json:"address"`
+	ChainID uiptypes.ChainIDUnderlyingType `dorm:"chain_id" gorm:"chain_id;not_null" json:"chain_id"`
 }
 
 // TableName specification

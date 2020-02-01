@@ -94,8 +94,6 @@ func (tester *Tester) MakeAdminContext() bool {
 	resp := tester.Post("/v1/user", control.RegisterRequest{
 		Name:     "admin_context",
 		Password: "Admin12345678",
-		NickName: "admin_context",
-		Phone:    "1234567891011",
 	}, mock.Comment("admin register for test"))
 	if !tester.NoErr(resp) {
 		return false

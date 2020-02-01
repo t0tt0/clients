@@ -23,10 +23,8 @@ func (srv *Service) Login(c controller.MContext) {
 	var err error
 	if req.Id != 0 {
 		user, err = srv.userDB.Query(req.Id)
-	} else if len(req.NickName) != 0 {
-		user, err = srv.userDB.QueryNickName(req.NickName)
-	} else if len(req.Phone) != 0 {
-		user, err = srv.userDB.QueryPhone(req.Phone)
+	} else if len(req.Name) != 0 {
+		user, err = srv.userDB.QueryName(req.Name)
 	} else {
 		c.JSON(http.StatusOK, &serial.Response{
 			Code: types.CodeUserIDMissing,

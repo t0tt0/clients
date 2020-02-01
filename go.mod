@@ -5,6 +5,7 @@ go 1.13
 require (
 	github.com/BurntSushi/toml v0.3.1
 	github.com/DeanThompson/ginpprof v0.0.0-20190408063150-3be636683586
+	github.com/HyperService-Consortium/go-uip v0.0.0-20200117063617-d1d70e0d421c
 	github.com/Myriad-Dreamin/artisan v0.8.1-0.20200118100121-229688818652
 	github.com/Myriad-Dreamin/dorm v0.0.0-20191205101004-33dbc61bb34e
 	github.com/Myriad-Dreamin/functional-go v0.0.0-20191104092509-c2b7f373dd31

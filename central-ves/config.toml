@@ -1,10 +1,10 @@
 # do not push it to your repo!
 [database]
 connection-type="mysql"
-user-name="coreoj-admin"
-password="123456"
+user-name="ves-admin"
+password="12345678"
 host="localhost"
-database-name="coreoj"
-charset="utf8"
+database-name="ves"
+charset="utf8mb4"
 parse-time=true
 location="Local"

@@ -8,15 +8,11 @@ import (
 func testUserRegisterLogin(t *tester.TesterContext) {
 	var (
 		name  = "chan tan"
-		nick  = "tan chan"
-		phone = "10086111"
 		pswd  = normalUserPassword
 	)
 	resp := t.Post("/v1/user", control.RegisterRequest{
 		Name:     name,
 		Password: pswd,
-		NickName: nick,
-		Phone:    phone,
 	})
 	id := t.DecodeJSON(resp.Body(),
 		new(control.RegisterReply)).(*control.RegisterReply).Id
@@ -25,11 +21,7 @@ func testUserRegisterLogin(t *tester.TesterContext) {
 		Password: pswd,
 	})
 	resp = t.Post("/v1/login", control.LoginRequest{
-		NickName: nick,
-		Password: pswd,
-	})
-	resp = t.Post("/v1/login", control.LoginRequest{
-		Phone:    phone,
+		Name: name,
 		Password: pswd,
 	})
 

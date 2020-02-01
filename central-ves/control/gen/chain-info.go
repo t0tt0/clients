@@ -15,6 +15,7 @@ type ChainInfoCategories struct {
 
 func DescribeChainInfoService(base string) artisan.ProposingService {
 	var chainInfoModel = new(model.ChainInfo)
+	var _chainInfoModel = new(model.ChainInfo)
 	svc := &ChainInfoCategories{
 		List: artisan.Ink().
 			Path("chain_info-list").
@@ -22,13 +23,15 @@ func DescribeChainInfoService(base string) artisan.ProposingService {
 				artisan.QT("ListChainInfosRequest", model.Filter{}),
 				artisan.Reply(
 					codeField,
-					artisan.ArrayParam(artisan.Param("chain_infos", chainInfoModel)),
+					artisan.ArrayParam(artisan.Param("chain_infos", _chainInfoModel)),
 				),
 			),
 		Post: artisan.Ink().
 			Path("chain_info").
 			Method(artisan.POST, "PostChainInfo",
-				artisan.Request(),
+				artisan.Request(
+					artisan.SPsC(&chainInfoModel.UserID, &chainInfoModel.Address, &chainInfoModel.ChainID),
+					),
 				artisan.Reply(
 					codeField,
 					artisan.Param("chain_info", &chainInfoModel),
@@ -49,10 +52,12 @@ func DescribeChainInfoService(base string) artisan.ProposingService {
 					artisan.Param("chain_info", &chainInfoModel),
 				)).
 			Method(artisan.PUT, "PutChainInfo",
-				artisan.Request()).
+				artisan.Request(
+					&chainInfoModel.UserID, &chainInfoModel.Address, &chainInfoModel.ChainID),
+			).
 			Method(artisan.DELETE, "Delete"),
 	}
-	svc.Name("ChainInfoService").Base(base) //.
-	//UseModel(artisan.Model(artisan.Name("chain_info"), &chainInfoModel))
+	svc.Name("ChainInfoService").Base(base).
+		UseModel(artisan.Model(artisan.Name("chain_info"), &chainInfoModel))
 	return svc
 }

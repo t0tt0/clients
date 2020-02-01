@@ -2,9 +2,9 @@
 package control
 
 import (
-    "github.com/Myriad-Dreamin/minimum-lib/controller"
-    "github.com/Myriad-Dreamin/go-model-traits/gorm-crud-dao"
     "github.com/Myriad-Dreamin/go-ves/central-ves/model/db-layer"
+    "github.com/Myriad-Dreamin/go-model-traits/gorm-crud-dao"
+    "github.com/Myriad-Dreamin/minimum-lib/controller"
 
 )
 
@@ -24,16 +24,18 @@ type ChainInfoService interface {
 type ListChainInfosRequest = gorm_crud_dao.Filter
 
 type ListChainInfosReply struct {
-    Code int `json:"code" form:"code"`
+    Code int `form:"code" json:"code"`
     ChainInfos []dblayer.ChainInfo `form:"chain_infos" json:"chain_infos"`
 }
 
 type PostChainInfoRequest struct {
-
+    UserID uint `json:"user_i_d" form:"user_i_d"`
+    Address string `json:"address" form:"address"`
+    ChainID uint64 `json:"chain_i_d" form:"chain_i_d"`
 }
 
 type PostChainInfoReply struct {
-    Code int `form:"code" json:"code"`
+    Code int `json:"code" form:"code"`
     ChainInfo *dblayer.ChainInfo `json:"chain_info" form:"chain_info"`
 }
 
@@ -77,25 +79,34 @@ func PackSerializeListChainInfosReply(_code []int, _chainInfos [][]dblayer.Chain
 	}
 	return
 }
-func PSerializePostChainInfoRequest() *PostChainInfoRequest {
+func PSerializePostChainInfoRequest(chain_info *dblayer.ChainInfo) *PostChainInfoRequest {
 
     return &PostChainInfoRequest{
-
+        UserID: chain_info.UserID,
+        Address: chain_info.Address,
+        ChainID: chain_info.ChainID,
     }
 }
-func SerializePostChainInfoRequest() PostChainInfoRequest {
+func SerializePostChainInfoRequest(chain_info *dblayer.ChainInfo) PostChainInfoRequest {
 
     return PostChainInfoRequest{
-
+        UserID: chain_info.UserID,
+        Address: chain_info.Address,
+        ChainID: chain_info.ChainID,
     }
 }
-func _packSerializePostChainInfoRequest() PostChainInfoRequest {
+func _packSerializePostChainInfoRequest(chain_info *dblayer.ChainInfo) PostChainInfoRequest {
 
     return PostChainInfoRequest{
-
+        UserID: chain_info.UserID,
+        Address: chain_info.Address,
+        ChainID: chain_info.ChainID,
     }
 }
-func PackSerializePostChainInfoRequest() (pack []PostChainInfoRequest) {
+func PackSerializePostChainInfoRequest(chain_info []*dblayer.ChainInfo) (pack []PostChainInfoRequest) {
+	for i := range chain_info {
+		pack = append(pack, _packSerializePostChainInfoRequest(chain_info[i]))
+	}
 	return
 }
 func PSerializePostChainInfoReply(_code int, _chainInfo *dblayer.ChainInfo) *PostChainInfoReply {
