@@ -23,9 +23,9 @@ func (svc *Service) ChainInfoServiceSignatureXXX() interface{} { return svc }
 
 func NewService(m module.Module) (control.ChainInfoService, error) {
 	var a = new(Service)
-	provider := m.Require(config.ModulePath.Provider.Model).(*model.Provider)
-	a.logger = m.Require(config.ModulePath.Global.Logger).(types.Logger)
-	a.cfg = m.Require(config.ModulePath.Global.Configuration).(*config.ServerConfig)
+	provider := m.Require(config.ModulePath.Minimum.Provider.Model).(*model.Provider)
+	a.logger = m.Require(config.ModulePath.Minimum.Global.Logger).(types.Logger)
+	a.cfg = m.Require(config.ModulePath.Minimum.Global.Configuration).(*config.ServerConfig)
 	a.key = "cid"
 	a.db = provider.ChainInfoDB()
 	a.CRUDService = base_service.NewCRUDService(a, a.key)

@@ -36,8 +36,8 @@ func (srv *Server) PrepareMiddleware() bool {
 		AllowCredentials: true,
 	})
 
-	srv.Module.Provide(config.ModulePath.Middleware.JWT, srv.jwtMW)
-	srv.Module.Provide(config.ModulePath.Middleware.RouteAuth, srv.routerAuthMW)
-	srv.Module.Provide(config.ModulePath.Middleware.CORS, srv.corsMW)
+	srv.Module.Provide(config.ModulePath.Minimum.Middleware.JWT, srv.jwtMW)
+	srv.Module.Provide(config.ModulePath.Minimum.Middleware.RouteAuth, srv.routerAuthMW)
+	srv.Module.Provide(config.ModulePath.Minimum.Middleware.CORS, srv.corsMW)
 	return true
 }

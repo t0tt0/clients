@@ -26,10 +26,10 @@ func (srv *Service) UserServiceSignatureXXX() interface{} { return srv }
 
 func NewService(m module.Module) (a control.UserService, err error) {
 	srv := new(Service)
-	provider := m.Require(config.ModulePath.Provider.Model).(*model.Provider)
-	srv.logger = m.Require(config.ModulePath.Global.Logger).(types.Logger)
-	srv.cfg = m.Require(config.ModulePath.Global.Configuration).(*config.ServerConfig)
-	srv.middleware = m.Require(config.ModulePath.Middleware.JWT).(*jwt.Middleware)
+	provider := m.Require(config.ModulePath.Minimum.Provider.Model).(*model.Provider)
+	srv.logger = m.Require(config.ModulePath.Minimum.Global.Logger).(types.Logger)
+	srv.cfg = m.Require(config.ModulePath.Minimum.Global.Configuration).(*config.ServerConfig)
+	srv.middleware = m.Require(config.ModulePath.Minimum.Middleware.JWT).(*jwt.Middleware)
 	srv.userDB = provider.UserDB()
 	srv.enforcer = provider.Enforcer()
 	srv.CRUDService = base_service.NewCRUDService(srv, srv.cfg.BaseParametersConfig.PathPlaceholder.User)

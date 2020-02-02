@@ -26,6 +26,8 @@ func (srv *Server) registerDatabaseService() bool {
 		}
 		srv.ModelProvider.Register(dbResult.dbName, dbResult.First)
 	}
+
+
 	return true
 }
 
@@ -60,7 +62,7 @@ func (srv *Server) PrepareDatabase() bool {
 	//	return false
 	//}
 	err := rbac.InitGorm(
-		srv.Module.Require(config.ModulePath.DBInstance.GormDB).(*model.GormDB),
+		srv.Module.Require(config.ModulePath.Minimum.DBInstance.GormDB).(*model.GormDB),
 	)
 	if err != nil {
 		srv.Logger.Debug("rbac to database error", "error", err)
@@ -79,13 +81,12 @@ func (srv *Server) MockDatabase() bool {
 	}
 
 	err := rbac.InitGorm(
-		srv.Module.Require(config.ModulePath.DBInstance.GormDB).(*model.GormDB),
+		srv.Module.Require(config.ModulePath.Minimum.DBInstance.GormDB).(*model.GormDB),
 	)
 	if err != nil {
 		srv.Logger.Debug("rbac to database error", "error", err)
 		return false
 	}
 	srv.ModelProvider.Register("enforcer", rbac.GetEnforcer())
-
 	return srv.registerDatabaseService()
 }

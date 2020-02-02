@@ -1,6 +1,8 @@
 package dblayer
 
 import (
+	"encoding/base64"
+	base_account "github.com/HyperService-Consortium/go-uip/base-account"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
 	"github.com/Myriad-Dreamin/dorm"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
@@ -10,10 +12,12 @@ import (
 
 var (
 	chainInfoTraits Traits
+	chainInfoInvertFind     Where2Func
 )
 
 func injectChainInfoTraits() error {
 	chainInfoTraits = NewTraits(ChainInfo{})
+	chainInfoInvertFind = chainInfoTraits.Where2("chain_id = ? and address = ?")
 	return nil
 }
 
@@ -39,36 +43,40 @@ func (ChainInfo) TableName() string {
 	return "chain_info"
 }
 
-func (ChainInfo) migrate() error {
-	return chainInfoTraits.Migrate()
+func (ci ChainInfo) migrate() error {
+	if err := chainInfoTraits.Migrate(); err != nil {
+		return err
+	}
+
+	return p.GormDB.Model(&ci).AddUniqueIndex("ci_ac", "address", "chain_id").Error
 }
 
-func (d ChainInfo) GetID() uint {
-	return d.ID
+func (ci ChainInfo) GetID() uint {
+	return ci.ID
 }
 
-func (d *ChainInfo) Create() (int64, error) {
-	return chainInfoTraits.Create(d)
+func (ci *ChainInfo) Create() (int64, error) {
+	return chainInfoTraits.Create(ci)
 }
 
-func (d *ChainInfo) Update() (int64, error) {
-	return chainInfoTraits.Update(d)
+func (ci *ChainInfo) Update() (int64, error) {
+	return chainInfoTraits.Update(ci)
 }
 
-func (d *ChainInfo) UpdateFields(fields []string) (int64, error) {
-	return chainInfoTraits.UpdateFields(d, fields)
+func (ci *ChainInfo) UpdateFields(fields []string) (int64, error) {
+	return chainInfoTraits.UpdateFields(ci, fields)
 }
 
-func (d *ChainInfo) UpdateFields_(db *dorm.DB, fields []string) (int64, error) {
-	return chainInfoTraits.UpdateFields_(db, d, fields)
+func (ci *ChainInfo) UpdateFields_(db *dorm.DB, fields []string) (int64, error) {
+	return chainInfoTraits.UpdateFields_(db, ci, fields)
 }
 
-func (d *ChainInfo) UpdateFields__(db dorm.SQLCommon, fields []string) (int64, error) {
-	return chainInfoTraits.UpdateFields__(db, d, fields)
+func (ci *ChainInfo) UpdateFields__(db dorm.SQLCommon, fields []string) (int64, error) {
+	return chainInfoTraits.UpdateFields__(db, ci, fields)
 }
 
-func (d *ChainInfo) Delete() (int64, error) {
-	return chainInfoTraits.Delete(d)
+func (ci *ChainInfo) Delete() (int64, error) {
+	return chainInfoTraits.Delete(ci)
 }
 
 type ChainInfoDB struct{}
@@ -94,8 +102,38 @@ func (chainInfoDB *ChainInfoDB) ID(id uint) (chainInfo *ChainInfo, err error) {
 	return wrapToChainInfo(chainInfoTraits.ID(id))
 }
 
-func (chainInfoDB *ChainInfoDB) ID_(db *gorm.DB, id uint) (goods *ChainInfo, err error) {
+func (chainInfoDB *ChainInfoDB) ID_(db *gorm.DB, id uint) (chainInfo *ChainInfo, err error) {
 	return wrapToChainInfo(chainInfoTraits.ID_(db, id))
+}
+
+func (chainInfoDB *ChainInfoDB) InvertFind(acc uiptypes.Account) (chainInfo *ChainInfo, err error) {
+	return wrapToChainInfo(chainInfoInvertFind(acc.GetChainId(), acc.GetAddress()))
+}
+
+func decodeBase64(src string) ([]byte, error) {
+	return base64.StdEncoding.DecodeString(src)
+}
+
+func (chainInfoDB *ChainInfoDB) FindAccounts(id uint, chainID uiptypes.ChainIDUnderlyingType) ([]uiptypes.Account, error) {
+	var mid []string
+	var err = p.GormDB.Where("id = ? and chain_id = ?", id, chainID).
+		Select("address").
+		Scan(&mid).Error
+	if err != nil {
+		return nil, err
+	}
+	var results []uiptypes.Account
+	for i := range mid {
+		add, err := decodeBase64(mid[i])
+		if err != nil {
+			return nil, err
+		}
+		results = append(results, &base_account.Account{
+			ChainId: chainID,
+			Address: add,
+		})
+	}
+	return results, nil
 }
 
 type ChainInfoQuery struct {

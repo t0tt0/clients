@@ -16,7 +16,7 @@ func (svc *Service) ObjectSignatureXXX() interface{} { return svc }
 
 func NewService(m module.Module) (svc *Service, err error) {
 	svc = new(Service)
-	svc.logger = m.Require(config.ModulePath.Global.Logger).(types.Logger)
-	svc.cfg = m.Require(config.ModulePath.Global.Configuration).(*config.ServerConfig)
+	svc.logger = m.Require(config.ModulePath.Minimum.Global.Logger).(types.Logger)
+	svc.cfg = m.Require(config.ModulePath.Minimum.Global.Configuration).(*config.ServerConfig)
 	return
 }

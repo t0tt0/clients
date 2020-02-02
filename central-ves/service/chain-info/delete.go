@@ -10,8 +10,8 @@ import (
 
 func (svc *Service) deleteHook(c controller.MContext, chainInfo *model.ChainInfo) (canDelete bool) {
 	c.AbortWithStatusJSON(http.StatusOK, serial.ErrorSerializer{
-		Code:  types.CodeDeleteError,
-		Error: "generated delete api has not been implemented yet",
+		Code: types.CodeDeleteError,
+		Err:  "generated delete api has not been implemented yet",
 	})
 	return false
 }

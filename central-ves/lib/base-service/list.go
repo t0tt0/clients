@@ -40,8 +40,8 @@ func (srv *ListService) List(c controller.MContext) {
 	result, err := srv.filterFunc(f)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusOK, serial.ErrorSerializer{
-			Code:  types.CodeSelectError,
-			Error: err.Error(),
+			Code: types.CodeSelectError,
+			Err:  err.Error(),
 		})
 		return
 	}

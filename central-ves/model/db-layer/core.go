@@ -55,14 +55,23 @@ func Configuration(cfg *config.ServerConfig) {
 	(*p.RawDB).SetMaxOpenConns(cfg.DatabaseConfig.MaxActive)
 }
 
-type Traits = traits.ModelTraits
-type Interface = traits.Interface
+type Traits struct {
+	traits.ModelTraits
+	ExtendModel
+}
+type Interface interface {
+	traits.Interface
+
+}
 type TraitsAcceptObject = traits.ORMObject
 type where1Func = func(interface{}) (interface{}, error)
 
 func NewTraits(t TraitsAcceptObject) Traits {
 	tt := traits.NewModelTraits(t, p.GormDB, p.DormDB)
-	return tt
+	return Traits{
+		ModelTraits: tt,
+		ExtendModel: NewExtendModel(&tt),
+	}
 }
 
 type modelModule struct {

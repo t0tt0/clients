@@ -10,12 +10,14 @@ import (
 var (
 	userTraits            Traits
 	userQueryNameFunc     where1Func
+	userHasNameFunc Has1Func
 )
 
 func injectUserTraits() error {
 	userTraits = NewTraits(User{})
 
 	userQueryNameFunc = userTraits.Where1("name = ?")
+	userHasNameFunc = userTraits.Has1("name = ?")
 	return nil
 }
 
@@ -47,6 +49,11 @@ func (User) migrate() error {
 
 func (d User) GetID() uint {
 	return d.ID
+}
+
+
+func (d User) GetName() string {
+	return d.Name
 }
 
 func (d *User) Create() (int64, error) {
@@ -146,6 +153,10 @@ func (userDB *UserQuery) Query() (users []User, err error) {
 
 func (userDB *UserDB) Has(id uint) (has bool, err error) {
 	return userTraits.Has(id)
+}
+
+func (userDB *UserDB) HasName(id string) (has bool, err error) {
+	return userHasNameFunc(id)
 }
 
 func (userDB *UserDB) Query(id uint) (user *User, err error) {

@@ -41,9 +41,9 @@ func (svc *Service) RefreshToken(c controller.MContext) {
 
 func NewService(m module.Module) (a *Service, err error) {
 	a = new(Service)
-	a.logger = m.Require(config.ModulePath.Global.Logger).(types.Logger)
-	a.cfg = m.Require(config.ModulePath.Global.Configuration).(*config.ServerConfig)
-	a.enforcer = m.Require(config.ModulePath.Provider.Model).(*model.Provider).Enforcer()
-	a.middleware = m.Require(config.ModulePath.Middleware.JWT).(*jwt.Middleware)
+	a.logger = m.Require(config.ModulePath.Minimum.Global.Logger).(types.Logger)
+	a.cfg = m.Require(config.ModulePath.Minimum.Global.Configuration).(*config.ServerConfig)
+	a.enforcer = m.Require(config.ModulePath.Minimum.Provider.Model).(*model.Provider).Enforcer()
+	a.middleware = m.Require(config.ModulePath.Minimum.Middleware.JWT).(*jwt.Middleware)
 	return
 }

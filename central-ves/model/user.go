@@ -6,6 +6,7 @@ import (
 )
 
 type User = splayer.User
+
 type UserDB = splayer.UserDB
 
 func NewUserDB(m module.Module) (*UserDB, error) {

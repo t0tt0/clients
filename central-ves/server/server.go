@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"github.com/DeanThompson/ginpprof"
+	"github.com/Myriad-Dreamin/go-ves/central-ves/model/instance"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"github.com/Myriad-Dreamin/minimum-lib/sugar"
@@ -86,13 +87,14 @@ func newServer(options []Option) *Server {
 	}
 
 	srv.ServiceProvider = new(service.Provider)
-	srv.ModelProvider = model.NewProvider(config.ModulePath.Provider.Model)
-	srv.RouterProvider = router.NewProvider(config.ModulePath.Provider.Router)
+	srv.ModelProvider = model.NewProvider(config.ModulePath.Minimum.Provider.Model)
+	srv.RouterProvider = router.NewProvider(config.ModulePath.Minimum.Provider.Router)
 
 	_ = model.SetProvider(srv.ModelProvider)
-	srv.Module.Provide(config.ModulePath.Provider.Service, srv.ServiceProvider)
-	srv.Module.Provide(config.ModulePath.Provider.Model, srv.ModelProvider)
-	srv.Module.Provide(config.ModulePath.Provider.Router, srv.RouterProvider)
+	srv.Module.Provide(config.ModulePath.Minimum.Provider.Service, srv.ServiceProvider)
+	srv.Module.Provide(config.ModulePath.Minimum.Provider.Model, srv.ModelProvider)
+	srv.Module.Provide(config.ModulePath.Minimum.Provider.Router, srv.RouterProvider)
+	srv.Module.Provide(config.ModulePath.Global.UserDB, &instance.VESInstance{srv.ModelProvider})
 	return srv
 }
 

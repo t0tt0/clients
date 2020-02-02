@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	centered_ves "github.com/Myriad-Dreamin/go-ves/central-ves/plugin/web-socket"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/server"
 	_ "net/http/pprof"
 )
@@ -18,6 +19,9 @@ func main() {
 	}
 
 	// srv.Inject(myPlugins...)
+	if !srv.Inject(centered_ves.New()) {
+		return
+	}
 
 	if *isDebug {
 		srv.ServeWithPProf(*port)

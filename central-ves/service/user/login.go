@@ -41,8 +41,8 @@ func (srv *Service) Login(c controller.MContext) {
 
 	if token, refreshToken, err := srv.middleware.GenerateTokenWithRefreshToken(&types.CustomFields{UID: int64(user.ID)}); err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, &serial.ErrorSerializer{
-			Code:  types.CodeAuthGenerateTokenError,
-			Error: err.Error(),
+			Code: types.CodeAuthGenerateTokenError,
+			Err:  err.Error(),
 		})
 		return
 	} else {

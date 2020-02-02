@@ -17,8 +17,8 @@ func (srv *Service) ChangePassword(c controller.MContext) {
 	}
 	if sug := CheckStrongPassword(req.NewPassword); len(sug) != 0 {
 		c.AbortWithStatusJSON(http.StatusOK, serial.ErrorSerializer{
-			Code:  types.CodeWeakPassword,
-			Error: sug,
+			Code: types.CodeWeakPassword,
+			Err:  sug,
 		})
 		return
 	}

@@ -8,3 +8,5 @@ database-name="ves"
 charset="utf8mb4"
 parse-time=true
 location="Local"
+[base-cfg]
+nsb-host="39.100.145.91:26657"

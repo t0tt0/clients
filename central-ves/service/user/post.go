@@ -25,8 +25,8 @@ func (srv *Service) AfterPost(reply PostReplyI) interface{} {
 			srv.logger.Debug("add failed")
 		}
 		return serial.ErrorSerializer{
-			Code:  types.CodeAddReadPrivilegeError,
-			Error: err.Error(),
+			Code: types.CodeAddReadPrivilegeError,
+			Err:  err.Error(),
 		}
 	} else {
 		if !b {
@@ -39,8 +39,8 @@ func (srv *Service) AfterPost(reply PostReplyI) interface{} {
 			srv.logger.Debug("add failed")
 		}
 		return serial.ErrorSerializer{
-			Code:  types.CodeAddWritePrivilegeError,
-			Error: err.Error(),
+			Code: types.CodeAddWritePrivilegeError,
+			Err:  err.Error(),
 		}
 	} else {
 		if !b {

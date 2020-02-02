@@ -1,62 +1,58 @@
 package errorc
 
 import (
+	"github.com/Myriad-Dreamin/go-ves/central-ves/lib/serial"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/types"
 	"github.com/go-sql-driver/mysql"
 	"reflect"
-	"strconv"
 )
 
 type Code = types.CodeRawType
 
-func MaybeSelectError(anyObj interface{}, err error) (Code, string) {
+func MaybeSelectError(anyObj interface{}, err error) serial.ErrorSerializer {
 	if err != nil {
-		return types.CodeSelectError, err.Error()
+		return serial.ErrorSerializer{Code:types.CodeSelectError, Err:err.Error()}
 	}
 	if reflect.ValueOf(anyObj).IsNil() {
-		return types.CodeNotFound, "not found"
+		return serial.ErrorSerializer{Code:types.CodeNotFound, Err:"not found"}
 	}
-	return types.CodeOK, ""
+	return serial.ErrorSerializer{Code:types.CodeOK}
 }
 
 type UpdateFieldsable interface {
 	UpdateFields(fields []string) (int64, error)
 }
 
-func UpdateFields(obj UpdateFieldsable, fields []string) (Code, string) {
+func UpdateFields(obj UpdateFieldsable, fields []string) serial.ErrorSerializer {
 	_, err := obj.UpdateFields(fields)
 	if err != nil {
-		return types.CodeUpdateError, err.Error()
+		return serial.ErrorSerializer{Code:types.CodeUpdateError, Err:err.Error()}
 	}
-	return types.CodeOK, ""
+	return serial.ErrorSerializer{Code:types.CodeOK}
 }
 
 type Creatable interface {
 	Create() (int64, error)
 }
 
-func CheckInsertError(err error) (Code, string) {
-	if mysqlError, ok := err.(*mysql.MySQLError); ok {
-		switch mysqlError.Number {
-		case 1062:
-			return types.CodeDuplicatePrimaryKey, ""
-		case 1366:
-			return types.CodeDatabaseIncorrectStringValue, ""
-		default:
-			return types.CodeInsertError, strconv.Itoa(int(mysqlError.Number))
-		}
-	}
-	return types.CodeOK, ""
+func CheckInsertError(err error) serial.ErrorSerializer {
+	return serial.ErrorSerializer{Code:types.CodeOK}
 }
 
-func CreateObj(createObj Creatable) (Code, string) {
+func CreateObj(createObj Creatable) serial.ErrorSerializer {
 	affected, err := createObj.Create()
 	if err != nil {
-		if code, errs := CheckInsertError(err); code != types.CodeOK {
-			return code, errs
+		if mysqlError, ok := err.(*mysql.MySQLError); ok {
+			switch mysqlError.Number {
+			case 1062:
+				return serial.ErrorSerializer{Code:types.CodeDuplicatePrimaryKey, Err:err.Error()}
+			case 1366:
+				return serial.ErrorSerializer{Code:types.CodeDatabaseIncorrectStringValue, Err:err.Error()}
+			}
 		}
+		return serial.ErrorSerializer{Code:types.CodeInsertError, Err: err.Error()}
 	} else if affected == 0 {
-		return types.CodeInsertError, "affect nothing"
+		return serial.ErrorSerializer{Code:types.CodeInsertError,Err:"affect nothing"}
 	}
-	return types.CodeOK, ""
+	return serial.ErrorSerializer{Code:types.CodeOK}
 }

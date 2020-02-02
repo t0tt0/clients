@@ -89,7 +89,7 @@ func (objectDB *ObjectDB) ID(id uint) (object *Object, err error) {
 	return wrapToObject(objectTraits.ID(id))
 }
 
-func (objectDB *ObjectDB) ID_(db *gorm.DB, id uint) (goods *Object, err error) {
+func (objectDB *ObjectDB) ID_(db *gorm.DB, id uint) (object *Object, err error) {
 	return wrapToObject(objectTraits.ID_(db, id))
 }
 

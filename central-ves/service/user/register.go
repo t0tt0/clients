@@ -38,14 +38,14 @@ func (srv *Service) Register(c controller.MContext) {
 			return
 		}
 		c.AbortWithStatusJSON(http.StatusInternalServerError, &serial.ErrorSerializer{
-			Code:  types.CodeInsertError,
-			Error: err.Error(),
+			Code: types.CodeInsertError,
+			Err:  err.Error(),
 		})
 		return
 	} else if aff == 0 {
 		c.JSON(http.StatusOK, &serial.ErrorSerializer{
-			Code:  types.CodeInsertError,
-			Error: "existed",
+			Code: types.CodeInsertError,
+			Err:  "existed",
 		})
 		return
 	}

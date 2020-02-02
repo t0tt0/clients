@@ -50,7 +50,7 @@ func PingFunc(c controller.MContext) {
 func NewRootRouter(m module.Module) (r *RootRouter) {
 	rr := controller.NewRouterGroup()
 	apiRouterV1 := rr.Group("/v1")
-	b := m.Require(config.ModulePath.Middleware.JWT).(*jwt.Middleware).Build()
+	b := m.Require(config.ModulePath.Minimum.Middleware.JWT).(*jwt.Middleware).Build()
 	authRouterV1 := apiRouterV1.Group("", b)
 
 	r = &RootRouter{
@@ -58,7 +58,7 @@ func NewRootRouter(m module.Module) (r *RootRouter) {
 		H: &BaseH{
 			Router:     apiRouterV1,
 			AuthRouter: authRouterV1,
-			Auth:       m.Require(config.ModulePath.Middleware.RouteAuth).(*Middleware),
+			Auth:       m.Require(config.ModulePath.Minimum.Middleware.RouteAuth).(*Middleware),
 		},
 	}
 
@@ -66,7 +66,7 @@ func NewRootRouter(m module.Module) (r *RootRouter) {
 
 	//r.ObjectRouter = BuildObjectRouter(r, serviceProvider)
 
-	serviceProvider := m.Require(config.ModulePath.Provider.Service).(*service.Provider)
+	serviceProvider := m.Require(config.ModulePath.Minimum.Provider.Service).(*service.Provider)
 
 	r.UserRouter = BuildUserRouter(r, serviceProvider)
 	r.ChainInfoRouter = BuildChainInfoRouter(r, serviceProvider)

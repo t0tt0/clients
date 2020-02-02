@@ -12,8 +12,8 @@ func ResetPassword(c controller.MContext, obj *model.User, password string) bool
 	_, err := obj.ResetPassword(password)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, &serial.ErrorSerializer{
-			Code:  types.CodeUpdateError,
-			Error: err.Error(),
+			Code: types.CodeUpdateError,
+			Err:  err.Error(),
 		})
 		return false
 	}
@@ -23,8 +23,8 @@ func ResetPassword(c controller.MContext, obj *model.User, password string) bool
 func AuthenticatePassword(c controller.MContext, user *model.User, password string) bool {
 	if ok, err := user.AuthenticatePassword(password); err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, &serial.ErrorSerializer{
-			Code:  types.CodeAuthenticatePasswordError,
-			Error: err.Error(),
+			Code: types.CodeAuthenticatePasswordError,
+			Err:  err.Error(),
 		})
 		return false
 	} else if !ok {

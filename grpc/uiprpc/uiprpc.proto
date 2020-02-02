@@ -1,0 +1,150 @@
+
+syntax = "proto3";
+
+package uiprpc;
+
+option go_package = "github.com/HyperService-Consortium/go-ves/grpc/uiprpc";
+
+import "base.proto";
+
+service VES {
+    rpc UserRegister (UserRegisterRequest) returns (UserRegisterReply);
+
+    rpc SessionStart (SessionStartRequest) returns (SessionStartReply);
+    rpc SessionAckForInit (SessionAckForInitRequest) returns (SessionAckForInitReply);
+
+    rpc SessionRequireTransact (SessionRequireTransactRequest) returns (SessionRequireTransactReply);
+    rpc SessionRequireRawTransact (SessionRequireRawTransactRequest) returns (SessionRequireRawTransactReply);
+    rpc AttestationReceive (AttestationReceiveRequest) returns (AttestationReceiveReply);
+    rpc MerkleProofReceive (MerkleProofReceiveRequest) returns (MerkleProofReceiveReply);
+    rpc ShrotenMerkleProofReceive (ShortenMerkleProofReceiveRequest) returns (ShortenMerkleProofReceiveReply);
+    rpc InformAttestation (AttestationReceiveRequest) returns (AttestationReceiveReply);
+    rpc InformMerkleProof (MerkleProofReceiveRequest) returns (MerkleProofReceiveReply);
+    rpc InformShortenMerkleProof (ShortenMerkleProofReceiveRequest) returns (ShortenMerkleProofReceiveReply);
+}
+
+service CenteredVES {
+    rpc InternalRequestComing (InternalRequestComingRequest) returns (InternalRequestComingReply);
+    rpc InternalAttestationSending (InternalRequestComingRequest) returns (InternalRequestComingReply);
+    rpc InternalCloseSession (InternalCloseSessionRequest) returns (InternalCloseSessionReply);
+}
+
+// service CenteredVES {
+//     rpc SessionFinishedList (SessionFinishedListRequest) returns (SessionFinishedListReply);
+//     rpc SessionRequestList (SessionRequestListRequest) returns (SessionRequestListReply);
+//     rpc SessionRequireTransactList (SessionRequireTransactListRequest) returns (SessionRequireTransactListReply);
+//     rpc AttestationList (AttestationListRequest) returns (AttestationListReply);
+//
+//     rpc SessionFinished (SessionFinishedRequest) returns (SessionFinishedReply);
+//     rpc SessionRequestForInit (SessionRequestForInitRequest) returns (SessionRequestForInitReply);
+//
+//     rpc SessionRequireTransact (SessionRequireTransactRequest) returns (SessionRequireTransactReply);
+//     rpc AttestationReceive (AttestationReceiveRequest) returns (AttestationReceiveReply);
+// }
+
+
+message UserRegisterRequest {
+    uiprpc.base.Account account = 1;
+    string user_name = 2;
+}
+
+message UserRegisterReply {
+    bool ok = 1;
+}
+
+message SessionStartRequest {
+    uiprpc.base.OpIntents opintents = 1;
+}
+
+message SessionStartReply {
+    bool ok = 1;
+    bytes session_id = 2;
+}
+
+message SessionAckForInitRequest {
+    // isc_address
+    bytes session_id = 1;
+    uiprpc.base.Account user = 2;
+    uiprpc.base.Signature user_signature = 3;
+}
+
+message SessionAckForInitReply {
+    bool ok = 1;
+}
+
+message SessionRequireTransactRequest {
+    // isc_address
+    bytes session_id = 1;
+}
+
+message SessionRequireTransactReply {
+    uiprpc.base.Transaction tx = 2;
+}
+
+message SessionRequireRawTransactRequest {
+    // isc_address
+    bytes session_id = 1;
+}
+
+message SessionRequireRawTransactReply {
+    bytes raw_transaction = 1;
+    uint64 tid = 2;
+    uiprpc.base.Account src = 3;
+    uiprpc.base.Account dst = 4;
+}
+
+message AttestationReceiveRequest {
+    // isc_address
+    bytes session_id = 1;
+    uiprpc.base.Attestation atte = 2;
+}
+
+message AttestationReceiveReply {
+    bool ok = 1;
+}
+
+message MerkleProofReceiveRequest {
+    bytes session_id = 1;
+    uint64 chain_id = 2;
+    uiprpc.base.MerkleProof merkleproof = 3;
+}
+
+message MerkleProofReceiveReply {
+    bool ok = 1;
+}
+
+
+message ShortenMerkleProofReceiveRequest {
+    // isc_address
+    bytes session_id = 1;
+    uint64 chain_id = 2;
+    uiprpc.base.ShortenMerkleProof merkleproof = 3;
+}
+
+message ShortenMerkleProofReceiveReply {
+    bool ok = 1;
+}
+
+message InternalRequestComingRequest {
+    bytes session_id = 1;
+    bytes host = 2;
+    repeated uiprpc.base.Account accounts = 3;
+}
+
+message InternalRequestComingReply {
+    bool ok = 1;
+}
+
+
+
+message InternalCloseSessionRequest {
+    // isc_address
+    bytes session_id = 1;
+    bytes nsb_host = 2;
+    bytes grpc_host = 3;
+    repeated uiprpc.base.Account accounts = 4;
+}
+
+message InternalCloseSessionReply {
+    bool ok = 1;
+}

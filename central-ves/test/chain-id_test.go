@@ -27,7 +27,7 @@ func testChainIDGet(t *tester.TesterContext) {
 }
 
 func testChainIDDelete(t *tester.TesterContext) {
-//	
+//
 }
 
 func testChainIDPost(t *tester.TesterContext) {
