@@ -3,17 +3,17 @@ package main
 import (
 	"flag"
 	"fmt"
-	config2 "github.com/HyperService-Consortium/go-ves/config"
+	config2 "github.com/Myriad-Dreamin/go-ves/config"
 	"log"
 
 	"encoding/hex"
 
 	"github.com/HyperService-Consortium/go-uip/signaturer"
-	"github.com/HyperService-Consortium/go-ves/lib/database/index"
-	multi_index "github.com/HyperService-Consortium/go-ves/lib/database/multi_index"
-	"github.com/HyperService-Consortium/go-ves/types"
+	"github.com/Myriad-Dreamin/go-ves/lib/database/index"
+	multi_index "github.com/Myriad-Dreamin/go-ves/lib/database/multi_index"
+	"github.com/Myriad-Dreamin/go-ves/types"
 
-	ves_server "github.com/HyperService-Consortium/go-ves/ves"
+	ves_server "github.com/Myriad-Dreamin/go-ves/ves"
 )
 
 var (

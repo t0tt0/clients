@@ -2,6 +2,7 @@ package vesdb
 
 import (
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/Myriad-Dreamin/go-ves/central-ves/model"
 	"github.com/Myriad-Dreamin/go-ves/types"
 )
 
@@ -9,10 +10,29 @@ type Database struct {
 	sindb          types.Index
 	muldb          types.MultiIndex
 	sesdb          types.SessionBase
-	userdb         types.UserBase
 	kvdb           types.SessionKVBase
 	storageHandler types.StorageHandler
 	dns            types.ChainDNS
+}
+
+func (db *Database) InsertAccount(userName string, acc uiptypes.Account) error {
+	panic("implement me")
+}
+
+func (db *Database) FindUser(userName string) (*model.User, error) {
+	panic("implement me")
+}
+
+func (db *Database) FindAccounts(userName string, chainID uint64) ([]uiptypes.Account, error) {
+	panic("implement me")
+}
+
+func (db *Database) HasAccount(userName string, acc uiptypes.Account) (has bool, err error) {
+	panic("implement me")
+}
+
+func (db *Database) InvertFind(uiptypes.Account) (*model.User, error) {
+	panic("implement me")
 }
 
 func (db *Database) GetTransactionProof(chainID uiptypes.ChainID, blockID uiptypes.BlockID, color []byte) (uiptypes.MerkleProof, error) {
@@ -52,10 +72,6 @@ func (db *Database) SetSessionBase(logicDB types.SessionBase) bool {
 	return true
 }
 
-func (db *Database) SetUserBase(logicDB types.UserBase) bool {
-	db.userdb = logicDB
-	return true
-}
 
 func (db *Database) SetStorageHandler(logicDB types.StorageHandler) bool {
 	db.storageHandler = logicDB
@@ -80,38 +96,6 @@ func (db *Database) DeleteSessionInfo(isc_address []byte) error {
 
 func (db *Database) FindTransaction(isc_address []byte, transaction_id uint64, getter func([]byte) error) error {
 	return db.sesdb.FindTransaction(db.sindb, isc_address, transaction_id, getter)
-}
-
-func (db *Database) InsertAccount(user_name string, account uiptypes.Account) error {
-	return db.userdb.InsertAccount(db.muldb, user_name, account)
-}
-
-// func (db *Database) DeleteAccount(user_name string, account types.Account) ( error) {
-
-// }
-
-// func (db *Database) DeleteAccountByName(user_name string) ( error) {
-
-// }
-
-// func (db *Database) DeleteAccountByID(user_id) ( error) {
-
-// }
-
-func (db *Database) FindUser(user_name string) (types.User, error) {
-	return db.userdb.FindUser(db.muldb, user_name)
-}
-
-func (db *Database) FindAccounts(user_name string, chain_type uint64) ([]uiptypes.Account, error) {
-	return db.userdb.FindAccounts(db.muldb, user_name, chain_type)
-}
-
-func (db *Database) HasAccount(user_name string, account uiptypes.Account) (bool, error) {
-	return db.userdb.HasAccount(db.muldb, user_name, account)
-}
-
-func (db *Database) InvertFind(account uiptypes.Account) (string, error) {
-	return db.userdb.InvertFind(db.muldb, account)
 }
 
 func (db *Database) ActivateSession(isc_address []byte) {

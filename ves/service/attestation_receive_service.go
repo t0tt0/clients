@@ -5,21 +5,21 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/HyperService-Consortium/go-ves/config"
-	"github.com/HyperService-Consortium/go-ves/ves/vs"
+	"github.com/Myriad-Dreamin/go-ves/config"
+	"github.com/Myriad-Dreamin/go-ves/ves/vs"
 	"time"
 
 	"golang.org/x/net/context"
 
 	tx "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
-	"github.com/HyperService-Consortium/go-ves/grpc/uiprpc"
-	uipbase "github.com/HyperService-Consortium/go-ves/grpc/uiprpc-base"
-	ethbni "github.com/HyperService-Consortium/go-ves/lib/bni/eth"
-	// bni "github.com/HyperService-Consortium/go-ves/types/bn-interface"
+	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
+	uipbase "github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
+	ethbni "github.com/Myriad-Dreamin/go-ves/lib/bni/eth"
+	// bni "github.com/Myriad-Dreamin/go-ves/types/bn-interface"
 
 	"github.com/HyperService-Consortium/go-uip/signaturer"
-	nsbi "github.com/HyperService-Consortium/go-ves/types/nsb-interface"
+	nsbi "github.com/Myriad-Dreamin/go-ves/types/nsb-interface"
 )
 
 type AttestationReceiveService struct {

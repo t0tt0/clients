@@ -1,14 +1,14 @@
 package service
 
 import (
+	"github.com/Myriad-Dreamin/go-ves/central-ves/model"
 	"golang.org/x/net/context"
 
-	uiprpc "github.com/HyperService-Consortium/go-ves/grpc/uiprpc"
-	types "github.com/HyperService-Consortium/go-ves/types"
+	uiprpc "github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
 )
 
 type SessionRequireTransactService struct {
-	types.VESDB
+	model.VESDB
 	context.Context
 	*uiprpc.SessionRequireTransactRequest
 }

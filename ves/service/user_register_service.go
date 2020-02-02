@@ -1,10 +1,10 @@
 package service
 
 import (
-	"github.com/HyperService-Consortium/go-ves/ves/vs"
+	"github.com/Myriad-Dreamin/go-ves/ves/vs"
 	"golang.org/x/net/context"
 
-	"github.com/HyperService-Consortium/go-ves/grpc/uiprpc"
+	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
 )
 
 type UserRegisterService struct {

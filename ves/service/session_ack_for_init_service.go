@@ -5,15 +5,15 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/HyperService-Consortium/go-ves/ves/vs"
+	"github.com/Myriad-Dreamin/go-ves/ves/vs"
 	"time"
 
 	"golang.org/x/net/context"
 
 	tx "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-uip/signaturer"
-	"github.com/HyperService-Consortium/go-ves/grpc/uiprpc"
-	uipbase "github.com/HyperService-Consortium/go-ves/grpc/uiprpc-base"
+	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
+	uipbase "github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
 )
 
 type SessionAckForInitService struct {

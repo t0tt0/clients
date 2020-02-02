@@ -4,7 +4,7 @@ client:
 
 server:
 	go build -o ./binary/ves-server ./ves-server
-	go build -o ./binary/central-ves-server ./central-ves-server
+	go build -o ./binary/central-ves-server ../central-ves
 	if [ ! -f "./binary/ves-server-config.toml" ]; then cp ./ves-server/default-ves-server-config.toml ./binary/ves-server-config.toml; fi;
 
 up:

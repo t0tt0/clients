@@ -1,7 +1,7 @@
 package main
 
 import (
-	vesclient "github.com/HyperService-Consortium/go-ves/lib/net/ves-client"
+	vesclient "github.com/Myriad-Dreamin/go-ves/lib/net/ves-client"
 )
 
 func init() {

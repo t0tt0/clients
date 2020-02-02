@@ -9,7 +9,7 @@ import (
 	"time"
 
 	uiptypes "github.com/HyperService-Consortium/go-uip/uiptypes"
-	nsbclient "github.com/HyperService-Consortium/go-ves/lib/net/nsb-client"
+	nsbclient "github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client"
 
 	signaturer "github.com/HyperService-Consortium/go-uip/signaturer"
 )
@@ -43,13 +43,13 @@ var txpadding = make([]byte, 5*(64*5+100))
 
 func NSBRoutine(signer uiptypes.Signer, index int) {
 	// info, err := cli.GetAbciInfo()
-	iscAddress, err := cli.CreateISCAsync(signer, []uint32{0}, [][]byte{signer.GetPublicKey()}, nil, txpadding, nil)
-	if err != nil {
-		badSession.Add(1)
-		fmt.Println(err)
-		return
-	}
-	_ = iscAddress
+	//iscAddress, err := cli.CreateISCAsync(signer, []uint32{0}, [][]byte{signer.GetPublicKey()}, nil, txpadding, nil)
+	//if err != nil {
+	//	badSession.Add(1)
+	//	fmt.Println(err)
+	//	return
+	//}
+	//_ = iscAddress
 	// var bbg = make([]byte, 8)
 	// for idx := 0; idx < 20; idx++ {
 	// _, err := cli.AddAction(signer, nil,

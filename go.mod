@@ -25,6 +25,7 @@ require (
 	github.com/Myriad-Dreamin/minimum-lib v0.0.0-20200117225041-ec905257618d
 	github.com/Myriad-Dreamin/mydrest v1.0.1
 	github.com/Myriad-Dreamin/screenrus v1.0.0
+	github.com/boltdb/bolt v1.3.1
 	github.com/casbin/casbin/v2 v2.1.2
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-contrib/cors v1.3.0
@@ -35,17 +36,19 @@ require (
 	github.com/golang/protobuf v1.3.2
 	github.com/gomodule/redigo v2.0.0+incompatible
 	github.com/google/go-querystring v1.0.0
-	github.com/gorilla/websocket v1.2.0
+	github.com/gorilla/websocket v1.4.0
 	github.com/imroc/req v0.3.0
 	github.com/jinzhu/gorm v1.9.12
 	github.com/mattn/go-sqlite3 v2.0.3+incompatible
 	github.com/pelletier/go-toml v1.6.0
+	github.com/prologic/bitcask v0.3.5
 	github.com/sirupsen/logrus v1.4.2
 	github.com/stretchr/testify v1.4.0
 	github.com/syndtr/goleveldb v1.0.1-0.20190318030020-c3a204f8e965
 	github.com/tidwall/gjson v1.4.0
 	go.uber.org/zap v1.13.0
 	golang.org/x/crypto v0.0.0-20191205180655-e7c4368fe9dd
+	golang.org/x/net v0.0.0-20191028085509-fe3aa8a45271
 	google.golang.org/grpc v1.23.0
 	gopkg.in/yaml.v2 v2.2.8
 )

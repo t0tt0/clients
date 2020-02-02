@@ -9,7 +9,7 @@ import (
 	"time"
 
 	uiptypes "github.com/HyperService-Consortium/go-uip/uiptypes"
-	nsbclient "github.com/HyperService-Consortium/go-ves/lib/net/nsb-client"
+	nsbclient "github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client"
 
 	signaturer "github.com/HyperService-Consortium/go-uip/signaturer"
 )
@@ -117,7 +117,7 @@ func Main(cli *nsbclient.NSBClient, SessionLimit, SignContentSize, ActionLong in
 	signer, err := signaturer.NewTendermintNSBSigner(privatekey)
 	if err != nil {
 		log.Fatal(err)
-		return
+		return nil
 	}
 
 	var U = make(chan bool, SessionLimit)

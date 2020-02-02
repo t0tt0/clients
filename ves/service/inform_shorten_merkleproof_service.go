@@ -2,11 +2,11 @@ package service
 
 import (
 	"encoding/hex"
-	"github.com/HyperService-Consortium/go-ves/ves/vs"
+	"github.com/Myriad-Dreamin/go-ves/ves/vs"
 	"golang.org/x/net/context"
 
-	"github.com/HyperService-Consortium/go-ves/grpc/uiprpc"
-	// bni "github.com/HyperService-Consortium/go-ves/types/bn-interface"
+	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
+	// bni "github.com/Myriad-Dreamin/go-ves/types/bn-interface"
 )
 
 type InformShortenMerkleProofService struct {

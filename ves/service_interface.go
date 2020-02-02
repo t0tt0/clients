@@ -3,12 +3,12 @@ package ves
 import (
 	"errors"
 	"fmt"
-	"github.com/HyperService-Consortium/go-ves/ves/vs"
+	"github.com/Myriad-Dreamin/go-ves/ves/vs"
 	"time"
 
-	"github.com/HyperService-Consortium/go-ves/grpc/uiprpc"
-	uipbase "github.com/HyperService-Consortium/go-ves/grpc/uiprpc-base"
-	"github.com/HyperService-Consortium/go-ves/ves/service"
+	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
+	uipbase "github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
+	"github.com/Myriad-Dreamin/go-ves/ves/service"
 	"golang.org/x/net/context"
 )
 

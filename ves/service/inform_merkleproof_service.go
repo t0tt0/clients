@@ -3,9 +3,9 @@ package service
 import (
 	"context"
 	"encoding/hex"
-	"github.com/HyperService-Consortium/go-ves/grpc/uiprpc"
-	"github.com/HyperService-Consortium/go-ves/ves/vs"
-	// bni "github.com/HyperService-Consortium/go-ves/types/bn-interface"
+	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
+	"github.com/Myriad-Dreamin/go-ves/ves/vs"
+	// bni "github.com/Myriad-Dreamin/go-ves/types/bn-interface"
 )
 
 type InformMerkleProofService struct {

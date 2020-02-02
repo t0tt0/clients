@@ -2,6 +2,7 @@
 
 
 ```go
+package c
 const (
     signatureSize = 65
     hashSize = 64
