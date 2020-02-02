@@ -1,10 +1,10 @@
 package base_service
 
 import (
-	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/lib/serial"
 	ginhelper "github.com/Myriad-Dreamin/go-ves/central-ves/service/gin-helper"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/types"
+	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"net/http"
 )
 

@@ -11,10 +11,10 @@ type Provider struct {
 
 	objectRouter *ObjectRouter
 
-    chainInfoRouter *ChainInfoRouter
-	rootRouter *RootRouter
-	userRouter *UserRouter
-	authRouter *AuthRouter
+	chainInfoRouter *ChainInfoRouter
+	rootRouter      *RootRouter
+	userRouter      *UserRouter
+	authRouter      *AuthRouter
 }
 
 func NewProvider(namespace string) *Provider {
@@ -30,8 +30,8 @@ func (s *Provider) Register(name string, router interface{}) {
 		panic(fmt.Errorf("unknown router %T", router))
 	}
 	switch ss := router.(type) {
-    case *ChainInfoRouter:
-        s.chainInfoRouter = ss
+	case *ChainInfoRouter:
+		s.chainInfoRouter = ss
 	case *RootRouter:
 		s.rootRouter = ss
 	case *UserRouter:
@@ -46,8 +46,8 @@ func (s *Provider) Replace(name string, router interface{}) {
 		panic(fmt.Errorf("unknown router %T", router))
 	}
 	switch ss := router.(type) {
-    case *ChainInfoRouter:
-        s.chainInfoRouter = ss
+	case *ChainInfoRouter:
+		s.chainInfoRouter = ss
 	case *RootRouter:
 		s.rootRouter = ss
 	case *UserRouter:

@@ -28,9 +28,9 @@ func TestBN_Route(t *testing.T) {
 	}{
 		{
 			"test_easy", fields{
-				dns:    config.ChainDNS,
+				dns: config.ChainDNS,
 				signer: passwordSigner{
-					pb:sugar.HandlerError(hex.DecodeString("ce4871f094b30ed5bed4aa19d28cf654c6e8b3f3")).([]byte),
+					pb: sugar.HandlerError(hex.DecodeString("ce4871f094b30ed5bed4aa19d28cf654c6e8b3f3")).([]byte),
 					ps: "123456"},
 			}, args{
 				intent: &uiptypes.TransactionIntent{

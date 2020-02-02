@@ -11,9 +11,8 @@ func TestChainID(t *testing.T) {
 	_ = t.Run("Post", srv.HandleTestWithOutError(testChainIDPost)) &&
 		t.Run("Put", srv.HandleTestWithOutError(testChainIDPut)) &&
 		t.Run("Get", srv.HandleTestWithOutError(testChainIDGet)) &&
-		t.Run("Delete", srv.HandleTestWithOutError(testChainIDDelete))// &&
-		//t.Run("Put", srv.HandleTestWithOutError(testChainID))
-
+		t.Run("Delete", srv.HandleTestWithOutError(testChainIDDelete)) // &&
+	//t.Run("Put", srv.HandleTestWithOutError(testChainID))
 
 }
 
@@ -27,11 +26,11 @@ func testChainIDGet(t *tester.TesterContext) {
 }
 
 func testChainIDDelete(t *tester.TesterContext) {
-//
+	//
 }
 
 func testChainIDPost(t *tester.TesterContext) {
-//_ = t.Post("/v1/problem/1/submission", control.PostSubmissionRequest{
+	//_ = t.Post("/v1/problem/1/submission", control.PostSubmissionRequest{
 	//                Language:    1,
 	//                Information: "1",
 	//                Shared:      0,

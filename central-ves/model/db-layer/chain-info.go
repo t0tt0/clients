@@ -11,8 +11,8 @@ import (
 )
 
 var (
-	chainInfoTraits Traits
-	chainInfoInvertFind     Where2Func
+	chainInfoTraits     Traits
+	chainInfoInvertFind Where2Func
 )
 
 func injectChainInfoTraits() error {

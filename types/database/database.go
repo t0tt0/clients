@@ -72,7 +72,6 @@ func (db *Database) SetSessionBase(logicDB types.SessionBase) bool {
 	return true
 }
 
-
 func (db *Database) SetStorageHandler(logicDB types.StorageHandler) bool {
 	db.storageHandler = logicDB
 	return true

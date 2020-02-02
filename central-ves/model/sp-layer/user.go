@@ -1,8 +1,8 @@
 package splayer
 
 import (
-	"github.com/Myriad-Dreamin/minimum-lib/module"
 	dblayer "github.com/Myriad-Dreamin/go-ves/central-ves/model/db-layer"
+	"github.com/Myriad-Dreamin/minimum-lib/module"
 )
 
 type User = dblayer.User

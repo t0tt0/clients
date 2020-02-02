@@ -2,8 +2,8 @@ package mcore
 
 import (
 	"errors"
-	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/lib/core-cfg"
+	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"github.com/jinzhu/gorm"
 )
 

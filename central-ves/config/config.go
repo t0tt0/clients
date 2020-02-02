@@ -34,9 +34,9 @@ type PathPlaceholder struct {
 
 type BaseParametersConfig struct {
 	PathPlaceholder PathPlaceholder `json:"path-placeholder" yaml:"path-placeholder" toml:"path-placeholder" xml:"path-placeholder"`
-	RPCPort string `json:"rpc-port" yaml:"rpc-port" toml:"rpc-port" xml:"rpc-port"`
-	WSPort string `json:"ws-port" yaml:"ws-port" toml:"ws-port" xml:"ws-port"`
-	NSBHost string `json:"nsb-host" yaml:"nsb-host" toml:"nsb-host" xml:"nsb-host"`
+	RPCPort         string          `json:"rpc-port" yaml:"rpc-port" toml:"rpc-port" xml:"rpc-port"`
+	WSPort          string          `json:"ws-port" yaml:"ws-port" toml:"ws-port" xml:"ws-port"`
+	NSBHost         string          `json:"nsb-host" yaml:"nsb-host" toml:"nsb-host" xml:"nsb-host"`
 }
 
 type Label struct {
@@ -67,7 +67,7 @@ func Default() *ServerConfig {
 				User: "id",
 			},
 			RPCPort: ":23352",
-			WSPort: ":23452",
+			WSPort:  ":23452",
 		},
 	}
 }

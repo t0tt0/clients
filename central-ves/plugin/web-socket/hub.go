@@ -86,8 +86,7 @@ func (h *Hub) run(ctx context.Context) {
 			h.broadcastMessage(message)
 		case message := <-h.unicast:
 			if message.target.GetChainId() == placeHolderChain {
-				client, ok := h.reverseNameClients[
-					string(message.target.GetAddress())]
+				client, ok := h.reverseNameClients[string(message.target.GetAddress())]
 				h.unicastMessage(client, ok, message)
 			} else {
 				tag := md5.Sum(message.task.b)

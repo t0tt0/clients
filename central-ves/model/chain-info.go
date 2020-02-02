@@ -1,8 +1,8 @@
 package model
 
 import (
-	"github.com/Myriad-Dreamin/minimum-lib/module"
 	splayer "github.com/Myriad-Dreamin/go-ves/central-ves/model/sp-layer"
+	"github.com/Myriad-Dreamin/minimum-lib/module"
 )
 
 type ChainInfo = splayer.ChainInfo

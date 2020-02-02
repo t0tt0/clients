@@ -3,9 +3,9 @@ package server
 import (
 	"fmt"
 	"github.com/Myriad-Dreamin/functional-go"
-	"github.com/Myriad-Dreamin/minimum-lib/rbac"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/config"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/model"
+	"github.com/Myriad-Dreamin/minimum-lib/rbac"
 )
 
 type dbResult struct {
@@ -16,7 +16,7 @@ type dbResult struct {
 func (srv *Server) registerDatabaseService() bool {
 
 	for _, dbResult := range []dbResult{
-        {"chainInfoDB", functional.Decay(model.NewChainInfoDB(srv.Module))},
+		{"chainInfoDB", functional.Decay(model.NewChainInfoDB(srv.Module))},
 		{"userDB", functional.Decay(model.NewUserDB(srv.Module))},
 		{"objectDB", functional.Decay(model.NewObjectDB(srv.Module))},
 	} {
@@ -26,7 +26,6 @@ func (srv *Server) registerDatabaseService() bool {
 		}
 		srv.ModelProvider.Register(dbResult.dbName, dbResult.First)
 	}
-
 
 	return true
 }

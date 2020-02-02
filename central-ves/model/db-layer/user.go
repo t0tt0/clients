@@ -8,9 +8,9 @@ import (
 )
 
 var (
-	userTraits            Traits
-	userQueryNameFunc     where1Func
-	userHasNameFunc Has1Func
+	userTraits        Traits
+	userQueryNameFunc where1Func
+	userHasNameFunc   Has1Func
 )
 
 func injectUserTraits() error {
@@ -50,7 +50,6 @@ func (User) migrate() error {
 func (d User) GetID() uint {
 	return d.ID
 }
-
 
 func (d User) GetName() string {
 	return d.Name

@@ -30,9 +30,9 @@ func (i VESInstance) InsertAccount(userName string, acc uiptypes.Account) error 
 		}
 	}
 	chainInfo := model.ChainInfo{
-		UserID:    user.ID,
-		Address:   encodeBase64(acc.GetAddress()),
-		ChainID:   acc.GetChainId(),
+		UserID:  user.ID,
+		Address: encodeBase64(acc.GetAddress()),
+		ChainID: acc.GetChainId(),
 	}
 	if err := errorc.CreateObj(&chainInfo); err.Code != types.CodeOK {
 		return err

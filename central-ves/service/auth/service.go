@@ -2,13 +2,13 @@
 package authservice
 
 import (
-	"github.com/Myriad-Dreamin/minimum-lib/controller"
-	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/config"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/lib/jwt"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/model"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/model/sp-layer"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/types"
+	"github.com/Myriad-Dreamin/minimum-lib/controller"
+	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"net/http"
 )
 

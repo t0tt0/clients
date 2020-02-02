@@ -43,9 +43,3 @@ func (c *CVESWebSocketPlugin) Work(ctx context.Context) {
 		return
 	}
 }
-
-
-
-
-
-

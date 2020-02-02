@@ -13,17 +13,17 @@ func main() {
 	v1 := "v1"
 
 	//instantiate
-    chainInfoCate := DescribeChainInfoService(v1)
+	chainInfoCate := DescribeChainInfoService(v1)
 	userCate := DescribeUserService(v1)
 	objectCate := DescribeObjectService(v1)
 
 	//to files
-    chainInfoCate.ToFile("chain-info.go")
+	chainInfoCate.ToFile("chain-info.go")
 	userCate.ToFile("user.go")
 	objectCate.ToFile("object.go")
 
 	err := artisan.NewService(
-        chainInfoCate,
+		chainInfoCate,
 		userCate,
 		objectCate,
 	).Publish()

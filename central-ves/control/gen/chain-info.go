@@ -31,7 +31,7 @@ func DescribeChainInfoService(base string) artisan.ProposingService {
 			Method(artisan.POST, "PostChainInfo",
 				artisan.Request(
 					artisan.SPsC(&chainInfoModel.UserID, &chainInfoModel.Address, &chainInfoModel.ChainID),
-					),
+				),
 				artisan.Reply(
 					codeField,
 					artisan.Param("chain_info", &chainInfoModel),

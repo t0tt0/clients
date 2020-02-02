@@ -1,11 +1,11 @@
 package server
 
 import (
-	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/config"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/lib/jwt"
 	ginhelper "github.com/Myriad-Dreamin/go-ves/central-ves/service/gin-helper"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/types"
+	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"github.com/gin-contrib/cors"
 	//"github.com/Myriad-Dreamin/gin-middleware/auth/privileger"
 	"strconv"

@@ -231,8 +231,8 @@ func (c *CVESWebSocketPlugin) attestationSending(acc uiptypes.Account, iscAddres
 	}
 	c.hub.unicast <- &uniMessage{target: acc, task: &writeMessageTask{
 		b: packet.Bytes(), cb: func() {
-		wsrpc.GetDefaultSerializer().Put(packet)
-	}}}
+			wsrpc.GetDefaultSerializer().Put(packet)
+		}}}
 	return nil
 }
 
@@ -277,7 +277,7 @@ func (c *CVESWebSocketPlugin) closeSession(acc uiptypes.Account, iscAddress, grp
 	}
 	c.hub.unicast <- &uniMessage{target: acc, task: &writeMessageTask{
 		b: packet.Bytes(), cb: func() {
-		wsrpc.GetDefaultSerializer().Put(packet)
-	}}}
+			wsrpc.GetDefaultSerializer().Put(packet)
+		}}}
 	return nil
 }

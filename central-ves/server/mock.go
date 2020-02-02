@@ -6,10 +6,10 @@ import (
 	"encoding/json"
 	"github.com/Myriad-Dreamin/go-magic-package/instance"
 	parser "github.com/Myriad-Dreamin/go-parse-package"
-	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/control"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/lib/serial"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/types"
+	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"io"
 	"io/ioutil"
 	"log"
@@ -19,10 +19,10 @@ import (
 	"testing"
 
 	"github.com/Myriad-Dreamin/gin-middleware/mock"
+	dblayer "github.com/Myriad-Dreamin/go-ves/central-ves/model/db-layer"
 	abstract_test "github.com/Myriad-Dreamin/minimum-lib/abstract-test"
 	"github.com/Myriad-Dreamin/minimum-lib/mock"
 	"github.com/Myriad-Dreamin/minimum-lib/sugar"
-	dblayer "github.com/Myriad-Dreamin/go-ves/central-ves/model/db-layer"
 	"github.com/stretchr/testify/assert"
 )
 

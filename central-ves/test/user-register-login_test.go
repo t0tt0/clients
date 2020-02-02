@@ -7,8 +7,8 @@ import (
 
 func testUserRegisterLogin(t *tester.TesterContext) {
 	var (
-		name  = "chan tan"
-		pswd  = normalUserPassword
+		name = "chan tan"
+		pswd = normalUserPassword
 	)
 	resp := t.Post("/v1/user", control.RegisterRequest{
 		Name:     name,
@@ -21,7 +21,7 @@ func testUserRegisterLogin(t *tester.TesterContext) {
 		Password: pswd,
 	})
 	resp = t.Post("/v1/login", control.LoginRequest{
-		Name: name,
+		Name:     name,
 		Password: pswd,
 	})
 

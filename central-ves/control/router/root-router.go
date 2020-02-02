@@ -1,11 +1,11 @@
 package router
 
 import (
-	"github.com/Myriad-Dreamin/minimum-lib/controller"
-	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/config"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/lib/jwt"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/service"
+	"github.com/Myriad-Dreamin/minimum-lib/controller"
+	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"github.com/gin-gonic/gin"
 )
 
@@ -32,9 +32,9 @@ type RootRouter struct {
 	Root *Router
 
 	//ObjectRouter *ObjectRouter
-	UserRouter *UserRouter
+	UserRouter      *UserRouter
 	ChainInfoRouter *ChainInfoRouter
-	AuthRouter *AuthRouter
+	AuthRouter      *AuthRouter
 
 	Ping *LeafRouter
 }

@@ -27,4 +27,3 @@ type UserBase interface {
 	// return the user which has this account
 	InvertFind(uiptypes.Account) (*User, error)
 }
-

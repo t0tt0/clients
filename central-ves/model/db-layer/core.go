@@ -4,10 +4,10 @@ import (
 	"database/sql"
 	"github.com/Myriad-Dreamin/dorm"
 	traits "github.com/Myriad-Dreamin/go-model-traits/example-traits"
-	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/config"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/lib/core"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/lib/fcg"
+	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"github.com/jinzhu/gorm"
 
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -61,7 +61,6 @@ type Traits struct {
 }
 type Interface interface {
 	traits.Interface
-
 }
 type TraitsAcceptObject = traits.ORMObject
 type where1Func = func(interface{}) (interface{}, error)
@@ -115,7 +114,7 @@ func (m *modelModule) InstallMock(dep module.Module) bool {
 func (modelModule) Migrates() error {
 	return fcg.Calls([]fcg.MaybeInitializer{
 		//migrations
-        ChainInfo{}.migrate,
+		ChainInfo{}.migrate,
 		User{}.migrate,
 	})
 }
@@ -123,7 +122,7 @@ func (modelModule) Migrates() error {
 func (modelModule) Injects() error {
 	return fcg.Calls([]fcg.MaybeInitializer{
 		//injections
-        injectChainInfoTraits,
+		injectChainInfoTraits,
 		injectUserTraits,
 	})
 }

@@ -3,8 +3,8 @@ package jwt
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	mgin "github.com/Myriad-Dreamin/go-ves/central-ves/lib/gin"
+	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"net/http/httptest"
