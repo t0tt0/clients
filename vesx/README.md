@@ -1,0 +1,2 @@
+# minimum-template
+gin extension
