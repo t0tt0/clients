@@ -55,7 +55,7 @@ dependencies = namedtuple(
      'control_gen_file',
      'control_gen_main_file',
      ])(*
-        ['github.com/Myriad-Dreamin/go-ves/ves',
+        ['github.com/Myriad-Dreamin/go-ves/vesx',
          'github.com/Myriad-Dreamin/go-magic-package/package-attach-to-path',
          'golang.org/x/tools/cmd/stringer',
          'template/control/pure-object/pure-object-router.go.template',
@@ -139,6 +139,10 @@ class MinimumCli:
         self._create_model(object_name, placeholder)
         self._create_service(object_name, placeholder)
         self._create_router(object_name, placeholder)
+
+    def create_model(self, object_name, placeholder):
+        self._update_obj_vars(object_name, placeholder)
+        self._create_model(object_name, placeholder)
 
     def template_to(self, src, dst):
         # shutil.copyfile(src, dst)

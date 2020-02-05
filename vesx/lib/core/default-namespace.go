@@ -62,6 +62,7 @@ type dbInstancesS struct {
 }
 
 type globalS struct {
+	Signer        string
 	Logger        string
 	Configuration string
 	HttpEngine    string

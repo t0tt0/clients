@@ -106,11 +106,13 @@ func (m *modelModule) InstallMock(dep module.Module) bool {
 func (modelModule) Migrates() error {
 	return fcg.Calls([]fcg.MaybeInitializer{
 		//migrations
+        Session{}.migrate,
 	})
 }
 
 func (modelModule) Injects() error {
 	return fcg.Calls([]fcg.MaybeInitializer{
 		//injections
+        injectSessionTraits,
 	})
 }
