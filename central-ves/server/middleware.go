@@ -2,9 +2,9 @@ package server
 
 import (
 	"github.com/Myriad-Dreamin/go-ves/central-ves/config"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/lib/jwt"
-	ginhelper "github.com/Myriad-Dreamin/go-ves/central-ves/service/gin-helper"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/types"
+	ginhelper "github.com/Myriad-Dreamin/go-ves/lib/gin-helper"
+	"github.com/Myriad-Dreamin/go-ves/lib/jwt"
+	types2 "github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"github.com/gin-contrib/cors"
 	//"github.com/Myriad-Dreamin/gin-middleware/auth/privileger"
@@ -14,10 +14,10 @@ import (
 func (srv *Server) PrepareMiddleware() bool {
 	srv.jwtMW = jwt.NewMiddleWare(func() *jwt.CustomClaims {
 		var cc = new(jwt.CustomClaims)
-		cc.CustomField = &types.CustomFields{}
+		cc.CustomField = &types2.CustomFields{}
 		return cc
 	}, func(c controller.MContext, cc *jwt.CustomClaims) error {
-		c.Set("uid", strconv.FormatInt(cc.CustomField.(*types.CustomFields).UID, 10))
+		c.Set("uid", strconv.FormatInt(cc.CustomField.(*types2.CustomFields).UID, 10))
 		return nil
 	})
 	srv.jwtMW.ExpireSecond = 3600 * 24 * 7

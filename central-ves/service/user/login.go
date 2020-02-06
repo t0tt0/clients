@@ -2,10 +2,10 @@ package userservice
 
 import (
 	"github.com/Myriad-Dreamin/go-ves/central-ves/control"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/lib/serial"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/model"
-	ginhelper "github.com/Myriad-Dreamin/go-ves/central-ves/service/gin-helper"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/types"
+	ginhelper "github.com/Myriad-Dreamin/go-ves/lib/gin-helper"
+	"github.com/Myriad-Dreamin/go-ves/lib/serial"
+	types2 "github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"net/http"
 	"strconv"
@@ -27,7 +27,7 @@ func (srv *Service) Login(c controller.MContext) {
 		user, err = srv.userDB.QueryName(req.Name)
 	} else {
 		c.JSON(http.StatusOK, &serial.Response{
-			Code: types.CodeUserIDMissing,
+			Code: types2.CodeUserIDMissing,
 		})
 		return
 	}
@@ -39,9 +39,9 @@ func (srv *Service) Login(c controller.MContext) {
 		return
 	}
 
-	if token, refreshToken, err := srv.middleware.GenerateTokenWithRefreshToken(&types.CustomFields{UID: int64(user.ID)}); err != nil {
+	if token, refreshToken, err := srv.middleware.GenerateTokenWithRefreshToken(&types2.CustomFields{UID: int64(user.ID)}); err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, &serial.ErrorSerializer{
-			Code: types.CodeAuthGenerateTokenError,
+			Code: types2.CodeAuthGenerateTokenError,
 			Err:  err.Error(),
 		})
 		return
@@ -49,13 +49,13 @@ func (srv *Service) Login(c controller.MContext) {
 		user.LastLogin = time.Now()
 
 		var identities []string
-		for tst := range types.Groups {
-			if srv.enforcer.HasGroupingPolicy("user:"+strconv.Itoa(int(user.ID)), types.Groups[tst]) {
-				identities = append(identities, types.Groups[tst])
+		for tst := range types2.Groups {
+			if srv.enforcer.HasGroupingPolicy("user:"+strconv.Itoa(int(user.ID)), types2.Groups[tst]) {
+				identities = append(identities, types2.Groups[tst])
 			}
 		}
 
-		c.JSON(http.StatusOK, control.SerializeLoginReply(types.CodeOK, user, identities, token, refreshToken))
+		c.JSON(http.StatusOK, control.SerializeLoginReply(types2.CodeOK, user, identities, token, refreshToken))
 
 		aff, err := user.UpdateFields([]string{"last_login"})
 		if err != nil || aff == 0 {

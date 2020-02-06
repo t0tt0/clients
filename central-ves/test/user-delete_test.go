@@ -2,7 +2,7 @@ package tests
 
 import (
 	"github.com/Myriad-Dreamin/go-ves/central-ves/test/tester"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/types"
+	types2 "github.com/Myriad-Dreamin/go-ves/types"
 	"net/http"
 	"reflect"
 	"strconv"
@@ -15,5 +15,5 @@ func testUserDelete(t *tester.TesterContext) {
 	resp := t.Get("/v1/user/" + strconv.Itoa(id))
 	NotFound := t.FetchError(resp)
 	t.Equal(NotFound.RespCode, http.StatusOK, "must result in 200")
-	t.Equal(NotFound.Code, types.CodeNotFound, "not be the ErrNotFound")
+	t.Equal(NotFound.Code, types2.CodeNotFound, "not be the ErrNotFound")
 }

@@ -5,6 +5,7 @@ import (
 	base_account "github.com/HyperService-Consortium/go-uip/base-account"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
 	"github.com/Myriad-Dreamin/dorm"
+	"github.com/Myriad-Dreamin/go-ves/lib/extend-traits"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"github.com/jinzhu/gorm"
 	"time"
@@ -12,7 +13,7 @@ import (
 
 var (
 	chainInfoTraits     Traits
-	chainInfoInvertFind Where2Func
+	chainInfoInvertFind extend_traits.Where2Func
 )
 
 func injectChainInfoTraits() error {

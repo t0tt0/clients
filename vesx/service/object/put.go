@@ -1,9 +1,9 @@
 package objectservice
 
 import (
-	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"github.com/Myriad-Dreamin/go-ves/vesx/control"
 	"github.com/Myriad-Dreamin/go-ves/vesx/model"
+	"github.com/Myriad-Dreamin/minimum-lib/controller"
 )
 
 func (svc *Service) fillPutFields(

@@ -71,20 +71,28 @@ func stackErrorFromString(s string) (*frameImpl, bool) {
 	}, true
 }
 
-func wrapToStackError(skip int, code int, err error) error {
+func wrapStringToStackError(skip int, code int, err string) error {
 	if errorFlag == Debug {
 		return frameImpl{
 			pos:  callerFromRuntimeResult(runtime.Caller(skip)),
 			code: code,
-			err:  err.Error(),
+			err:  err,
 		}
 	}
 
 	return frameImpl{
 		pos:  Caller{},
 		code: code,
-		err:  err.Error(),
+		err:  err,
 	}
+}
+
+func wrapCodeToStackError(skip int, code int) error {
+	return wrapStringToStackError(skip, code, "")
+}
+
+func wrapToStackError(skip int, code int, err error) error {
+	return wrapStringToStackError(skip, code, err.Error())
 }
 
 func (g frameImpl) GetPos() Caller {

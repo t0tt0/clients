@@ -1,139 +1,131 @@
 package objectservice
 
 import (
+	"bytes"
 	"context"
 	"encoding/hex"
-	"errors"
-	"fmt"
+	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
-	"github.com/Myriad-Dreamin/go-ves/types/session"
+	uiprpc_base "github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
+	"github.com/Myriad-Dreamin/go-ves/lib/wrapper"
+	"github.com/Myriad-Dreamin/go-ves/types"
+	"github.com/Myriad-Dreamin/go-ves/vesx/lib/uniquer"
+	"github.com/Myriad-Dreamin/go-ves/vesx/model"
 	"time"
 )
 
-//type MultiThreadSerialSessionStartService struct {
-//	*vs.VServer
-//	context.Context
-//	*uiprpc.SessionStartRequest
-//}
-//
-//func NewMultiThreadSerialSessionStartService(server *vs.VServer, context context.Context, sessionStartRequest *uiprpc.SessionStartRequest) MultiThreadSerialSessionStartService {
-//	return MultiThreadSerialSessionStartService{VServer: server, Context: context, SessionStartRequest: sessionStartRequest}
-//}
-//
-//func (s MultiThreadSerialSessionStartService) RequestNSBForNewSession(anyb types.Session) ([]byte, error) {
-//	var accs = anyb.GetAccounts()
-//
-//	var owners = make([][]byte, 0, len(accs)+1)
-//	// todo
-//	// owners = append(owners, s.Signer.GetPublicKey())
-//	for _, owner := range accs {
-//		owners = append(owners, owner.GetAddress())
-//		s.Logger.Info("waiting", hex.EncodeToString(owner.GetAddress()))
-//	}
-//	var txs = anyb.GetTransactions()
-//	var btxs = make([][]byte, 0, len(txs))
-//	for _, tx := range txs {
-//		b, err := json.Marshal(tx)
-//		if err != nil {
-//			s.Logger.Error("error", "error", err)
-//			return nil, err
-//		}
-//		btxs = append(btxs, b)
-//	}
-//
-//	x, err := s.Signer.Sign(bytes.Join(anyb.GetTransactions(), []byte{}))
-//	if err != nil {
-//		return nil, err
-//	}
-//	return s.NsbClient.CreateISC(s.Signer, make([]uint32, len(owners)), owners, txs, x.Bytes())
-//}
-//
-func (svc *sessionStartService) SessionStart() ([]byte, []uiptypes.Account, error) {
-	var ses = session.MultiThreadSerialSession{Signer:svc.signer}
-	success, helpInfo, err := ses.InitFromOpIntents(svc.GetOpintents())
-	if err != nil {
-		svc.logger.Error("error", "error", err)
-		return nil, nil, err
-	}
-	if !success {
-		return nil, nil, errors.New(helpInfo)
-	}
-	ses.ISCAddress, err = svc.RequestNSBForNewSession(ses)
-	if ses.ISCAddress == nil {
-		err = fmt.Errorf("request isc failed: %v", err)
-		svc.Logger.Error("error", "error", err)
-		return nil, nil, err
-	}
-	if err != nil {
-		err = fmt.Errorf("request isc failed on request: %v", err)
-		svc.Logger.Error("error", "error", err)
-		return nil, nil, err
-	}
-	err = ses.AfterInitGUID()
-	logger.Println("after init guid...", ses.ISCAddress, hex.EncodeToString(ses.ISCAddress))
-	if err != nil {
-		svc.Logger.Error("error", "error", err)
-		return nil, nil, err
-	}
+func (svc *Service) SessionStart(ctx context.Context, in *uiprpc.SessionStartRequest) (*uiprpc.SessionStartReply, error) {
+	var (
+		ses        *model.Session
+		intents    []*opintent.TransactionIntent
+		accounts   []*model.SessionAccount
+		iscAddress []byte
+		ok         bool
+		err        error
+	)
 
-	err = svc.DB.InsertSessionInfo(ses)
-	if err != nil {
-		svc.Logger.Error("error", "error", err)
-		return nil, nil, err
+	if intents, accounts, err = svc.initOpIntents(in.GetOpintents()); err != nil {
+		return nil, wrapper.Wrap(types.CodeSessionInitOpIntentsError, err)
 	}
-	for i := uint32(0); i < ses.TransactionCount; i++ {
+	if iscAddress, err = svc.initISCAddress(intents, accounts); err != nil {
+		return nil, wrapper.Wrap(types.CodeSessionInitGUIDError, err)
+	}
+	if ses, err = svc.sesFSet.InitSessionInfo(iscAddress, intents, accounts); err != nil {
+		return nil, wrapper.Wrap(types.CodeSessionInitError, err)
+	}
+	svc.logger.Info("new session requested", "address", hex.EncodeToString(ses.GetGUID()))
+
+	// initializing accounts' bitmap in redis here a long time ago
+	//if err = ses.InitAccountRedisMap(); err != nil {
+	//	return nil, wrapper.Wrap(types.CodeSessionInitGUIDError, err)
+	//}
+	//
+
+	for i := range intents {
 		//s.Logger.Info()
-		_, err := svc.NsbClient.FreezeInfo(svc.Signer, ses.ISCAddress, uint64(i))
-		if err != nil {
-			svc.Logger.Error("error", "error", err)
-			return nil, nil, err
+		if _, err = svc.nsbClient.FreezeInfo(svc.signer, ses.GetGUID(), uint64(i)); err != nil {
+			return nil, wrapper.Wrap(types.CodeSessionFreezeInfoError, err)
 		}
 	}
 
-	// s.UpdateTxs
-	// s.UpdateAccs
-	return ses.ISCAddress, ses.GetAccounts(), nil
-}
-
-type sessionStartService struct {
-	*Service
-	context.Context
-	*uiprpc.SessionStartRequest
-}
-
-func (svc *Service) Serve(ctx context.Context, in *uiprpc.SessionStartRequest) (*uiprpc.SessionStartReply, error) {
-	s := sessionStartService{Service: svc, Context: ctx, SessionStartRequest: in}
-	if b, accs, err := s.SessionStart(); err != nil {
+	if ok, err = svc.pushInternalInitRequest(iscAddress, accounts); err != nil {
 		return nil, err
-	} else {
-		ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
-		defer cancel()
-		r, err := svc.CVes.InternalRequestComing(ctx, &uiprpc.InternalRequestComingRequest{
-			SessionId: b,
-			Host:      svc.Host,
-			Accounts: func() (uaccs []*uipbase.Account) {
-				for _, acc := range accs {
-					uaccs = append(uaccs, &uipbase.Account{
-						Address: acc.GetAddress(),
-						ChainId: acc.GetChainId(),
-					})
-				}
-				return
-			}(),
-		})
-
-		if err != nil {
-			svc.Logger.Error("error", "error", err)
-			return nil, err
-		}
-
-		return &uiprpc.SessionStartReply{
-			Ok:        r.GetOk(),
-			SessionId: b,
-		}, nil
 	}
+
+	return &uiprpc.SessionStartReply{
+		Ok:        ok,
+		SessionId: iscAddress,
+	}, nil
 }
 
+func (svc *Service) initOpIntents(opIntents uiptypes.OpIntents) (
+	intents []*opintent.TransactionIntent, accounts []*model.SessionAccount, err error) {
+	intents, _, err = svc.opInitializer.InitOpIntent(opIntents)
+	if err != nil {
+		return
+	}
+	c := uniquer.MakeUniquer()
+	if c.Insert(svc.respAccount.GetChainId(), svc.respAccount.GetAddress()) {
+		accounts = append(accounts, model.NewSessionAccount(svc.respAccount.GetChainId(), svc.respAccount.GetAddress()))
+	}
+	for _, intent := range intents {
+		//transactions = append(transactions, intent.Bytes())
+		if c.Insert(intent.ChainID, intent.Src) {
+			accounts = append(accounts, model.NewSessionAccount(intent.ChainID, intent.Src))
+		}
 
+		if len(intent.Dst) != 0 && c.Insert(intent.ChainID, intent.Dst) {
+			accounts = append(accounts, model.NewSessionAccount(intent.ChainID, intent.Dst))
+		}
+	}
+	return
+}
 
+func (svc *Service) initISCAddress(
+	intents []*opintent.TransactionIntent, accounts []*model.SessionAccount) (
+	iscAddress []byte, err error) {
+	var (
+		txs       = make([][]byte, len(intents))
+		owners    = make([][]byte, 0, len(accounts))
+		signature uiptypes.Signature
+	)
+	for i, intent := range intents {
+		txs[i] = intent.Bytes()
+	}
+	for _, owner := range accounts {
+		owners = append(owners, owner.GetAddress())
+	}
+	if signature, err = svc.signer.Sign(bytes.Join(txs, []byte{})); err != nil {
+		err = wrapper.Wrap(types.CodeSessionSignTxsError, err)
+		return
+	}
+	if iscAddress, err = svc.nsbClient.CreateISC(svc.signer, make([]uint32, len(owners)), owners, txs, signature.Bytes()); err != nil {
+		err = wrapper.Wrap(types.CodeSessionRequestNSBError, err)
+		return
+	}
+	return
+}
+
+func (svc *Service) pushInternalInitRequest(iscAddress []byte, accounts []*model.SessionAccount) (bool, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+	r, err := svc.cVes.InternalRequestComing(ctx, &uiprpc.InternalRequestComingRequest{
+		SessionId: iscAddress,
+		Host:      svc.cfg.BaseParametersConfig.GetParsedExposeHost(),
+		Accounts: func() (uaccs []*uiprpc_base.Account) {
+			for _, acc := range accounts {
+				uaccs = append(uaccs, &uiprpc_base.Account{
+					Address: acc.GetAddress(),
+					ChainId: acc.GetChainId(),
+				})
+			}
+			return
+		}(),
+	})
+
+	if err != nil {
+		return false, wrapper.Wrap(types.CodeSessionInitInternalRequestError, err)
+	}
+	return r.Ok, nil
+}

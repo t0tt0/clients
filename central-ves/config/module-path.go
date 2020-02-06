@@ -1,7 +1,7 @@
 package config
 
 import (
-	"github.com/Myriad-Dreamin/go-ves/central-ves/lib/core"
+	"github.com/Myriad-Dreamin/go-ves/lib/core"
 	"path/filepath"
 )
 

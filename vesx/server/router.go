@@ -16,6 +16,6 @@ func (srv *Server) BuildRouter() bool {
 	srv.HttpEngine.Use(srv.corsMW)
 
 	srv.Router = router.NewRootRouter(srv.Module)
-	srv.Module.Provide(config.ModulePath.Global.HttpEngine, srv.HttpEngine)
+	srv.Module.Provide(config.ModulePath.Minimum.Global.HttpEngine, srv.HttpEngine)
 	return true
 }

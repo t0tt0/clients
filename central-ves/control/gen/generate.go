@@ -3,10 +3,10 @@ package main
 import (
 	"fmt"
 	"github.com/Myriad-Dreamin/artisan"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/types"
+	types2 "github.com/Myriad-Dreamin/go-ves/types"
 )
 
-var codeField = artisan.Param("code", new(types.CodeRawType))
+var codeField = artisan.Param("code", new(types2.CodeRawType))
 var required = artisan.Tag("binding", "required")
 
 func main() {

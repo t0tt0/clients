@@ -2,6 +2,7 @@ package dblayer
 
 import (
 	"github.com/Myriad-Dreamin/dorm"
+	"github.com/Myriad-Dreamin/go-ves/lib/base64"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"github.com/jinzhu/gorm"
 	"time"
@@ -24,9 +25,32 @@ func wrapToSession(session interface{}, err error) (*Session, error) {
 }
 
 type Session struct {
-	ID        uint      `dorm:"id" gorm:"column:id;primary_key;not_null"`
+	ID        uint      `dorm:"id" gorm:"column:id;primary_key;not_null" json:"id"`
 	CreatedAt time.Time `dorm:"created_at" gorm:"column:created_at;default:CURRENT_TIMESTAMP;not null" json:"created_at"`
 	UpdatedAt time.Time `dorm:"updated_at" gorm:"column:updated_at;default:CURRENT_TIMESTAMP;not null;" json:"updated_at"`
+
+	ISCAddress       string `dorm:"isc_address" gorm:"column:isc_address;not_null" json:"isc_address"`
+	UnderTransacting int64  `dorm:"under_transacting" gorm:"column:under_transacting;not_null" json:"under_transacting"`
+	Status           uint8  `dorm:"status" gorm:"column:status;not_null" json:"status"`
+	Content          string `dorm:"content" gorm:"column:content;not_null" json:"content"`
+
+	AccountsCount int64 `dorm:"accounts_cnt" gorm:"column:accounts_cnt;not_null" json:"accounts_cnt"`
+
+	//Accounts
+	//Transactions
+	//Acks
+
+	decodedISCAddress []byte `gorm:"-" json:"-"`
+	//	Signer uiptypes.Signer `json:"-" xorm:"-"`
+}
+
+func NewSession(iscAddress []byte) *Session {
+	return &Session{
+		ISCAddress:        base64.EncodeBase64(iscAddress),
+		decodedISCAddress: iscAddress,
+		UnderTransacting:  0,
+		Status:            0,
+	}
 }
 
 // TableName specification
@@ -38,32 +62,39 @@ func (Session) migrate() error {
 	return sessionTraits.Migrate()
 }
 
-func (d Session) GetID() uint {
-	return d.ID
+func (s Session) GetID() uint {
+	return s.ID
 }
 
-func (d *Session) Create() (int64, error) {
-	return sessionTraits.Create(d)
+func (s Session) GetGUID() []byte {
+	if s.decodedISCAddress == nil {
+		s.decodedISCAddress = decodeBase64(s.ISCAddress)
+	}
+	return s.decodedISCAddress
 }
 
-func (d *Session) Update() (int64, error) {
-	return sessionTraits.Update(d)
+func (s *Session) Create() (int64, error) {
+	return sessionTraits.Create(s)
 }
 
-func (d *Session) UpdateFields(fields []string) (int64, error) {
-	return sessionTraits.UpdateFields(d, fields)
+func (s *Session) Update() (int64, error) {
+	return sessionTraits.Update(s)
 }
 
-func (d *Session) UpdateFields_(db *dorm.DB, fields []string) (int64, error) {
-	return sessionTraits.UpdateFields_(db, d, fields)
+func (s *Session) UpdateFields(fields []string) (int64, error) {
+	return sessionTraits.UpdateFields(s, fields)
 }
 
-func (d *Session) UpdateFields__(db dorm.SQLCommon, fields []string) (int64, error) {
-	return sessionTraits.UpdateFields__(db, d, fields)
+func (s *Session) UpdateFields_(db *dorm.DB, fields []string) (int64, error) {
+	return sessionTraits.UpdateFields_(db, s, fields)
 }
 
-func (d *Session) Delete() (int64, error) {
-	return sessionTraits.Delete(d)
+func (s *Session) UpdateFields__(db dorm.SQLCommon, fields []string) (int64, error) {
+	return sessionTraits.UpdateFields__(db, s, fields)
+}
+
+func (s *Session) Delete() (int64, error) {
+	return sessionTraits.Delete(s)
 }
 
 type SessionDB struct{}

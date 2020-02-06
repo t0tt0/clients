@@ -3,8 +3,8 @@
 package server
 
 import (
-	"github.com/Myriad-Dreamin/minimum-lib/mock"
 	"github.com/Myriad-Dreamin/go-ves/vesx/lib/plugin"
+	"github.com/Myriad-Dreamin/minimum-lib/mock"
 	"testing"
 )
 

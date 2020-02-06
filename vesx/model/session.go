@@ -1,8 +1,9 @@
 package model
 
 import (
-	"github.com/Myriad-Dreamin/minimum-lib/module"
+	dblayer "github.com/Myriad-Dreamin/go-ves/vesx/model/db-layer"
 	splayer "github.com/Myriad-Dreamin/go-ves/vesx/model/sp-layer"
+	"github.com/Myriad-Dreamin/minimum-lib/module"
 )
 
 type Session = splayer.Session
@@ -14,4 +15,8 @@ func NewSessionDB(m module.Module) (*SessionDB, error) {
 
 func GetSessionDB(m module.Module) (*SessionDB, error) {
 	return splayer.GetSessionDB(m)
+}
+
+func NewSession(iscAddress []byte) *Session {
+	return dblayer.NewSession(iscAddress)
 }

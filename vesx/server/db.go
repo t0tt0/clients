@@ -3,9 +3,9 @@ package server
 import (
 	"fmt"
 	"github.com/Myriad-Dreamin/functional-go"
-	"github.com/Myriad-Dreamin/minimum-lib/rbac"
 	"github.com/Myriad-Dreamin/go-ves/vesx/config"
 	"github.com/Myriad-Dreamin/go-ves/vesx/model"
+	"github.com/Myriad-Dreamin/minimum-lib/rbac"
 )
 
 type dbResult struct {
@@ -16,7 +16,8 @@ type dbResult struct {
 func (srv *Server) registerDatabaseService() bool {
 
 	for _, dbResult := range []dbResult{
-        {"sessionDB", functional.Decay(model.NewSessionDB(srv.Module))},
+		{"sessionAccountDB", functional.Decay(model.NewSessionAccountDB(srv.Module))},
+		{"sessionDB", functional.Decay(model.NewSessionDB(srv.Module))},
 		{"objectDB", functional.Decay(model.NewObjectDB(srv.Module))},
 	} {
 		if dbResult.Err != nil {
@@ -59,7 +60,7 @@ func (srv *Server) PrepareDatabase() bool {
 	//	return false
 	//}
 	err := rbac.InitGorm(
-		srv.Module.Require(config.ModulePath.DBInstance.GormDB).(*model.GormDB),
+		srv.Module.Require(config.ModulePath.Minimum.DBInstance.GormDB).(*model.GormDB),
 	)
 	if err != nil {
 		srv.Logger.Debug("rbac to database error", "error", err)
@@ -78,7 +79,7 @@ func (srv *Server) MockDatabase() bool {
 	}
 
 	err := rbac.InitGorm(
-		srv.Module.Require(config.ModulePath.DBInstance.GormDB).(*model.GormDB),
+		srv.Module.Require(config.ModulePath.Minimum.DBInstance.GormDB).(*model.GormDB),
 	)
 	if err != nil {
 		srv.Logger.Debug("rbac to database error", "error", err)

@@ -7,7 +7,7 @@ package centered_ves
 import (
 	"context"
 	"encoding/hex"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/model/instance"
+	"github.com/Myriad-Dreamin/go-ves/central-ves/model/fset"
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
 	uiprpc_base "github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
 	"github.com/Myriad-Dreamin/go-ves/grpc/wsrpc"
@@ -40,7 +40,7 @@ type CVESWebSocketPlugin struct {
 	logger logger.Logger
 	*http.Server
 	hub     *Hub
-	userDB  *instance.VESInstance
+	userDB  *fset.AccountFSet
 	rpcPort string
 	nsbip   []byte
 }
@@ -73,7 +73,7 @@ func parseOptions(rOptions []interface{}) ServerOptions {
 }
 
 // NewServer return a pointer of CVESWebSocketPlugin
-func NewServer(rpcport, addr string, db *instance.VESInstance, rOptions ...interface{}) (srv *CVESWebSocketPlugin, err error) {
+func NewServer(rpcport, addr string, db *fset.AccountFSet, rOptions ...interface{}) (srv *CVESWebSocketPlugin, err error) {
 	options := parseOptions(rOptions)
 	srv = &CVESWebSocketPlugin{Server: new(http.Server)}
 	srv.nsbip, err = helper.HostFromString(string(options.nsbHost))

@@ -2,9 +2,9 @@ package userservice
 
 import (
 	"github.com/Myriad-Dreamin/go-ves/central-ves/control/auth"
-	base_service "github.com/Myriad-Dreamin/go-ves/central-ves/lib/base-service"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/lib/serial"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/types"
+	base_service "github.com/Myriad-Dreamin/go-ves/lib/base-service"
+	"github.com/Myriad-Dreamin/go-ves/lib/serial"
+	types2 "github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 )
 
@@ -25,7 +25,7 @@ func (srv *Service) AfterPost(reply PostReplyI) interface{} {
 			srv.logger.Debug("add failed")
 		}
 		return serial.ErrorSerializer{
-			Code: types.CodeAddReadPrivilegeError,
+			Code: types2.CodeAddReadPrivilegeError,
 			Err:  err.Error(),
 		}
 	} else {
@@ -39,7 +39,7 @@ func (srv *Service) AfterPost(reply PostReplyI) interface{} {
 			srv.logger.Debug("add failed")
 		}
 		return serial.ErrorSerializer{
-			Code: types.CodeAddWritePrivilegeError,
+			Code: types2.CodeAddWritePrivilegeError,
 			Err:  err.Error(),
 		}
 	} else {

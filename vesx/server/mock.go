@@ -6,10 +6,10 @@ import (
 	"encoding/json"
 	"github.com/Myriad-Dreamin/go-magic-package/instance"
 	parser "github.com/Myriad-Dreamin/go-parse-package"
-	"github.com/Myriad-Dreamin/minimum-lib/controller"
+	"github.com/Myriad-Dreamin/go-ves/lib/serial"
+	"github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/go-ves/vesx/control"
-	"github.com/Myriad-Dreamin/go-ves/vesx/lib/serial"
-	"github.com/Myriad-Dreamin/go-ves/vesx/types"
+	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"io"
 	"io/ioutil"
 	"log"
@@ -19,10 +19,10 @@ import (
 	"testing"
 
 	"github.com/Myriad-Dreamin/gin-middleware/mock"
+	dblayer "github.com/Myriad-Dreamin/go-ves/vesx/model/db-layer"
 	abstract_test "github.com/Myriad-Dreamin/minimum-lib/abstract-test"
 	"github.com/Myriad-Dreamin/minimum-lib/mock"
 	"github.com/Myriad-Dreamin/minimum-lib/sugar"
-	dblayer "github.com/Myriad-Dreamin/go-ves/vesx/model/db-layer"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -398,7 +398,7 @@ func (mocker *Mocker) NoErr(resp mock.ResponseI) bool {
 		mocker.contextHelper.Error(err)
 		return false
 	}
-	if len(obj.Error) != 0 || obj.Code != 0 {
+	if len(obj.Err) != 0 || obj.Code != 0 {
 		mocker.contextHelper.Errorf("Code, Error (%v, %v)", obj.Code, obj.Error)
 		return false
 	}

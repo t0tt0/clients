@@ -1,8 +1,8 @@
 package splayer
 
 import (
+	"github.com/Myriad-Dreamin/go-ves/lib/core"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
-	"github.com/Myriad-Dreamin/go-ves/vesx/lib/core"
 )
 
 var p = newModelModule()

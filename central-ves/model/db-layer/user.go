@@ -1,6 +1,7 @@
 package dblayer
 
 import (
+	"github.com/Myriad-Dreamin/go-ves/lib/extend-traits"
 	"github.com/Myriad-Dreamin/minimum-lib/crypto"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"github.com/jinzhu/gorm"
@@ -9,8 +10,8 @@ import (
 
 var (
 	userTraits        Traits
-	userQueryNameFunc where1Func
-	userHasNameFunc   Has1Func
+	userQueryNameFunc extend_traits.Where1Func
+	userHasNameFunc   extend_traits.Has1Func
 )
 
 func injectUserTraits() error {

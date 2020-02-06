@@ -6,13 +6,13 @@ import (
 	"github.com/Myriad-Dreamin/go-ves/central-ves/config"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/control"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/control/router"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/lib/jwt"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/lib/plugin"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/model"
 	dblayer "github.com/Myriad-Dreamin/go-ves/central-ves/model/db-layer"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/model/instance"
+	"github.com/Myriad-Dreamin/go-ves/central-ves/model/fset"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/service"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/types"
+	"github.com/Myriad-Dreamin/go-ves/lib/jwt"
+	types2 "github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"github.com/Myriad-Dreamin/minimum-lib/sugar"
@@ -26,7 +26,7 @@ import (
 
 type Server struct {
 	Cfg          *config.ServerConfig
-	Logger       types.Logger
+	Logger       types2.Logger
 	LoggerWriter io.Writer
 
 	RedisPool  *redis.Pool
@@ -94,7 +94,7 @@ func newServer(options []Option) *Server {
 	srv.Module.Provide(config.ModulePath.Minimum.Provider.Service, srv.ServiceProvider)
 	srv.Module.Provide(config.ModulePath.Minimum.Provider.Model, srv.ModelProvider)
 	srv.Module.Provide(config.ModulePath.Minimum.Provider.Router, srv.RouterProvider)
-	srv.Module.Provide(config.ModulePath.Global.UserDB, &instance.VESInstance{srv.ModelProvider})
+	srv.Module.Provide(config.ModulePath.Global.UserDB, &fset.AccountFSet{srv.ModelProvider})
 	return srv
 }
 

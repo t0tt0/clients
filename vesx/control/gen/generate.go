@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/Myriad-Dreamin/artisan"
-	"github.com/Myriad-Dreamin/go-ves/vesx/types"
+	"github.com/Myriad-Dreamin/go-ves/types"
 )
 
 var codeField = artisan.Param("code", new(types.CodeRawType))

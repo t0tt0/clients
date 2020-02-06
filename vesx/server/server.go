@@ -3,18 +3,18 @@ package server
 import (
 	"context"
 	"github.com/DeanThompson/ginpprof"
-	"github.com/Myriad-Dreamin/minimum-lib/controller"
-	"github.com/Myriad-Dreamin/minimum-lib/module"
-	"github.com/Myriad-Dreamin/minimum-lib/sugar"
+	"github.com/Myriad-Dreamin/go-ves/lib/jwt"
+	"github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/go-ves/vesx/config"
 	"github.com/Myriad-Dreamin/go-ves/vesx/control"
 	"github.com/Myriad-Dreamin/go-ves/vesx/control/router"
-	"github.com/Myriad-Dreamin/go-ves/vesx/lib/jwt"
 	"github.com/Myriad-Dreamin/go-ves/vesx/lib/plugin"
 	"github.com/Myriad-Dreamin/go-ves/vesx/model"
 	dblayer "github.com/Myriad-Dreamin/go-ves/vesx/model/db-layer"
 	"github.com/Myriad-Dreamin/go-ves/vesx/service"
-	"github.com/Myriad-Dreamin/go-ves/vesx/types"
+	"github.com/Myriad-Dreamin/minimum-lib/controller"
+	"github.com/Myriad-Dreamin/minimum-lib/module"
+	"github.com/Myriad-Dreamin/minimum-lib/sugar"
 	"github.com/gin-gonic/gin"
 	"github.com/gomodule/redigo/redis"
 	"io"
@@ -86,13 +86,13 @@ func newServer(options []Option) *Server {
 	}
 
 	srv.ServiceProvider = new(service.Provider)
-	srv.ModelProvider = model.NewProvider(config.ModulePath.Provider.Model)
-	srv.RouterProvider = router.NewProvider(config.ModulePath.Provider.Router)
+	srv.ModelProvider = model.NewProvider(config.ModulePath.Minimum.Provider.Model)
+	srv.RouterProvider = router.NewProvider(config.ModulePath.Minimum.Provider.Router)
 
 	_ = model.SetProvider(srv.ModelProvider)
-	srv.Module.Provide(config.ModulePath.Provider.Service, srv.ServiceProvider)
-	srv.Module.Provide(config.ModulePath.Provider.Model, srv.ModelProvider)
-	srv.Module.Provide(config.ModulePath.Provider.Router, srv.RouterProvider)
+	srv.Module.Provide(config.ModulePath.Minimum.Provider.Service, srv.ServiceProvider)
+	srv.Module.Provide(config.ModulePath.Minimum.Provider.Model, srv.ModelProvider)
+	srv.Module.Provide(config.ModulePath.Minimum.Provider.Router, srv.RouterProvider)
 	return srv
 }
 

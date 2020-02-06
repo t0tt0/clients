@@ -1,11 +1,11 @@
 package objectservice
 
 import (
-	"github.com/Myriad-Dreamin/minimum-lib/controller"
+	base_service "github.com/Myriad-Dreamin/go-ves/lib/base-service"
+	"github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/go-ves/vesx/control"
-	base_service "github.com/Myriad-Dreamin/go-ves/vesx/lib/base-service"
 	"github.com/Myriad-Dreamin/go-ves/vesx/model"
-	"github.com/Myriad-Dreamin/go-ves/vesx/types"
+	"github.com/Myriad-Dreamin/minimum-lib/controller"
 )
 
 func (svc *Service) CreateEntity(id uint) base_service.CRUDEntity {

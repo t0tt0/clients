@@ -1,8 +1,8 @@
 package splayer
 
 import (
-	"github.com/Myriad-Dreamin/minimum-lib/module"
 	dblayer "github.com/Myriad-Dreamin/go-ves/vesx/model/db-layer"
+	"github.com/Myriad-Dreamin/minimum-lib/module"
 )
 
 type Session = dblayer.Session

@@ -2,10 +2,10 @@ package userservice
 
 import (
 	"github.com/Myriad-Dreamin/go-ves/central-ves/control"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/lib/serial"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/model"
-	ginhelper "github.com/Myriad-Dreamin/go-ves/central-ves/service/gin-helper"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/types"
+	ginhelper "github.com/Myriad-Dreamin/go-ves/lib/gin-helper"
+	"github.com/Myriad-Dreamin/go-ves/lib/serial"
+	types2 "github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"github.com/Myriad-Dreamin/minimum-lib/rbac"
 	"net/http"
@@ -38,18 +38,18 @@ func (srv *Service) Register(c controller.MContext) {
 			return
 		}
 		c.AbortWithStatusJSON(http.StatusInternalServerError, &serial.ErrorSerializer{
-			Code: types.CodeInsertError,
+			Code: types2.CodeInsertError,
 			Err:  err.Error(),
 		})
 		return
 	} else if aff == 0 {
 		c.JSON(http.StatusOK, &serial.ErrorSerializer{
-			Code: types.CodeInsertError,
+			Code: types2.CodeInsertError,
 			Err:  "existed",
 		})
 		return
 	}
-	c.JSON(http.StatusOK, srv.AfterPost(control.SerializeRegisterReply(types.CodeOK, user)))
+	c.JSON(http.StatusOK, srv.AfterPost(control.SerializeRegisterReply(types2.CodeOK, user)))
 
 	_, err = rbac.AddGroupingPolicy("user:"+strconv.Itoa(int(user.ID)), "norm")
 	if err != nil {

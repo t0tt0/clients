@@ -2,8 +2,8 @@ package control
 
 import (
 	"github.com/Myriad-Dreamin/go-model-traits/gorm-crud-dao"
-	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"github.com/Myriad-Dreamin/go-ves/vesx/model/db-layer"
+	"github.com/Myriad-Dreamin/minimum-lib/controller"
 )
 
 type ObjectService interface {

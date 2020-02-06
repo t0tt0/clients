@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/control"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/server"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/types"
+	types2 "github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/mock"
 	"github.com/Myriad-Dreamin/minimum-lib/rbac"
 	"github.com/Myriad-Dreamin/minimum-lib/sugar"
@@ -123,7 +123,7 @@ func (tester *Tester) MakeAdminContext() bool {
 
 	//fmt.Println(r2)
 	//r2.RefreshToken
-	_, err = rbac.AddGroupingPolicy("user:"+strconv.Itoa(int(r2.Id)), types.GroupAdmin)
+	_, err = rbac.AddGroupingPolicy("user:"+strconv.Itoa(int(r2.Id)), types2.GroupAdmin)
 	if err != nil {
 		tester.Logger.Debug("update group error", "error", err)
 	}

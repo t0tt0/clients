@@ -7,8 +7,8 @@ import (
 	"github.com/Myriad-Dreamin/go-magic-package/instance"
 	parser "github.com/Myriad-Dreamin/go-parse-package"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/control"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/lib/serial"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/types"
+	"github.com/Myriad-Dreamin/go-ves/lib/serial"
+	types2 "github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"io"
 	"io/ioutil"
@@ -408,8 +408,8 @@ func (mocker *Mocker) NoErr(resp mock.ResponseI) bool {
 
 type Error struct {
 	RespCode int
-	Code     types.CodeRawType `json:"code"`
-	Error    string            `json:"error"`
+	Code     types2.CodeRawType `json:"code"`
+	Error    string             `json:"error"`
 }
 
 func (mocker *Mocker) FetchError(resp mock.ResponseI) Error {

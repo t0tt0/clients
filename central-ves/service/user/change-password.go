@@ -2,9 +2,9 @@ package userservice
 
 import (
 	"github.com/Myriad-Dreamin/go-ves/central-ves/control"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/lib/serial"
-	ginhelper "github.com/Myriad-Dreamin/go-ves/central-ves/service/gin-helper"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/types"
+	ginhelper "github.com/Myriad-Dreamin/go-ves/lib/gin-helper"
+	"github.com/Myriad-Dreamin/go-ves/lib/serial"
+	types2 "github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"net/http"
 )
@@ -17,7 +17,7 @@ func (srv *Service) ChangePassword(c controller.MContext) {
 	}
 	if sug := CheckStrongPassword(req.NewPassword); len(sug) != 0 {
 		c.AbortWithStatusJSON(http.StatusOK, serial.ErrorSerializer{
-			Code: types.CodeWeakPassword,
+			Code: types2.CodeWeakPassword,
 			Err:  sug,
 		})
 		return

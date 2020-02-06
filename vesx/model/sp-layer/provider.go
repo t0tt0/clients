@@ -12,7 +12,9 @@ type Provider struct {
 	module.BaseModuler
 	objectDB *ObjectDB
 
-    sessionDB *SessionDB	enforcer *Enforcer
+	sessionAccountDB *SessionAccountDB
+	sessionDB        *SessionDB
+	enforcer         *Enforcer
 }
 
 func NewProvider(namespace string) *Provider {
@@ -29,8 +31,10 @@ func (s *Provider) Register(name string, database interface{}) {
 	}
 
 	switch ss := database.(type) {
-    case *SessionDB:
-        s.sessionDB = ss
+	case *SessionAccountDB:
+		s.sessionAccountDB = ss
+	case *SessionDB:
+		s.sessionDB = ss
 	case *Enforcer:
 		s.enforcer = ss
 	case *ObjectDB:

@@ -1,8 +1,8 @@
 package model
 
 import (
-	"github.com/Myriad-Dreamin/minimum-lib/module"
 	splayer "github.com/Myriad-Dreamin/go-ves/vesx/model/sp-layer"
+	"github.com/Myriad-Dreamin/minimum-lib/module"
 )
 
 type Object = splayer.Object

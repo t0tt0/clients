@@ -3,11 +3,12 @@ package dblayer
 import (
 	"database/sql"
 	"github.com/Myriad-Dreamin/dorm"
-	traits "github.com/Myriad-Dreamin/go-model-traits/example-traits"
-	"github.com/Myriad-Dreamin/minimum-lib/module"
+	"github.com/Myriad-Dreamin/go-ves/lib/base64"
+	"github.com/Myriad-Dreamin/go-ves/lib/core"
+	"github.com/Myriad-Dreamin/go-ves/lib/extend-traits"
+	"github.com/Myriad-Dreamin/go-ves/lib/fcg"
 	"github.com/Myriad-Dreamin/go-ves/vesx/config"
-	"github.com/Myriad-Dreamin/go-ves/vesx/lib/core"
-	"github.com/Myriad-Dreamin/go-ves/vesx/lib/fcg"
+	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"github.com/jinzhu/gorm"
 
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -55,14 +56,16 @@ func Configuration(cfg *config.ServerConfig) {
 	(*p.RawDB).SetMaxOpenConns(cfg.DatabaseConfig.MaxActive)
 }
 
-type Traits = traits.ModelTraits
-type Interface = traits.Interface
-type TraitsAcceptObject = traits.ORMObject
-type where1Func = func(interface{}) (interface{}, error)
+type Traits = extend_traits.Traits
+
+type Interface interface {
+	extend_traits.Interface
+}
+
+type TraitsAcceptObject = extend_traits.ORMObject
 
 func NewTraits(t TraitsAcceptObject) Traits {
-	tt := traits.NewModelTraits(t, p.GormDB, p.DormDB)
-	return tt
+	return extend_traits.NewTraits(t, p.GormDB, p.DormDB)
 }
 
 type modelModule struct {
@@ -106,13 +109,24 @@ func (m *modelModule) InstallMock(dep module.Module) bool {
 func (modelModule) Migrates() error {
 	return fcg.Calls([]fcg.MaybeInitializer{
 		//migrations
-        Session{}.migrate,
+		SessionAccount{}.migrate,
+		Session{}.migrate,
 	})
 }
 
 func (modelModule) Injects() error {
 	return fcg.Calls([]fcg.MaybeInitializer{
 		//injections
-        injectSessionTraits,
+		injectSessionAccountTraits,
+		injectSessionTraits,
 	})
+}
+
+func decodeBase64(src string) []byte {
+	b, err := base64.DecodeBase64(src)
+	if err != nil {
+		p.Logger.Debug("decode failed", "error", err, "source", src)
+		return nil
+	}
+	return b
 }

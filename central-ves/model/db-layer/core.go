@@ -3,10 +3,10 @@ package dblayer
 import (
 	"database/sql"
 	"github.com/Myriad-Dreamin/dorm"
-	traits "github.com/Myriad-Dreamin/go-model-traits/example-traits"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/config"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/lib/core"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/lib/fcg"
+	"github.com/Myriad-Dreamin/go-ves/lib/core"
+	"github.com/Myriad-Dreamin/go-ves/lib/extend-traits"
+	"github.com/Myriad-Dreamin/go-ves/lib/fcg"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"github.com/jinzhu/gorm"
 
@@ -55,22 +55,16 @@ func Configuration(cfg *config.ServerConfig) {
 	(*p.RawDB).SetMaxOpenConns(cfg.DatabaseConfig.MaxActive)
 }
 
-type Traits struct {
-	traits.ModelTraits
-	ExtendModel
-}
+type Traits = extend_traits.Traits
+
 type Interface interface {
-	traits.Interface
+	extend_traits.Interface
 }
-type TraitsAcceptObject = traits.ORMObject
-type where1Func = func(interface{}) (interface{}, error)
+
+type TraitsAcceptObject = extend_traits.ORMObject
 
 func NewTraits(t TraitsAcceptObject) Traits {
-	tt := traits.NewModelTraits(t, p.GormDB, p.DormDB)
-	return Traits{
-		ModelTraits: tt,
-		ExtendModel: NewExtendModel(&tt),
-	}
+	return extend_traits.NewTraits(t, p.GormDB, p.DormDB)
 }
 
 type modelModule struct {

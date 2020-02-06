@@ -2,9 +2,9 @@ package userservice
 
 import (
 	"github.com/Myriad-Dreamin/go-ves/central-ves/control"
-	base_service "github.com/Myriad-Dreamin/go-ves/central-ves/lib/base-service"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/model"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/types"
+	base_service "github.com/Myriad-Dreamin/go-ves/lib/base-service"
+	types2 "github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 )
 
@@ -30,11 +30,11 @@ func (srv *Service) DeleteHook(c controller.MContext, obj base_service.CRUDEntit
 }
 
 func (srv *Service) ResponseGet(_ controller.MContext, obj base_service.CRUDEntity) interface{} {
-	return control.SerializeGetUserReply(types.CodeOK, obj.(*model.User))
+	return control.SerializeGetUserReply(types2.CodeOK, obj.(*model.User))
 }
 
 func (srv *Service) ResponseInspect(_ controller.MContext, obj base_service.CRUDEntity) interface{} {
-	return control.SerializeInspectUserReply(types.CodeOK, obj.(*model.User))
+	return control.SerializeInspectUserReply(types2.CodeOK, obj.(*model.User))
 }
 
 func (srv *Service) GetPutRequest() interface{} {

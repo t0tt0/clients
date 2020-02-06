@@ -2,9 +2,9 @@ package chainInfoservice
 
 import (
 	"github.com/Myriad-Dreamin/go-ves/central-ves/control"
-	base_service "github.com/Myriad-Dreamin/go-ves/central-ves/lib/base-service"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/model"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/types"
+	base_service "github.com/Myriad-Dreamin/go-ves/lib/base-service"
+	types2 "github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 )
 
@@ -17,7 +17,7 @@ func (svc *Service) GetEntity(id uint) (base_service.CRUDEntity, error) {
 }
 
 func (svc *Service) ResponsePost(obj base_service.CRUDEntity) interface{} {
-	return svc.AfterPost(control.SerializePostChainInfoReply(types.CodeOK, obj.(*model.ChainInfo)))
+	return svc.AfterPost(control.SerializePostChainInfoReply(types2.CodeOK, obj.(*model.ChainInfo)))
 }
 
 func (svc *Service) DeleteHook(c controller.MContext, obj base_service.CRUDEntity) bool {
@@ -25,15 +25,15 @@ func (svc *Service) DeleteHook(c controller.MContext, obj base_service.CRUDEntit
 }
 
 func (svc *Service) ResponseGet(_ controller.MContext, obj base_service.CRUDEntity) interface{} {
-	return control.SerializeGetChainInfoReply(types.CodeOK, obj.(*model.ChainInfo))
+	return control.SerializeGetChainInfoReply(types2.CodeOK, obj.(*model.ChainInfo))
 }
 
 func (svc *Service) ResponseInspect(_ controller.MContext, obj base_service.CRUDEntity) interface{} {
-	return control.SerializeInspectChainInfoReply(types.CodeOK, obj.(*model.ChainInfo))
+	return control.SerializeInspectChainInfoReply(types2.CodeOK, obj.(*model.ChainInfo))
 }
 
 func (svc *Service) ProcessListResults(_ controller.MContext, result interface{}) interface{} {
-	return control.PSerializeListChainInfosReply(types.CodeOK, result.([]model.ChainInfo))
+	return control.PSerializeListChainInfosReply(types2.CodeOK, result.([]model.ChainInfo))
 }
 
 func (svc *Service) CreateFilter() interface{} {

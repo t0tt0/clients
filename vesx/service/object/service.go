@@ -2,12 +2,12 @@
 package objectservice
 
 import (
-	"github.com/Myriad-Dreamin/minimum-lib/module"
+	base_service "github.com/Myriad-Dreamin/go-ves/lib/base-service"
+	"github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/go-ves/vesx/config"
 	"github.com/Myriad-Dreamin/go-ves/vesx/control"
-	base_service "github.com/Myriad-Dreamin/go-ves/vesx/lib/base-service"
 	"github.com/Myriad-Dreamin/go-ves/vesx/model"
-	"github.com/Myriad-Dreamin/go-ves/vesx/types"
+	"github.com/Myriad-Dreamin/minimum-lib/module"
 )
 
 type Service struct {
@@ -23,9 +23,9 @@ func (svc *Service) ObjectServiceSignatureXXX() interface{} { return svc }
 
 func NewService(m module.Module) (control.ObjectService, error) {
 	var a = new(Service)
-	provider := m.Require(config.ModulePath.Provider.Model).(*model.Provider)
-	a.logger = m.Require(config.ModulePath.Global.Logger).(types.Logger)
-	a.cfg = m.Require(config.ModulePath.Global.Configuration).(*config.ServerConfig)
+	provider := m.Require(config.ModulePath.Minimum.Provider.Model).(*model.Provider)
+	a.logger = m.Require(config.ModulePath.Minimum.Global.Logger).(types.Logger)
+	a.cfg = m.Require(config.ModulePath.Minimum.Global.Configuration).(*config.ServerConfig)
 	a.key = "oid"
 	a.db = provider.ObjectDB()
 	a.CRUDService = base_service.NewCRUDService(a, a.key)

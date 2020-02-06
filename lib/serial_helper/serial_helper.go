@@ -1,4 +1,4 @@
-package SerialHelper
+package serial_helper
 
 import (
 	"bytes"

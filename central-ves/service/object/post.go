@@ -2,9 +2,9 @@ package objectservice
 
 import (
 	"github.com/Myriad-Dreamin/go-ves/central-ves/control"
-	base_service "github.com/Myriad-Dreamin/go-ves/central-ves/lib/base-service"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/model"
-	ginhelper "github.com/Myriad-Dreamin/go-ves/central-ves/service/gin-helper"
+	base_service "github.com/Myriad-Dreamin/go-ves/lib/base-service"
+	ginhelper "github.com/Myriad-Dreamin/go-ves/lib/gin-helper"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 )
 

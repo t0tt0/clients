@@ -1,11 +1,11 @@
 package server
 
 import (
-	"github.com/Myriad-Dreamin/minimum-lib/controller"
+	"github.com/Myriad-Dreamin/go-ves/lib/gin-helper"
+	"github.com/Myriad-Dreamin/go-ves/lib/jwt"
+	"github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/go-ves/vesx/config"
-	"github.com/Myriad-Dreamin/go-ves/vesx/lib/jwt"
-	ginhelper "github.com/Myriad-Dreamin/go-ves/vesx/service/gin-helper"
-	"github.com/Myriad-Dreamin/go-ves/vesx/types"
+	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"github.com/gin-contrib/cors"
 	//"github.com/Myriad-Dreamin/gin-middleware/auth/privileger"
 	"strconv"
@@ -36,8 +36,8 @@ func (srv *Server) PrepareMiddleware() bool {
 		AllowCredentials: true,
 	})
 
-	srv.Module.Provide(config.ModulePath.Middleware.JWT, srv.jwtMW)
-	srv.Module.Provide(config.ModulePath.Middleware.RouteAuth, srv.routerAuthMW)
-	srv.Module.Provide(config.ModulePath.Middleware.CORS, srv.corsMW)
+	srv.Module.Provide(config.ModulePath.Minimum.Middleware.JWT, srv.jwtMW)
+	srv.Module.Provide(config.ModulePath.Minimum.Middleware.RouteAuth, srv.routerAuthMW)
+	srv.Module.Provide(config.ModulePath.Minimum.Middleware.CORS, srv.corsMW)
 	return true
 }

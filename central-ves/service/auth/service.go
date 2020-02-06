@@ -3,10 +3,10 @@ package authservice
 
 import (
 	"github.com/Myriad-Dreamin/go-ves/central-ves/config"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/lib/jwt"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/model"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/model/sp-layer"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/types"
+	"github.com/Myriad-Dreamin/go-ves/lib/jwt"
+	types2 "github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"net/http"
@@ -14,7 +14,7 @@ import (
 
 type Service struct {
 	cfg        *config.ServerConfig
-	logger     types.Logger
+	logger     types2.Logger
 	middleware *jwt.Middleware
 	enforcer   *splayer.Enforcer
 }
@@ -22,8 +22,8 @@ type Service struct {
 func (svc *Service) AuthSignatureXXX() interface{} { return svc }
 
 type RefreshTokenReply struct {
-	Code  types.CodeRawType `json:"code"`
-	Token string            `json:"token"`
+	Code  types2.CodeRawType `json:"code"`
+	Token string             `json:"token"`
 }
 
 func (svc *Service) RefreshToken(c controller.MContext) {
@@ -34,14 +34,14 @@ func (svc *Service) RefreshToken(c controller.MContext) {
 	}
 
 	c.JSON(http.StatusOK, RefreshTokenReply{
-		Code:  types.CodeOK,
+		Code:  types2.CodeOK,
 		Token: newToken,
 	})
 }
 
 func NewService(m module.Module) (a *Service, err error) {
 	a = new(Service)
-	a.logger = m.Require(config.ModulePath.Minimum.Global.Logger).(types.Logger)
+	a.logger = m.Require(config.ModulePath.Minimum.Global.Logger).(types2.Logger)
 	a.cfg = m.Require(config.ModulePath.Minimum.Global.Configuration).(*config.ServerConfig)
 	a.enforcer = m.Require(config.ModulePath.Minimum.Provider.Model).(*model.Provider).Enforcer()
 	a.middleware = m.Require(config.ModulePath.Minimum.Middleware.JWT).(*jwt.Middleware)

@@ -1,7 +1,7 @@
 package splayer
 
 import (
-	"github.com/Myriad-Dreamin/go-ves/central-ves/lib/core"
+	"github.com/Myriad-Dreamin/go-ves/lib/core"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 )
 

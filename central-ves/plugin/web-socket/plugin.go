@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/config"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/lib/plugin"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/model/instance"
+	"github.com/Myriad-Dreamin/go-ves/central-ves/model/fset"
 	helper "github.com/Myriad-Dreamin/go-ves/lib/net/help-func"
 	"net/http"
 )
@@ -33,7 +33,7 @@ func (c *CVESWebSocketPlugin) Configuration(logger plugin.Logger, loader plugin.
 }
 
 func (c *CVESWebSocketPlugin) Inject(services *plugin.ServiceProvider, dbs *plugin.DatabaseProvider, module plugin.Module) plugin.Plugin {
-	c.userDB = module.Require(config.ModulePath.Global.UserDB).(*instance.VESInstance)
+	c.userDB = module.Require(config.ModulePath.Global.UserDB).(*fset.AccountFSet)
 	return c
 }
 

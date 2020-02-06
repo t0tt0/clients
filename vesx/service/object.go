@@ -1,9 +1,9 @@
 package service
 
 import (
-	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"github.com/Myriad-Dreamin/go-ves/vesx/control"
 	objectservice "github.com/Myriad-Dreamin/go-ves/vesx/service/object"
+	"github.com/Myriad-Dreamin/minimum-lib/module"
 )
 
 // go:generate go run github.com/Myriad-Dreamin/minimum-lib/code-gen/test-gen -source ./ -destination ../../test/
