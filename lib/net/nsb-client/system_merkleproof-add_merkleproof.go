@@ -3,6 +3,7 @@ package nsbcli
 import (
 	"encoding/json"
 	transactiontype "github.com/HyperService-Consortium/NSB/application/transaction-type"
+	"github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client/nsb-message"
 
 	appl "github.com/HyperService-Consortium/NSB/application"
 	"github.com/HyperService-Consortium/NSB/grpc/nsbrpc"
@@ -12,7 +13,7 @@ import (
 func (nc *NSBClient) AddMerkleProof(
 	user uiptypes.Signer, toAddress []byte,
 	merkletype uint16, rootHash, proof, key, value []byte,
-) (*ResultInfo, error) {
+) (*nsb_message.ResultInfo, error) {
 	// fmt.Println(string(buf.Bytes()))
 	fap, err := nc.addMerkleProof(merkletype, rootHash, proof, key, value)
 	if err != nil {

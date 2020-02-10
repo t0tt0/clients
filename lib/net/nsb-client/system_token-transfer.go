@@ -3,6 +3,7 @@ package nsbcli
 import (
 	"encoding/json"
 	"github.com/HyperService-Consortium/NSB/math"
+	"github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client/nsb-message"
 
 	appl "github.com/HyperService-Consortium/NSB/application"
 	"github.com/HyperService-Consortium/NSB/grpc/nsbrpc"
@@ -25,7 +26,7 @@ func (nc *NSBClient) CreateTransferPacket(srcAddress, dstAddress []byte, value *
 func (nc *NSBClient) Transfer(
 	user uiptypes.Signer, toAddress []byte,
 	value *math.Uint256,
-) (*ResultInfo, error) {
+) (*nsb_message.ResultInfo, error) {
 	h, e := nc.CreateTransferPacket(user.GetPublicKey(), toAddress, value)
 	return nc.systemCall(nc.sign(user, h, e))
 }

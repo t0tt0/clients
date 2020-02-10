@@ -3,6 +3,7 @@ package nsbcli
 import (
 	"encoding/binary"
 	transactiontype "github.com/HyperService-Consortium/NSB/application/transaction-type"
+	"github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client/nsb-message"
 
 	"github.com/HyperService-Consortium/NSB/grpc/nsbrpc"
 	uiptypes "github.com/HyperService-Consortium/go-uip/uiptypes"
@@ -11,7 +12,7 @@ import (
 func (nc *NSBClient) InsuranceClaim(
 	user uiptypes.Signer, contractAddress []byte,
 	tid, aid uint64,
-) (*DeliverTx, error) {
+) (*nsb_message.DeliverTx, error) {
 	// fmt.Println(string(buf.Bytes()))
 	fap, err := nc.insuranceClaim(tid, aid)
 	if err != nil {

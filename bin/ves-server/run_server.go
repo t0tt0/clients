@@ -13,7 +13,7 @@ import (
 	multi_index "github.com/Myriad-Dreamin/go-ves/lib/database/multi_index"
 	"github.com/Myriad-Dreamin/go-ves/types"
 
-	ves_server "github.com/Myriad-Dreamin/go-ves/ves"
+	ves_server "github.com/Myriad-Dreamin/go-ves/vves"
 )
 
 var (

@@ -3,6 +3,7 @@ package nsbcli
 import (
 	"github.com/HyperService-Consortium/NSB/grpc/nsbrpc"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client/nsb-message"
 	"io"
 	"reflect"
 	"testing"
@@ -114,7 +115,7 @@ func TestNSBClient_GetAbciInfo2(t *testing.T) {
 	tests := []struct {
 		name    string
 		fields  fields
-		want    *AbciInfoResponse
+		want    *nsb_message.AbciInfoResponse
 		wantErr bool
 	}{
 		// TODO: Add test cases.
@@ -145,7 +146,7 @@ func TestNSBClient_GetBlock1(t *testing.T) {
 		name    string
 		fields  fields
 		args    args
-		want    *BlockInfo
+		want    *nsb_message.BlockInfo
 		wantErr bool
 	}{
 		// TODO: Add test cases.
@@ -176,7 +177,7 @@ func TestNSBClient_GetBlockResults1(t *testing.T) {
 		name    string
 		fields  fields
 		args    args
-		want    *BlockResultsInfo
+		want    *nsb_message.BlockResultsInfo
 		wantErr bool
 	}{
 		// TODO: Add test cases.
@@ -208,7 +209,7 @@ func TestNSBClient_GetBlocks1(t *testing.T) {
 		name    string
 		fields  fields
 		args    args
-		want    *BlocksInfo
+		want    *nsb_message.BlocksInfo
 		wantErr bool
 	}{
 		// TODO: Add test cases.
@@ -239,7 +240,7 @@ func TestNSBClient_GetCommitInfo1(t *testing.T) {
 		name    string
 		fields  fields
 		args    args
-		want    *CommitInfo
+		want    *nsb_message.CommitInfo
 		wantErr bool
 	}{
 		// TODO: Add test cases.
@@ -270,7 +271,7 @@ func TestNSBClient_GetConsensusParamsInfo1(t *testing.T) {
 		name    string
 		fields  fields
 		args    args
-		want    *ConsensusParamsInfo
+		want    *nsb_message.ConsensusParamsInfo
 		wantErr bool
 	}{
 		// TODO: Add test cases.
@@ -297,7 +298,7 @@ func TestNSBClient_GetConsensusState1(t *testing.T) {
 	tests := []struct {
 		name    string
 		fields  fields
-		want    *ConsensusStateInfo
+		want    *nsb_message.ConsensusStateInfo
 		wantErr bool
 	}{
 		// TODO: Add test cases.
@@ -324,7 +325,7 @@ func TestNSBClient_GetGenesis1(t *testing.T) {
 	tests := []struct {
 		name    string
 		fields  fields
-		want    *GenesisInfo
+		want    *nsb_message.GenesisInfo
 		wantErr bool
 	}{
 		// TODO: Add test cases.
@@ -378,7 +379,7 @@ func TestNSBClient_GetNetInfo1(t *testing.T) {
 	tests := []struct {
 		name    string
 		fields  fields
-		want    *NetInfo
+		want    *nsb_message.NetInfo
 		wantErr bool
 	}{
 		// TODO: Add test cases.
@@ -405,7 +406,7 @@ func TestNSBClient_GetNumUnconfirmedTxs1(t *testing.T) {
 	tests := []struct {
 		name    string
 		fields  fields
-		want    *NumUnconfirmedTxsInfo
+		want    *nsb_message.NumUnconfirmedTxsInfo
 		wantErr bool
 	}{
 		// TODO: Add test cases.
@@ -437,7 +438,7 @@ func TestNSBClient_GetProof1(t *testing.T) {
 		name    string
 		fields  fields
 		args    args
-		want    *ProofResponse
+		want    *nsb_message.ProofResponse
 		wantErr bool
 	}{
 		// TODO: Add test cases.
@@ -464,7 +465,7 @@ func TestNSBClient_GetStatus1(t *testing.T) {
 	tests := []struct {
 		name    string
 		fields  fields
-		want    *StatusInfo
+		want    *nsb_message.StatusInfo
 		wantErr bool
 	}{
 		// TODO: Add test cases.
@@ -526,7 +527,7 @@ func TestNSBClient_GetUnconfirmedTxs1(t *testing.T) {
 		name    string
 		fields  fields
 		args    args
-		want    *NumUnconfirmedTxsInfo
+		want    *nsb_message.NumUnconfirmedTxsInfo
 		wantErr bool
 	}{
 		// TODO: Add test cases.
@@ -557,7 +558,7 @@ func TestNSBClient_GetValidators1(t *testing.T) {
 		name    string
 		fields  fields
 		args    args
-		want    *ValidatorsInfo
+		want    *nsb_message.ValidatorsInfo
 		wantErr bool
 	}{
 		// TODO: Add test cases.
@@ -591,7 +592,7 @@ func TestNSBClient_InsuranceClaim(t *testing.T) {
 		name    string
 		fields  fields
 		args    args
-		want    *DeliverTx
+		want    *nsb_message.DeliverTx
 		wantErr bool
 	}{
 		// TODO: Add test cases.
@@ -623,7 +624,7 @@ func TestNSBClient_SettleContract(t *testing.T) {
 		name    string
 		fields  fields
 		args    args
-		want    *DeliverTx
+		want    *nsb_message.DeliverTx
 		wantErr bool
 	}{
 		// TODO: Add test cases.
@@ -657,7 +658,7 @@ func TestNSBClient_UserAck(t *testing.T) {
 		name    string
 		fields  fields
 		args    args
-		want    *DeliverTx
+		want    *nsb_message.DeliverTx
 		wantErr bool
 	}{
 		// TODO: Add test cases.
@@ -886,7 +887,7 @@ func TestNSBClient_sendContractTx1(t *testing.T) {
 		name    string
 		fields  fields
 		args    args
-		want    *ResultInfo
+		want    *nsb_message.ResultInfo
 		wantErr bool
 	}{
 		// TODO: Add test cases.

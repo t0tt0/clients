@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Myriad-Dreamin/go-ves/config"
+	"github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/logger"
 	"io"
 	"net/url"
@@ -38,7 +39,7 @@ type VesClient struct {
 	accs   *EthAccounts
 
 	conn      *websocket.Conn
-	nsbClient *nsbclient.NSBClient
+	nsbClient types.NSBClient
 	waitOpt   uiptypes.RouteOptionTimeout
 
 	cb   chan *bytes.Buffer
@@ -48,34 +49,6 @@ type VesClient struct {
 
 	nsbip  string
 	grpcip string
-
-	rawMessage                *wsrpc.RawMessage
-	shortSendMessage          *wsrpc.Message
-	shortReplyMessage         *wsrpc.Message
-	clientHello               *wsrpc.ClientHello
-	clientHelloReply          *wsrpc.ClientHelloReply
-	requestComingRequest      *wsrpc.RequestComingRequest
-	requestComingReply        *wsrpc.RequestComingReply
-	requestGrpcServiceRequest *wsrpc.RequestGrpcServiceRequest
-	requestGrpcServiceReply   *wsrpc.RequestGrpcServiceReply
-	requestNsbServiceRequest  *wsrpc.RequestNsbServiceRequest
-	requestNsbServiceReply    *wsrpc.RequestNsbServiceReply
-	userRegisterRequest       *wsrpc.UserRegisterRequest
-	userRegisterReply         *wsrpc.UserRegisterReply
-	sessionListRequest        *wsrpc.SessionListRequest
-	sessionListReply          *wsrpc.SessionListReply
-	transactionListRequest    *wsrpc.TransactionListRequest
-	transactionListReply      *wsrpc.TransactionListReply
-	sessionFinishedRequest    *wsrpc.SessionFinishedRequest
-	sessionFinishedReply      *wsrpc.SessionFinishedReply
-	// sessionRequireTransactRequest *wsrpc.SessionRequireTransactRequest
-	// sessionRequireTransactReply   *wsrpc.SessionRequireTransactReply
-	attestationReceiveRequestSend    *wsrpc.AttestationReceiveRequest
-	attestationReceiveRequestReceive *wsrpc.AttestationReceiveRequest
-	attestationReceiveReply          *wsrpc.AttestationReceiveReply
-
-	sessionStart        *uiprpc.SessionStartRequest
-	closeSessionRequest *wsrpc.CloseSessionRequest
 
 	closeSessionRWMutex    sync.RWMutex
 	closeSessionSubscriber []SessionCloseSubscriber
@@ -243,158 +216,91 @@ func (vc *VesClient) updateAccs() error {
 }
 
 func (vc *VesClient) getClientHello() *wsrpc.ClientHello {
-	if vc.clientHello == nil {
-		vc.clientHello = new(wsrpc.ClientHello)
-	}
-	return vc.clientHello
+	return new(wsrpc.ClientHello)
 }
 
 func (vc *VesClient) getClientHelloReply() *wsrpc.ClientHelloReply {
-	if vc.clientHelloReply == nil {
-		vc.clientHelloReply = new(wsrpc.ClientHelloReply)
-	}
-	return vc.clientHelloReply
+	return new(wsrpc.ClientHelloReply)
 }
 
 func (vc *VesClient) getShortSendMessage() *wsrpc.Message {
-	if vc.shortSendMessage == nil {
-		vc.shortSendMessage = new(wsrpc.Message)
-	}
-	return vc.shortSendMessage
+	return new(wsrpc.Message)
 }
 
 func (vc *VesClient) getRawMessage() *wsrpc.RawMessage {
-	if vc.rawMessage == nil {
-		vc.rawMessage = new(wsrpc.RawMessage)
-	}
-	return vc.rawMessage
+	return new(wsrpc.RawMessage)
 }
 
 func (vc *VesClient) getShortReplyMessage() *wsrpc.Message {
-	if vc.shortReplyMessage == nil {
-		vc.shortReplyMessage = new(wsrpc.Message)
-	}
-	return vc.shortReplyMessage
+	return new(wsrpc.Message)
 }
 
 func (vc *VesClient) getUserRegisterRequest() *wsrpc.UserRegisterRequest {
-	if vc.userRegisterRequest == nil {
-		vc.userRegisterRequest = new(wsrpc.UserRegisterRequest)
-	}
-	return vc.userRegisterRequest
+	return new(wsrpc.UserRegisterRequest)
 }
 
 func (vc *VesClient) getUserRegisterReply() *wsrpc.UserRegisterReply {
-	if vc.userRegisterReply == nil {
-		vc.userRegisterReply = new(wsrpc.UserRegisterReply)
-	}
-	return vc.userRegisterReply
+	return new(wsrpc.UserRegisterReply)
 }
 
 func (vc *VesClient) getrequestComingRequest() *wsrpc.RequestComingRequest {
-	// if vc.requestComingRequest == nil {
-	// 	vc.requestComingRequest = new(wsrpc.RequestComingRequest)
-	// }
-	// return vc.requestComingRequest
 	return new(wsrpc.RequestComingRequest)
 }
 
 func (vc *VesClient) getrequestComingReply() *wsrpc.RequestComingReply {
-	if vc.requestComingReply == nil {
-		vc.requestComingReply = new(wsrpc.RequestComingReply)
-	}
-	return vc.requestComingReply
+	return new(wsrpc.RequestComingReply)
 }
 
 func (vc *VesClient) getrequestGrpcServiceRequest() *wsrpc.RequestGrpcServiceRequest {
-	if vc.requestGrpcServiceRequest == nil {
-		vc.requestGrpcServiceRequest = new(wsrpc.RequestGrpcServiceRequest)
-	}
-	return vc.requestGrpcServiceRequest
+	return new(wsrpc.RequestGrpcServiceRequest)
 }
 
 func (vc *VesClient) getrequestGrpcServiceReply() *wsrpc.RequestGrpcServiceReply {
-	if vc.requestGrpcServiceReply == nil {
-		vc.requestGrpcServiceReply = new(wsrpc.RequestGrpcServiceReply)
-	}
-	return vc.requestGrpcServiceReply
+	return new(wsrpc.RequestGrpcServiceReply)
 }
 
 func (vc *VesClient) getrequestNsbServiceRequest() *wsrpc.RequestNsbServiceRequest {
-	if vc.requestNsbServiceRequest == nil {
-		vc.requestNsbServiceRequest = new(wsrpc.RequestNsbServiceRequest)
-	}
-	return vc.requestNsbServiceRequest
+	return new(wsrpc.RequestNsbServiceRequest)
 }
 
 func (vc *VesClient) getrequestNsbServiceReply() *wsrpc.RequestNsbServiceReply {
-	if vc.requestNsbServiceReply == nil {
-		vc.requestNsbServiceReply = new(wsrpc.RequestNsbServiceReply)
-	}
-	return vc.requestNsbServiceReply
+	return new(wsrpc.RequestNsbServiceReply)
 }
 
 func (vc *VesClient) getuserRegisterRequest() *wsrpc.UserRegisterRequest {
-	if vc.userRegisterRequest == nil {
-		vc.userRegisterRequest = new(wsrpc.UserRegisterRequest)
-	}
-	return vc.userRegisterRequest
+	return new(wsrpc.UserRegisterRequest)
 }
 
 func (vc *VesClient) getuserRegisterReply() *wsrpc.UserRegisterReply {
-	if vc.userRegisterReply == nil {
-		vc.userRegisterReply = new(wsrpc.UserRegisterReply)
-	}
-	return vc.userRegisterReply
+	return new(wsrpc.UserRegisterReply)
 }
 
 func (vc *VesClient) getsessionListRequest() *wsrpc.SessionListRequest {
-	if vc.sessionListRequest == nil {
-		vc.sessionListRequest = new(wsrpc.SessionListRequest)
-	}
-	return vc.sessionListRequest
+	return new(wsrpc.SessionListRequest)
 }
 
 func (vc *VesClient) getsessionListReply() *wsrpc.SessionListReply {
-	if vc.sessionListReply == nil {
-		vc.sessionListReply = new(wsrpc.SessionListReply)
-	}
-	return vc.sessionListReply
+	return new(wsrpc.SessionListReply)
 }
 
 func (vc *VesClient) gettransactionListRequest() *wsrpc.TransactionListRequest {
-	if vc.transactionListRequest == nil {
-		vc.transactionListRequest = new(wsrpc.TransactionListRequest)
-	}
-	return vc.transactionListRequest
+	return new(wsrpc.TransactionListRequest)
 }
 
 func (vc *VesClient) gettransactionListReply() *wsrpc.TransactionListReply {
-	if vc.transactionListReply == nil {
-		vc.transactionListReply = new(wsrpc.TransactionListReply)
-	}
-	return vc.transactionListReply
+	return new(wsrpc.TransactionListReply)
 }
 
 func (vc *VesClient) getSessionStart() *uiprpc.SessionStartRequest {
-	if vc.sessionStart == nil {
-		vc.sessionStart = new(uiprpc.SessionStartRequest)
-	}
-	return vc.sessionStart
+	return new(uiprpc.SessionStartRequest)
 }
 
 func (vc *VesClient) getSessionFinishedRequest() *wsrpc.SessionFinishedRequest {
-	if vc.sessionFinishedRequest == nil {
-		vc.sessionFinishedRequest = new(wsrpc.SessionFinishedRequest)
-	}
-	return vc.sessionFinishedRequest
+	return new(wsrpc.SessionFinishedRequest)
 }
 
 func (vc *VesClient) getSessionFinishedReply() *wsrpc.SessionFinishedReply {
-	if vc.sessionFinishedReply == nil {
-		vc.sessionFinishedReply = new(wsrpc.SessionFinishedReply)
-	}
-	return vc.sessionFinishedReply
+	return new(wsrpc.SessionFinishedReply)
 }
 
 // func (vc *VesClient) getSessionRequireTransactRequest() *wsrpc.SessionRequireTransactRequest {
@@ -428,17 +334,11 @@ func (vc *VesClient) getReceiveAttestationReceiveRequest() *wsrpc.AttestationRec
 }
 
 func (vc *VesClient) getAttestationReceiveReply() *wsrpc.AttestationReceiveReply {
-	if vc.attestationReceiveReply == nil {
-		vc.attestationReceiveReply = new(wsrpc.AttestationReceiveReply)
-	}
-	return vc.attestationReceiveReply
+	return new(wsrpc.AttestationReceiveReply)
 }
 
 func (vc *VesClient) getCloseSessionRequest() *wsrpc.CloseSessionRequest {
-	if vc.closeSessionRequest == nil {
-		vc.closeSessionRequest = new(wsrpc.CloseSessionRequest)
-	}
-	return vc.closeSessionRequest
+	return new(wsrpc.CloseSessionRequest)
 }
 
 func (vc *VesClient) postMessage(code wsrpc.MessageType, msg proto.Message) error {

@@ -5,6 +5,7 @@ import (
 	transactiontype "github.com/HyperService-Consortium/NSB/application/transaction-type"
 	"github.com/HyperService-Consortium/NSB/grpc/nsbrpc"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client/nsb-message"
 	"github.com/gogo/protobuf/proto"
 	"math/rand"
 	"time"
@@ -78,7 +79,7 @@ func (nc *NSBClient) CreateNormalPacket(
 	return txHeader, nil
 }
 
-func (nc *NSBClient) sendTx(t transactiontype.Type, txHeader *nsbrpc.TransactionHeader, err error) (*ResultInfo, error) {
+func (nc *NSBClient) sendTx(t transactiontype.Type, txHeader *nsbrpc.TransactionHeader, err error) (*nsb_message.ResultInfo, error) {
 	if err != nil {
 		return nil, err
 	}
@@ -90,15 +91,15 @@ func (nc *NSBClient) sendTx(t transactiontype.Type, txHeader *nsbrpc.Transaction
 	return ret, nil
 }
 
-func (nc *NSBClient) systemCall(txHeader *nsbrpc.TransactionHeader, err error) (*ResultInfo, error) {
+func (nc *NSBClient) systemCall(txHeader *nsbrpc.TransactionHeader, err error) (*nsb_message.ResultInfo, error) {
 	return nc.sendTx(transactiontype.SystemCall, txHeader, err)
 }
 
-func (nc *NSBClient) createContract(txHeader *nsbrpc.TransactionHeader, err error) (*ResultInfo, error) {
+func (nc *NSBClient) createContract(txHeader *nsbrpc.TransactionHeader, err error) (*nsb_message.ResultInfo, error) {
 	return nc.sendTx(transactiontype.CreateContract, txHeader, err)
 }
 
-func (nc *NSBClient) sendTransaction(txHeader *nsbrpc.TransactionHeader, err error) (*ResultInfo, error) {
+func (nc *NSBClient) sendTransaction(txHeader *nsbrpc.TransactionHeader, err error) (*nsb_message.ResultInfo, error) {
 	return nc.sendTx(transactiontype.SendTransaction, txHeader, err)
 }
 

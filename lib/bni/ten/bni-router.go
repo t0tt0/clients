@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
 	nsbcli "github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client"
+	"github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client/nsb-message"
 	"net/url"
 )
 
@@ -41,7 +42,7 @@ func (bn *BN) RouteRaw(destination uiptypes.ChainID, rawTransaction uiptypes.Raw
 
 func (bn *BN) WaitForTransact(_ uiptypes.ChainID, transactionReceipt uiptypes.TransactionReceipt,
 	options ...interface{}) (blockID []byte, color []byte, err error) {
-	var res nsbcli.ResultInfo
+	var res nsb_message.ResultInfo
 	err = json.Unmarshal(transactionReceipt, &res)
 	if err != nil {
 		return nil, nil, err

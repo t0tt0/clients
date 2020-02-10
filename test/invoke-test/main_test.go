@@ -23,7 +23,7 @@ import (
 
 	centered_ves_server "github.com/Myriad-Dreamin/go-ves/central-ves"
 	multi_index "github.com/Myriad-Dreamin/go-ves/lib/database/multi_index"
-	ves_server "github.com/Myriad-Dreamin/go-ves/ves"
+	ves_server "github.com/Myriad-Dreamin/go-ves/vves"
 
 	_ "net/http/pprof"
 )

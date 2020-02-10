@@ -7,6 +7,7 @@ import (
 	"fmt"
 	transactiontype "github.com/HyperService-Consortium/NSB/application/transaction-type"
 	"github.com/HyperService-Consortium/NSB/grpc/nsbrpc"
+	"github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client/nsb-message"
 	"github.com/golang/protobuf/proto"
 	"io"
 	"strings"
@@ -94,7 +95,7 @@ func NewNSBClient(host string) *NSBClient {
 }
 
 // GetAbciInfo return the abci information of this rpc service
-func (nc *NSBClient) GetAbciInfo() (*AbciInfoResponse, error) {
+func (nc *NSBClient) GetAbciInfo() (*nsb_message.AbciInfoResponse, error) {
 	b, err := nc.handler.Group("/abci_info").GetWithParams(request.Param{})
 	if err != nil {
 		return nil, err
@@ -104,7 +105,7 @@ func (nc *NSBClient) GetAbciInfo() (*AbciInfoResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	var a AbciInfo
+	var a nsb_message.AbciInfo
 	err = json.Unmarshal(bb, &a)
 	if err != nil {
 		return nil, err
@@ -113,7 +114,7 @@ func (nc *NSBClient) GetAbciInfo() (*AbciInfoResponse, error) {
 }
 
 // GetBlock return the the block's information requested of this blockchain
-func (nc *NSBClient) GetBlock(id int64) (*BlockInfo, error) {
+func (nc *NSBClient) GetBlock(id int64) (*nsb_message.BlockInfo, error) {
 	b, err := nc.handler.Group("/block").GetWithParams(request.Param{
 		"height": id,
 	})
@@ -125,7 +126,7 @@ func (nc *NSBClient) GetBlock(id int64) (*BlockInfo, error) {
 	if err != nil {
 		return nil, err
 	}
-	var a BlockInfo
+	var a nsb_message.BlockInfo
 	err = json.Unmarshal(bb, &a)
 	if err != nil {
 		return nil, err
@@ -134,7 +135,7 @@ func (nc *NSBClient) GetBlock(id int64) (*BlockInfo, error) {
 }
 
 // GetBlocks return the the blocks's information requested from L to R of this blockchain
-func (nc *NSBClient) GetBlocks(rangeL, rangeR int64) (*BlocksInfo, error) {
+func (nc *NSBClient) GetBlocks(rangeL, rangeR int64) (*nsb_message.BlocksInfo, error) {
 	b, err := nc.handler.Group("/blockchain").GetWithParams(request.Param{
 		"minHeight": rangeL,
 		"maxHeight": rangeR,
@@ -147,7 +148,7 @@ func (nc *NSBClient) GetBlocks(rangeL, rangeR int64) (*BlocksInfo, error) {
 	if err != nil {
 		return nil, err
 	}
-	var a BlocksInfo
+	var a nsb_message.BlocksInfo
 	err = json.Unmarshal(bb, &a)
 	if err != nil {
 		return nil, err
@@ -156,7 +157,7 @@ func (nc *NSBClient) GetBlocks(rangeL, rangeR int64) (*BlocksInfo, error) {
 }
 
 // GetBlockResults return the the blocks's results requested of this blockchain
-func (nc *NSBClient) GetBlockResults(id int64) (*BlockResultsInfo, error) {
+func (nc *NSBClient) GetBlockResults(id int64) (*nsb_message.BlockResultsInfo, error) {
 	b, err := nc.handler.Group("/block_results").GetWithParams(request.Param{
 		"height": id,
 	})
@@ -168,7 +169,7 @@ func (nc *NSBClient) GetBlockResults(id int64) (*BlockResultsInfo, error) {
 	if err != nil {
 		return nil, err
 	}
-	var a BlockResultsInfo
+	var a nsb_message.BlockResultsInfo
 	err = json.Unmarshal(bb, &a)
 	if err != nil {
 		return nil, err
@@ -177,7 +178,7 @@ func (nc *NSBClient) GetBlockResults(id int64) (*BlockResultsInfo, error) {
 }
 
 // GetCommitInfo return the the commit information whose blockid is id
-func (nc *NSBClient) GetCommitInfo(id int64) (*CommitInfo, error) {
+func (nc *NSBClient) GetCommitInfo(id int64) (*nsb_message.CommitInfo, error) {
 	b, err := nc.handler.Group("/commit").GetWithParams(request.Param{
 		"height": id,
 	})
@@ -189,7 +190,7 @@ func (nc *NSBClient) GetCommitInfo(id int64) (*CommitInfo, error) {
 	if err != nil {
 		return nil, err
 	}
-	var a CommitInfo
+	var a nsb_message.CommitInfo
 	err = json.Unmarshal(bb, &a)
 	if err != nil {
 		return nil, err
@@ -197,7 +198,7 @@ func (nc *NSBClient) GetCommitInfo(id int64) (*CommitInfo, error) {
 	return &a, nil
 }
 
-func (nc *NSBClient) GetConsensusParamsInfo(id int64) (*ConsensusParamsInfo, error) {
+func (nc *NSBClient) GetConsensusParamsInfo(id int64) (*nsb_message.ConsensusParamsInfo, error) {
 	b, err := nc.handler.Group("/consensus_params").GetWithParams(request.Param{
 		"height": id,
 	})
@@ -209,7 +210,7 @@ func (nc *NSBClient) GetConsensusParamsInfo(id int64) (*ConsensusParamsInfo, err
 	if err != nil {
 		return nil, err
 	}
-	var a ConsensusParamsInfo
+	var a nsb_message.ConsensusParamsInfo
 	err = json.Unmarshal(bb, &a)
 	if err != nil {
 		return nil, err
@@ -217,7 +218,7 @@ func (nc *NSBClient) GetConsensusParamsInfo(id int64) (*ConsensusParamsInfo, err
 	return &a, nil
 }
 
-func (nc *NSBClient) BroadcastTxCommit(body []byte) (*ResultInfo, error) {
+func (nc *NSBClient) BroadcastTxCommit(body []byte) (*nsb_message.ResultInfo, error) {
 	atomic.AddUint64(&SentBytes, uint64(len(body)*2))
 	b, err := nc.handler.Group("/broadcast_tx_commit").GetWithParams(request.Param{
 		"tx": "0x" + hex.EncodeToString(body),
@@ -230,7 +231,7 @@ func (nc *NSBClient) BroadcastTxCommit(body []byte) (*ResultInfo, error) {
 	if err != nil {
 		return nil, err
 	}
-	var a ResultInfo
+	var a nsb_message.ResultInfo
 	err = json.Unmarshal(bb, &a)
 	if err != nil {
 		return nil, err
@@ -276,7 +277,7 @@ func (nc *NSBClient) BroadcastTxCommitReturnBytes(body []byte) ([]byte, error) {
 	return bb, nil
 }
 
-func (nc *NSBClient) GetConsensusState() (*ConsensusStateInfo, error) {
+func (nc *NSBClient) GetConsensusState() (*nsb_message.ConsensusStateInfo, error) {
 	b, err := nc.handler.Group("/consensus_state").Get()
 	if err != nil {
 		return nil, err
@@ -286,7 +287,7 @@ func (nc *NSBClient) GetConsensusState() (*ConsensusStateInfo, error) {
 	if err != nil {
 		return nil, err
 	}
-	var a ConsensusStateInfo
+	var a nsb_message.ConsensusStateInfo
 	err = json.Unmarshal(bb, &a)
 	if err != nil {
 		return nil, err
@@ -294,7 +295,7 @@ func (nc *NSBClient) GetConsensusState() (*ConsensusStateInfo, error) {
 	return &a, nil
 }
 
-func (nc *NSBClient) GetGenesis() (*GenesisInfo, error) {
+func (nc *NSBClient) GetGenesis() (*nsb_message.GenesisInfo, error) {
 	b, err := nc.handler.Group("/genesis").Get()
 	if err != nil {
 		return nil, err
@@ -304,7 +305,7 @@ func (nc *NSBClient) GetGenesis() (*GenesisInfo, error) {
 	if err != nil {
 		return nil, err
 	}
-	var a GenesisInfo
+	var a nsb_message.GenesisInfo
 	err = json.Unmarshal(bb, &a)
 	if err != nil {
 		return nil, err
@@ -332,7 +333,7 @@ func (nc *NSBClient) GetHealth() (interface{}, error) {
 	return &a, nil
 }
 
-func (nc *NSBClient) GetNetInfo() (*NetInfo, error) {
+func (nc *NSBClient) GetNetInfo() (*nsb_message.NetInfo, error) {
 	b, err := nc.handler.Group("/net_info").Get()
 	if err != nil {
 		return nil, err
@@ -342,7 +343,7 @@ func (nc *NSBClient) GetNetInfo() (*NetInfo, error) {
 	if err != nil {
 		return nil, err
 	}
-	var a NetInfo
+	var a nsb_message.NetInfo
 	err = json.Unmarshal(bb, &a)
 	if err != nil {
 		return nil, err
@@ -350,7 +351,7 @@ func (nc *NSBClient) GetNetInfo() (*NetInfo, error) {
 	return &a, nil
 }
 
-func (nc *NSBClient) GetProof(txHeader []byte, subQuery string) (*ProofResponse, error) {
+func (nc *NSBClient) GetProof(txHeader []byte, subQuery string) (*nsb_message.ProofResponse, error) {
 	b, err := nc.handler.Group("/abci_query").GetWithParams(request.Param{
 		//todo: reduce cost of 0x
 		"data": "0x" + hex.EncodeToString(txHeader),
@@ -364,7 +365,7 @@ func (nc *NSBClient) GetProof(txHeader []byte, subQuery string) (*ProofResponse,
 	if err != nil {
 		return nil, err
 	}
-	var a ProofInfo
+	var a nsb_message.ProofInfo
 	err = json.Unmarshal(bb, &a)
 	if err != nil {
 		return nil, err
@@ -372,7 +373,7 @@ func (nc *NSBClient) GetProof(txHeader []byte, subQuery string) (*ProofResponse,
 	return &a.Response, nil
 }
 
-func (nc *NSBClient) GetNumUnconfirmedTxs() (*NumUnconfirmedTxsInfo, error) {
+func (nc *NSBClient) GetNumUnconfirmedTxs() (*nsb_message.NumUnconfirmedTxsInfo, error) {
 	b, err := nc.handler.Group("/net_info").Get()
 	if err != nil {
 		return nil, err
@@ -382,7 +383,7 @@ func (nc *NSBClient) GetNumUnconfirmedTxs() (*NumUnconfirmedTxsInfo, error) {
 	if err != nil {
 		return nil, err
 	}
-	var a NumUnconfirmedTxsInfo
+	var a nsb_message.NumUnconfirmedTxsInfo
 	err = json.Unmarshal(bb, &a)
 	if err != nil {
 		return nil, err
@@ -390,7 +391,7 @@ func (nc *NSBClient) GetNumUnconfirmedTxs() (*NumUnconfirmedTxsInfo, error) {
 	return &a, nil
 }
 
-func (nc *NSBClient) GetStatus() (*StatusInfo, error) {
+func (nc *NSBClient) GetStatus() (*nsb_message.StatusInfo, error) {
 	b, err := nc.handler.Group("/status").Get()
 	if err != nil {
 		return nil, err
@@ -400,7 +401,7 @@ func (nc *NSBClient) GetStatus() (*StatusInfo, error) {
 	if err != nil {
 		return nil, err
 	}
-	var a StatusInfo
+	var a nsb_message.StatusInfo
 	err = json.Unmarshal(bb, &a)
 	if err != nil {
 		return nil, err
@@ -408,7 +409,7 @@ func (nc *NSBClient) GetStatus() (*StatusInfo, error) {
 	return &a, nil
 }
 
-func (nc *NSBClient) GetUnconfirmedTxs(limit int64) (*NumUnconfirmedTxsInfo, error) {
+func (nc *NSBClient) GetUnconfirmedTxs(limit int64) (*nsb_message.NumUnconfirmedTxsInfo, error) {
 	b, err := nc.handler.Group("/unconfirmed_txs").GetWithParams(request.Param{
 		"limit": limit,
 	})
@@ -420,7 +421,7 @@ func (nc *NSBClient) GetUnconfirmedTxs(limit int64) (*NumUnconfirmedTxsInfo, err
 	if err != nil {
 		return nil, err
 	}
-	var a NumUnconfirmedTxsInfo
+	var a nsb_message.NumUnconfirmedTxsInfo
 	err = json.Unmarshal(bb, &a)
 	if err != nil {
 		return nil, err
@@ -428,7 +429,7 @@ func (nc *NSBClient) GetUnconfirmedTxs(limit int64) (*NumUnconfirmedTxsInfo, err
 	return &a, nil
 }
 
-func (nc *NSBClient) GetValidators(id int64) (*ValidatorsInfo, error) {
+func (nc *NSBClient) GetValidators(id int64) (*nsb_message.ValidatorsInfo, error) {
 	b, err := nc.handler.Group("/validators").GetWithParams(request.Param{
 		"height": id,
 	})
@@ -440,7 +441,7 @@ func (nc *NSBClient) GetValidators(id int64) (*ValidatorsInfo, error) {
 	if err != nil {
 		return nil, err
 	}
-	var a ValidatorsInfo
+	var a nsb_message.ValidatorsInfo
 	err = json.Unmarshal(bb, &a)
 	if err != nil {
 		return nil, err
@@ -505,7 +506,7 @@ func (nc *NSBClient) Serialize(transType transactiontype.Type, txContent *nsbrpc
 
 func (nc *NSBClient) sendContractTx(
 	transType transactiontype.Type, txContent *nsbrpc.TransactionHeader,
-) (*ResultInfo, error) {
+) (*nsb_message.ResultInfo, error) {
 	b, err := nc.Serialize(transType, txContent)
 	if err != nil {
 		return nil, err
@@ -528,7 +529,7 @@ func (nc *NSBClient) sendContractTxAsync(
 	}
 	b = nil
 
-	var receipt TransactionReceipt
+	var receipt nsb_message.TransactionReceipt
 	err = json.Unmarshal(bb, &receipt)
 	if err != nil {
 		return nil, err

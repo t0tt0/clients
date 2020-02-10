@@ -89,3 +89,4 @@ func (srv *Server) MockDatabase() bool {
 	srv.ModelProvider.Register("enforcer", rbac.GetEnforcer())
 	return srv.registerDatabaseService()
 }
+

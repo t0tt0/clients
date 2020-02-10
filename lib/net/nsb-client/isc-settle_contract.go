@@ -2,6 +2,7 @@ package nsbcli
 
 import (
 	transactiontype "github.com/HyperService-Consortium/NSB/application/transaction-type"
+	"github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client/nsb-message"
 
 	"github.com/HyperService-Consortium/NSB/grpc/nsbrpc"
 	uiptypes "github.com/HyperService-Consortium/go-uip/uiptypes"
@@ -9,7 +10,7 @@ import (
 
 func (nc *NSBClient) SettleContract(
 	user uiptypes.Signer, contractAddress []byte,
-) (*DeliverTx, error) {
+) (*nsb_message.DeliverTx, error) {
 	// fmt.Println(string(buf.Bytes()))
 	fap, err := nc.settleContract()
 	if err != nil {

@@ -3,6 +3,7 @@ package nsbcli
 import (
 	"encoding/json"
 	transactiontype "github.com/HyperService-Consortium/NSB/application/transaction-type"
+	"github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client/nsb-message"
 
 	ISC "github.com/HyperService-Consortium/NSB/contract/isc"
 	"github.com/HyperService-Consortium/NSB/grpc/nsbrpc"
@@ -12,7 +13,7 @@ import (
 func (nc *NSBClient) UserAck(
 	user uiptypes.Signer, contractAddress []byte,
 	address, signature []byte,
-) (*DeliverTx, error) {
+) (*nsb_message.DeliverTx, error) {
 	// fmt.Println(string(buf.Bytes()))
 	fap, err := nc.userAck(address, signature)
 	if err != nil {

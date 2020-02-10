@@ -1,17 +1,12 @@
 package types
 
-type SessionKVBase interface {
-	SetKV(Index, isc_address, provedKey, provedValue) error
-	GetKV(Index, isc_address, provedKey) (provedValue, error)
-	GetSetter(Index, isc_address) KVSetter
-	GetGetter(Index, isc_address) KVGetter
+type SessionKV interface {
+	SetKV(iscAddress []byte, provedKey []byte, provedValue []byte) error
+	GetKV(iscAddress []byte, provedKey []byte) (provedValue []byte, err error)
 }
 
-type provedKey = []byte
-type provedValue = []byte
-
 type KVSetter interface {
-	Set(provedKey, provedValue) error
+	Set(provedKey []byte, provedValue []byte) error
 }
 
 type KVGetter interface {
