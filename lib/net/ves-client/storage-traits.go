@@ -3,13 +3,12 @@ package vesclient
 import (
 	mcore "github.com/Myriad-Dreamin/go-ves/lib/core"
 	extend_traits "github.com/Myriad-Dreamin/go-ves/lib/extend-traits"
+	"github.com/Myriad-Dreamin/go-ves/ves/config"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"github.com/jinzhu/gorm"
 
 	_ "github.com/mattn/go-sqlite3"
 )
-
-var p = newModelModule()
 
 type traits = extend_traits.Traits
 
@@ -19,8 +18,8 @@ type traitsInterface interface {
 
 type traitsAcceptObject = extend_traits.ORMObject
 
-func newTraits(t traitsAcceptObject) traits {
-	return extend_traits.NewTraits(t, p.GormDB, p.DormDB)
+func (m modelModule) newTraits(t traitsAcceptObject) traits {
+	return extend_traits.NewTraits(t, m.GormDB, m.DormDB)
 }
 
 type modelModule struct {
@@ -29,6 +28,7 @@ type modelModule struct {
 	mcore.DormModule
 	mcore.LoggerModule
 
+	accountTraits
 	Opened bool
 }
 
@@ -38,9 +38,19 @@ func newModelModule() modelModule {
 	}
 }
 
+type DatabaseConfig struct {
+	DataFilePath string
+}
+
+type DatabaseConfigGetter interface {
+	GetVesClientDatabaseConfig() DatabaseConfig
+}
+
 func (m *modelModule) Install(dep module.Module) bool {
+	dep.Provide(config.ModulePath.DBInstance.ModelModule, m)
+
 	m.Opened = m.install(func(dep module.Module) bool {
-		db, err := gorm.Open("sqlite3", "./test.db")
+		db, err := gorm.Open("sqlite3", dep.Require(config.ModulePath.Minimum.Global.Configuration).(DatabaseConfigGetter).GetVesClientDatabaseConfig())
 		if err != nil {
 			m.Logger.Error("install sqlite error", "error",  err)
 			return false

@@ -2,16 +2,16 @@ package vesclient
 
 import "github.com/Myriad-Dreamin/go-ves/lib/fcg"
 
-func (modelModule) Migrates() error {
+func (m modelModule) Migrates() error {
 	return fcg.Calls([]fcg.MaybeInitializer{
 		//migrations
-		Account{}.migrate,
+		m.NewAccount().migration(m),
 	})
 }
 
-func (modelModule) Injects() error {
+func (m modelModule) Injects() error {
 	return fcg.Calls([]fcg.MaybeInitializer{
 		//injections
-		injectAccountTraits,
+		m.injectAccountTraits,
 	})
 }

@@ -15,6 +15,7 @@ type ServerOptions struct {
 	waitOpt uiptypes.RouteOptionTimeout
 	addr    string
 	nsbHost string
+	nsbBase string
 	vesName []byte
 }
 
@@ -25,6 +26,7 @@ func defaultServerOptions() ServerOptions {
 		logger:  globalLogger,
 		waitOpt: uiptypes.RouteOptionTimeout(time.Second * 60),
 		addr:    "127.0.0.1:23452",
+		nsbBase: "ten1",
 		nsbHost: "127.0.0.1:27667",
 	}
 }
@@ -47,5 +49,3 @@ func parseOptions(rOptions []interface{}) ServerOptions {
 	}
 	return options
 }
-
-

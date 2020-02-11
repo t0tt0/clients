@@ -2,6 +2,7 @@ package vesclient
 
 import (
 	"encoding/base64"
+	"encoding/hex"
 	base_account "github.com/HyperService-Consortium/go-uip/base-account"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
 	"github.com/Myriad-Dreamin/dorm"
@@ -11,14 +12,18 @@ import (
 	"time"
 )
 
-var (
-	accountTraits     traits
-	accountInvertFind extend_traits.Where2Func
-)
+var ()
 
-func injectAccountTraits() error {
-	accountTraits = newTraits(Account{})
-	accountInvertFind = accountTraits.Where2("chain_id = ? and address = ?")
+type accountTraits struct {
+	traits
+	accountInvertFind extend_traits.Where2Func
+	accountQueryAlias extend_traits.Where1Func
+}
+
+func (m modelModule) injectAccountTraits() error {
+	m.accountTraits.traits = m.newTraits(Account{})
+	m.accountTraits.accountInvertFind = m.accountTraits.Where2("chain_id = ? and address = ?")
+	m.accountTraits.accountQueryAlias = m.accountTraits.Where1("alias = ?")
 	return nil
 }
 
@@ -30,10 +35,13 @@ func wrapToAccount(account interface{}, err error) (*Account, error) {
 }
 
 type Account struct {
+	accountTraits `gorm:"-" json:"-"`
+
 	ID        uint      `dorm:"id" gorm:"column:id;primary_key;not_null" json:"id"`
 	CreatedAt time.Time `dorm:"created_at" gorm:"column:created_at;default:CURRENT_TIMESTAMP;not null" json:"created_at"`
 	UpdatedAt time.Time `dorm:"updated_at" gorm:"column:updated_at;default:CURRENT_TIMESTAMP;not null;" json:"updated_at"`
 
+	Alias   string                         `dorm:"alias" gorm:"alias;not_null" json:"alias"`
 	Address string                         `dorm:"address" gorm:"address;not_null" json:"address"`
 	ChainID uiptypes.ChainIDUnderlyingType `dorm:"chain_id" gorm:"chain_id;not_null" json:"chain_id"`
 }
@@ -43,12 +51,22 @@ func (Account) TableName() string {
 	return "chain_info"
 }
 
-func (ci Account) migrate() error {
-	if err := accountTraits.Migrate(); err != nil {
+func (m modelModule) NewAccount() *Account {
+	return &Account{accountTraits: m.accountTraits}
+}
+
+func (ci Account) migrate(dep modelModule) error {
+	if err := ci.accountTraits.Migrate(); err != nil {
 		return err
 	}
 
-	return p.GormDB.Model(&ci).AddUniqueIndex("ci_ac", "address", "chain_id").Error
+	return dep.GormDB.Model(&ci).AddUniqueIndex("ci_ac", "address", "chain_id").Error
+}
+
+func (ci Account) migration(dep modelModule) func() error {
+	return func() error {
+		return ci.migrate(dep)
+	}
 }
 
 func (ci Account) GetID() uint {
@@ -56,33 +74,36 @@ func (ci Account) GetID() uint {
 }
 
 func (ci *Account) Create() (int64, error) {
-	return accountTraits.Create(ci)
+	return ci.accountTraits.Create(ci)
 }
 
 func (ci *Account) Update() (int64, error) {
-	return accountTraits.Update(ci)
+	return ci.accountTraits.Update(ci)
 }
 
 func (ci *Account) UpdateFields(fields []string) (int64, error) {
-	return accountTraits.UpdateFields(ci, fields)
+	return ci.accountTraits.UpdateFields(ci, fields)
 }
 
 func (ci *Account) UpdateFields_(db *dorm.DB, fields []string) (int64, error) {
-	return accountTraits.UpdateFields_(db, ci, fields)
+	return ci.accountTraits.UpdateFields_(db, ci, fields)
 }
 
 func (ci *Account) UpdateFields__(db dorm.SQLCommon, fields []string) (int64, error) {
-	return accountTraits.UpdateFields__(db, ci, fields)
+	return ci.accountTraits.UpdateFields__(db, ci, fields)
 }
 
 func (ci *Account) Delete() (int64, error) {
-	return accountTraits.Delete(ci)
+	return ci.accountTraits.Delete(ci)
 }
 
-type AccountDB struct{}
+type AccountDB struct {
+	db     *gorm.DB
+	module *modelModule
+}
 
-func NewAccountDB(_ module.Module) (*AccountDB, error) {
-	return new(AccountDB), nil
+func NewAccountDB(m Module) (*AccountDB, error) {
+	return &AccountDB{db: m.GormDB(), module: m.ModelModule()}, nil
 }
 
 func GetAccountDB(_ module.Module) (*AccountDB, error) {
@@ -90,24 +111,34 @@ func GetAccountDB(_ module.Module) (*AccountDB, error) {
 }
 
 func (accountDB *AccountDB) ID(id uint) (account *Account, err error) {
-	return wrapToAccount(accountTraits.ID(id))
+	return wrapToAccount(accountDB.module.accountTraits.ID(id))
 }
 
 func (accountDB *AccountDB) ID_(db *gorm.DB, id uint) (account *Account, err error) {
-	return wrapToAccount(accountTraits.ID_(db, id))
+	return wrapToAccount(accountDB.module.accountTraits.ID_(db, id))
 }
 
 func (accountDB *AccountDB) InvertFind(acc uiptypes.Account) (account *Account, err error) {
-	return wrapToAccount(accountInvertFind(acc.GetChainId(), acc.GetAddress()))
+	return wrapToAccount(accountDB.module.accountTraits.accountInvertFind(acc.GetChainId(), acc.GetAddress()))
+}
+
+func (accountDB *AccountDB) QueryAlias(alias string) (account *Account, err error) {
+	return wrapToAccount(accountDB.module.accountTraits.accountQueryAlias(alias))
 }
 
 func decodeBase64(src string) ([]byte, error) {
 	return base64.StdEncoding.DecodeString(src)
 }
 
+func decodeHex(src string) ([]byte, error) {
+	return hex.DecodeString(src)
+}
+
+var decodeAddress = decodeHex
+
 func (accountDB *AccountDB) FindAccounts(id uint, chainID uiptypes.ChainIDUnderlyingType) ([]uiptypes.Account, error) {
 	var mid []string
-	var err = p.GormDB.Where("id = ? and chain_id = ?", id, chainID).
+	var err = accountDB.db.Where("id = ? and chain_id = ?", id, chainID).
 		Select("address").
 		Scan(&mid).Error
 	if err != nil {
@@ -132,7 +163,7 @@ type AccountQuery struct {
 }
 
 func (accountDB *AccountDB) QueryChain() *AccountQuery {
-	return &AccountQuery{db: p.GormDB}
+	return &AccountQuery{db: accountDB.db}
 }
 
 func (accountDB *AccountQuery) Order(order string, reorder ...bool) *AccountQuery {
