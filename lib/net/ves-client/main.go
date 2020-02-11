@@ -13,7 +13,7 @@ var (
 )
 
 func Init() {
-	go phandler.atExit()
+	StartDaemon()
 	if !flag.Parsed() {
 		flag.Parse()
 	}

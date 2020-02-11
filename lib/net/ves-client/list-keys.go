@@ -7,7 +7,7 @@ import (
 )
 
 func (vc *VesClient) ListKeys() {
-	fmt.Println("privatekeys -> publickeys:")
+	fmt.Println("private keys -> public keys:")
 	for alias, key := range vc.keys.Alias {
 		signer, err := signaturer.NewTendermintNSBSigner(key.PrivateKey)
 		if err != nil {

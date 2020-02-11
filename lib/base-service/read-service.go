@@ -33,11 +33,11 @@ func (srv RService) Get(c controller.MContext) {
 	if !ok {
 		return
 	}
-	obj, err := GetEntity(id)
+	obj, err := srv.Tool.GetEntity(id)
 	if ginhelper.MaybeSelectError(c, obj, err) {
 		return
 	}
-	x := ResponseGet(c, obj)
+	x := srv.Tool.ResponseGet(c, obj)
 	if c.IsAborted() {
 		return
 	}
@@ -49,12 +49,12 @@ func (srv RService) Inspect(c controller.MContext) {
 	if !ok {
 		return
 	}
-	obj, err := GetEntity(id)
+	obj, err := srv.Tool.GetEntity(id)
 	if ginhelper.MaybeSelectError(c, obj, err) {
 		return
 	}
 
-	x := ResponseInspect(c, obj)
+	x := srv.Tool.ResponseInspect(c, obj)
 	if c.IsAborted() {
 		return
 	}

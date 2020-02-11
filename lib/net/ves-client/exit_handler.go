@@ -37,7 +37,7 @@ var phandler *handler
 
 func init() {
 	phandler = new(handler)
-	go phandler.atExit()
+	//go phandler.atExit()
 }
 
 func StartDaemon() {

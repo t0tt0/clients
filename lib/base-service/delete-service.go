@@ -32,11 +32,11 @@ func (srv DService) Delete(c controller.MContext) {
 	if !ok {
 		return
 	}
-	obj, err := GetEntity(id)
+	obj, err := srv.Tool.GetEntity(id)
 	if ginhelper.MaybeSelectError(c, obj, err) {
 		return
 	}
-	if !DeleteHook(c, obj) {
+	if !srv.Tool.DeleteHook(c, obj) {
 		return
 	}
 

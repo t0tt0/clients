@@ -28,18 +28,18 @@ func NewUService(tool UObjectToolLite, k string) UService {
 }
 
 func (srv UService) Put(c controller.MContext) {
-	var req = GetPutRequest()
+	var req = srv.Tool.GetPutRequest()
 	id, ok := ginhelper.ParseUintAndBind(c, srv.k, req)
 	if !ok {
 		return
 	}
 
-	object, err := GetEntity(id)
+	object, err := srv.Tool.GetEntity(id)
 	if ginhelper.MaybeSelectError(c, object, err) {
 		return
 	}
 
-	fields := FillPutFields(c, object, req)
+	fields := srv.Tool.FillPutFields(c, object, req)
 	if c.IsAborted() {
 		return
 	}

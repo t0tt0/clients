@@ -47,7 +47,7 @@ type VESDB interface {
 	SetIndex(types.Index) (successOrNot bool)
 	SetMultiIndex(types.MultiIndex) (successOrNot bool)
 	SetSessionBase(types.SessionBase) (successOrNot bool)
-	SetSessionKVBase(types.SessionKVBase) (successOrNot bool)
+	SetSessionKVBase(types.SessionKV) (successOrNot bool)
 	SetStorageHandler(types.StorageHandler) (successOrNot bool)
 	SetChainDNS(types.ChainDNS) (successOrNot bool)
 

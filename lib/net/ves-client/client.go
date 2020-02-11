@@ -1,22 +1,14 @@
 package vesclient
 
 import (
-	"bytes"
 	"errors"
 	"fmt"
-	"github.com/Myriad-Dreamin/go-ves/config"
-	"github.com/Myriad-Dreamin/go-ves/types"
-	"github.com/Myriad-Dreamin/minimum-lib/logger"
-	"io"
-	"net/url"
-	"sync"
-	"time"
-
-	"github.com/gogo/protobuf/proto"
-	"github.com/gorilla/websocket"
-
 	"github.com/HyperService-Consortium/go-uip/signaturer"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/Myriad-Dreamin/go-ves/config"
+	"github.com/gogo/protobuf/proto"
+	"github.com/gorilla/websocket"
+	"io"
 
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
@@ -25,106 +17,7 @@ import (
 	ethbni "github.com/Myriad-Dreamin/go-ves/lib/bni/eth"
 	nsbbni "github.com/Myriad-Dreamin/go-ves/lib/bni/ten"
 	"github.com/Myriad-Dreamin/go-ves/lib/database/filedb"
-	nsbclient "github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client"
 )
-
-// VesClient is the web socket client interactive with veses
-type VesClient struct {
-	rwMutex sync.RWMutex
-	logger  logger.Logger
-
-	name   []byte
-	signer uiptypes.Signer
-	keys   *ECCKeys
-	accs   *EthAccounts
-
-	conn      *websocket.Conn
-	nsbClient types.NSBClient
-	waitOpt   uiptypes.RouteOptionTimeout
-
-	cb   chan *bytes.Buffer
-	quit chan bool
-
-	fdb *filedb.FileDB
-
-	nsbip  string
-	grpcip string
-
-	closeSessionRWMutex    sync.RWMutex
-	closeSessionSubscriber []SessionCloseSubscriber
-}
-
-type CVesHostOption string
-type NsbHostOption string
-type VesName []byte
-
-type ServerOptions struct {
-	logger  logger.Logger
-	waitOpt uiptypes.RouteOptionTimeout
-	addr    string
-	nsbHost string
-	vesName []byte
-}
-
-var globalLogger = logger.NewStdLogger()
-
-func defaultServerOptions() ServerOptions {
-	return ServerOptions{
-		logger:  globalLogger,
-		waitOpt: uiptypes.RouteOptionTimeout(time.Second * 60),
-		addr:    "127.0.0.1:23452",
-		nsbHost: "127.0.0.1:27667",
-	}
-}
-
-func parseOptions(rOptions []interface{}) ServerOptions {
-	var options = defaultServerOptions()
-	for i := range rOptions {
-		switch option := rOptions[i].(type) {
-		case logger.Logger:
-			options.logger = option
-		case uiptypes.RouteOptionTimeout:
-			options.waitOpt = option
-		case CVesHostOption:
-			options.addr = string(option)
-		case NsbHostOption:
-			options.nsbHost = string(option)
-		case VesName:
-			options.vesName = option
-		}
-	}
-	return options
-}
-
-// NewVesClient return a pointer of VesClinet
-func NewVesClient(rOptions ...interface{}) (vc *VesClient, err error) {
-	options := parseOptions(rOptions)
-	vc = &VesClient{
-		cb:        make(chan *bytes.Buffer, 1),
-		quit:      make(chan bool, 1),
-		nsbClient: nsbclient.NewNSBClient(options.nsbHost),
-		logger:    options.logger,
-		waitOpt:   options.waitOpt,
-		name:      options.vesName,
-	}
-
-	vc.conn, _, err = new(websocket.Dialer).Dial((&url.URL{Scheme: "ws", Host: options.addr, Path: "/"}).String(), nil)
-	return
-}
-
-func (vc *VesClient) Boot() (err error) {
-	if err = vc.load(dataPrefix + "/" + string(vc.name)); err != nil {
-		vc.logger.Error("load config from filepath error", "path", dataPrefix+"/"+string(vc.name), "error", err)
-		return
-	}
-	phandler.register(vc.save)
-
-	go vc.read()
-	if err = vc.SayClientHello(vc.name); err != nil {
-		return
-	}
-	return
-}
 
 func (vc *VesClient) load(dbpath string) error {
 	var err, err2 error

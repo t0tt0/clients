@@ -28,11 +28,11 @@ func NewCService(tool CObjectToolLite, k string) CService {
 }
 
 func (srv CService) Post(c controller.MContext) {
-	var obj = SerializePost(c)
+	var obj = srv.Tool.SerializePost(c)
 	if c.IsAborted() {
 		return
 	}
 	if ginhelper.CreateObj(c, obj) {
-		c.JSON(http.StatusOK, ResponsePost(obj))
+		c.JSON(http.StatusOK, srv.Tool.ResponsePost(obj))
 	}
 }

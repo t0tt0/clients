@@ -62,11 +62,11 @@ func concatQueryString(options string) string {
 }
 
 func getDatabaseConfiguration(dep module.Module) core_cfg.DatabaseConfig {
-	return GetDatabaseConfiguration()
+	return dep.Require(DefaultNamespace.Global.Configuration).(DatabaseConfiguration).GetDatabaseConfiguration()
 }
 
 func getRedisConfiguration(dep module.Module) core_cfg.RedisConfig {
-	return GetRedisConfiguration()
+	return dep.Require(DefaultNamespace.Global.Configuration).(RedisConfiguration).GetRedisConfiguration()
 }
 
 func parseConfig(dep module.Module) (string, string, error) {
