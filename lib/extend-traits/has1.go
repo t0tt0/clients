@@ -16,7 +16,6 @@ func (model ExtendModel) Has1(template string) Has1Func {
 	}
 }
 
-
 func (model ExtendModel) Has1_(template string) Has1Func_ {
 	whereF := model.i.Where1_(template)
 	return func(db *gorm.DB, id interface{}) (has bool, err error) {
@@ -30,4 +29,3 @@ func (model ExtendModel) Has1_(template string) Has1Func_ {
 		}
 	}
 }
-

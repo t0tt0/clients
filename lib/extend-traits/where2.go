@@ -27,4 +27,3 @@ func (model ExtendModel) Where2_(template string) func(db *gorm.DB, id, id2 inte
 		return
 	}
 }
-

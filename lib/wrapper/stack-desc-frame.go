@@ -10,14 +10,14 @@ type Frame interface {
 	Bytes() []byte
 	Error() string
 	ReleaseError()
- 	GetPos() Caller
+	GetPos() Caller
 	GetCode() int
 	GetErr() string
 }
 
 func (fs Frames) String() (res string) {
 	for i := range fs {
-		res += fmt.Sprintf("%d <- %s\n",len(fs) - i, fs[i].Dump())
+		res += fmt.Sprintf("%d <- %s\n", len(fs)-i, fs[i].Dump())
 	}
 	return res
 }
@@ -29,8 +29,7 @@ func (fs Frames) Rel(pack, rel string) (res string, err error) {
 		if err != nil {
 			return "", err
 		}
-		res += fmt.Sprintf("%d <- %s\n",len(fs) - i, c)
+		res += fmt.Sprintf("%d <- %s\n", len(fs)-i, c)
 	}
 	return res, nil
 }
-

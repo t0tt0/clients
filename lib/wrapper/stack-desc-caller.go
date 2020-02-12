@@ -12,20 +12,19 @@ type Caller struct {
 	Func Func
 	File string
 	Line int
-	Ok bool
+	Ok   bool
 }
 
 /*
  callerFromString(Caller.String()) == Caller
 */
 
-
-
 var emptyCaller = "<!>"
 var bytesEmptyCaller = []byte(emptyCaller)
+
 func (c Caller) BytesSource(b *bytes.Buffer) {
 	//fmt.Sprintf("<%v,%s:%d>", c.Func, c.File, c.Line)
-	if c.Ok	{
+	if c.Ok {
 		b.WriteByte('<')
 		c.Func.BytesSource(b)
 		b.WriteByte(',')
@@ -45,7 +44,7 @@ func (c Caller) Bytes() []byte {
 }
 
 func (c Caller) String() string {
-	if c.Ok	{
+	if c.Ok {
 		return string(c.Bytes())
 	} else {
 		return emptyCaller
@@ -53,7 +52,7 @@ func (c Caller) String() string {
 }
 
 func callerFromString(s string) Caller {
-	s = s[1:len(s)-1]
+	s = s[1 : len(s)-1]
 	if s[0] != '!' {
 		for i := range s {
 			if s[i] == '>' {
@@ -61,7 +60,7 @@ func callerFromString(s string) Caller {
 					if s[j] == ':' {
 						return Caller{
 							Func: funcFromString(s[:i+1]),
-							File: s[i+2:j],
+							File: s[i+2 : j],
 							Line: atoi(s[j+1:]),
 							Ok:   true,
 						}
@@ -75,7 +74,7 @@ func callerFromString(s string) Caller {
 }
 
 func (c Caller) Rel(pack string, rel string) (string, error) {
-	if c.Ok	{
+	if c.Ok {
 		f, err := filepath.Rel(rel, c.File)
 		if err != nil {
 			return "", err
@@ -101,4 +100,3 @@ func callerFromRuntimeResult(pc uintptr, file string, line int, ok bool) Caller 
 		Ok:   ok,
 	}
 }
-

@@ -396,3 +396,72 @@ func (vc *VesClient) GetRawTransaction(sessionID, host []byte) (
 	}
 	return r, nil
 }
+
+func (vc *VesClient) sendAck(acc *uipbase.Account, sessionID, address, signature []byte) error {
+	// Set up a connection to the server.
+	sss, err := helper.DecodeIP(address)
+	if err != nil {
+		vc.logger.Error("did not resolve", "error", err)
+		return err
+	}
+	conn, err := grpc.Dial(sss, grpc.WithInsecure())
+	if err != nil {
+		vc.logger.Error("did not connect", "error", err)
+		return err
+	}
+	defer conn.Close()
+	c := uiprpc.NewVESClient(conn)
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+	r, err := c.SessionAckForInit(
+		ctx,
+		&uiprpc.SessionAckForInitRequest{
+			SessionId: sessionID,
+			User:      acc,
+			UserSignature: &uipbase.Signature{
+				SignatureType: 123456,
+				Content:       signature,
+			},
+		})
+	if err != nil {
+		vc.logger.Error("could not send ack", "error", err)
+		return err
+	}
+	vc.logger.Info("Session ack", "ok", r.GetOk(), "session id", sessionID)
+	return nil
+}
+
+func (vc *VesClient) informAttestation(grpcHost string, sendingAtte *wsrpc.AttestationReceiveRequest) {
+	conn, err := grpc.Dial(grpcHost, grpc.WithInsecure())
+	if err != nil {
+		vc.logger.Error("VesClient.informAttestation.grpc.Dial.Failed\n",
+			"tid", sendingAtte.GetAtte().Tid, "aid", sendingAtte.GetAtte().Aid, "error", err)
+		return
+	}
+	defer conn.Close()
+
+	c := uiprpc.NewVESClient(conn)
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+
+	r, err := c.InformAttestation(
+		ctx,
+		&uiprpc.AttestationReceiveRequest{
+			SessionId: sendingAtte.SessionId,
+			Atte:      sendingAtte.Atte,
+		},
+	)
+	if err != nil {
+		vc.logger.Error("VesClient.informAttestation.grpc.Send.Failed\n",
+			"tid", sendingAtte.GetAtte().Tid, "aid", sendingAtte.GetAtte().Aid, "error", err)
+		return
+	}
+
+	if !r.GetOk() {
+		vc.logger.Error("VesClient.informAttestation.grpc.Result.Failed\n",
+			"tid", sendingAtte.GetAtte().Tid, "aid", sendingAtte.GetAtte().Aid)
+	}
+	return
+}

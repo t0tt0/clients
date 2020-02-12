@@ -67,7 +67,7 @@ func NewVesClient(rOptions ...interface{}) (vc *VesClient, err error) {
 		quit:    make(chan bool, 1),
 		logger:  options.logger,
 		waitOpt: options.waitOpt,
-		name:    options.vesName,
+		name:    options.clientName,
 		nsbBase: options.nsbBase,
 
 		module:    newDepModule(),

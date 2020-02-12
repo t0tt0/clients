@@ -17,7 +17,7 @@ var (
 	storage          = joiner(global, "Storage")
 	storageHandler   = joiner(global, "StorageHandler")
 	index            = joiner(dbInstance, "Index")
-	modelModule = joiner(dbInstance, "ModelModule")
+	modelModule      = joiner(dbInstance, "ModelModule")
 )
 
 type GlobalPathS struct {
@@ -30,7 +30,7 @@ type GlobalPathS struct {
 }
 
 type DBInstanceS struct {
-	Index string
+	Index       string
 	ModelModule string
 }
 
@@ -50,7 +50,7 @@ var ModulePath = ModulePathS{Minimum: mcore.DefaultNamespace,
 		StorageHandler:   storageHandler,
 	},
 	DBInstance: DBInstanceS{
-		Index: index,
+		Index:       index,
 		ModelModule: modelModule,
 	},
 }

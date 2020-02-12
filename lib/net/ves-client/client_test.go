@@ -8,6 +8,3 @@ import (
 func TestNewStruct(t *testing.T) {
 	fmt.Println(NewVesClient())
 }
-
-
-

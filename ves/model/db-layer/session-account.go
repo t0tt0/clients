@@ -2,7 +2,7 @@ package dblayer
 
 import (
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
-	"github.com/Myriad-Dreamin/go-ves/lib/base64"
+	"github.com/Myriad-Dreamin/go-ves/lib/encoding"
 	extend_traits "github.com/Myriad-Dreamin/go-ves/lib/extend-traits"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"github.com/jinzhu/gorm"
@@ -45,7 +45,7 @@ type SessionAccount struct {
 func NewSessionAccount(chainID uiptypes.ChainIDUnderlyingType, address []byte) *SessionAccount {
 	return &SessionAccount{
 		ChainID:        chainID,
-		Address:        base64.EncodeBase64(address),
+		Address:        encoding.EncodeBase64(address),
 		decodedAddress: address,
 	}
 }

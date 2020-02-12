@@ -40,14 +40,14 @@ func (f Func) String() string {
 }
 
 func funcFromString(s string) Func {
-	s = s[1:len(s)-1]
+	s = s[1 : len(s)-1]
 	for i := range s {
 		if s[i] == ',' {
 			for j := len(s) - 1; j >= 0; j-- {
 				if s[j] == ':' {
 					return Func{
 						Name: s[:i],
-						File: s[i+1:j],
+						File: s[i+1 : j],
 						Line: atoi(s[j+1:]),
 					}
 				}

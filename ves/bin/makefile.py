@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
+import json
 import os
 import re
+import shutil
 import subprocess
 import sys
-import shutil
-import json
 
 made = set()
 
@@ -111,12 +111,10 @@ class Makefile:
             if os.path.isfile(file) and match.match(file):
                 cls.pipe('go generate %s' % file)
 
-
     @classmethod
     @require_cls('read_context')
     def image(cls, *_):
         cls.pipe('docker build --tag %s .' % cls.context['node-name'])
-
 
     @staticmethod
     def _gen_match(match):
@@ -150,7 +148,6 @@ class Makefile:
     @require_cls('read_context')
     def ping(cls, *_):
         pipe('curl localhost:%s/ping' % (str(cls.context['target-port'])))
-
 
     @classmethod
     @require_cls('read_context')
@@ -235,7 +232,6 @@ class Makefile:
     @require_cls('up')
     def all(cls, *_):
         pass
-
 
 
 if __name__ == '__main__':

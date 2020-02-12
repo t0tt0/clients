@@ -5,7 +5,6 @@ import (
 	"strconv"
 )
 
-
 func atoi(s string) int {
 	c, err := strconv.Atoi(s)
 	if err != nil {

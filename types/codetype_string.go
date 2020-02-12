@@ -13,7 +13,8 @@ func _() {
 	_ = x[CodeUnserializeDataError-2]
 	_ = x[CodeInvalidParameters-3]
 	_ = x[CodeGetRawDataError-4]
-	_ = x[CodeGenericErrorR-5]
+	_ = x[CodeToDo-5]
+	_ = x[CodeGenericErrorR-6]
 	_ = x[CodeInsertError-100]
 	_ = x[CodeSelectError-101]
 	_ = x[CodeNotFound-102]
@@ -72,7 +73,7 @@ func _() {
 }
 
 const (
-	_CodeType_name_0 = "CodeOKCodeBindErrorCodeUnserializeDataErrorCodeInvalidParametersCodeGetRawDataErrorCodeGenericErrorR"
+	_CodeType_name_0 = "CodeOKCodeBindErrorCodeUnserializeDataErrorCodeInvalidParametersCodeGetRawDataErrorCodeToDoCodeGenericErrorR"
 	_CodeType_name_1 = "CodeInsertErrorCodeSelectErrorCodeNotFoundCodeDeleteNoEffectCodeDuplicatePrimaryKeyCodeUpdateErrorCodeDeleteErrorCodeBeginTransactionErrorCodeCommitTransactionErrorCodeDatabaseIncorrectStringValueCodeUpdateNoEffectCodeDatabaseErrorR"
 	_CodeType_name_2 = "CodeAuthGenerateTokenErrorCodeAuthenticatePasswordErrorCodeAuthenticatePolicyErrorCodeChangeOwnerErrorCodeGroupCreateErrorCodeAddReadPrivilegeErrorCodeAddWritePrivilegeErrorCodeGrantNoEffectCodeGrantErrorCodeAuthenticationErrorR"
 	_CodeType_name_3 = "CodeUserIDMissingCodeUserWrongPasswordCodeWeakPasswordCodeInvalidCityCodeCodeBadPhoneCodeUserServiceErrorR"
@@ -82,7 +83,7 @@ const (
 )
 
 var (
-	_CodeType_index_0 = [...]uint8{0, 6, 19, 43, 64, 83, 100}
+	_CodeType_index_0 = [...]uint8{0, 6, 19, 43, 64, 83, 91, 108}
 	_CodeType_index_1 = [...]uint8{0, 15, 30, 42, 60, 83, 98, 113, 138, 164, 196, 214, 232}
 	_CodeType_index_2 = [...]uint8{0, 26, 55, 82, 102, 122, 147, 173, 190, 204, 228}
 	_CodeType_index_3 = [...]uint8{0, 17, 38, 54, 73, 85, 106}
@@ -93,7 +94,7 @@ var (
 
 func (i CodeType) String() string {
 	switch {
-	case 0 <= i && i <= 5:
+	case 0 <= i && i <= 6:
 		return _CodeType_name_0[_CodeType_index_0[i]:_CodeType_index_0[i+1]]
 	case 100 <= i && i <= 111:
 		i -= 100

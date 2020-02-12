@@ -2,7 +2,7 @@ package dblayer
 
 import (
 	"github.com/Myriad-Dreamin/dorm"
-	"github.com/Myriad-Dreamin/go-ves/lib/base64"
+	"github.com/Myriad-Dreamin/go-ves/lib/encoding"
 	extend_traits "github.com/Myriad-Dreamin/go-ves/lib/extend-traits"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"github.com/jinzhu/gorm"
@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	sessionTraits Traits
+	sessionTraits          Traits
 	sessionQueryISCAddress extend_traits.Where1Func
 )
 
@@ -50,7 +50,7 @@ type Session struct {
 
 func NewSession(iscAddress []byte) *Session {
 	return &Session{
-		ISCAddress:        base64.EncodeBase64(iscAddress),
+		ISCAddress:        encoding.EncodeBase64(iscAddress),
 		decodedISCAddress: iscAddress,
 		UnderTransacting:  0,
 		Status:            0,

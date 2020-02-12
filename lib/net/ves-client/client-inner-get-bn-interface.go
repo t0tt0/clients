@@ -8,6 +8,17 @@ import (
 	nsbbni "github.com/Myriad-Dreamin/go-ves/lib/bni/ten"
 )
 
+func (vc *VesClient) ensureRouter(chainID uint64, router *uiptypes.Router) bool {
+	if *router != nil {
+		return true
+	}
+	var err error
+	if *router, err = vc.getRouter(chainID); err != nil {
+		vc.logger.Error("get router error", "error", err)
+	}
+	return err == nil
+}
+
 func (vc *VesClient) getRouter(chainID uint64) (uiptypes.Router, error) {
 	if ci, err := vc.dns.GetChainInfo(chainID); err != nil {
 		return nil, err

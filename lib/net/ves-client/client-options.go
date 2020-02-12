@@ -8,26 +8,27 @@ import (
 
 type CVesHostOption string
 type NsbHostOption string
-type VesName []byte
+type ClientName []byte
 
 type ServerOptions struct {
-	logger  logger.Logger
-	waitOpt uiptypes.RouteOptionTimeout
-	addr    string
-	nsbHost string
-	nsbBase string
-	vesName []byte
+	logger     logger.Logger
+	waitOpt    uiptypes.RouteOptionTimeout
+	addr       string
+	nsbHost    string
+	nsbBase    string
+	clientName []byte
 }
 
 var globalLogger = logger.NewStdLogger()
 
 func defaultServerOptions() ServerOptions {
 	return ServerOptions{
-		logger:  globalLogger,
-		waitOpt: uiptypes.RouteOptionTimeout(time.Second * 60),
-		addr:    "127.0.0.1:23452",
-		nsbBase: "ten1",
-		nsbHost: "127.0.0.1:27667",
+		logger:     globalLogger,
+		waitOpt:    uiptypes.RouteOptionTimeout(time.Second * 60),
+		clientName: []byte("test"),
+		addr:       "127.0.0.1:23452",
+		nsbBase:    "ten1",
+		nsbHost:    "127.0.0.1:27667",
 	}
 }
 
@@ -43,8 +44,8 @@ func parseOptions(rOptions []interface{}) ServerOptions {
 			options.addr = string(option)
 		case NsbHostOption:
 			options.nsbHost = string(option)
-		case VesName:
-			options.vesName = option
+		case ClientName:
+			options.clientName = option
 		}
 	}
 	return options

@@ -13,7 +13,6 @@ func (model ExtendModel) Count1(template string) Count1Func {
 	}
 }
 
-
 func (model ExtendModel) Count1_(template string) Count1Func_ {
 	return func(db *gorm.DB, id interface{}) (count int64, err error) {
 		rdb := db.Where(template, id).Count(&count)
@@ -21,4 +20,3 @@ func (model ExtendModel) Count1_(template string) Count1Func_ {
 		return
 	}
 }
-

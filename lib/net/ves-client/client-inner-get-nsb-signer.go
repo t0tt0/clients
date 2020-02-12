@@ -5,6 +5,20 @@ import (
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
 )
 
+func (vc *VesClient) ensureGetNSBSigner(signer *uiptypes.Signer) bool {
+	if *signer != nil {
+		return true
+	}
+	var err error
+	if *signer, err = vc.getNSBSigner(); err != nil {
+		vc.logger.Error("get nsb signer error", "error", err)
+		return false
+	} else {
+		return true
+	}
+
+}
+
 func (vc *VesClient) getNSBSigner() (uiptypes.Signer, error) {
 	if vc.signer != nil {
 		return vc.signer, nil

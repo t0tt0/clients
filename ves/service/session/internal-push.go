@@ -65,4 +65,3 @@ func (svc *Service) pushInternalInitRequest(ctx context.Context, iscAddress []by
 	}
 	return r.Ok, nil
 }
-

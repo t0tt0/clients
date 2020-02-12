@@ -70,7 +70,7 @@ type ServerConfig struct {
 	DatabaseConfig       DatabaseConfig       `json:"database" yaml:"database" toml:"database" xml:"database"`
 	BaseParametersConfig BaseParametersConfig `json:"base-cfg" yaml:"base-cfg" toml:"base-cfg" xml:"base-cfg"`
 	RedisConfig          RedisConfig          `json:"redis" yaml:"redis" toml:"redis" xml:"redis"`
-	LevelDBConfig LevelDBConfig `json:"leveldb" yaml:"leveldb" toml:"leveldb" xml:"leveldb"`
+	LevelDBConfig        LevelDBConfig        `json:"leveldb" yaml:"leveldb" toml:"leveldb" xml:"leveldb"`
 }
 
 func (s ServerConfig) GetDatabaseConfiguration() core_cfg.DatabaseConfig {

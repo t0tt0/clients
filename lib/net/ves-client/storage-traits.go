@@ -50,9 +50,9 @@ func (m *modelModule) Install(dep module.Module) bool {
 	dep.Provide(config.ModulePath.DBInstance.ModelModule, m)
 
 	m.Opened = m.install(func(dep module.Module) bool {
-		db, err := gorm.Open("sqlite3", dep.Require(config.ModulePath.Minimum.Global.Configuration).(DatabaseConfigGetter).GetVesClientDatabaseConfig())
+		db, err := gorm.Open("sqlite3", dep.Require(config.ModulePath.Minimum.Global.Configuration).(DatabaseConfigGetter).GetVesClientDatabaseConfig().DataFilePath)
 		if err != nil {
-			m.Logger.Error("install sqlite error", "error",  err)
+			m.Logger.Error("install sqlite error", "error", err)
 			return false
 		}
 		return m.GormModule.FromRaw(db, dep)

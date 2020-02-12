@@ -7,6 +7,7 @@ import (
 	nsbcli "github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client"
 )
 
+
 func (vc *VesClient) ProcessRequestComingRequest(requestComingRequest *wsrpc.RequestComingRequest) {
 
 	vc.logger.Info(

@@ -42,7 +42,6 @@ type Session interface {
 type transaction_id = uint64
 type getter = func([]byte) error
 type SessionBase interface {
-
 	// insert accounts maps from guid to account
 	InsertSessionInfo(MultiIndex, Index, Session) error
 

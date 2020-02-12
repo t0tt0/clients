@@ -3,8 +3,8 @@ package dblayer
 import (
 	"database/sql"
 	"github.com/Myriad-Dreamin/dorm"
-	"github.com/Myriad-Dreamin/go-ves/lib/base64"
 	"github.com/Myriad-Dreamin/go-ves/lib/core"
+	"github.com/Myriad-Dreamin/go-ves/lib/encoding"
 	"github.com/Myriad-Dreamin/go-ves/lib/extend-traits"
 	"github.com/Myriad-Dreamin/go-ves/lib/fcg"
 	"github.com/Myriad-Dreamin/go-ves/ves/config"
@@ -123,7 +123,7 @@ func (modelModule) Injects() error {
 }
 
 func decodeBase64(src string) []byte {
-	b, err := base64.DecodeBase64(src)
+	b, err := encoding.DecodeBase64(src)
 	if err != nil {
 		p.Logger.Debug("decode failed", "error", err, "source", src)
 		return nil

@@ -3,11 +3,12 @@ package types
 
 type CodeRawType = int
 type CodeType CodeRawType
-type code = CodeRawType
+type Code = CodeRawType
+
 const (
 	// Generic Code
 
-	CodeOK code = iota
+	CodeOK Code = iota
 	// CodeBindError indicates a parameter missing error
 	CodeBindError
 	// CodeUnserializeDataError indicates a parsing data error
@@ -16,6 +17,7 @@ const (
 	CodeInvalidParameters
 	// GetRawDataError tells some wrong data was in the request
 	CodeGetRawDataError
+	CodeToDo
 
 	CodeGenericErrorR
 	CodeGenericErrorL = CodeOK
@@ -24,7 +26,7 @@ const (
 const (
 	// Generic Code -- Database
 	// CodeInsertError occurs when insert object into database
-	CodeInsertError code = iota + 100
+	CodeInsertError Code = iota + 100
 	// CodeSelectError occurs when select object from database
 	CodeSelectError
 	// CodeNotFound occurs when object with specific condition is not in the
@@ -58,7 +60,7 @@ const (
 const (
 	// Generic Code -- Authentication
 	// CodeAuthGenerateTokenError occurs when insert object into database
-	CodeAuthGenerateTokenError code = iota + 1000
+	CodeAuthGenerateTokenError Code = iota + 1000
 	CodeAuthenticatePasswordError
 	CodeAuthenticatePolicyError
 
@@ -75,7 +77,7 @@ const (
 )
 
 const (
-	CodeUserIDMissing code = iota + 10000
+	CodeUserIDMissing Code = iota + 10000
 	CodeUserWrongPassword
 	CodeWeakPassword
 	CodeInvalidCityCode
@@ -86,7 +88,7 @@ const (
 )
 
 const (
-	CodeSubmissionUploaded code = iota + 11000
+	CodeSubmissionUploaded Code = iota + 11000
 	CodeFSExecError
 	CodeUploadFileError
 	CodeConfigModifyError
@@ -96,9 +98,8 @@ const (
 	CodeFileSystemErrorL = CodeSubmissionUploaded
 )
 
-
 const (
-	CodeSessionInitError code = iota + 12000
+	CodeSessionInitError Code = iota + 12000
 	CodeSessionRequestNSBError
 	CodeSessionInitGUIDError
 	CodeSessionInitOpIntentsError
@@ -120,7 +121,7 @@ const (
 )
 
 const (
-	CodeTransactionFindError code = iota + 13000
+	CodeTransactionFindError Code = iota + 13000
 	CodeDeserializeTransactionError
 	CodeAttestationSendError
 
@@ -128,13 +129,13 @@ const (
 	CodeTransactionServiceErrorL = CodeTransactionFindError
 )
 
-var CodeDesc map[code]string
+var CodeDesc map[Code]string
 
 func init() {
-	CodeDesc = make(map[code]string)
+	CodeDesc = make(map[Code]string)
 	for _, groupCode := range []struct {
-		L code
-		R code
+		L Code
+		R Code
 	}{
 		{CodeGenericErrorL, CodeGenericErrorR},
 		{CodeDatabaseErrorL, CodeDatabaseErrorR},

@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/Myriad-Dreamin/go-ves/config"
-	"github.com/Myriad-Dreamin/go-ves/lib/base64"
 	payment_option "github.com/Myriad-Dreamin/go-ves/lib/bni/payment-option"
+	"github.com/Myriad-Dreamin/go-ves/lib/encoding"
 	"github.com/Myriad-Dreamin/go-ves/lib/wrapper"
 	"github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/tidwall/gjson"
@@ -35,7 +35,7 @@ func (svc *Service) RequireRawTransaction(
 	*uiprpc.SessionRequireRawTransactReply, error) {
 	// todo errors.New("TODO")
 
-	ses, err := svc.db.QueryGUID(base64.EncodeBase64(in.GetSessionId()))
+	ses, err := svc.db.QueryGUID(encoding.EncodeBase64(in.GetSessionId()))
 	if err != nil {
 		return nil, wrapper.Wrap(types.CodeSessionFindError, err)
 	} else if ses == nil {

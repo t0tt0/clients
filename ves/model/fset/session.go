@@ -4,9 +4,9 @@ import (
 	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
 	"github.com/Myriad-Dreamin/go-ves/config"
-	"github.com/Myriad-Dreamin/go-ves/lib/base64"
 	bitmap "github.com/Myriad-Dreamin/go-ves/lib/bitmapping/redis-bitmap"
 	mredis "github.com/Myriad-Dreamin/go-ves/lib/database/redis"
+	"github.com/Myriad-Dreamin/go-ves/lib/encoding"
 	"github.com/Myriad-Dreamin/go-ves/lib/serial_helper"
 	"github.com/Myriad-Dreamin/go-ves/lib/wrapper"
 	"github.com/Myriad-Dreamin/go-ves/types"
@@ -109,7 +109,7 @@ func (s SessionFSet) AckForInit(ses *model.Session, acc uiptypes.Account, signat
 		sac = &model.SessionAccount{
 			SessionID: ses.ISCAddress,
 			ChainID:   acc.GetChainId(),
-			Address:   base64.EncodeBase64(acc.GetAddress()),
+			Address:   encoding.EncodeBase64(acc.GetAddress()),
 		}
 		has bool
 		err error

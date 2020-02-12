@@ -10,6 +10,7 @@ import (
 	nsbcli "github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client"
 )
 
+
 func (vc *VesClient) ProcessAttestationSendingRequest(attestationSendingRequest *wsrpc.RequestComingRequest) {
 
 	vc.logger.Info(
@@ -46,7 +47,7 @@ func (vc *VesClient) ProcessAttestationSendingRequest(attestationSendingRequest 
 	}
 
 	// packet attestation
-	var sendingAtte = vc.getReceiveAttestationReceiveRequest()
+	var sendingAtte = vc.getAttestationReceiveRequest()
 	sendingAtte.SessionId = attestationSendingRequest.GetSessionId()
 	sendingAtte.GrpcHost = attestationSendingRequest.GetGrpcHost()
 
@@ -86,7 +87,7 @@ func (vc *VesClient) ProcessAttestationSendingRequest(attestationSendingRequest 
 		)
 	}
 
-	err = vc.postRawMessage(wsrpc.CodeAttestationReceiveRequest, transactionReply.Dst, sendingAtte)
+	err = vc.PostRawMessage(wsrpc.CodeAttestationReceiveRequest, transactionReply.Dst, sendingAtte)
 	if err != nil {
 		vc.logger.Error("VesClient.read.AttestationSendingRequest.postRawMessage", "error", err)
 		return

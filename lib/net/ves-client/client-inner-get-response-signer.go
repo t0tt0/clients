@@ -14,6 +14,7 @@ func (vc *VesClient) getRespSigner(acc *uiprpc_base.Account) (uiptypes.Signer, e
 		return vc.signer, nil
 	}
 	cid := acc.GetChainId()
+	// todo check dns
 	switch cid {
 	case 1, 2:
 		sadd := hex.EncodeToString(acc.GetAddress())

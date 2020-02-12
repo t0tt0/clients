@@ -89,7 +89,6 @@ func (srv *Server) MockDatabase() bool {
 	return srv.initIndex() && srv.registerDatabaseService()
 }
 
-
 func (srv *Server) initIndex() bool {
 	var err error
 
@@ -107,4 +106,3 @@ func (srv *Server) initIndex() bool {
 	srv.Module.Provide(config.ModulePath.DBInstance.Index, srv.levelDB)
 	return true
 }
-

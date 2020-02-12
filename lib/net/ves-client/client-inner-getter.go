@@ -2,6 +2,7 @@ package vesclient
 
 import (
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
+	uiprpc_base "github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
 	"github.com/Myriad-Dreamin/go-ves/grpc/wsrpc"
 )
 
@@ -37,7 +38,7 @@ func (vc *VesClient) getUserRegisterReply() *wsrpc.UserRegisterReply {
 	return new(wsrpc.UserRegisterReply)
 }
 
-func (vc *VesClient) getrequestComingRequest() *wsrpc.RequestComingRequest {
+func (vc *VesClient) getRequestComingRequest() *wsrpc.RequestComingRequest {
 	return new(wsrpc.RequestComingRequest)
 }
 
@@ -101,7 +102,20 @@ func (vc *VesClient) getSendAttestationReceiveRequest() *wsrpc.AttestationReceiv
 	return new(wsrpc.AttestationReceiveRequest)
 }
 
-func (vc *VesClient) getReceiveAttestationReceiveRequest() *wsrpc.AttestationReceiveRequest {
+func (vc *VesClient) combineSendAttestationReceiveRequest(
+	src, dst *uiprpc_base.Account, attestation *uiprpc_base.Attestation,
+	gRPCHost, sessionId []byte,
+) *wsrpc.AttestationReceiveRequest {
+	req := vc.getSendAttestationReceiveRequest()
+	req.SessionId = sessionId
+	req.Src = src
+	req.Dst = dst
+	req.Atte = attestation
+	req.GrpcHost = gRPCHost
+	return req
+}
+
+func (vc *VesClient) getAttestationReceiveRequest() *wsrpc.AttestationReceiveRequest {
 	return new(wsrpc.AttestationReceiveRequest)
 }
 

@@ -9,9 +9,9 @@ import (
 )
 
 type frameImpl struct {
-	pos Caller
+	pos  Caller
 	code int
-	err string
+	err  string
 }
 
 /*
@@ -52,8 +52,8 @@ func stackErrorFromBytes(s []byte) (*frameImpl, bool) {
 	x := bytes.SplitN(s, magicBytes, 4)[1:4]
 
 	return &frameImpl{
-		pos: callerFromString(string(x[0][4:len(x[0])-1])),
-		code: atoi(string(x[1][5:len(x[1])-1])),
+		pos:  callerFromString(string(x[0][4 : len(x[0])-1])),
+		code: atoi(string(x[1][5 : len(x[1])-1])),
 		err:  string(x[2][4:]),
 	}, true
 }
@@ -65,8 +65,8 @@ func stackErrorFromString(s string) (*frameImpl, bool) {
 	x := strings.SplitN(s, magic, 4)[1:4]
 
 	return &frameImpl{
-		pos: callerFromString(x[0][4:len(x[0])-1]),
-		code: atoi(x[1][5:len(x[1])-1]),
+		pos:  callerFromString(x[0][4 : len(x[0])-1]),
+		code: atoi(x[1][5 : len(x[1])-1]),
 		err:  x[2][4:],
 	}, true
 }
@@ -128,6 +128,3 @@ func (g frameImpl) Error() string {
 func (g *frameImpl) ReleaseError() {
 	g.err = ""
 }
-
-
-
