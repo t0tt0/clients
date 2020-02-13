@@ -36,6 +36,17 @@ func (vc *VesClient) getRouter(chainID uint64) (uiptypes.Router, error) {
 	}
 }
 
+func (vc *VesClient) ensureBlockStorage(chainID uint64, storage *uiptypes.Storage) bool {
+	if *storage != nil {
+		return true
+	}
+	var err error
+	if *storage, err = vc.getBlockStorage(chainID); err != nil {
+		vc.logger.Error("get storage error", "error", err)
+	}
+	return err == nil
+}
+
 func (vc *VesClient) getBlockStorage(chainID uint64) (uiptypes.Storage, error) {
 	if ci, err := vc.dns.GetChainInfo(chainID); err != nil {
 		return nil, wrapper.Wrap(types.CodeChainIDNotFound, err)

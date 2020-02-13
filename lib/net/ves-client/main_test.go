@@ -8,6 +8,8 @@ import (
 	"github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/logger"
 	"github.com/Myriad-Dreamin/minimum-lib/sugar"
+	"go.uber.org/zap/zapcore"
+	"log"
 	"os"
 	"sync"
 	"testing"
@@ -16,6 +18,8 @@ import (
 var describer = wrapper.Describer{
 	Pack: "github.com/Myriad-Dreamin/go-ves/lib/net/ves-client",
 	Rel:  sugar.HandlerError(os.Getwd()).(string)}
+
+var testLogger logger.Logger
 
 type fields struct {
 	p                      modelModule
@@ -96,10 +100,18 @@ func parseFieldOptions(rawOpts []interface{}) (options fieldOption) {
 
 func createFields(rawOpts ...interface{}) fields {
 	options := parseFieldOptions(rawOpts)
+	if testLogger == nil {
+		var err error
+		testLogger, err = logger.NewZapLogger(
+			logger.NewZapDevelopmentSugarOption(), zapcore.DebugLevel)
+		if err != nil {
+			log.Fatal("init vesLogger error", "error", err)
+		}
+	}
 	return fields{
 		p:                      newModelModule(),
 		rwMutex:                sync.RWMutex{},
-		logger:                 nil,
+		logger:                 testLogger,
 		module:                 DepModule{},
 		closeSessionRWMutex:    sync.RWMutex{},
 		closeSessionSubscriber: nil,
