@@ -26,6 +26,14 @@ func (vc *VesClient) getRawMessage() *wsrpc.RawMessage {
 	return new(wsrpc.RawMessage)
 }
 
+func (vc *VesClient) combineRawMessage(dst *uiprpc_base.Account, code wsrpc.MessageType, b []byte) *wsrpc.RawMessage {
+	var msg = vc.getRawMessage()
+	msg.To = dst
+	msg.MessageType = uint32(code)
+	msg.Contents = b
+	return msg
+}
+
 func (vc *VesClient) getShortReplyMessage() *wsrpc.Message {
 	return new(wsrpc.Message)
 }

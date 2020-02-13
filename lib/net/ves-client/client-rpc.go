@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func (vc *VesClient) ListenHTTP() error {
+func (vc *VesClient) ListenHTTP(port string) error {
 	r := iris.Default()
 	r.Get("/ping", miris.ToIrisHandler(func(c controller.MContext) {
 		c.JSON(http.StatusOK, iris.Map{"result": "pong"})
@@ -16,5 +16,5 @@ func (vc *VesClient) ListenHTTP() error {
 	v1 := r.Party("/v1")
 	v1.PartyFunc("", vc.buildAccountRPCApis)
 
-	return r.Run(iris.Addr("0.0.0.0:26670"))
+	return r.Run(iris.Addr(port))
 }

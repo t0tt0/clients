@@ -58,7 +58,7 @@ func NewSerializer(maxBufferSize int) *Serializer {
 }
 
 // Serialize concat the msg id and serialized msg
-func (ser *Serializer) Serialize(msgID MessageType, msg proto.Message) (*bytes.Buffer, error) {
+func (ser *Serializer) SerializeRaw(msgID MessageType, msg []byte) (*bytes.Buffer, error) {
 	var buf = ser.bufferPool.Get().(*bytes.Buffer)
 	buf.Reset()
 
@@ -67,12 +67,18 @@ func (ser *Serializer) Serialize(msgID MessageType, msg proto.Message) (*bytes.B
 		return nil, err
 	}
 
+	buf.Write(msg)
+	return buf, nil
+}
+
+// Serialize concat the msg id and serialized msg
+func (ser *Serializer) Serialize(msgID MessageType, msg proto.Message) (*bytes.Buffer, error) {
+
 	b, err := proto.Marshal(msg)
 	if err != nil {
 		return nil, err
 	}
-	buf.Write(b)
-	return buf, nil
+	return ser.SerializeRaw(msgID, b)
 }
 
 func Deserialize(rawMessage []byte) (message []byte, messageID MessageType, err error) {

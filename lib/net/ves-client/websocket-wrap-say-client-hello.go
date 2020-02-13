@@ -6,7 +6,7 @@ func (vc *VesClient) SayClientHello(name []byte) error {
 	clientHello := vc.getClientHello()
 	clientHello.Name = name
 
-	err := vc.postMessage(wsrpc.CodeClientHelloRequest, clientHello)
+	err := vc.conn.PostMessage(wsrpc.CodeClientHelloRequest, clientHello)
 	if err != nil {
 		vc.logger.Error("say client hello", "name", name, "error", err)
 		return err

@@ -5,6 +5,7 @@ import (
 	xconfig "github.com/Myriad-Dreamin/go-ves/config"
 	core_cfg "github.com/Myriad-Dreamin/go-ves/lib/core-cfg"
 	nsbcli "github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client"
+	"github.com/Myriad-Dreamin/go-ves/lib/ves-websocket"
 	"github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/go-ves/ves/config"
 	"github.com/Myriad-Dreamin/minimum-lib/logger"
@@ -21,25 +22,20 @@ type VesClient struct {
 	module                 DepModule
 	closeSessionRWMutex    sync.RWMutex
 	closeSessionSubscriber []SessionCloseSubscriber
+	quit                   chan bool
 
-	name []byte
-
-	db   AccountDBInterface
-	conn SocketConn
-
+	db        AccountDBInterface
+	conn      ves_websocket.VESWSSocket
 	nsbSigner uiptypes.Signer
 	dns       types.ChainDNSInterface
 	nsbClient types.NSBClient
 
-	waitOpt uiptypes.RouteOptionTimeout
-
-	quit chan bool
-
-	nsbip  string
-	grpcip string
+	waitOpt              uiptypes.RouteOptionTimeout
+	name                 []byte
+	nsbip                string
+	grpcip               string
 	ignoreUnknownMessage bool
-
-	nsbBase string
+	nsbBase              string
 }
 
 type cfgX struct {
@@ -54,6 +50,13 @@ func (cfgX) GetDatabaseConfiguration() core_cfg.DatabaseConfig {
 	return core_cfg.DatabaseConfig{
 		Escaper: `"`,
 	}
+}
+
+func (c *VesClient) closeHandler(code int, text string) error {
+	if code != websocket.CloseNoStatusReceived {
+		c.logger.Info("closed", "code", code, "text", text)
+	}
+	return nil
 }
 
 // NewVesClient return a pointer of VesClient
@@ -82,6 +85,12 @@ func NewVesClient(rOptions ...interface{}) (vc *VesClient, err error) {
 	if vc.db, err = NewAccountDB(vc.module); err != nil {
 		return
 	}
-	vc.conn, _, err = new(websocket.Dialer).Dial((&url.URL{Scheme: "ws", Host: options.addr, Path: "/"}).String(), nil)
+	var conn ves_websocket.SocketConn
+	conn, _, err = new(websocket.Dialer).Dial((&url.URL{Scheme: "ws", Host: options.addr, Path: "/"}).String(), nil)
+	if err != nil {
+		return
+	}
+	vc.conn, err = ves_websocket.NewVESSocket(conn, vc.ProcessMessage, vc.logger)
+	vc.conn.SetCloseHandler(vc.closeHandler)
 	return
 }

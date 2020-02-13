@@ -5,26 +5,23 @@ import (
 	"github.com/Myriad-Dreamin/go-ves/central-ves/config"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/lib/plugin"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/model/fset"
-	"net/http"
+	"github.com/Myriad-Dreamin/minimum-lib/sugar"
 )
 
+type CVESWebSocketPlugin = Server
+
 func New() *CVESWebSocketPlugin {
-	return &CVESWebSocketPlugin{
-		Server: new(http.Server),
-	}
+	return &CVESWebSocketPlugin{}
 }
 
 func (c *CVESWebSocketPlugin) Configuration(logger plugin.Logger, loader plugin.ConfigLoader, cfg *plugin.ServerConfig) plugin.Plugin {
 	//options := parseOptions(rOptions)
-
-	c.logger = logger
-	c.nsbip = cfg.BaseParametersConfig.NSBHost
-	c.hub = newHub()
-	c.hub.server = c
-	c.Handler = http.NewServeMux()
-	c.Addr = cfg.BaseParametersConfig.WSPort
-	c.rpcPort = cfg.BaseParametersConfig.RPCPort
-	return c
+	return sugar.HandlerError(NewServer(
+		cfg.BaseParametersConfig.RPCPort,
+		cfg.BaseParametersConfig.WSPort,
+		nil,
+		logger,
+		NSBHostOption(cfg.BaseParametersConfig.NSBHost))).(plugin.Plugin)
 }
 
 func (c *CVESWebSocketPlugin) Inject(services *plugin.ServiceProvider, dbs *plugin.DatabaseProvider, module plugin.Module) plugin.Plugin {

@@ -3,6 +3,7 @@ package vesclient
 import (
 	"bytes"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/Myriad-Dreamin/go-ves/lib/ves-websocket"
 	"github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/logger"
 	"go.uber.org/zap/zapcore"
@@ -19,7 +20,7 @@ type fields struct {
 	closeSessionSubscriber []SessionCloseSubscriber
 	name                   []byte
 	db                     AccountDBInterface
-	conn                   SocketConn
+	conn                   ves_websocket.SocketConn
 	nsbSigner              uiptypes.Signer
 	dns                    types.ChainDNSInterface
 	nsbClient              types.NSBClient

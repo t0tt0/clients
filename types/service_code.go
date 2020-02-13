@@ -146,6 +146,14 @@ const (
 	CodeConvertErrorL = CodeConvertSignerError
 )
 
+const (
+	CodeReadMessageError Code = iota + 16000
+	CodeReadMessageIDError
+
+	CodeWebSocketErrorR
+	CodeWebSocketErrorL = CodeReadMessageError
+)
+
 var CodeDesc map[Code]string
 
 func init() {
@@ -163,6 +171,7 @@ func init() {
 		{CodeTransactionServiceErrorL, CodeTransactionServiceErrorR},
 		{CodeChainDNSErrorL, CodeChainDNSErrorR},
 		{CodeConvertErrorL, CodeConvertErrorR},
+		{CodeWebSocketErrorL, CodeWebSocketErrorR},
 	} {
 		for i := groupCode.L; i < groupCode.R; i++ {
 			CodeDesc[i] = CodeType(i).String()

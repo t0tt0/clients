@@ -10,14 +10,13 @@ import "base.proto";
 // 1
 message Message {
     string contents = 1;
-    bytes from = 2;
-    bytes to = 3;
+    uiprpc.base.Account to = 3;
 }
 
 message RawMessage {
-    bytes contents = 1;
-    bytes from = 2;
-    bytes to = 3;
+    uiprpc.base.Account to = 1;
+    uint32 messageType = 2;
+    bytes contents = 3;
 }
 
 message ClientHello {
