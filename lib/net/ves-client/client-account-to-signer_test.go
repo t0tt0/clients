@@ -1,66 +1,12 @@
 package vesclient
 
 import (
-	"bytes"
 	"fmt"
 	ChainType "github.com/HyperService-Consortium/go-uip/const/chain_type"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
-	"github.com/Myriad-Dreamin/go-ves/lib/wrapper"
-	"github.com/Myriad-Dreamin/go-ves/types"
-	"github.com/Myriad-Dreamin/minimum-lib/logger"
-	"github.com/Myriad-Dreamin/minimum-lib/sugar"
-	"os"
-	"sync"
 	"testing"
 )
 
-var describer = wrapper.Describer{
-	Pack: "github.com/Myriad-Dreamin/go-ves/lib/net/ves-client",
-	Rel: sugar.HandlerError(os.Getwd()).(string)}
-
-type fields struct {
-	p                      modelModule
-	rwMutex                sync.RWMutex
-	logger                 logger.Logger
-	module                 DepModule
-	closeSessionRWMutex    sync.RWMutex
-	closeSessionSubscriber []SessionCloseSubscriber
-	name                   []byte
-	db                     AccountDBInterface
-	conn                   SocketConn
-	nsbSigner              uiptypes.Signer
-	dns                    types.ChainDNSInterface
-	nsbClient              types.NSBClient
-	waitOpt                uiptypes.RouteOptionTimeout
-	cb                     chan *bytes.Buffer
-	quit                   chan bool
-	nsbip                  string
-	grpcip                 string
-	nsbBase                string
-}
-
-func createFields() fields {
-	return fields{
-		p:                      newModelModule(),
-		rwMutex:                sync.RWMutex{},
-		logger:                 nil,
-		module:                 DepModule{},
-		closeSessionRWMutex:    sync.RWMutex{},
-		closeSessionSubscriber: nil,
-		name:                   nil,
-		db:                     nil,
-		conn:                   nil,
-		nsbSigner:              nil,
-		dns:                    nil,
-		nsbClient:              nil,
-		waitOpt:                0,
-		cb:                     nil,
-		quit:                   nil,
-		nsbip:                  "",
-		grpcip:                 "",
-		nsbBase:                "",
-	}
-}
 
 func TestVesClient_AccountToSigner(t *testing.T) {
 	type args struct {
