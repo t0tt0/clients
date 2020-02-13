@@ -3,7 +3,7 @@ syntax = "proto3";
 
 package uiprpc;
 
-option go_package = "github.com/HyperService-Consortium/go-ves/grpc/uiprpc";
+option go_package = "github.com/Myriad-Dreamin/go-ves/grpc/uiprpc";
 
 import "base.proto";
 
@@ -127,7 +127,7 @@ message ShortenMerkleProofReceiveReply {
 
 message InternalRequestComingRequest {
     bytes session_id = 1;
-    bytes host = 2;
+    string host = 2;
     repeated uiprpc.base.Account accounts = 3;
 }
 
@@ -140,8 +140,8 @@ message InternalRequestComingReply {
 message InternalCloseSessionRequest {
     // isc_address
     bytes session_id = 1;
-    bytes nsb_host = 2;
-    bytes grpc_host = 3;
+    string nsb_host = 2;
+    string grpc_host = 3;
     repeated uiprpc.base.Account accounts = 4;
 }
 

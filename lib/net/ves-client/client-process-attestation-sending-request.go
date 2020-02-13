@@ -6,10 +6,8 @@ import (
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
 	"github.com/Myriad-Dreamin/go-ves/grpc/wsrpc"
-	helper "github.com/Myriad-Dreamin/go-ves/lib/net/help-func"
 	nsbcli "github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client"
 )
-
 
 func (vc *VesClient) ProcessAttestationSendingRequest(attestationSendingRequest *wsrpc.RequestComingRequest) {
 
@@ -40,12 +38,6 @@ func (vc *VesClient) ProcessAttestationSendingRequest(attestationSendingRequest 
 		return
 	}
 
-	hs, err := helper.DecodeIP(attestationSendingRequest.GetNsbHost())
-	if err != nil {
-		vc.logger.Error("VesClient.read.AttestationSendingRequest.DecodeIP", "error", err)
-		return
-	}
-
 	// packet attestation
 	var sendingAtte = vc.getAttestationReceiveRequest()
 	sendingAtte.SessionId = attestationSendingRequest.GetSessionId()
@@ -53,7 +45,7 @@ func (vc *VesClient) ProcessAttestationSendingRequest(attestationSendingRequest 
 
 	sigg, err := signer.Sign(transactionReply.RawTransaction)
 	if err != nil {
-		vc.logger.Error("VesClient.read.AttestationSendingRequest.Sign", "ip", hs, "error", err)
+		vc.logger.Error("VesClient.read.AttestationSendingRequest.Sign", "host", attestationSendingRequest.GetNsbHost(), "error", err)
 		return
 	}
 	sendingAtte.Atte = &uiprpc_base.Attestation{
@@ -69,13 +61,13 @@ func (vc *VesClient) ProcessAttestationSendingRequest(attestationSendingRequest 
 	sendingAtte.Src = transactionReply.Src
 	sendingAtte.Dst = transactionReply.Dst
 
-	if ret, err := nsbcli.NewNSBClient(hs).InsuranceClaim(
+	if ret, err := nsbcli.NewNSBClient(attestationSendingRequest.GetNsbHost()).InsuranceClaim(
 		signer,
 		sendingAtte.SessionId,
 		sendingAtte.Atte.Tid,
 		TxState.Instantiating,
 	); err != nil {
-		vc.logger.Error("VesClient.read.AttestationSendingRequest.InsuranceClaim", "ip", hs, "error", err)
+		vc.logger.Error("VesClient.read.AttestationSendingRequest.InsuranceClaim", "host", attestationSendingRequest.GetNsbHost(), "error", err)
 		return
 	} else {
 		vc.logger.Info(

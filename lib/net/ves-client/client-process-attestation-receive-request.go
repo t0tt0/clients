@@ -7,7 +7,6 @@ import (
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
 	"github.com/Myriad-Dreamin/go-ves/grpc/wsrpc"
 	"github.com/Myriad-Dreamin/go-ves/lib/bni/raw-transaction"
-	"github.com/Myriad-Dreamin/go-ves/lib/net/help-func"
 )
 
 type attestationReceiveRequestService struct {
@@ -82,8 +81,7 @@ func (svc *attestationReceiveRequestService) procTxStateInstantiating() {
 }
 
 func (svc *attestationReceiveRequestService) procTxStateInstantiated() {
-	if svc.newReq = svc.generateNewAttestationFromOld();
-		svc.newReq != nil && svc.doTransaction() {
+	if svc.newReq = svc.generateNewAttestationFromOld(); svc.newReq != nil && svc.doTransaction() {
 		svc.tellOthers()
 	}
 }
@@ -121,8 +119,8 @@ func (svc *attestationReceiveRequestService) generateNewAttestationFromOld() *ws
 		return svc.client.combineSendAttestationReceiveRequest(
 			svc.req.GetDst(), svc.req.GetSrc(),
 			nextAttestation(oldAttestation, SignatureFromSTDToRPC(signature)),
-			svc.req.GetSessionId(),
-			svc.req.GetGrpcHost())
+			svc.req.GetGrpcHost(),
+			svc.req.GetSessionId())
 	}
 }
 
@@ -157,13 +155,7 @@ func (svc *attestationReceiveRequestService) tellOthers() {
 		return
 	}
 
-	gRPCHost, err := helper.DecodeIP(svc.req.GrpcHost)
-	if err != nil {
-		svc.client.logger.Error("decodeIP", "error", err)
-		return
-	}
-
-	svc.client.informAttestation(gRPCHost, svc.newReq)
+	svc.client.informAttestation(svc.req.GrpcHost, svc.newReq)
 }
 
 func (svc *attestationReceiveRequestService) checkSignaturesAndSign(

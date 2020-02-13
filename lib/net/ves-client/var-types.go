@@ -9,7 +9,6 @@ import (
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
 	uiprpc_base "github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
 	"github.com/Myriad-Dreamin/go-ves/grpc/wsrpc"
-	helper "github.com/Myriad-Dreamin/go-ves/lib/net/help-func"
 	"github.com/gorilla/websocket"
 	"google.golang.org/grpc"
 	"io"
@@ -178,14 +177,9 @@ func (signer EthAccount) Sign(b []byte, ctxVars ...interface{}) (uiptypes.Signat
 	return signaturer.FromRaw(b, uiptypes.SignatureTypeUnderlyingType(signaturetype.Secp256k1)), nil
 }
 
-func (vc *VesClient) sendAck(acc *uiprpc_base.Account, sessionID, address, signature []byte) error {
+func (vc *VesClient) sendAck(acc *uiprpc_base.Account, sessionID []byte, host string, signature []byte) error {
 	// Set up a connection to the server.
-	sss, err := helper.DecodeIP(address)
-	if err != nil {
-		vc.logger.Error("did not resolve", "error", err)
-		return err
-	}
-	conn, err := grpc.Dial(sss, grpc.WithInsecure())
+	conn, err := grpc.Dial(host, grpc.WithInsecure())
 	if err != nil {
 		vc.logger.Error("did not connect", "error", err)
 		return err
@@ -246,4 +240,3 @@ func (vc *VesClient) informAttestation(grpcHost string, sendingAtte *wsrpc.Attes
 	}
 	return
 }
-

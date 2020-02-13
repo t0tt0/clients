@@ -4,15 +4,11 @@ import (
 	"bytes"
 	"crypto/md5"
 	"encoding/binary"
-	"encoding/json"
 	"errors"
-	"github.com/Myriad-Dreamin/go-ves/config"
 	"io"
 	"math/rand"
 	"unsafe"
 
-	account "github.com/HyperService-Consortium/go-uip/base-account"
-	TransType "github.com/HyperService-Consortium/go-uip/const/trans_type"
 	TxState "github.com/HyperService-Consortium/go-uip/const/transaction_state_type"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
 	"github.com/Myriad-Dreamin/go-ves/types"
@@ -20,8 +16,6 @@ import (
 	bitmap "github.com/Myriad-Dreamin/go-ves/lib/bitmapping"
 	const_prefix "github.com/Myriad-Dreamin/go-ves/lib/database/const_prefix"
 	serial_helper "github.com/Myriad-Dreamin/go-ves/lib/serial_helper"
-
-	opintents "github.com/HyperService-Consortium/go-uip/op-intent"
 )
 
 type SerialSession struct {
@@ -150,44 +144,45 @@ func (ses *SerialSession) SetSigner(signer uiptypes.Signer) {
 }
 
 func (ses *SerialSession) InitFromOpIntents(opIntents uiptypes.OpIntents) (bool, string, error) {
-	intents, _, err := opintents.NewOpIntentInitializer(config.UserMap).InitOpIntent(opIntents)
-	if err != nil {
-		return false, err.Error(), nil
-	}
-	// fmt.Println(intents, err)
-	ses.Transactions = make([][]byte, 0, len(intents))
-
-	ses.Accounts = nil
-	c := makeComparator()
-	ses.Accounts = append(ses.Accounts, &account.Account{ChainId: 3, Address: ses.Signer.GetPublicKey()})
-	for _, intent := range intents {
-		// fmt.Println("insert", len(ses.Transactions))
-		ses.Transactions = append(ses.Transactions, intent.Bytes())
-		// fmt.Println(string(intent.Bytes()), hex.EncodeToString(intent.Src), hex.EncodeToString(intent.Dst))
-
-		if c.Insert(intent.ChainID, intent.Src) {
-			ses.Accounts = append(ses.Accounts, &account.Account{ChainId: intent.ChainID, Address: intent.Src})
-		}
-		if intent.TransType == TransType.Payment && c.Insert(intent.ChainID, intent.Dst) {
-			ses.Accounts = append(ses.Accounts, &account.Account{ChainId: intent.ChainID, Address: intent.Dst})
-		}
-	}
-	ses.TransactionCount = uint32(len(intents))
-	ses.UnderTransacting = 0
-	ses.Status = 0
-	ses.Acks = make([]byte, (len(ses.Accounts)+7)>>3)
-	ses.Content, err = json.Marshal(ses)
-	if err != nil {
-		return false, "", err
-	}
-
-	// TransactionCount uint32          `xorm:"'transaction_count'"`
-	// UnderTransacting uint32          `xorm:"'under_transacting'"`
-	// Status           uint8           `xorm:"'status'"`
-	// Content          []byte          `xorm:"'content'"`
-	// Acks             []byte          `xorm:"'acks'"`
-
-	return true, "", nil
+	//intents, _, err := opintents.NewOpIntentInitializer(config.UserMap).InitOpIntent(opIntents)
+	//if err != nil {
+	//	return false, err.Error(), nil
+	//}
+	//// fmt.Println(intents, err)
+	//ses.Transactions = make([][]byte, 0, len(intents))
+	//
+	//ses.Accounts = nil
+	//c := makeComparator()
+	//ses.Accounts = append(ses.Accounts, &account.Account{ChainId: 3, Address: ses.Signer.GetPublicKey()})
+	//for _, intent := range intents {
+	//	// fmt.Println("insert", len(ses.Transactions))
+	//	ses.Transactions = append(ses.Transactions, intent.Bytes())
+	//	// fmt.Println(string(intent.Bytes()), hex.EncodeToString(intent.Src), hex.EncodeToString(intent.Dst))
+	//
+	//	if c.Insert(intent.ChainID, intent.Src) {
+	//		ses.Accounts = append(ses.Accounts, &account.Account{ChainId: intent.ChainID, Address: intent.Src})
+	//	}
+	//	if intent.TransType == TransType.Payment && c.Insert(intent.ChainID, intent.Dst) {
+	//		ses.Accounts = append(ses.Accounts, &account.Account{ChainId: intent.ChainID, Address: intent.Dst})
+	//	}
+	//}
+	//ses.TransactionCount = uint32(len(intents))
+	//ses.UnderTransacting = 0
+	//ses.Status = 0
+	//ses.Acks = make([]byte, (len(ses.Accounts)+7)>>3)
+	//ses.Content, err = json.Marshal(ses)
+	//if err != nil {
+	//	return false, "", err
+	//}
+	//
+	//// TransactionCount uint32          `xorm:"'transaction_count'"`
+	//// UnderTransacting uint32          `xorm:"'under_transacting'"`
+	//// Status           uint8           `xorm:"'status'"`
+	//// Content          []byte          `xorm:"'content'"`
+	//// Acks             []byte          `xorm:"'acks'"`
+	//
+	//return true, "", nil
+	panic("abort")
 }
 
 func Verify(signature uiptypes.Signature, contentProviding, publicKey []byte) bool {
@@ -344,63 +339,64 @@ func (ses *SerialSession) NotifyAttestation(
 func (ses *SerialSession) ProcessAttestation(
 	nsb types.NSBInterface, bn uiptypes.BlockChainInterface, atte uiptypes.Attestation,
 ) (success_or_not bool, help_info string, err error) {
-
-	tid := atte.GetTid()
-
-	if tid != uint64(ses.UnderTransacting) {
-		return false, "this transaction is not undertransacting", nil
-	}
-
-	switch atte.GetAid() {
-	// case Unknown:
-	// 	return nil, errors.New("transaction is of the status unknown")
-	// case Initing:
-	// 	return nil, errors.New("transaction is of the status initing")
-	// case Inited:
-	// 	return nil, errors.New("transaction is of the status inited")
-	case TxState.Instantiating:
-		nsb.InsuranceClaim(ses.GetGUID(), iter(atte, ses.Signer))
-		return true, "", nil
-	case TxState.Instantiated:
-		// chainID, tag, payload, err := serial_helper.UnserializeAttestationContent(atte.GetContent())
-		//
-		// if err != nil {
-		// 	return false, err.Error(), nil
-		// }
-
-		// type = s.GetAtte().GetContent()
-		// content = type.Content
-		// s.BroadcastTxCommit(content)
-		// if isRawTransaction(tag) {
-		// 	cb, err := bn.RouteRaw(chainID, payload)
-		// 	log.Infoln("cbing ", string(cb))
-		// 	if err != nil {
-		// 		return false, err.Error(), nil
-		// 	}
-		// } else {
-		// 	cb, err := bn.Route(chainID, payload)
-		// 	log.Infoln("cbing ", string(cb))
-		// 	if err != nil {
-		// 		return false, err.Error(), nil
-		// 	}
-		// }
-
-		nsb.InsuranceClaim(ses.GetGUID(), iter(atte, ses.Signer))
-
-		return true, "", nil
-	case TxState.Open:
-		nsb.InsuranceClaim(ses.GetGUID(), iter(atte, ses.Signer))
-		return true, "", nil
-	case TxState.Opened:
-		nsb.InsuranceClaim(ses.GetGUID(), iter(atte, ses.Signer))
-		ses.UnderTransacting++
-		return true, "", nil
-	case TxState.Closed:
-		ses.UnderTransacting++
-		return true, "", nil
-	default:
-		return false, "", errors.New("unknown aid types")
-	}
+	//
+	//tid := atte.GetTid()
+	//
+	//if tid != uint64(ses.UnderTransacting) {
+	//	return false, "this transaction is not undertransacting", nil
+	//}
+	//
+	//switch atte.GetAid() {
+	//// case Unknown:
+	//// 	return nil, errors.New("transaction is of the status unknown")
+	//// case Initing:
+	//// 	return nil, errors.New("transaction is of the status initing")
+	//// case Inited:
+	//// 	return nil, errors.New("transaction is of the status inited")
+	//case TxState.Instantiating:
+	//	nsb.InsuranceClaim(ses.GetGUID(), iter(atte, ses.Signer))
+	//	return true, "", nil
+	//case TxState.Instantiated:
+	//	// chainID, tag, payload, err := serial_helper.UnserializeAttestationContent(atte.GetContent())
+	//	//
+	//	// if err != nil {
+	//	// 	return false, err.Error(), nil
+	//	// }
+	//
+	//	// type = s.GetAtte().GetContent()
+	//	// content = type.Content
+	//	// s.BroadcastTxCommit(content)
+	//	// if isRawTransaction(tag) {
+	//	// 	cb, err := bn.RouteRaw(chainID, payload)
+	//	// 	log.Infoln("cbing ", string(cb))
+	//	// 	if err != nil {
+	//	// 		return false, err.Error(), nil
+	//	// 	}
+	//	// } else {
+	//	// 	cb, err := bn.Route(chainID, payload)
+	//	// 	log.Infoln("cbing ", string(cb))
+	//	// 	if err != nil {
+	//	// 		return false, err.Error(), nil
+	//	// 	}
+	//	// }
+	//
+	//	nsb.InsuranceClaim(ses.GetGUID(), iter(atte, ses.Signer))
+	//
+	//	return true, "", nil
+	//case TxState.Open:
+	//	nsb.InsuranceClaim(ses.GetGUID(), iter(atte, ses.Signer))
+	//	return true, "", nil
+	//case TxState.Opened:
+	//	nsb.InsuranceClaim(ses.GetGUID(), iter(atte, ses.Signer))
+	//	ses.UnderTransacting++
+	//	return true, "", nil
+	//case TxState.Closed:
+	//	ses.UnderTransacting++
+	//	return true, "", nil
+	//default:
+	//	return false, "", errors.New("unknown aid types")
+	//}
+	panic("abort")
 }
 
 func (ses *SerialSession) SyncFromISC() (err error) {
@@ -418,46 +414,48 @@ func NewSerialSessionBase() *SerialSessionBase {
 func (sb *SerialSessionBase) InsertSessionInfo(
 	db types.MultiIndex, idb types.Index, session types.Session,
 ) error {
-	err := sb.InsertSessionAccounts(idb, session.GetGUID(), session.GetAccounts())
-	if err != nil {
-		return err
-	}
-	for idx, tx := range session.GetTransactions() {
-		err = sb.InsertTransaction(idb, session.GetGUID(), uint64(idx), tx)
-		if err != nil {
-			return err
-		}
-	}
-	return db.Insert(session.(*SerialSession))
+	panic("abort")
+	//err := sb.InsertSessionAccounts(idb, session.GetGUID(), session.GetAccounts())
+	//if err != nil {
+	//	return err
+	//}
+	//for idx, tx := range session.GetTransactions() {
+	//	err = sb.InsertTransaction(idb, session.GetGUID(), uint64(idx), tx)
+	//	if err != nil {
+	//		return err
+	//	}
+	//}
+	//return db.Insert(session.(*SerialSession))
 }
 
 func (sb *SerialSessionBase) FindSessionInfo(
 	db types.MultiIndex, idb types.Index, isc_address []byte,
 ) (session types.Session, err error) {
-	var sessions interface{}
-	sessions, err = db.Select(&SerialSession{ISCAddress: isc_address})
-	if err != nil {
-		return
-	}
-	f := sessions.([]SerialSession)
-	if f == nil {
-		return nil, errors.New("not found")
-	}
-	sb.FindSessionAccounts(idb, isc_address, func(arg1 uint64, arg2 []byte) error {
-		f[0].Accounts = append(f[0].Accounts, &account.Account{ChainId: arg1, Address: arg2})
-		// fmt.Println("finded", hex.EncodeToString(arg2))
-		return nil
-	})
-	for idx := uint64(f[0].TransactionCount); idx != 0; idx-- {
-		sb.FindTransaction(idb, isc_address, idx, func(arg []byte) error {
-			f[0].Transactions = append(f[0].Transactions, arg)
-			// fmt.Println("finded tx", len(arg))
-			return nil
-		})
-	}
-	session = &f[0]
-	// fmt.Println("getid", session.GetID())
-	return
+	panic("abort")
+	//var sessions interface{}
+	//sessions, err = db.Select(&SerialSession{ISCAddress: isc_address})
+	//if err != nil {
+	//	return
+	//}
+	//f := sessions.([]SerialSession)
+	//if f == nil {
+	//	return nil, errors.New("not found")
+	//}
+	//sb.FindSessionAccounts(idb, isc_address, func(arg1 uint64, arg2 []byte) error {
+	//	f[0].Accounts = append(f[0].Accounts, &account.Account{ChainId: arg1, Address: arg2})
+	//	// fmt.Println("finded", hex.EncodeToString(arg2))
+	//	return nil
+	//})
+	//for idx := uint64(f[0].TransactionCount); idx != 0; idx-- {
+	//	sb.FindTransaction(idb, isc_address, idx, func(arg []byte) error {
+	//		f[0].Transactions = append(f[0].Transactions, arg)
+	//		// fmt.Println("finded tx", len(arg))
+	//		return nil
+	//	})
+	//}
+	//session = &f[0]
+	//// fmt.Println("getid", session.GetID())
+	//return
 }
 
 func (sb *SerialSessionBase) UpdateSessionInfo(

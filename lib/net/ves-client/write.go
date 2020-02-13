@@ -12,8 +12,8 @@ import (
 
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
 	uipbase "github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
-	helper "github.com/Myriad-Dreamin/go-ves/lib/net/help-func"
 )
+
 //
 //func (vc *VesClient) write() {
 //	//var (
@@ -362,15 +362,10 @@ func (vc *VesClient) SendOpIntents(filePath string, fileBuffer []byte) error {
 	return nil
 }
 
-func (vc *VesClient) GetRawTransaction(sessionID, host []byte) (
+func (vc *VesClient) GetRawTransaction(sessionID []byte, host string) (
 	*uiprpc.SessionRequireRawTransactReply, error,
 ) {
-	mhost, err := helper.DecodeIP(host)
-	if err != nil {
-		vc.logger.Error("could not decode ip", "error", err)
-		return nil, err
-	}
-	conn, err := grpc.Dial(mhost, grpc.WithInsecure())
+	conn, err := grpc.Dial(host, grpc.WithInsecure())
 	if err != nil {
 		vc.logger.Error("did not connect", "error", err)
 		return nil, err
@@ -392,4 +387,3 @@ func (vc *VesClient) GetRawTransaction(sessionID, host []byte) (
 	}
 	return r, nil
 }
-

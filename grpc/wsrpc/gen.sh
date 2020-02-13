@@ -1,1 +1,1 @@
-protoc --go_out=plugins=grpc:E:/project/go/src -I ../uiprpc-base -I . wsrpc.proto
+protoc --go_out=plugins=grpc:$GOPATH/src -I ../uiprpc-base -I . wsrpc.proto

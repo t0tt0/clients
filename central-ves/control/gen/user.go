@@ -81,7 +81,7 @@ func DescribeUserService(base string) artisan.ProposingService {
 				)).
 			Method(artisan.PUT, "PutUser",
 				artisan.Request(
-					//artisan.Param("phone", &userModel.Phone),
+				//artisan.Param("phone", &userModel.Phone),
 				)).
 			Method(artisan.DELETE, "Delete"),
 	}

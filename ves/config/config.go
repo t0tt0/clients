@@ -4,8 +4,6 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"errors"
-	"fmt"
-	helper "github.com/Myriad-Dreamin/go-ves/lib/net/help-func"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -39,21 +37,8 @@ type PathPlaceholder struct {
 }
 
 type BaseParametersConfig struct {
-	PathPlaceholder  PathPlaceholder `json:"path-placeholder" yaml:"path-placeholder" toml:"path-placeholder" xml:"path-placeholder"`
-	ExposeHost       string          `json:"expose-host" yaml:"expose-host" toml:"expose-host" xml:"expose-host"`
-	ParsedExposeHost []byte          `json:"-" yaml:"-" toml:"-" xml:"-"`
-}
-
-func (b *BaseParametersConfig) GetParsedExposeHost() []byte {
-	if b.ParsedExposeHost == nil {
-		var err error
-		b.ParsedExposeHost, err = helper.HostFromString(b.ExposeHost)
-		if err != nil {
-			//todo
-			fmt.Println(err)
-		}
-	}
-	return b.ParsedExposeHost
+	PathPlaceholder PathPlaceholder `json:"path-placeholder" yaml:"path-placeholder" toml:"path-placeholder" xml:"path-placeholder"`
+	ExposeHost      string          `json:"expose-host" yaml:"expose-host" toml:"expose-host" xml:"expose-host"`
 }
 
 type Label struct {

@@ -11,7 +11,6 @@ import (
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
 	uiprpc_base "github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
 	"github.com/Myriad-Dreamin/go-ves/grpc/wsrpc"
-	"github.com/Myriad-Dreamin/go-ves/lib/net/help-func"
 	"github.com/Myriad-Dreamin/minimum-lib/logger"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -42,14 +41,14 @@ type CVESWebSocketPlugin struct {
 	hub     *Hub
 	userDB  *fset.AccountFSet
 	rpcPort string
-	nsbip   []byte
+	nsbip   string
 }
 
 type NSBHostOption string
 
 type ServerOptions struct {
 	logger  logger.Logger
-	nsbHost NSBHostOption
+	nsbHost string
 }
 
 func defaultServerOptions() ServerOptions {
@@ -66,7 +65,7 @@ func parseOptions(rOptions []interface{}) ServerOptions {
 		case logger.Logger:
 			options.logger = option
 		case NSBHostOption:
-			options.nsbHost = option
+			options.nsbHost = string(option)
 		}
 	}
 	return options
@@ -76,7 +75,7 @@ func parseOptions(rOptions []interface{}) ServerOptions {
 func NewServer(rpcport, addr string, db *fset.AccountFSet, rOptions ...interface{}) (srv *CVESWebSocketPlugin, err error) {
 	options := parseOptions(rOptions)
 	srv = &CVESWebSocketPlugin{Server: new(http.Server)}
-	srv.nsbip, err = helper.HostFromString(string(options.nsbHost))
+	srv.nsbip = options.nsbHost
 	srv.hub = newHub()
 	srv.hub.server = srv
 	srv.userDB = db
@@ -167,7 +166,7 @@ func (c *CVESWebSocketPlugin) InternalAttestationSending(
 }
 
 // RequestComing do the service of retransmitting message of new session event
-func (c *CVESWebSocketPlugin) RequestComing(accounts []uiptypes.Account, iscAddress, grpcHost []byte) (err error) {
+func (c *CVESWebSocketPlugin) RequestComing(accounts []uiptypes.Account, iscAddress []byte, grpcHost string) (err error) {
 	// fmt.Println("rpc...", accounts)
 	for _, acc := range accounts {
 		// fmt.Println("hex", acc.GetChainId(), hex.EncodeToString(acc.GetAddress()))
@@ -180,7 +179,7 @@ func (c *CVESWebSocketPlugin) RequestComing(accounts []uiptypes.Account, iscAddr
 }
 
 // AttestationSending do the service of retransmitting attestation
-func (c *CVESWebSocketPlugin) AttestationSending(accounts []uiptypes.Account, iscAddress, grpcHost []byte) (err error) {
+func (c *CVESWebSocketPlugin) AttestationSending(accounts []uiptypes.Account, iscAddress []byte, grpcHost string) (err error) {
 	// fmt.Println("rpc...", accounts)
 	for _, acc := range accounts {
 		c.logger.Info("sending attestation request", "chain id", acc.GetChainId(), "address", hex.EncodeToString(acc.GetAddress()))
@@ -191,7 +190,7 @@ func (c *CVESWebSocketPlugin) AttestationSending(accounts []uiptypes.Account, is
 	return nil
 }
 
-func (c *CVESWebSocketPlugin) requestComing(acc uiptypes.Account, iscAddress, grpcHost []byte) error {
+func (c *CVESWebSocketPlugin) requestComing(acc uiptypes.Account, iscAddress []byte, grpcHost string) error {
 	var msg wsrpc.RequestComingRequest
 	msg.NsbHost = c.nsbip
 	msg.GrpcHost = grpcHost
@@ -213,7 +212,7 @@ func (c *CVESWebSocketPlugin) requestComing(acc uiptypes.Account, iscAddress, gr
 	return nil
 }
 
-func (c *CVESWebSocketPlugin) attestationSending(acc uiptypes.Account, iscAddress, grpcHost []byte) error {
+func (c *CVESWebSocketPlugin) attestationSending(acc uiptypes.Account, iscAddress []byte, grpcHost string) error {
 	var msg wsrpc.RequestComingRequest
 	msg.NsbHost = c.nsbip
 	msg.GrpcHost = grpcHost
@@ -254,7 +253,7 @@ func (c *CVESWebSocketPlugin) InternalCloseSession(
 }
 
 // CloseSession do the service of retransmitting attestation
-func (c *CVESWebSocketPlugin) CloseSession(accounts []uiptypes.Account, iscAddress, grpcHost, nsbHost []byte) (err error) {
+func (c *CVESWebSocketPlugin) CloseSession(accounts []uiptypes.Account, iscAddress []byte, grpcHost, nsbHost string) (err error) {
 	// fmt.Println("rpc...", accounts)
 	for _, acc := range accounts {
 		c.logger.Info("sending close session", "chain id", acc.GetChainId(), "address", hex.EncodeToString(acc.GetAddress()))
@@ -265,7 +264,7 @@ func (c *CVESWebSocketPlugin) CloseSession(accounts []uiptypes.Account, iscAddre
 	return nil
 }
 
-func (c *CVESWebSocketPlugin) closeSession(acc uiptypes.Account, iscAddress, grpcHost, nsbHost []byte) error {
+func (c *CVESWebSocketPlugin) closeSession(acc uiptypes.Account, iscAddress []byte, grpcHost, nsbHost string) error {
 	var msg wsrpc.CloseSessionRequest
 	msg.NsbHost = nsbHost
 	msg.GrpcHost = grpcHost

@@ -8,7 +8,7 @@ import (
 type NSBClient interface {
 	FreezeInfo(signer uiptypes.Signer, guid []byte, u uint64) ([]byte, error)
 	AddMerkleProof(user uiptypes.Signer, toAddress []byte,
-		merkleType uint16, rootHash, proof, key, value []byte, ) (*nsb_message.ResultInfo, error)
+		merkleType uint16, rootHash, proof, key, value []byte) (*nsb_message.ResultInfo, error)
 	AddBlockCheck(
 		user uiptypes.Signer, toAddress []byte,
 		chainID uint64, blockID, rootHash []byte, rcType uint8,
@@ -17,4 +17,5 @@ type NSBClient interface {
 		user uiptypes.Signer, contractAddress []byte,
 		tid, aid uint64,
 	) (*nsb_message.DeliverTx, error)
+	CreateISC(signer uiptypes.Signer, uint32s []uint32, bytes [][]byte, bytes2 [][]byte, bytes3 []byte) ([]byte, error)
 }

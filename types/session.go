@@ -29,7 +29,7 @@ type Session interface {
 	GetTransactingTransaction() (transaction_local_id, error)
 
 	// error reports Internal errors, help_info reports Logic errors
-	InitFromOpIntents(uiptypes.OpIntents) (success_or_not, help_info, error)
+	InitFromOpIntents(opIntents uiptypes.OpIntents) error
 	AckForInit(uiptypes.Account, uiptypes.Signature) (success_or_not, help_info, error)
 	NotifyAttestation(NSBInterface, uiptypes.BlockChainInterface, uiptypes.Attestation) (success_or_not, help_info, error)
 	ProcessAttestation(NSBInterface, uiptypes.BlockChainInterface, uiptypes.Attestation) (success_or_not, help_info, error)

@@ -37,7 +37,6 @@ var (
 				ChainType: ChainType.Unassigned,
 			},
 		},
-
 	))
 	ethBNPType = reflect.TypeOf(new(ethbni.BN))
 	tenBNPType = reflect.TypeOf(new(tenbni.BN))
@@ -176,11 +175,11 @@ func TestVesClient_ensureRouter(t *testing.T) {
 		router  uiptypes.Router
 	}
 	tests := []struct {
-		name   string
-		fields fields
-		args   args
+		name     string
+		fields   fields
+		args     args
 		wantType reflect.Type
-		want   bool
+		want     bool
 	}{
 		{"ensureEthereumChainRouter", vcWithMockChainDNS, args{
 			chainID: ethereumChainID,
@@ -234,11 +233,11 @@ func TestVesClient_ensureBlockStorage(t *testing.T) {
 		router  uiptypes.Storage
 	}
 	tests := []struct {
-		name   string
-		fields fields
-		args   args
+		name     string
+		fields   fields
+		args     args
 		wantType reflect.Type
-		want   bool
+		want     bool
 	}{
 		{"ensureEthereumChainBlockStorage", vcWithMockChainDNS, args{
 			chainID: ethereumChainID,

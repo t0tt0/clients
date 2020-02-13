@@ -17,6 +17,6 @@ type VServer struct {
 	Signer    *signaturer.TendermintNSBSigner
 	CVes      uiprpc.CenteredVESClient
 	NsbClient *nsbcli.NSBClient
-	Host      []byte
-	NsbHost   []byte
+	Host      string
+	NsbHost   string
 }

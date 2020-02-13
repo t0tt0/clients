@@ -5,12 +5,7 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
-	"github.com/Myriad-Dreamin/go-ves/config"
-	helper "github.com/Myriad-Dreamin/go-ves/lib/net/help-func"
 	nsbcli "github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client"
-	chain_dns "github.com/Myriad-Dreamin/go-ves/types/chain-dns"
-	"github.com/Myriad-Dreamin/go-ves/types/kvdb"
-	"github.com/Myriad-Dreamin/go-ves/types/storage-handler"
 	"github.com/Myriad-Dreamin/go-ves/vves/vs"
 	"github.com/Myriad-Dreamin/minimum-lib/logger"
 	"io"
@@ -22,8 +17,6 @@ import (
 	uipbase "github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
 	log "github.com/Myriad-Dreamin/go-ves/lib/log"
 	"github.com/Myriad-Dreamin/go-ves/types"
-	vesdb "github.com/Myriad-Dreamin/go-ves/types/database"
-	"github.com/Myriad-Dreamin/go-ves/types/session"
 	//"github.com/Myriad-Dreamin/go-ves/types/user"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -52,13 +45,14 @@ func migrate(
 	muldb types.MultiIndex,
 	makeMigrate MigrateFunction,
 ) error {
-	if err := makeMigrate(muldb, &user.XORMUserAdapter{}); err != nil {
-		return err
-	}
-	if err := makeMigrate(muldb, &session.MultiThreadSerialSession{}); err != nil {
-		return err
-	}
-	return nil
+	panic("abort")
+	//if err := makeMigrate(muldb, &user.XORMUserAdapter{}); err != nil {
+	//	return err
+	//}
+	//if err := makeMigrate(muldb, &session.MultiThreadSerialSession{}); err != nil {
+	//	return err
+	//}
+	//return nil
 }
 
 type NSBHostOption string
@@ -103,26 +97,23 @@ func NewServer(
 	server.Signer = signer
 
 	server.Resp = &uipbase.Account{Address: server.Signer.GetPublicKey(), ChainId: 3}
-	server.Host = []byte{127, 0, 0, 1, ((23351) >> 8 & 0xff), 23351 & 0xff}
+	server.Host = "127.0.0.1:23351" // []byte{127, 0, 0, 1, ((23351) >> 8 & 0xff), 23351 & 0xff}
 	err := migrate(muldb, migrateFunction)
 	if err != nil {
 		return nil, fmt.Errorf("failed to migrate: %v", err)
 	}
-	server.NsbHost, err = helper.HostFromString(string(options.nsbHost))
-	if err != nil {
-		return nil, fmt.Errorf("failed to decode host: %v", err)
-	}
+	server.NsbHost = string(options.nsbHost)
 	// todo use instance
-	server.DB = new(vesdb.Database)
+	//server.DB = new(vesdb.Database)
 
 	server.DB.SetMultiIndex(muldb)
 	server.DB.SetIndex(sindb)
 
-	server.DB.SetUserBase(new(user.XORMUserBase))
-	server.DB.SetSessionBase(session.NewMultiThreadSerialSessionBase())
-	server.DB.SetStorageHandler(new(storage_handler.Database))
-	server.DB.SetSessionKVBase(new(kvdb.Database))
-	server.DB.SetChainDNS(chain_dns.NewDatabase(config.HostMap))
+	//server.DB.SetUserBase(new(user.XORMUserBase))
+	//server.DB.SetSessionBase(session.NewMultiThreadSerialSessionBase())
+	//server.DB.SetStorageHandler(new(storage_handler.Database))
+	//server.DB.SetSessionKVBase(new(kvdb.Database))
+	//server.DB.SetChainDNS(chain_dns.NewDatabase(config.HostMap))
 
 	log.Println("will connect to remote nsb host", options.nsbHost)
 	server.NsbClient = nsbcli.NewNSBClient(string(options.nsbHost))

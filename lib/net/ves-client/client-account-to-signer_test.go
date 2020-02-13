@@ -7,7 +7,6 @@ import (
 	"testing"
 )
 
-
 func TestVesClient_AccountToSigner(t *testing.T) {
 	type args struct {
 		account *Account
@@ -28,29 +27,29 @@ func TestVesClient_AccountToSigner(t *testing.T) {
 		}, true},
 		{"ethereum", createFields(), args{
 			account: &Account{
-				Address:   "00",
-				Addition:  "00",
+				Address:  "00",
+				Addition: "00",
 				ChainType: uiptypes.ChainTypeUnderlyingType(
 					ChainType.Ethereum),
-				ChainID:   1,
+				ChainID: 1,
 			},
 		}, false},
 		{"tendermint", createFields(), args{
 			account: &Account{
-				Address:   "00",
-				Addition:  "00",
+				Address:  "00",
+				Addition: "00",
 				ChainType: uiptypes.ChainTypeUnderlyingType(
 					ChainType.TendermintNSB),
-				ChainID:   3,
+				ChainID: 3,
 			},
 		}, true},
 		{"tendermint", createFields(), args{
 			account: &Account{
-				Address:   "0000000000000000000000000000000000000000000000000000000000000000",
-				Addition:  "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+				Address:  "0000000000000000000000000000000000000000000000000000000000000000",
+				Addition: "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
 				ChainType: uiptypes.ChainTypeUnderlyingType(
 					ChainType.TendermintNSB),
-				ChainID:   3,
+				ChainID: 3,
 			},
 		}, false},
 	}

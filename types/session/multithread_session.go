@@ -3,18 +3,14 @@ package session
 import (
 	"bytes"
 	"encoding/binary"
-	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/Myriad-Dreamin/go-ves/config"
 	"io"
 	"math/rand"
 	"sync"
 
 	account "github.com/HyperService-Consortium/go-uip/base-account"
-	TransType "github.com/HyperService-Consortium/go-uip/const/trans_type"
 	TxState "github.com/HyperService-Consortium/go-uip/const/transaction_state_type"
-	opintents "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
 	bitmap "github.com/Myriad-Dreamin/go-ves/lib/bitmapping/redis-bitmap"
 	const_prefix "github.com/Myriad-Dreamin/go-ves/lib/database/const_prefix"
@@ -136,41 +132,42 @@ func (ses *MultiThreadSerialSession) SetSigner(signer uiptypes.Signer) {
 }
 
 func (ses *MultiThreadSerialSession) InitFromOpIntents(opIntents uiptypes.OpIntents) error {
-	intents, _, err := opintents.NewOpIntentInitializer(config.UserMap).InitOpIntent(opIntents)
-	if err != nil {
-		return false, err.Error(), nil
-	}
-	ses.Transactions = make([][]byte, 0, len(intents))
-
-	ses.Accounts = nil
-	c := makeComparator()
-	ses.Accounts = append(ses.Accounts, &account.Account{ChainId: 4, Address: ses.Signer.GetPublicKey()})
-	for _, intent := range intents {
-		ses.Transactions = append(ses.Transactions, intent.Bytes())
-
-		if c.Insert(intent.ChainID, intent.Src) {
-			ses.Accounts = append(ses.Accounts, &account.Account{ChainId: intent.ChainID, Address: intent.Src})
-		}
-		if intent.TransType == TransType.Payment && c.Insert(intent.ChainID, intent.Dst) {
-			ses.Accounts = append(ses.Accounts, &account.Account{ChainId: intent.ChainID, Address: intent.Dst})
-		}
-	}
-	ses.TransactionCount = uint32(len(intents))
-	ses.UnderTransacting = 0
-	ses.Status = 0
-	// ses.Acks = make([]byte, (len(ses.Accounts)+7)>>3)
-	ses.Content, err = json.Marshal(ses)
-	if err != nil {
-		return false, "", err
-	}
-
-	// TransactionCount uint32          `xorm:"'transaction_count'"`
-	// UnderTransacting uint32          `xorm:"'under_transacting'"`
-	// Status           uint8           `xorm:"'status'"`
-	// Content          []byte          `xorm:"'content'"`
-	// Acks             []byte          `xorm:"'acks'"`
-
-	return true, "", nil
+	panic("abort")
+	//intents, _, err := opintents.NewOpIntentInitializer(config.UserMap).InitOpIntent(opIntents)
+	//if err != nil {
+	//	return false, err.Error(), nil
+	//}
+	//ses.Transactions = make([][]byte, 0, len(intents))
+	//
+	//ses.Accounts = nil
+	//c := makeComparator()
+	//ses.Accounts = append(ses.Accounts, &account.Account{ChainId: 4, Address: ses.Signer.GetPublicKey()})
+	//for _, intent := range intents {
+	//	ses.Transactions = append(ses.Transactions, intent.Bytes())
+	//
+	//	if c.Insert(intent.ChainID, intent.Src) {
+	//		ses.Accounts = append(ses.Accounts, &account.Account{ChainId: intent.ChainID, Address: intent.Src})
+	//	}
+	//	if intent.TransType == TransType.Payment && c.Insert(intent.ChainID, intent.Dst) {
+	//		ses.Accounts = append(ses.Accounts, &account.Account{ChainId: intent.ChainID, Address: intent.Dst})
+	//	}
+	//}
+	//ses.TransactionCount = uint32(len(intents))
+	//ses.UnderTransacting = 0
+	//ses.Status = 0
+	//// ses.Acks = make([]byte, (len(ses.Accounts)+7)>>3)
+	//ses.Content, err = json.Marshal(ses)
+	//if err != nil {
+	//	return false, "", err
+	//}
+	//
+	//// TransactionCount uint32          `xorm:"'transaction_count'"`
+	//// UnderTransacting uint32          `xorm:"'under_transacting'"`
+	//// Status           uint8           `xorm:"'status'"`
+	//// Content          []byte          `xorm:"'content'"`
+	//// Acks             []byte          `xorm:"'acks'"`
+	//
+	//return true, "", nil
 }
 
 func (ses *MultiThreadSerialSession) AfterInitGUID() error {

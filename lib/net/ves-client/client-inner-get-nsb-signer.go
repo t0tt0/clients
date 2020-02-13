@@ -35,7 +35,7 @@ func (vc *VesClient) getNSBSigner() (uiptypes.Signer, error) {
 
 	b, err := decodeAddition(key.Addition)
 	if err != nil {
-		return nil,wrapper.Wrap(types.CodeDecodeAdditionError, err)
+		return nil, wrapper.Wrap(types.CodeDecodeAdditionError, err)
 	}
 	vc.nsbSigner, err = signaturer.NewTendermintNSBSigner(b)
 	if err != nil {

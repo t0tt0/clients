@@ -6,3 +6,4 @@ package-probe/
 init-package-probe.go
 **/register-instance-map.go
 .todo-list
+central-ves

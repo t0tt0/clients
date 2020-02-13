@@ -2,7 +2,7 @@ package session
 
 import types "github.com/Myriad-Dreamin/go-ves/types"
 
-var testsession_impl types.Session = &SerialSession{}
+//var testsession_impl types.Session = &SerialSession{}
 
 // var testsession_impl2 types.Session = SerialSession{}
 

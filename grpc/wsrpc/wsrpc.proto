@@ -3,7 +3,7 @@ syntax = "proto3";
 
 package wsrpc;
 
-option go_package = "github.com/HyperService-Consortium/go-ves/grpc/wsrpc";
+option go_package = "github.com/Myriad-Dreamin/go-ves/grpc/wsrpc";
 
 import "base.proto";
 
@@ -25,15 +25,15 @@ message ClientHello {
 }
 
 message ClientHelloReply {
-    bytes grpc_host = 1;
-    bytes nsb_host = 2;
+    string grpc_host = 1;
+    string nsb_host = 2;
 }
 
 message RequestComingRequest {
     bytes session_id = 1;
     uiprpc.base.Account account = 2;
-    bytes grpc_host = 3;
-    bytes nsb_host = 4;
+    string grpc_host = 3;
+    string nsb_host = 4;
 }
 
 message RequestComingReply {
@@ -45,7 +45,7 @@ message RequestGrpcServiceRequest {
 }
 
 message RequestGrpcServiceReply {
-    bytes grpc_host = 1;
+    string grpc_host = 1;
 }
 
 message RequestNsbServiceRequest {
@@ -53,7 +53,7 @@ message RequestNsbServiceRequest {
 }
 
 message RequestNsbServiceReply {
-    bytes nsb_host = 1;
+    string nsb_host = 1;
 }
 
 message SessionListRequest {
@@ -61,8 +61,8 @@ message SessionListRequest {
 
 message SessionListReply {
     repeated bytes session_ids = 1;
-    bytes grpc_host = 2;
-    bytes default_nsb_host = 3;
+    string grpc_host = 2;
+    string default_nsb_host = 3;
 }
 
 message TransactionListRequest {
@@ -71,8 +71,8 @@ message TransactionListRequest {
 message TransactionListReply {
     // with help info
     repeated bytes transactions = 1;
-    bytes grpc_host = 2;
-    bytes default_nsb_host = 3;
+    string grpc_host = 2;
+    string default_nsb_host = 3;
 }
 
 message UserRegisterRequest {
@@ -120,7 +120,7 @@ message SessionRequestForInitReply {
 message SessionRequireTransactRequest {
     // isc_address
     bytes session_id = 1;
-    bytes grpc_host = 2;
+    string grpc_host = 2;
     uiprpc.base.Transaction tx = 3;
 }
 
@@ -135,7 +135,7 @@ message AttestationReceiveRequest {
     uiprpc.base.Account src = 3;
     uiprpc.base.Attestation atte = 4;
     // option
-    bytes grpc_host = 5;
+    string grpc_host = 5;
 }
 
 message AttestationReceiveReply {
@@ -145,8 +145,8 @@ message AttestationReceiveReply {
 message CloseSessionRequest {
     // isc_address
     bytes session_id = 1;
-    bytes nsb_host = 2;
-    bytes grpc_host = 3;
+    string nsb_host = 2;
+    string grpc_host = 3;
 }
 
 message CloseSessionReply {

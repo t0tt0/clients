@@ -14,7 +14,6 @@ import (
 	"sync"
 )
 
-
 // VesClient is the web socket client interact with VESs
 type VesClient struct {
 	p                      modelModule

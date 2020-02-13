@@ -5,7 +5,6 @@ import (
 	"github.com/Myriad-Dreamin/go-ves/central-ves/config"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/lib/plugin"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/model/fset"
-	helper "github.com/Myriad-Dreamin/go-ves/lib/net/help-func"
 	"net/http"
 )
 
@@ -19,11 +18,7 @@ func (c *CVESWebSocketPlugin) Configuration(logger plugin.Logger, loader plugin.
 	//options := parseOptions(rOptions)
 
 	c.logger = logger
-	var err error
-	c.nsbip, err = helper.HostFromString(cfg.BaseParametersConfig.NSBHost)
-	if err != nil {
-		panic(err)
-	}
+	c.nsbip = cfg.BaseParametersConfig.NSBHost
 	c.hub = newHub()
 	c.hub.server = c
 	c.Handler = http.NewServeMux()

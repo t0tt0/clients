@@ -23,7 +23,8 @@ func (server *Server) SessionStart(
 	ctx context.Context,
 	in *uiprpc.SessionStartRequest,
 ) (*uiprpc.SessionStartReply, error) {
-	return service.NewSessionStartService((*vs.VServer)(server), ctx, in).Serve()
+	panic("abort")
+	//return service.NewSessionStartService((*vs.VServer)(server), ctx, in).Serve()
 }
 
 func (server *Server) SessionAckForInit(

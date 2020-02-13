@@ -53,8 +53,7 @@ func TestVesClient_getNSBSigner(t *testing.T) {
 			vcWithAccountMockData,
 			sugar.HandlerError(
 				signaturer.NewTendermintNSBSigner(
-					accountNSBBasePrivateKey1)).
-			(uiptypes.Signer).GetPublicKey(),
+					accountNSBBasePrivateKey1)).(uiptypes.Signer).GetPublicKey(),
 			false},
 	}
 	for _, tt := range tests {

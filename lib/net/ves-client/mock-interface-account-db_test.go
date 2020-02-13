@@ -89,7 +89,6 @@ type AccountQueryAliasMockData struct {
 	V *Account
 }
 
-
 type accountKey = base_account.Account
 type AccountInvertFindMockData struct {
 	K *accountKey

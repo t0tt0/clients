@@ -38,12 +38,9 @@ var (
 	space   = []byte{' '}
 
 	// nsb ip
-	nsbip = []byte{47, 251, 2, 73, uint8(26657 >> 8), uint8(26657 & 0xff)}
-
+	nsbip = "47.251.2.73:26657"
 	// grpc ips
-	grpcips = [][]byte{
-		[]byte{127, 0, 0, 1, uint8(23351 >> 8), uint8(23351 & 0xff)},
-	}
+	grpcips = []string{"127.0.0.1:23351"}
 )
 
 var upgrader = websocket.Upgrader{

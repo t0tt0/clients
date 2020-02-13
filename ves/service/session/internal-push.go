@@ -35,7 +35,7 @@ func (svc *Service) pushTransaction(
 
 	_, err = svc.cVes.InternalAttestationSending(ctx, &uiprpc.InternalRequestComingRequest{
 		SessionId: ses.GetGUID(),
-		Host:      svc.cfg.BaseParametersConfig.GetParsedExposeHost(),
+		Host:      svc.cfg.BaseParametersConfig.ExposeHost,
 		Accounts:  accounts,
 	})
 	if err != nil {
@@ -48,7 +48,7 @@ func (svc *Service) pushInternalInitRequest(ctx context.Context, iscAddress []by
 	defer cancel()
 	r, err := svc.cVes.InternalRequestComing(ctx, &uiprpc.InternalRequestComingRequest{
 		SessionId: iscAddress,
-		Host:      svc.cfg.BaseParametersConfig.GetParsedExposeHost(),
+		Host:      svc.cfg.BaseParametersConfig.ExposeHost,
 		Accounts: func() (uaccs []*uiprpc_base.Account) {
 			for _, acc := range accounts {
 				uaccs = append(uaccs, &uiprpc_base.Account{

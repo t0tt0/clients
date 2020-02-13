@@ -37,10 +37,10 @@ type fieldOptionAccountDB AccountDBInterface
 type fieldOptionNSBBase string
 
 type fieldOption struct {
-	dns types.ChainDNSInterface
+	dns       types.ChainDNSInterface
 	nsbSigner uiptypes.Signer
 	accountDB AccountDBInterface
-	nsbBase string
+	nsbBase   string
 }
 
 func withNSBBase(s string) fieldOptionNSBBase {
@@ -67,6 +67,7 @@ func parseFieldOptions(rawOpts []interface{}) (options fieldOption) {
 }
 
 var testLogger logger.Logger
+
 func createFields(rawOpts ...interface{}) fields {
 	options := parseFieldOptions(rawOpts)
 	if testLogger == nil {
@@ -98,5 +99,3 @@ func createFields(rawOpts ...interface{}) fields {
 		nsbBase:                options.nsbBase,
 	}
 }
-
-

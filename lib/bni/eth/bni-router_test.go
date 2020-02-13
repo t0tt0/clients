@@ -28,21 +28,21 @@ func TestBN_Route(t *testing.T) {
 	}{
 		{
 			"test_easy", fields{
-			dns: config.ChainDNS,
-			signer: passwordSigner{
-				pb: sugar.HandlerError(hex.DecodeString("ce4871f094b30ed5bed4aa19d28cf654c6e8b3f3")).([]byte),
-				ps: "123456"},
-		}, args{
-			intent: &uiptypes.TransactionIntent{
-				TransType: trans_type.Payment,
-				Src:       sugar.HandlerError(hex.DecodeString("ce4871f094b30ed5bed4aa19d28cf654c6e8b3f3")).([]byte),
-				Dst:       sugar.HandlerError(hex.DecodeString("d977c0b967631f5bcc1f112fcb926ae53a1432c4")).([]byte),
-				Meta:      nil,
-				Amt:       "03e8",
-				ChainID:   6,
-			},
-			storage: nil,
-		}, false},
+				dns: config.ChainDNS,
+				signer: passwordSigner{
+					pb: sugar.HandlerError(hex.DecodeString("ce4871f094b30ed5bed4aa19d28cf654c6e8b3f3")).([]byte),
+					ps: "123456"},
+			}, args{
+				intent: &uiptypes.TransactionIntent{
+					TransType: trans_type.Payment,
+					Src:       sugar.HandlerError(hex.DecodeString("ce4871f094b30ed5bed4aa19d28cf654c6e8b3f3")).([]byte),
+					Dst:       sugar.HandlerError(hex.DecodeString("d977c0b967631f5bcc1f112fcb926ae53a1432c4")).([]byte),
+					Meta:      nil,
+					Amt:       "03e8",
+					ChainID:   6,
+				},
+				storage: nil,
+			}, false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

@@ -104,7 +104,7 @@ func (vc *VesClient) getSendAttestationReceiveRequest() *wsrpc.AttestationReceiv
 
 func (vc *VesClient) combineSendAttestationReceiveRequest(
 	src, dst *uiprpc_base.Account, attestation *uiprpc_base.Attestation,
-	gRPCHost, sessionId []byte,
+	gRPCHost string, sessionId []byte,
 ) *wsrpc.AttestationReceiveRequest {
 	req := vc.getSendAttestationReceiveRequest()
 	req.SessionId = sessionId

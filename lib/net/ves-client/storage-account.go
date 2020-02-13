@@ -72,11 +72,11 @@ func (ci Account) GetID() uint {
 	return ci.ID
 }
 
-func (accountDB AccountDB) Create(ci *Account, ) (int64, error) {
+func (accountDB AccountDB) Create(ci *Account) (int64, error) {
 	return accountDB.module.accountTraits.Create(ci)
 }
 
-func (accountDB AccountDB) Update(ci *Account, ) (int64, error) {
+func (accountDB AccountDB) Update(ci *Account) (int64, error) {
 	return accountDB.module.accountTraits.Update(ci)
 }
 
@@ -92,7 +92,7 @@ func (accountDB AccountDB) UpdateFields__(ci *Account, db dorm.SQLCommon, fields
 	return accountDB.module.accountTraits.UpdateFields__(db, ci, fields)
 }
 
-func (accountDB AccountDB) Delete(ci *Account, ) (int64, error) {
+func (accountDB AccountDB) Delete(ci *Account) (int64, error) {
 	return accountDB.Delete(ci)
 }
 
@@ -185,7 +185,6 @@ func (accountDB *AccountQuery) Scan(desc interface{}) (err error) {
 	return
 }
 
-
 type AccountDBInterface interface {
 	Create(ci *Account) (int64, error)
 	Update(ci *Account) (int64, error)
@@ -200,5 +199,3 @@ type AccountDBInterface interface {
 	FindAccounts(id uint, chainID uiptypes.ChainIDUnderlyingType) ([]uiptypes.Account, error)
 	QueryChain() *AccountQuery
 }
-
-
