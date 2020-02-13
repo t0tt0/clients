@@ -1,7 +1,6 @@
 package vesclient
 
 import (
-	"bytes"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
 	xconfig "github.com/Myriad-Dreamin/go-ves/config"
 	core_cfg "github.com/Myriad-Dreamin/go-ves/lib/core-cfg"
@@ -34,11 +33,11 @@ type VesClient struct {
 
 	waitOpt uiptypes.RouteOptionTimeout
 
-	cb   chan *bytes.Buffer
 	quit chan bool
 
 	nsbip  string
 	grpcip string
+	ignoreUnknownMessage bool
 
 	nsbBase string
 }
@@ -57,12 +56,11 @@ func (cfgX) GetDatabaseConfiguration() core_cfg.DatabaseConfig {
 	}
 }
 
-// NewVesClient return a pointer of VesClinet
+// NewVesClient return a pointer of VesClient
 func NewVesClient(rOptions ...interface{}) (vc *VesClient, err error) {
 	options := parseOptions(rOptions)
 	vc = &VesClient{
 		p:       newModelModule(),
-		cb:      make(chan *bytes.Buffer, 1),
 		quit:    make(chan bool, 1),
 		logger:  options.logger,
 		waitOpt: options.waitOpt,

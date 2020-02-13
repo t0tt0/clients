@@ -69,7 +69,6 @@ func TestVesClient_AccountToSigner(t *testing.T) {
 				dns:                    tt.fields.dns,
 				nsbClient:              tt.fields.nsbClient,
 				waitOpt:                tt.fields.waitOpt,
-				cb:                     tt.fields.cb,
 				quit:                   tt.fields.quit,
 				nsbip:                  tt.fields.nsbip,
 				grpcip:                 tt.fields.grpcip,

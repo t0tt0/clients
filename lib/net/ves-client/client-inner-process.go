@@ -46,7 +46,6 @@ func (vc *VesClient) processMessage(message []byte, messageID wsrpc.MessageType)
 	case wsrpc.CodeUserRegisterReply:
 		//vc.processUserRegisterReply(message)
 		// todo: ignoring
-		//vc.cb <- buf
 		vc.logger.Info("user request request successfully")
 	case wsrpc.CodeSessionFinishedRequest:
 		//vc.processSessionFinishedRequest(message)
@@ -74,7 +73,9 @@ func (vc *VesClient) processMessage(message []byte, messageID wsrpc.MessageType)
 		//vc.processCloseSessionReply(message)
 	default:
 		// abort
-		vc.logger.Warn("aborting message", "id", messageID)
+		if !vc.ignoreUnknownMessage {
+			vc.logger.Warn("aborting message", "id", messageID)
+		}
 	}
 }
 
