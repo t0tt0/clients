@@ -3,6 +3,8 @@ package vesclient
 import (
 	"github.com/HyperService-Consortium/go-uip/signaturer"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/Myriad-Dreamin/go-ves/lib/wrapper"
+	"github.com/Myriad-Dreamin/go-ves/types"
 )
 
 func (vc *VesClient) ensureGetNSBSigner(signer *uiptypes.Signer) bool {
@@ -26,18 +28,18 @@ func (vc *VesClient) getNSBSigner() (uiptypes.Signer, error) {
 
 	key, err := vc.db.QueryAlias(vc.nsbBase)
 	if err != nil {
-		return nil, wrap(CodeSelectError, err)
+		return nil, wrapper.Wrap(types.CodeSelectError, err)
 	} else if key == nil {
-		return nil, wrapCode(CodeNotFound)
+		return nil, wrapper.WrapCode(types.CodeNotFound)
 	}
 
-	b, err := decodeAddress(key.Address)
+	b, err := decodeAddition(key.Addition)
 	if err != nil {
-		return nil, wrap(CodeDecodeAddressError, err)
+		return nil,wrapper.Wrap(types.CodeDecodeAdditionError, err)
 	}
 	vc.nsbSigner, err = signaturer.NewTendermintNSBSigner(b)
 	if err != nil {
-		return nil, wrap(CodeInitializeNSBSignerError, err)
+		return nil, wrapper.Wrap(types.CodeConvertSignerError, err)
 	}
 
 	return vc.nsbSigner, nil
