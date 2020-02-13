@@ -3,6 +3,8 @@ package vesclient
 import (
 	ChainType "github.com/HyperService-Consortium/go-uip/const/chain_type"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/Myriad-Dreamin/go-ves/lib/wrapper"
+	"github.com/Myriad-Dreamin/go-ves/types"
 
 	ethbni "github.com/Myriad-Dreamin/go-ves/lib/bni/eth"
 	nsbbni "github.com/Myriad-Dreamin/go-ves/lib/bni/ten"
@@ -21,7 +23,7 @@ func (vc *VesClient) ensureRouter(chainID uint64, router *uiptypes.Router) bool 
 
 func (vc *VesClient) getRouter(chainID uint64) (uiptypes.Router, error) {
 	if ci, err := vc.dns.GetChainInfo(chainID); err != nil {
-		return nil, err
+		return nil, wrapper.Wrap(types.CodeChainIDNotFound, err)
 	} else {
 		switch ci.GetChainType() {
 		case ChainType.Ethereum:
@@ -29,7 +31,7 @@ func (vc *VesClient) getRouter(chainID uint64) (uiptypes.Router, error) {
 		case ChainType.TendermintNSB:
 			return nsbbni.NewBN(vc.dns), nil
 		default:
-			return nil, wrapCode(CodeUnknownChainID)
+			return nil, wrapper.WrapCode(types.CodeChainTypeNotFound)
 		}
 	}
 }

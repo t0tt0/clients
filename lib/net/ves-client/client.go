@@ -14,24 +14,26 @@ import (
 	"sync"
 )
 
-// VesClient is the web socket client interactive with veses
+
+// VesClient is the web socket client interact with VESs
 type VesClient struct {
-	p modelModule
+	p                      modelModule
+	rwMutex                sync.RWMutex
+	logger                 logger.Logger
+	module                 DepModule
+	closeSessionRWMutex    sync.RWMutex
+	closeSessionSubscriber []SessionCloseSubscriber
 
-	rwMutex sync.RWMutex
-	logger  logger.Logger
-	module  DepModule
+	name []byte
 
-	name   []byte
-	signer uiptypes.Signer
-	keys   *ECCKeys
-	accs   *EthAccounts
-	db     *AccountDB
-	dns    types.ChainDNSInterface
+	db   AccountDBInterface
+	conn SocketConn
 
-	conn      *websocket.Conn
+	nsbSigner uiptypes.Signer
+	dns       types.ChainDNSInterface
 	nsbClient types.NSBClient
-	waitOpt   uiptypes.RouteOptionTimeout
+
+	waitOpt uiptypes.RouteOptionTimeout
 
 	cb   chan *bytes.Buffer
 	quit chan bool
@@ -39,9 +41,7 @@ type VesClient struct {
 	nsbip  string
 	grpcip string
 
-	closeSessionRWMutex    sync.RWMutex
-	closeSessionSubscriber []SessionCloseSubscriber
-	nsbBase                string
+	nsbBase string
 }
 
 type cfgX struct {

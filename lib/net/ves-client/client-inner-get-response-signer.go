@@ -1,43 +1,17 @@
 package vesclient
 
 import (
-	"bytes"
-	"encoding/hex"
-	"github.com/HyperService-Consortium/go-uip/signaturer"
-
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
+	"github.com/Myriad-Dreamin/go-ves/lib/errorc"
+	"github.com/Myriad-Dreamin/go-ves/lib/wrapper"
 )
 
 func (vc *VesClient) getRespSigner(acc *uiprpc_base.Account) (uiptypes.Signer, error) {
-	if vc.signer != nil {
-		return vc.signer, nil
-	}
-	cid := acc.GetChainId()
-	// todo check dns
-	switch cid {
-	case 1, 2:
-		sadd := hex.EncodeToString(acc.GetAddress())
-		for _, acc := range vc.accs.Alias {
-			if acc.ChainID == cid && acc.Address == sadd {
-				return &acc, nil
-			}
-		}
-	case 3, 4:
-		for _, key := range vc.keys.Alias {
-			if key.ChainID != cid {
-				continue
-			}
-
-			signer, err := signaturer.NewTendermintNSBSigner(key.PrivateKey)
-			if err != nil {
-				return nil, err
-			}
-			if bytes.Equal(signer.GetPublicKey(), acc.GetAddress()) {
-				return signer, nil
-			}
-		}
+	rawAcc, err := vc.db.InvertFind(acc)
+	if errS := errorc.MaybeSelectError(rawAcc, err); errS.Code != 0 {
+		return nil, wrapper.Wrap(errS.Code, errS)
 	}
 
-	return nil, errNotFound
+	return vc.AccountToSigner(rawAcc)
 }

@@ -129,6 +129,23 @@ const (
 	CodeTransactionServiceErrorL = CodeTransactionFindError
 )
 
+const (
+	CodeChainIDNotFound Code = iota + 14000
+	CodeChainTypeNotFound
+
+	CodeChainDNSErrorR
+	CodeChainDNSErrorL = CodeChainIDNotFound
+)
+
+const (
+	CodeConvertSignerError Code = iota + 15000
+	CodeDecodeAdditionError
+	CodeDecodeAddressError
+
+	CodeConvertErrorR
+	CodeConvertErrorL = CodeConvertSignerError
+)
+
 var CodeDesc map[Code]string
 
 func init() {
@@ -144,6 +161,8 @@ func init() {
 		{CodeUserServiceErrorL, CodeUserServiceErrorR},
 		{CodeSessionServiceErrorL, CodeSessionServiceErrorR},
 		{CodeTransactionServiceErrorL, CodeTransactionServiceErrorR},
+		{CodeChainDNSErrorL, CodeChainDNSErrorR},
+		{CodeConvertErrorL, CodeConvertErrorR},
 	} {
 		for i := groupCode.L; i < groupCode.R; i++ {
 			CodeDesc[i] = CodeType(i).String()

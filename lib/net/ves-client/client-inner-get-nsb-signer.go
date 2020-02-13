@@ -20,8 +20,8 @@ func (vc *VesClient) ensureGetNSBSigner(signer *uiptypes.Signer) bool {
 }
 
 func (vc *VesClient) getNSBSigner() (uiptypes.Signer, error) {
-	if vc.signer != nil {
-		return vc.signer, nil
+	if vc.nsbSigner != nil {
+		return vc.nsbSigner, nil
 	}
 
 	key, err := vc.db.QueryAlias(vc.nsbBase)
@@ -35,10 +35,10 @@ func (vc *VesClient) getNSBSigner() (uiptypes.Signer, error) {
 	if err != nil {
 		return nil, wrap(CodeDecodeAddressError, err)
 	}
-	vc.signer, err = signaturer.NewTendermintNSBSigner(b)
+	vc.nsbSigner, err = signaturer.NewTendermintNSBSigner(b)
 	if err != nil {
 		return nil, wrap(CodeInitializeNSBSignerError, err)
 	}
 
-	return vc.signer, nil
+	return vc.nsbSigner, nil
 }

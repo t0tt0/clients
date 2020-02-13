@@ -1,15 +1,15 @@
 package wrapper
 
 func Wrap(code int, err error) error {
-	return wrapToStackError(2, code, err)
+	return wrapToStackError(3, code, err)
 }
 
 func WrapString(code int, err string) error {
-	return wrapStringToStackError(2, code, err)
+	return wrapStringToStackError(3, code, err)
 }
 
 func WrapCode(code int) error {
-	return wrapCodeToStackError(2, code)
+	return wrapCodeToStackError(3, code)
 }
 
 func WrapN(skip, code int, err error) error {
@@ -35,6 +35,9 @@ func FromString(s string) (f Frame, ok bool) {
 }
 
 func FromError(err error) (Frame, bool) {
+	if err == nil {
+		return nil, false
+	}
 	return FromString(err.Error())
 }
 
@@ -54,5 +57,33 @@ func StackFromString(s string) (fs Frames, ok bool) {
 }
 
 func StackFromError(s error) (Frames, bool) {
+	if s == nil {
+		return nil, false
+	}
 	return StackFromString(s.Error())
+}
+
+type Describer struct {
+	Pack, Rel string
+}
+
+func (d Describer) Describe(e error) string {
+	if e == nil {
+
+	}
+	if frames, ok := StackFromError(e); ok {
+		s, err := frames.Rel(d.Pack, d.Rel)
+		if err != nil {
+			return e.Error()
+		}
+		return s
+	}
+	return e.Error()
+}
+
+func Describe(e error) string {
+	if frames, ok := StackFromError(e); ok {
+		return frames.String()
+	}
+	return e.Error()
 }

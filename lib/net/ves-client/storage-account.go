@@ -40,13 +40,14 @@ type Account struct {
 
 	Alias     string                           `dorm:"alias" gorm:"alias;not_null" json:"alias"`
 	Address   string                           `dorm:"address" gorm:"address;not_null" json:"address"`
+	Addition  string                           `dorm:"addition" gorm:"addition;not_null" json:"addition"`
 	ChainType uiptypes.ChainTypeUnderlyingType `dorm:"chain_type" gorm:"chain_type;not_null" json:"chain_type"`
 	ChainID   uiptypes.ChainIDUnderlyingType   `dorm:"chain_id" gorm:"chain_id;not_null" json:"chain_id"`
 }
 
 // TableName specification
 func (Account) TableName() string {
-	return "chain_info"
+	return "account"
 }
 
 func NewAccount() *Account {
@@ -117,14 +118,13 @@ func (accountDB *AccountDB) ID_(db *gorm.DB, id uint) (account *Account, err err
 }
 
 func (accountDB *AccountDB) InvertFind(acc uiptypes.Account) (account *Account, err error) {
-	return wrapToAccount(accountDB.module.accountTraits.accountInvertFind(acc.GetChainId(), acc.GetAddress()))
+	return wrapToAccount(accountDB.module.accountTraits.accountInvertFind(
+		acc.GetChainId(), encodeAddress(acc.GetAddress())))
 }
 
 func (accountDB *AccountDB) QueryAlias(alias string) (account *Account, err error) {
 	return wrapToAccount(accountDB.module.accountTraits.accountQueryAlias(alias))
 }
-
-var decodeAddress = encoding.DecodeHex
 
 func (accountDB *AccountDB) FindAccounts(id uint, chainID uiptypes.ChainIDUnderlyingType) ([]uiptypes.Account, error) {
 	var mid []string
@@ -184,3 +184,21 @@ func (accountDB *AccountQuery) Scan(desc interface{}) (err error) {
 	err = accountDB.db.Scan(desc).Error
 	return
 }
+
+
+type AccountDBInterface interface {
+	Create(ci *Account) (int64, error)
+	Update(ci *Account) (int64, error)
+	UpdateFields(ci *Account, fields []string) (int64, error)
+	UpdateFields_(ci *Account, db *dorm.DB, fields []string) (int64, error)
+	UpdateFields__(ci *Account, db dorm.SQLCommon, fields []string) (int64, error)
+	Delete(ci *Account) (int64, error)
+	ID(id uint) (account *Account, err error)
+	ID_(db *gorm.DB, id uint) (account *Account, err error)
+	InvertFind(acc uiptypes.Account) (account *Account, err error)
+	QueryAlias(alias string) (account *Account, err error)
+	FindAccounts(id uint, chainID uiptypes.ChainIDUnderlyingType) ([]uiptypes.Account, error)
+	QueryChain() *AccountQuery
+}
+
+

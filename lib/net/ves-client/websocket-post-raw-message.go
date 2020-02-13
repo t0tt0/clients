@@ -3,6 +3,7 @@ package vesclient
 import (
 	uiprpc_base "github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
 	"github.com/Myriad-Dreamin/go-ves/grpc/wsrpc"
+	"github.com/gogo/protobuf/proto"
 )
 
 //err = svc.postRawMessage(wsrpc.CodeAttestationReceiveRequest, s.GetSrc(), sendingAtte)

@@ -70,6 +70,13 @@ func _() {
 	_ = x[CodeDeserializeTransactionError-13001]
 	_ = x[CodeAttestationSendError-13002]
 	_ = x[CodeTransactionServiceErrorR-13003]
+	_ = x[CodeChainIDNotFound-14000]
+	_ = x[CodeChainTypeNotFound-14001]
+	_ = x[CodeChainDNSErrorR-14002]
+	_ = x[CodeConvertSignerError-15000]
+	_ = x[CodeDecodeAdditionError-15001]
+	_ = x[CodeDecodeAddressError-15002]
+	_ = x[CodeConvertErrorR-15003]
 }
 
 const (
@@ -80,6 +87,8 @@ const (
 	_CodeType_name_4 = "CodeSubmissionUploadedCodeFSExecErrorCodeUploadFileErrorCodeConfigModifyErrorCodeStatErrorCodeFileSystemErrorR"
 	_CodeType_name_5 = "CodeSessionInitErrorCodeSessionRequestNSBErrorCodeSessionInitGUIDErrorCodeSessionInitOpIntentsErrorCodeSessionRedisGetAckCountErrorCodeSessionInsertAccountErrorCodeSessionFindErrorCodeSessionNotFindErrorCodeSessionAcknowledgeErrorCodeSessionAccountFindErrorCodeSessionAccountNotFoundCodeSessionAccountGetTotolErrorCodeSessionAccountGetAcknowledgedErrorCodeSessionSignTxsErrorCodeSessionFreezeInfoErrorCodeSessionInitInternalRequestErrorCodeSessionServiceErrorR"
 	_CodeType_name_6 = "CodeTransactionFindErrorCodeDeserializeTransactionErrorCodeAttestationSendErrorCodeTransactionServiceErrorR"
+	_CodeType_name_7 = "CodeChainIDNotFoundCodeChainTypeNotFoundCodeChainDNSErrorR"
+	_CodeType_name_8 = "CodeConvertSignerErrorCodeDecodeAdditionErrorCodeDecodeAddressErrorCodeConvertErrorR"
 )
 
 var (
@@ -90,6 +99,8 @@ var (
 	_CodeType_index_4 = [...]uint8{0, 22, 37, 56, 77, 90, 110}
 	_CodeType_index_5 = [...]uint16{0, 20, 46, 70, 99, 131, 160, 180, 203, 230, 257, 283, 314, 352, 375, 401, 436, 460}
 	_CodeType_index_6 = [...]uint8{0, 24, 55, 79, 107}
+	_CodeType_index_7 = [...]uint8{0, 19, 40, 58}
+	_CodeType_index_8 = [...]uint8{0, 22, 45, 67, 84}
 )
 
 func (i CodeType) String() string {
@@ -114,6 +125,12 @@ func (i CodeType) String() string {
 	case 13000 <= i && i <= 13003:
 		i -= 13000
 		return _CodeType_name_6[_CodeType_index_6[i]:_CodeType_index_6[i+1]]
+	case 14000 <= i && i <= 14002:
+		i -= 14000
+		return _CodeType_name_7[_CodeType_index_7[i]:_CodeType_index_7[i+1]]
+	case 15000 <= i && i <= 15003:
+		i -= 15000
+		return _CodeType_name_8[_CodeType_index_8[i]:_CodeType_index_8[i+1]]
 	default:
 		return "CodeType(" + strconv.FormatInt(int64(i), 10) + ")"
 	}

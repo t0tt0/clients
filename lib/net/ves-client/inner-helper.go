@@ -3,8 +3,25 @@ package vesclient
 import (
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
 	uiprpc_base "github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
+	"github.com/Myriad-Dreamin/go-ves/lib/encoding"
 	"github.com/gogo/protobuf/proto"
 )
+
+func encodeAddress(src []byte) string {
+	return encoding.EncodeHex(src)
+}
+
+func decodeAddress(src string) ([]byte, error) {
+	return encoding.DecodeHex(src)
+}
+
+func encodeAddition(src []byte) string {
+	return encoding.EncodeHex(src)
+}
+
+func decodeAddition(src string) ([]byte, error) {
+	return encoding.DecodeHex(src)
+}
 
 func (vc *VesClient) unmarshalProto(message []byte, target proto.Message) bool {
 	err := proto.Unmarshal(message, target)

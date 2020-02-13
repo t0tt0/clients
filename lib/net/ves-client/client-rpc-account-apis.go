@@ -2,7 +2,6 @@ package vesclient
 
 import (
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
-	"github.com/Myriad-Dreamin/go-ves/lib/encoding"
 	ginhelper "github.com/Myriad-Dreamin/go-ves/lib/gin-helper"
 	"github.com/Myriad-Dreamin/go-ves/lib/miris"
 	"github.com/Myriad-Dreamin/go-ves/types"
@@ -34,7 +33,7 @@ func (vc *VesClient) IrisPostAccount(c controller.MContext) {
 	var account Account
 	account.ChainType = req.ChainType
 	account.ChainID = req.ChainID
-	account.Address = encoding.EncodeHex(req.Address)
+	account.Address = encodeAddress(req.Address)
 
 	if _, err := vc.db.Create(&account); err != nil {
 		c.JSON(http.StatusOK, errorSerializer(types.CodeInsertError, err.Error()))
