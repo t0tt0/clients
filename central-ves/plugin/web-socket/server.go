@@ -200,7 +200,7 @@ func (c *CVESWebSocketPlugin) requestComing(acc uiptypes.Account, iscAddress, gr
 		Address: acc.GetAddress(),
 		ChainId: acc.GetChainId(),
 	}
-	packet, err := wsrpc.GetDefaultSerializer().Serial(wsrpc.CodeRequestComingRequest, &msg)
+	packet, err := wsrpc.GetDefaultSerializer().Serialize(wsrpc.CodeRequestComingRequest, &msg)
 	if err != nil {
 		return err
 	}
@@ -225,7 +225,7 @@ func (c *CVESWebSocketPlugin) attestationSending(acc uiptypes.Account, iscAddres
 
 	// log.Infof("attestating network gate", )
 
-	packet, err := wsrpc.GetDefaultSerializer().Serial(wsrpc.CodeAttestationSendingRequest, &msg)
+	packet, err := wsrpc.GetDefaultSerializer().Serialize(wsrpc.CodeAttestationSendingRequest, &msg)
 	if err != nil {
 		return err
 	}
@@ -271,7 +271,7 @@ func (c *CVESWebSocketPlugin) closeSession(acc uiptypes.Account, iscAddress, grp
 	msg.GrpcHost = grpcHost
 	msg.SessionId = iscAddress
 
-	packet, err := wsrpc.GetDefaultSerializer().Serial(wsrpc.CodeCloseSessionRequest, &msg)
+	packet, err := wsrpc.GetDefaultSerializer().Serialize(wsrpc.CodeCloseSessionRequest, &msg)
 	if err != nil {
 		return err
 	}

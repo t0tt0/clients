@@ -2,8 +2,8 @@ package vesclient
 
 import "github.com/Myriad-Dreamin/go-ves/grpc/wsrpc"
 
-func (vc *VesClient) processMessage(message []byte, messageID uint16) {
-	switch wsrpc.MessageType(messageID) {
+func (vc *VesClient) processMessage(message []byte, messageID wsrpc.MessageType) {
+	switch messageID {
 	/* 0~4 */
 	case wsrpc.CodeMessageRequest:
 		//vc.processMessageRequest(message)

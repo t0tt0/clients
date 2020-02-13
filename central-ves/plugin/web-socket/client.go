@@ -5,9 +5,7 @@
 package centered_ves
 
 import (
-	"bytes"
 	"crypto/md5"
-	"encoding/binary"
 	"encoding/hex"
 	"fmt"
 	base_account "github.com/HyperService-Consortium/go-uip/base-account"
@@ -105,29 +103,31 @@ func (c *Client) readPump() {
 		return nil
 	})
 	for {
-		_, message, err := c.conn.ReadMessage()
+		_, rawMessage, err := c.conn.ReadMessage()
 		if err != nil {
 			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
 				c.hub.server.logger.Info("close error", "error", err)
 			}
 			break
 		}
-		tag := md5.Sum(message)
-		var buf = bytes.NewBuffer(message)
-		var messageID uint16
-		err = binary.Read(buf, binary.BigEndian, &messageID)
+		tag := md5.Sum(rawMessage)
+
+		message, messageID, err := wsrpc.Deserialize(rawMessage)
+		if err != nil {
+			c.hub.server.logger.Info("deserialize error", "error", err)
+		}
 		c.hub.server.logger.Info("reading message", "tag", hex.EncodeToString(tag[:]), "type", wsrpc.MessageType(messageID))
 		switch wsrpc.MessageType(messageID) {
 		case wsrpc.CodeMessageRequest:
 			var s wsrpc.Message
-			err = proto.Unmarshal(buf.Bytes(), &s)
+			err = proto.Unmarshal(message, &s)
 			if err != nil {
 				c.hub.server.logger.Info("unmarshal error", "error", err)
 				continue
 			}
 			c.hub.server.logger.Info("message request",
 				"from", hex.EncodeToString(s.GetFrom()), "to", hex.EncodeToString(s.GetTo()))
-			var buf, err = wsrpc.GetDefaultSerializer().Serial(wsrpc.CodeMessageReply, &s)
+			var buf, err = wsrpc.GetDefaultSerializer().Serialize(wsrpc.CodeMessageReply, &s)
 
 			if err != nil {
 				c.hub.server.logger.Info("error", err)
@@ -139,7 +139,7 @@ func (c *Client) readPump() {
 		case wsrpc.CodeRawProto:
 
 			var s wsrpc.RawMessage
-			err = proto.Unmarshal(buf.Bytes(), &s)
+			err = proto.Unmarshal(message, &s)
 			if err != nil {
 				c.hub.server.logger.Info("error", err)
 				continue
@@ -162,7 +162,7 @@ func (c *Client) readPump() {
 			}}
 		case wsrpc.CodeClientHelloRequest:
 			var s wsrpc.ClientHello
-			err = proto.Unmarshal(buf.Bytes(), &s)
+			err = proto.Unmarshal(message, &s)
 			if err != nil {
 				c.hub.server.logger.Info("error", err)
 			}
@@ -178,7 +178,7 @@ func (c *Client) readPump() {
 			t.GrpcHost = grpcips[0]
 			t.NsbHost = c.hub.server.nsbip
 
-			buf, err := wsrpc.GetDefaultSerializer().Serial(wsrpc.CodeClientHelloReply, &t)
+			buf, err := wsrpc.GetDefaultSerializer().Serialize(wsrpc.CodeClientHelloReply, &t)
 			if err != nil {
 				c.hub.server.logger.Info("error", err)
 				continue
@@ -194,7 +194,7 @@ func (c *Client) readPump() {
 
 		case wsrpc.CodeUserRegisterRequest:
 			var s wsrpc.UserRegisterRequest
-			err = proto.Unmarshal(buf.Bytes(), &s)
+			err = proto.Unmarshal(message, &s)
 			if err != nil {
 				c.hub.server.logger.Info("error", err)
 			}

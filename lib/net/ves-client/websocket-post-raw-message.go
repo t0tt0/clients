@@ -15,7 +15,7 @@ import (
 // for retransmitting to other client
 func (vc *VesClient) PostRawMessage(code wsrpc.MessageType, dst *uiprpc_base.Account, msg proto.Message) error {
 
-	buf, err := wsrpc.GetDefaultSerializer().Serial(code, msg)
+	buf, err := wsrpc.GetDefaultSerializer().Serialize(code, msg)
 	/// fmt.Println(buf.Bytes())
 	if err != nil {
 		return err

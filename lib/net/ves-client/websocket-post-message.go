@@ -7,7 +7,7 @@ import (
 )
 
 func (vc *VesClient) postMessage(code wsrpc.MessageType, msg proto.Message) error {
-	buf, err := wsrpc.GetDefaultSerializer().Serial(code, msg)
+	buf, err := wsrpc.GetDefaultSerializer().Serialize(code, msg)
 	if err != nil {
 		return err
 	}

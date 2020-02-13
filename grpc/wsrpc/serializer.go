@@ -3,6 +3,7 @@ package wsrpc
 import (
 	"bytes"
 	"encoding/binary"
+	"github.com/Myriad-Dreamin/go-ves/types"
 	"sync"
 
 	"github.com/gogo/protobuf/proto"
@@ -33,17 +34,17 @@ func NewBufferPool(maxBufferSize int) *BufferPool {
 
 // Put a buffer into this BufferPool. the buffer whose size is smaller than the
 // bufferPool.maxBufferSize will be ignored
-func (bufpool *BufferPool) Put(buf interface{}) {
+func (bp *BufferPool) Put(buf interface{}) {
 	if buf, ok := buf.(*bytes.Buffer); ok {
 		// fmt.Printf("puu %p", buf)
-		if buf.Cap() >= bufpool.maxBufferSize {
+		if buf.Cap() >= bp.maxBufferSize {
 			buf.Reset()
-			bufpool.Pool.Put(buf)
+			bp.Pool.Put(buf)
 		}
 	}
 }
 
-// Serializer works for provide the environment of serializing protobuf
+// Serializer works for provide the environment of serializing protoBuf
 // messages
 type Serializer struct {
 	bufferPool *BufferPool
@@ -56,19 +57,29 @@ func NewSerializer(maxBufferSize int) *Serializer {
 	return &Serializer{bufferPool: NewBufferPool(maxBufferSize)}
 }
 
-// Serial concat the msgid and serialized msg
-func (ser *Serializer) Serial(msgid MessageType, msg proto.Message) (*bytes.Buffer, error) {
-	var qwq = ser.bufferPool.Get().(*bytes.Buffer)
-	qwq.Reset()
+// Serialize concat the msg id and serialized msg
+func (ser *Serializer) Serialize(msgID MessageType, msg proto.Message) (*bytes.Buffer, error) {
+	var buf = ser.bufferPool.Get().(*bytes.Buffer)
+	buf.Reset()
 
-	binary.Write(qwq, binary.BigEndian, msgid)
+	err := binary.Write(buf, types.WebSocketEndian, msgID)
+	if err != nil {
+		return nil, err
+	}
 
 	b, err := proto.Marshal(msg)
 	if err != nil {
 		return nil, err
 	}
-	qwq.Write(b)
-	return qwq, nil
+	buf.Write(b)
+	return buf, nil
+}
+
+func Deserialize(rawMessage []byte) (message []byte, messageID MessageType, err error) {
+	var buf = bytes.NewBuffer(rawMessage)
+	err = binary.Read(buf, types.WebSocketEndian, &messageID)
+	message = buf.Bytes()
+	return
 }
 
 // Put a buffer into its buffer pool
