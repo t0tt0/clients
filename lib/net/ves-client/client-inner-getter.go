@@ -42,23 +42,23 @@ func (vc *VesClient) getRequestComingRequest() *wsrpc.RequestComingRequest {
 	return new(wsrpc.RequestComingRequest)
 }
 
-func (vc *VesClient) getrequestComingReply() *wsrpc.RequestComingReply {
+func (vc *VesClient) getRequestComingReply() *wsrpc.RequestComingReply {
 	return new(wsrpc.RequestComingReply)
 }
 
-func (vc *VesClient) getrequestGrpcServiceRequest() *wsrpc.RequestGrpcServiceRequest {
+func (vc *VesClient) getRequestGrpcServiceRequest() *wsrpc.RequestGrpcServiceRequest {
 	return new(wsrpc.RequestGrpcServiceRequest)
 }
 
-func (vc *VesClient) getrequestGrpcServiceReply() *wsrpc.RequestGrpcServiceReply {
+func (vc *VesClient) getRequestGrpcServiceReply() *wsrpc.RequestGrpcServiceReply {
 	return new(wsrpc.RequestGrpcServiceReply)
 }
 
-func (vc *VesClient) getrequestNsbServiceRequest() *wsrpc.RequestNsbServiceRequest {
+func (vc *VesClient) getRequestNsbServiceRequest() *wsrpc.RequestNsbServiceRequest {
 	return new(wsrpc.RequestNsbServiceRequest)
 }
 
-func (vc *VesClient) getrequestNsbServiceReply() *wsrpc.RequestNsbServiceReply {
+func (vc *VesClient) getRequestNsbServiceReply() *wsrpc.RequestNsbServiceReply {
 	return new(wsrpc.RequestNsbServiceReply)
 }
 
@@ -70,19 +70,19 @@ func (vc *VesClient) getuserRegisterReply() *wsrpc.UserRegisterReply {
 	return new(wsrpc.UserRegisterReply)
 }
 
-func (vc *VesClient) getsessionListRequest() *wsrpc.SessionListRequest {
+func (vc *VesClient) getSessionListRequest() *wsrpc.SessionListRequest {
 	return new(wsrpc.SessionListRequest)
 }
 
-func (vc *VesClient) getsessionListReply() *wsrpc.SessionListReply {
+func (vc *VesClient) getSessionListReply() *wsrpc.SessionListReply {
 	return new(wsrpc.SessionListReply)
 }
 
-func (vc *VesClient) gettransactionListRequest() *wsrpc.TransactionListRequest {
+func (vc *VesClient) getTransactionListRequest() *wsrpc.TransactionListRequest {
 	return new(wsrpc.TransactionListRequest)
 }
 
-func (vc *VesClient) gettransactionListReply() *wsrpc.TransactionListReply {
+func (vc *VesClient) getTransactionListReply() *wsrpc.TransactionListReply {
 	return new(wsrpc.TransactionListReply)
 }
 
