@@ -2,7 +2,6 @@ package vesclient
 
 import (
 	"bytes"
-	"encoding/hex"
 	"fmt"
 	"github.com/HyperService-Consortium/go-uip/signaturer"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
@@ -29,8 +28,8 @@ var (
 					CreatedAt: time.Time{},
 					UpdatedAt: time.Time{},
 					Alias:     nsbBaseKey,
-					Address:   hex.EncodeToString(make([]byte, 32)),
-					Addition:  hex.EncodeToString(accountNSBBasePrivateKey1),
+					Address:   encodeAddress(make([]byte, 32)),
+					Addition:  encodeAddition(accountNSBBasePrivateKey1),
 					ChainType: 0,
 					ChainID:   0,
 				},
