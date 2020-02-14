@@ -36,7 +36,7 @@ func (vc *VesClient) IrisPostAccount(c controller.MContext) {
 	account.Address = encodeAddress(req.Address)
 
 	if _, err := vc.db.Create(&account); err != nil {
-		c.JSON(http.StatusOK, errorSerializer(types.CodeInsertError, err.Error()))
+		c.JSON(http.StatusOK, errorSerializer(types.CodeInsertError, err))
 		return
 	}
 

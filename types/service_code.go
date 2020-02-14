@@ -154,6 +154,17 @@ const (
 	CodeWebSocketErrorL = CodeReadMessageError
 )
 
+const (
+	CodeNotConnected Code = iota + 17000
+	CodeGetVESHostError
+	CodeExecuteError
+
+	CodeGRPCErrorR
+	CodeGRPCErrorL = CodeNotConnected
+)
+
+//
+
 var CodeDesc map[Code]string
 
 func init() {
@@ -172,6 +183,7 @@ func init() {
 		{CodeChainDNSErrorL, CodeChainDNSErrorR},
 		{CodeConvertErrorL, CodeConvertErrorR},
 		{CodeWebSocketErrorL, CodeWebSocketErrorR},
+		{CodeGRPCErrorL, CodeGRPCErrorR},
 	} {
 		for i := groupCode.L; i < groupCode.R; i++ {
 			CodeDesc[i] = CodeType(i).String()

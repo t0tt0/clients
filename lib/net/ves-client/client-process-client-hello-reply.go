@@ -6,12 +6,12 @@ import (
 )
 
 func (vc *VesClient) ProcessClientHelloReply(req *wsrpc.ClientHelloReply) {
-	vc.grpcip = req.GetGrpcHost()
-	vc.logger.Info("adding default grpc ip ", "ip", vc.grpcip)
+	vc.vesHost = req.GetGrpcHost()
+	vc.logger.Info("adding default grpc ip ", "ip", vc.vesHost)
 
-	vc.nsbip = req.GetNsbHost()
-	vc.logger.Info("adding default nsb ip ", "ip", vc.nsbip)
+	vc.nsbHost = req.GetNsbHost()
+	vc.logger.Info("adding default nsb ip ", "ip", vc.nsbHost)
 
 	// todo: restrict scope
-	vc.nsbClient = nsbcli.NewNSBClient(vc.nsbip)
+	vc.nsbClient = nsbcli.NewNSBClient(vc.nsbHost)
 }

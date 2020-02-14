@@ -2,16 +2,11 @@ package vesclient
 
 import (
 	"context"
-	"encoding/hex"
 	"encoding/json"
-	"fmt"
 	"google.golang.org/grpc"
-	"io"
-	"os"
 	"time"
 
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
-	uipbase "github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
 )
 
 //
@@ -303,64 +298,6 @@ func convRaw(rs []json.RawMessage) (ret [][]byte) {
 	return ret
 }
 
-func (vc *VesClient) readOpIntents(filePath string, fileBuffer []byte) (opIntents, error) {
-	var intents opIntents
-	file, err := os.Open(filePath)
-	if err != nil {
-		vc.logger.Error("open file error", "error", err)
-		return intents, err
-	}
-
-	var n int
-	n, err = io.ReadFull(file, fileBuffer)
-	_ = file.Close()
-	if err != nil && err != io.ErrUnexpectedEOF {
-		vc.logger.Error("read error", "error", err)
-		return intents, err
-	}
-
-	err = json.Unmarshal(fileBuffer[:n], &intents)
-	if err != nil {
-		vc.logger.Error("unmarshal error", "error", err)
-		return intents, fmt.Errorf("Unmarshal failed: %v", err)
-	}
-
-	vc.logger.Info("read op intents from file successfully", "intent count", len(intents.Intents), "dependencies count", len(intents.Dependencies))
-	return intents, nil
-}
-
-func (vc *VesClient) SendOpIntents(filePath string, fileBuffer []byte) error {
-	intents, err := vc.readOpIntents(filePath, fileBuffer)
-	if err != nil {
-		return err
-	}
-
-	// Set up a connection to the server.
-	conn, err := grpc.Dial(mAddress, grpc.WithInsecure())
-	if err != nil {
-		vc.logger.Error("did not connect", "error", err)
-		return err
-	}
-	defer conn.Close()
-	c := uiprpc.NewVESClient(conn)
-
-	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
-	defer cancel()
-	r, err := c.SessionStart(
-		ctx,
-		&uiprpc.SessionStartRequest{
-			Opintents: &uipbase.OpIntents{
-				Dependencies: convRaw(intents.Dependencies),
-				Contents:     convRaw(intents.Intents),
-			},
-		})
-	if err != nil {
-		vc.logger.Error("could not greet", "error", err)
-		return err
-	}
-	vc.logger.Info("Session Start, %v", "ok", r.GetOk(), "session id", hex.EncodeToString(r.GetSessionId()))
-	return nil
-}
 
 func (vc *VesClient) GetRawTransaction(sessionID []byte, host string) (
 	*uiprpc.SessionRequireRawTransactReply, error,

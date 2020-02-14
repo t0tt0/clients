@@ -28,7 +28,8 @@ type modelModule struct {
 	mcore.DormModule
 	mcore.LoggerModule
 
-	accountTraits
+	accountTraits accountTraits
+	sessionTraits sessionTraits
 	Opened bool
 }
 

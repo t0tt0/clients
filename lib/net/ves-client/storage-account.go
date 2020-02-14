@@ -1,7 +1,7 @@
 package vesclient
 
 import (
-	base_account "github.com/HyperService-Consortium/go-uip/base-account"
+	"github.com/HyperService-Consortium/go-uip/base-account"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
 	"github.com/Myriad-Dreamin/dorm"
 	"github.com/Myriad-Dreamin/go-ves/lib/encoding"
@@ -10,8 +10,6 @@ import (
 	"github.com/jinzhu/gorm"
 	"time"
 )
-
-var ()
 
 type accountTraits struct {
 	traits
@@ -54,46 +52,46 @@ func NewAccount() *Account {
 	return &Account{}
 }
 
-func (ci Account) migrate(dep *modelModule) error {
+func (acc Account) migrate(dep *modelModule) error {
 	if err := dep.accountTraits.Migrate(); err != nil {
 		return err
 	}
 
-	return dep.GormDB.Model(&ci).AddUniqueIndex("ci_ac", "address", "chain_id").Error
+	return dep.GormDB.Model(&acc).AddUniqueIndex("ci_ac", "address", "chain_id").Error
 }
 
-func (ci Account) migration(dep *modelModule) func() error {
+func (acc Account) migration(dep *modelModule) func() error {
 	return func() error {
-		return ci.migrate(dep)
+		return acc.migrate(dep)
 	}
 }
 
-func (ci Account) GetID() uint {
-	return ci.ID
+func (acc Account) GetID() uint {
+	return acc.ID
 }
 
-func (accountDB AccountDB) Create(ci *Account) (int64, error) {
-	return accountDB.module.accountTraits.Create(ci)
+func (accountDB AccountDB) Create(acc *Account) (int64, error) {
+	return accountDB.module.accountTraits.Create(acc)
 }
 
-func (accountDB AccountDB) Update(ci *Account) (int64, error) {
-	return accountDB.module.accountTraits.Update(ci)
+func (accountDB AccountDB) Update(acc *Account) (int64, error) {
+	return accountDB.module.accountTraits.Update(acc)
 }
 
-func (accountDB AccountDB) UpdateFields(ci *Account, fields []string) (int64, error) {
-	return accountDB.module.accountTraits.UpdateFields(ci, fields)
+func (accountDB AccountDB) UpdateFields(acc *Account, fields []string) (int64, error) {
+	return accountDB.module.accountTraits.UpdateFields(acc, fields)
 }
 
-func (accountDB AccountDB) UpdateFields_(ci *Account, db *dorm.DB, fields []string) (int64, error) {
-	return accountDB.module.accountTraits.UpdateFields_(db, ci, fields)
+func (accountDB AccountDB) UpdateFields_(acc *Account, db *dorm.DB, fields []string) (int64, error) {
+	return accountDB.module.accountTraits.UpdateFields_(db, acc, fields)
 }
 
-func (accountDB AccountDB) UpdateFields__(ci *Account, db dorm.SQLCommon, fields []string) (int64, error) {
-	return accountDB.module.accountTraits.UpdateFields__(db, ci, fields)
+func (accountDB AccountDB) UpdateFields__(acc *Account, db dorm.SQLCommon, fields []string) (int64, error) {
+	return accountDB.module.accountTraits.UpdateFields__(db, acc, fields)
 }
 
-func (accountDB AccountDB) Delete(ci *Account) (int64, error) {
-	return accountDB.Delete(ci)
+func (accountDB AccountDB) Delete(acc *Account) (int64, error) {
+	return accountDB.Delete(acc)
 }
 
 type AccountDB struct {
@@ -186,12 +184,12 @@ func (accountDB *AccountQuery) Scan(desc interface{}) (err error) {
 }
 
 type AccountDBInterface interface {
-	Create(ci *Account) (int64, error)
-	Update(ci *Account) (int64, error)
-	UpdateFields(ci *Account, fields []string) (int64, error)
-	UpdateFields_(ci *Account, db *dorm.DB, fields []string) (int64, error)
-	UpdateFields__(ci *Account, db dorm.SQLCommon, fields []string) (int64, error)
-	Delete(ci *Account) (int64, error)
+	Create(acc *Account) (int64, error)
+	Update(acc *Account) (int64, error)
+	UpdateFields(acc *Account, fields []string) (int64, error)
+	UpdateFields_(acc *Account, db *dorm.DB, fields []string) (int64, error)
+	UpdateFields__(acc *Account, db dorm.SQLCommon, fields []string) (int64, error)
+	Delete(acc *Account) (int64, error)
 	ID(id uint) (account *Account, err error)
 	ID_(db *gorm.DB, id uint) (account *Account, err error)
 	InvertFind(acc uiptypes.Account) (account *Account, err error)

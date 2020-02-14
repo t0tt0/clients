@@ -130,7 +130,7 @@ func (h *Hub) broadcastMessage(message *writeMessageTask) {
 }
 
 func (h *Hub) unicastMessage(client *Client, ok bool, message *uniMessage) {
-	if !ok {
+	if ok {
 		h.server.logger.Info("message unicasting",
 			"chain id", message.target.GetChainId(),
 			"address", hex.EncodeToString(message.target.GetAddress()))

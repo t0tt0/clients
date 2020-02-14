@@ -23,6 +23,14 @@ func decodeAddition(src string) ([]byte, error) {
 	return encoding.DecodeHex(src)
 }
 
+func stringSliceToBytesSlice(ss []string) (bs [][]byte) {
+	bs = make([][]byte, len(ss))
+	for i := range ss {
+		bs[i] = []byte(ss[i])
+	}
+	return
+}
+
 func (vc *VesClient) unmarshalProto(message []byte, target proto.Message) bool {
 	err := proto.Unmarshal(message, target)
 	if err != nil {

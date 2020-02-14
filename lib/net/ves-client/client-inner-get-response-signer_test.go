@@ -73,8 +73,8 @@ func TestVesClient_getRespSigner(t *testing.T) {
 				nsbClient:              tt.fields.nsbClient,
 				waitOpt:                tt.fields.waitOpt,
 				quit:                   tt.fields.quit,
-				nsbip:                  tt.fields.nsbip,
-				grpcip:                 tt.fields.grpcip,
+				nsbHost:                tt.fields.nsbip,
+				vesHost:                tt.fields.grpcip,
 				nsbBase:                tt.fields.nsbBase,
 			}
 			got, err := vc.getRespSigner(tt.args.acc)

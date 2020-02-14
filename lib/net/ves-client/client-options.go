@@ -10,6 +10,10 @@ type CVesHostOption string
 type NsbHostOption string
 type ClientName []byte
 
+type ClientConstant struct {
+	SendOpIntentsTimeout time.Duration
+}
+
 type ServerOptions struct {
 	logger     logger.Logger
 	waitOpt    uiptypes.RouteOptionTimeout
@@ -17,9 +21,16 @@ type ServerOptions struct {
 	nsbHost    string
 	nsbBase    string
 	clientName []byte
+	constant *ClientConstant
 }
 
 var globalLogger = logger.NewStdLogger()
+
+func NewConstantOption() *ClientConstant {
+	return &ClientConstant{
+		SendOpIntentsTimeout: time.Minute,
+	}
+}
 
 func defaultServerOptions() ServerOptions {
 	return ServerOptions{
@@ -29,6 +40,7 @@ func defaultServerOptions() ServerOptions {
 		addr:       "127.0.0.1:23452",
 		nsbBase:    "ten1",
 		nsbHost:    "127.0.0.1:27667",
+		constant: NewConstantOption(),
 	}
 }
 
@@ -46,6 +58,8 @@ func parseOptions(rOptions []interface{}) ServerOptions {
 			options.nsbHost = string(option)
 		case ClientName:
 			options.clientName = option
+		case *ClientConstant:
+			options.constant = option
 		}
 	}
 	return options

@@ -84,8 +84,8 @@ func TestVesClient_getRouter(t *testing.T) {
 				nsbClient:              tt.fields.nsbClient,
 				waitOpt:                tt.fields.waitOpt,
 				quit:                   tt.fields.quit,
-				nsbip:                  tt.fields.nsbip,
-				grpcip:                 tt.fields.grpcip,
+				nsbHost:                tt.fields.nsbip,
+				vesHost:                tt.fields.grpcip,
 				nsbBase:                tt.fields.nsbBase,
 			}
 			got, err := vc.getRouter(tt.args.chainID)
@@ -147,8 +147,8 @@ func TestVesClient_getBlockStorage(t *testing.T) {
 				nsbClient:              tt.fields.nsbClient,
 				waitOpt:                tt.fields.waitOpt,
 				quit:                   tt.fields.quit,
-				nsbip:                  tt.fields.nsbip,
-				grpcip:                 tt.fields.grpcip,
+				nsbHost:                tt.fields.nsbip,
+				vesHost:                tt.fields.grpcip,
 				nsbBase:                tt.fields.nsbBase,
 			}
 			got, err := vc.getBlockStorage(tt.args.chainID)
@@ -209,8 +209,8 @@ func TestVesClient_ensureRouter(t *testing.T) {
 				nsbClient:              tt.fields.nsbClient,
 				waitOpt:                tt.fields.waitOpt,
 				quit:                   tt.fields.quit,
-				nsbip:                  tt.fields.nsbip,
-				grpcip:                 tt.fields.grpcip,
+				nsbHost:                tt.fields.nsbip,
+				vesHost:                tt.fields.grpcip,
 				nsbBase:                tt.fields.nsbBase,
 			}
 			if got := vc.ensureRouter(tt.args.chainID, &tt.args.router); got != tt.want {
@@ -266,8 +266,8 @@ func TestVesClient_ensureBlockStorage(t *testing.T) {
 				nsbClient:              tt.fields.nsbClient,
 				waitOpt:                tt.fields.waitOpt,
 				quit:                   tt.fields.quit,
-				nsbip:                  tt.fields.nsbip,
-				grpcip:                 tt.fields.grpcip,
+				nsbHost:                tt.fields.nsbip,
+				vesHost:                tt.fields.grpcip,
 				nsbBase:                tt.fields.nsbBase,
 			}
 			if got := vc.ensureBlockStorage(tt.args.chainID, &tt.args.router); got != tt.want {

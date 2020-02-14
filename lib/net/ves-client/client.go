@@ -25,6 +25,7 @@ type VesClient struct {
 	quit                   chan bool
 
 	db        AccountDBInterface
+	sessionDB SessionDBInterface
 	conn      ves_websocket.VESWSSocket
 	nsbSigner uiptypes.Signer
 	dns       types.ChainDNSInterface
@@ -32,10 +33,13 @@ type VesClient struct {
 
 	waitOpt              uiptypes.RouteOptionTimeout
 	name                 []byte
-	nsbip                string
-	grpcip               string
 	ignoreUnknownMessage bool
 	nsbBase              string
+
+	// client scope default nsbHost, vesHost
+	nsbHost  string
+	vesHost  string
+	constant *ClientConstant
 }
 
 type cfgX struct {
@@ -52,9 +56,9 @@ func (cfgX) GetDatabaseConfiguration() core_cfg.DatabaseConfig {
 	}
 }
 
-func (c *VesClient) closeHandler(code int, text string) error {
+func (vc *VesClient) closeHandler(code int, text string) error {
 	if code != websocket.CloseNoStatusReceived {
-		c.logger.Info("closed", "code", code, "text", text)
+		vc.logger.Info("closed", "code", code, "text", text)
 	}
 	return nil
 }
@@ -63,13 +67,14 @@ func (c *VesClient) closeHandler(code int, text string) error {
 func NewVesClient(rOptions ...interface{}) (vc *VesClient, err error) {
 	options := parseOptions(rOptions)
 	vc = &VesClient{
-		p:       newModelModule(),
-		quit:    make(chan bool, 1),
-		logger:  options.logger,
-		waitOpt: options.waitOpt,
-		name:    options.clientName,
-		nsbBase: options.nsbBase,
+		quit:     make(chan bool, 1),
+		logger:   options.logger,
+		name:     options.clientName,
+		nsbBase:  options.nsbBase,
+		waitOpt:  options.waitOpt,
+		constant: options.constant,
 
+		p:         newModelModule(),
 		module:    newDepModule(),
 		nsbClient: nsbcli.NewNSBClient(options.nsbHost),
 		dns:       xconfig.ChainDNS,

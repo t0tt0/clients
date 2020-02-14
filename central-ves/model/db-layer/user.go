@@ -35,7 +35,7 @@ type User struct {
 	UpdatedAt time.Time `dorm:"updated_at" gorm:"column:updated_at;default:CURRENT_TIMESTAMP;not null;" json:"updated_at"`
 	LastLogin time.Time `dorm:"last_login" gorm:"column:last_login;default:CURRENT_TIMESTAMP;not null;" json:"last_login"`
 
-	Name     string `dorm:"name" gorm:"column:name;not_null" json:"name"`
+	Name     string `dorm:"name" gorm:"column:name;unique;not_null" json:"name"`
 	Password string `dorm:"password" gorm:"column:password;not_null" json:"password"`
 }
 

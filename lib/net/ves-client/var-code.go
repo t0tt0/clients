@@ -29,10 +29,10 @@ func wrapCode(code Code) error {
 	return wrapper.WrapCodeN(3, int(code))
 }
 
-func errorSerializer(code types.Code, err string) serial.ErrorSerializer {
+func errorSerializer(code types.Code, err error) serial.ErrorSerializer {
 	return serial.ErrorSerializer{
 		Code: int(code),
-		Err:  err,
+		Err:  err.Error(),
 	}
 }
 

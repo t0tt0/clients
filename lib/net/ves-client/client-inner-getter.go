@@ -134,3 +134,7 @@ func (vc *VesClient) getAttestationReceiveReply() *wsrpc.AttestationReceiveReply
 func (vc *VesClient) getCloseSessionRequest() *wsrpc.CloseSessionRequest {
 	return new(wsrpc.CloseSessionRequest)
 }
+
+func (vc *VesClient) getVESHost() (string, error) {
+	return vc.vesHost, nil
+}
