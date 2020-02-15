@@ -2,8 +2,8 @@ package main
 
 import (
 	"flag"
-	centered_ves "github.com/Myriad-Dreamin/go-ves/central-ves/plugin/web-socket"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/server"
+	"github.com/Myriad-Dreamin/go-ves/central-ves/web-socket"
 	_ "net/http/pprof"
 )
 
@@ -25,7 +25,7 @@ func main() {
 	}
 
 	// srv.Inject(myPlugins...)
-	if !srv.Inject(centered_ves.New()) {
+	if !srv.Inject(central_ves.New()) {
 		return
 	}
 

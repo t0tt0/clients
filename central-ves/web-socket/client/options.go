@@ -1,4 +1,4 @@
-package centered_ves
+package client
 
 import (
 	"github.com/gorilla/websocket"
@@ -24,7 +24,7 @@ var (
 	gRpcIPs = []string{"127.0.0.1:23351"}
 )
 
-var upgrader = websocket.Upgrader{
+var Upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024 * 1024,
 	WriteBufferSize: 1024 * 1024,
 	CheckOrigin: func(r *http.Request) bool {

@@ -1,21 +1,21 @@
-package centered_ves
+package client
 
 import (
 	"github.com/gorilla/websocket"
 	"time"
 )
 
-func (c *Client) closeChan() {
-	if c.closed.CAS(false, true) {
+func (c *Client) CloseChan() {
+	if c.Closed.CAS(false, true) {
 		message := websocket.FormatCloseMessage(
 			websocket.ClosePolicyViolation,
 			"client hello please",
 		)
-		err := c.conn.WriteControl(websocket.CloseMessage, message, time.Now().Add(writeWait))
+		err := c.Conn.WriteControl(websocket.CloseMessage, message, time.Now().Add(writeWait))
 		if err != nil && err != websocket.ErrCloseSent {
-			c.hub.server.logger.Error(
+			c.Hub.Server.Logger.Error(
 				"write close message error",
-				"address", c.conn.RemoteAddr(), "error", err)
+				"address", c.Conn.RemoteAddr(), "error", err)
 			c.close()
 		}
 	}

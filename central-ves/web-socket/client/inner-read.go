@@ -1,4 +1,4 @@
-package centered_ves
+package client
 
 
 // readPump pumps messages from the websocket connection to the hub.
@@ -6,16 +6,16 @@ package centered_ves
 // The application runs readPump in a per-connection goroutine. The application
 // ensures that there is at most one reader on a connection by executing all
 // reads from this goroutine.
-func (c *Client) readPump() {
+func (c *Client) ReadPump() {
 	defer func() {
-		c.hub.unregister <- c
+		c.Hub.Unregister <- c
 		//c.Close()
 	}()
-	c.conn.SetReadLimit(maxMessageSize)
-	c.conn.SetPongHandler(c.pongHandler)
+	c.Conn.SetReadLimit(maxMessageSize)
+	c.Conn.SetPongHandler(c.pongHandler)
 	if err := c.pongHandler(""); err != nil {
 		return
 	}
-	c.conn.ReadRoutine()
+	c.Conn.ReadRoutine()
 }
 

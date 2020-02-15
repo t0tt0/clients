@@ -1,4 +1,4 @@
-package centered_ves
+package server
 
 import "github.com/Myriad-Dreamin/minimum-lib/logger"
 

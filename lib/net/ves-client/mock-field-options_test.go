@@ -20,7 +20,7 @@ type fields struct {
 	closeSessionSubscriber []SessionCloseSubscriber
 	name                   []byte
 	db                     AccountDBInterface
-	conn                   ves_websocket.SocketConn
+	conn                   ves_websocket.VESWSSocket
 	nsbSigner              uiptypes.Signer
 	dns                    types.ChainDNSInterface
 	nsbClient              types.NSBClient

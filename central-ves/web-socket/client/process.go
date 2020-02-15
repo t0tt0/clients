@@ -1,8 +1,9 @@
-package centered_ves
+package client
 
 import (
 	"fmt"
 	base_account "github.com/HyperService-Consortium/go-uip/base-account"
+	"github.com/Myriad-Dreamin/go-ves/central-ves/web-socket/hub"
 	"github.com/Myriad-Dreamin/go-ves/grpc/wsrpc"
 	"github.com/gogo/protobuf/proto"
 )
@@ -14,52 +15,52 @@ func (c *Client) ProcessMessage(message []byte, messageID wsrpc.MessageType) {
 		var s wsrpc.Message
 		err = proto.Unmarshal(message, &s)
 		if err != nil {
-			c.hub.server.logger.Info("unmarshal error", "error", err)
+			c.Hub.Server.Logger.Info("unmarshal error", "error", err)
 			return
 		}
-		c.hub.server.logger.Info("message request",
+		c.Hub.Server.Logger.Info("message request",
 			"from", "todo", "to", s.GetTo())
-		c.hub.broadcast <- newWriteMessageTask(wsrpc.CodeMessageReply, &s)
+		c.Hub.Broadcast <- hub.NewWriteMessageTask(wsrpc.CodeMessageReply, &s)
 	case wsrpc.CodeRawProto:
 
 		var s wsrpc.RawMessage
 		err = proto.Unmarshal(message, &s)
 		if err != nil {
-			c.hub.server.logger.Info("error", err)
+			c.Hub.Server.Logger.Info("error", err)
 			return
 		}
-		c.hub.server.logger.Info("raw proto",
+		c.Hub.Server.Logger.Info("raw proto",
 			"from", "todo", "to", s.GetTo())
 
-		c.hub.unicast <- &uniMessage{target: s.GetTo(), task: newRawWriteMessageTask(
+		c.Hub.Unicast <- &hub.UniMessage{Target: s.GetTo(), Task: hub.NewRawWriteMessageTask(
 			wsrpc.MessageType(s.MessageType),
 			s.GetContents())}
 	case wsrpc.CodeClientHelloRequest:
 		var s wsrpc.ClientHello
 		err = proto.Unmarshal(message, &s)
 		if err != nil {
-			c.hub.server.logger.Info("error", err)
+			c.Hub.Server.Logger.Info("error", err)
 			return
 		}
 
-		c.user, err = c.hub.server.userDB.FindUser(string(s.GetName()))
+		c.User, err = c.Hub.Server.UserDB.FindUser(string(s.GetName()))
 		// fmt.Println(c.user, err)
 		if err != nil {
-			c.hub.server.logger.Error("find user error", "error", err)
+			c.Hub.Server.Logger.Error("find user error", "error", err)
 			return
-		} else if c.user == nil {
-			c.hub.server.logger.Error("user not found", "error", err)
+		} else if c.User == nil {
+			c.Hub.Server.Logger.Error("user not found", "error", err)
 			return
 		}
 
 		select {
-		case c.helloed <- true:
+		case c.Helloed <- true:
 			var t wsrpc.ClientHelloReply
 			t.GrpcHost = gRpcIPs[0]
-			t.NsbHost = c.hub.server.nsbip
-			c.hub.unicast <- &uniMessage{target: &base_account.Account{
-				ChainId: placeHolderChain, Address: s.GetName(),
-			}, task: newWriteMessageTask(wsrpc.CodeClientHelloReply, &t)}
+			t.NsbHost = c.Hub.Server.Nsbip
+			c.Hub.Unicast <- &hub.UniMessage{Target: &base_account.Account{
+				ChainId: hub.PlaceHolderChain, Address: s.GetName(),
+			}, Task: hub.NewWriteMessageTask(wsrpc.CodeClientHelloReply, &t)}
 		default:
 		}
 
@@ -67,14 +68,14 @@ func (c *Client) ProcessMessage(message []byte, messageID wsrpc.MessageType) {
 		var s wsrpc.UserRegisterRequest
 		err = proto.Unmarshal(message, &s)
 		if err != nil {
-			c.hub.server.logger.Info("error", err)
+			c.Hub.Server.Logger.Info("error", err)
 		}
 
 		// fmt.Println("hexx registering", hex.EncodeToString(s.GetAccount().GetAddress()))
-		err = c.hub.server.userDB.InsertAccount(s.GetUserName(), s.GetAccount())
+		err = c.Hub.Server.UserDB.InsertAccount(s.GetUserName(), s.GetAccount())
 
 		if err != nil {
-			c.hub.server.logger.Info("error", err)
+			c.Hub.Server.Logger.Info("error", err)
 			return
 		}
 	default:

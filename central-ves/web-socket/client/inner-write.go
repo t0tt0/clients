@@ -1,4 +1,4 @@
-package centered_ves
+package client
 
 import (
 	"github.com/gogo/protobuf/proto"
@@ -12,7 +12,7 @@ import (
 // A goroutine running writePump is started for each connection. The
 // application ensures that there is at most one writer to a connection by
 // executing all writes from this goroutine.
-func (c *Client) writePump() {
+func (c *Client) WritePump() {
 	ticker := time.NewTicker(pingPeriod)
 	defer func() {
 		ticker.Stop()
@@ -22,28 +22,28 @@ func (c *Client) writePump() {
 	for {
 		c.setWriteDeadLine()
 		select {
-		case message, ok := <-c.send:
+		case message, ok := <-c.Send:
 			if !ok {
-				c.closeChan()
+				c.CloseChan()
 				return
 			}
 
-			switch msg := message.message.(type) {
+			switch msg := message.Message.(type) {
 			case proto.Message:
-				err = c.conn.PostMessage(message.messageType, msg)
+				err = c.Conn.PostMessage(message.MessageType, msg)
 			case []byte:
-				err = c.conn.PostRawPacket(message.messageType, msg)
+				err = c.Conn.PostRawPacket(message.MessageType, msg)
 			default:
-				c.hub.server.logger.Error(
+				c.Hub.Server.Logger.Error(
 					"bad message type", "msgT", reflect.TypeOf(msg))
 			}
 			if err != nil {
-				c.hub.server.logger.Error(
+				c.Hub.Server.Logger.Error(
 					"post error", "error", err)
 
 			}
 		case <-ticker.C:
-			if err := c.conn.WriteMessage(websocket.PingMessage, nil); err != nil {
+			if err := c.Conn.WriteMessage(websocket.PingMessage, nil); err != nil {
 				return
 			}
 		}

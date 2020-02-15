@@ -1,8 +1,9 @@
-package centered_ves
+package server
 
 import (
 	"context"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/model/fset"
+	"github.com/Myriad-Dreamin/go-ves/central-ves/web-socket/hub"
 	"github.com/Myriad-Dreamin/minimum-lib/logger"
 	"net/http"
 )
@@ -10,12 +11,12 @@ import (
 // Server is a client manager, named centered ves
 // it is not in the standard of uip
 type Server struct {
-	logger logger.Logger
+	Logger logger.Logger
 	*http.Server
-	hub     *Hub
-	userDB  *fset.AccountFSet
+	hub     *hub.Hub
+	UserDB  *fset.AccountFSet
 	rpcPort string
-	nsbip   string
+	Nsbip   string
 }
 
 // NewServer return a pointer of Server
@@ -26,20 +27,20 @@ func NewServer(rpcPort, addr string, db *fset.AccountFSet, rOptions ...interface
 			Handler: http.NewServeMux(),
 			Addr:    addr,
 		},
-		hub:     newHub(),
-		userDB:  db,
+		hub:     hub.NewHub(),
+		UserDB:  db,
 		rpcPort: rpcPort,
-		logger:  options.logger,
-		nsbip:   options.nsbHost,
+		Logger:  options.logger,
+		Nsbip:   options.nsbHost,
 	}
 
-	srv.hub.server = srv
+	srv.hub.Server = srv
 	return
 }
 
 // Start the service of centered ves
-func (c *Server) Start(ctx context.Context) error {
-	go c.ListenAndServeRpc(ctx, c.rpcPort)
-	return c.ListenAndServe(ctx, c.Addr)
+func (srv *Server) Start(ctx context.Context) error {
+	go srv.ListenAndServeRpc(ctx, srv.rpcPort)
+	return srv.ListenAndServe(ctx, srv.Addr)
 }
 
