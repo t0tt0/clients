@@ -51,12 +51,16 @@ func Mock(options ...Option) (srv *Mocker) {
 		panic(err)
 	}
 	srv.header = make(map[string]string)
-	if !(srv.UseDefaultConfig() &&
+	if !(srv.InitRespAccount() &&
+		srv.UseDefaultConfig() &&
 		srv.PrepareFileSystem() &&
+		//todo mock remote service
+		srv.PrepareRemoteService() &&
 		srv.MockDatabase()) {
 		panic("build failed")
 		return
 	}
+
 
 	defer func() {
 		if err := recover(); err != nil {

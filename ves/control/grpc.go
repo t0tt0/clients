@@ -32,7 +32,7 @@ func (engine *GRPCEngine) Build(m Dependencies) error {
 
 func (engine *GRPCEngine) Run(port string) error {
 	engine.logger.Info("prepare to serve rpc", "port", port)
-	
+
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
 		return err

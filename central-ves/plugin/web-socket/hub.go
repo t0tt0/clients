@@ -77,11 +77,13 @@ func (h *Hub) run(ctx context.Context) {
 						"err", err,
 						"chain id", message.target.GetChainId(),
 						"address", hex.EncodeToString(message.target.GetAddress()))
+					continue
 				} else if user == nil {
 					h.server.logger.Info("debugging unknown aim",
 						"err", "!!not found",
 						"chain id", message.target.GetChainId(),
 						"address", hex.EncodeToString(message.target.GetAddress()))
+					continue
 				}
 				client, ok := h.reverseClients[user.ID]
 				h.unicastMessage(client, ok, message)

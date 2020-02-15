@@ -60,7 +60,7 @@ class FileLine:
 
     @staticmethod
     def unwrap(e):
-        c = e.rsplit(':', 2)
+        c = e.rsplit(':', 1)
         if len(c) < 2:
             return FileLine()
         return FileLine(c[0], int(c[1]))
@@ -83,7 +83,7 @@ class Func:
             e = e[1:-1]
         else:
             return Func()
-        c = e.split(',', 2)
+        c = e.split(',', 1)
         return Func(c[0], FileLine.unwrap(c[1]))
 
 
@@ -106,7 +106,7 @@ class StackPos:
             return StackPos()
         if len(e) > 0 and e[0] == '!':
             return StackPos()
-        c = e.split('>', 2)
+        c = e.split('>', 1)
         return StackPos(Func.unwrap(c[0] + '>'), FileLine.unwrap(c[1].lstrip(',')))
 
 
@@ -126,7 +126,7 @@ class Frame(object):
     def unwrap(e):
         if not is_wrap_error(e):
             return e, False
-        c = e.split(magic, 4)
+        c = e.split(magic, 3)
         if len(c) < 4:
             return e, False
         pos, _code, err = \
@@ -151,7 +151,14 @@ class Scope(object):
 
 
 def unwrap(e):
-    return Frame.unwrap(e)
+    e, ok = Frame.unwrap(e)
+    if ok:
+        n, ok = Frame.unwrap(e.err)
+        if ok:
+            e.err = ''
+            return [e] + n
+        return [e]
+    return []
 
 
 # client #####################################

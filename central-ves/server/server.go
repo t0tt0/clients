@@ -85,6 +85,7 @@ func newServer(options []Option) *Server {
 	if srv.LoggerWriter == nil {
 		srv.LoggerWriter = os.Stdout
 	}
+	srv.Module.Provide(config.ModulePath.Global.LoggerWriter, srv.LoggerWriter)
 
 	srv.ModelProvider = model.NewProvider(config.ModulePath.Minimum.Provider.Model)
 	srv.RouterProvider = router.NewProvider(config.ModulePath.Minimum.Provider.Router)
@@ -175,7 +176,10 @@ func (srv *Server) Serve(port string) {
 		}
 	}()
 
-	control.BuildHttp(srv.Router.Root, srv.HttpEngine)
+	err := srv.HttpEngine.Build(srv.Module)
+	if err != nil {
+		panic(err)
+	}
 	srv.Module.Debug(srv.Logger)
 
 	ctx, cancel := context.WithCancel(context.Background())
@@ -206,6 +210,6 @@ func (srv *Server) Serve(port string) {
 }
 
 func (srv *Server) ServeWithPProf(port string) {
-	ginpprof.Wrap(srv.HttpEngine)
+	ginpprof.Wrap(srv.HttpEngine.Engine)
 	srv.Serve(port)
 }

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"errors"
+	"github.com/HyperService-Consortium/go-uip/uiptypes"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -36,9 +37,13 @@ type PathPlaceholder struct {
 	User string `json:"user" yaml:"user" toml:"user" xml:"user"`
 }
 
+//
+
 type BaseParametersConfig struct {
-	PathPlaceholder PathPlaceholder `json:"path-placeholder" yaml:"path-placeholder" toml:"path-placeholder" xml:"path-placeholder"`
-	ExposeHost      string          `json:"expose-host" yaml:"expose-host" toml:"expose-host" xml:"expose-host"`
+	PathPlaceholder     PathPlaceholder                `json:"path-placeholder" yaml:"path-placeholder" toml:"path-placeholder" xml:"path-placeholder"`
+	ExposeHost          string                         `json:"expose-host" yaml:"expose-host" toml:"expose-host" xml:"expose-host"`
+	NSBSignerPrivateKey string                         `json:"signer-key" yaml:"signer-key" toml:"signer-key" xml:"signer-key"`
+	NSBSignerChainID    uiptypes.ChainIDUnderlyingType `json:"signer-chain-id" yaml:"signer-chain-id" toml:"signer-chain-id" xml:"signer-chain-id"`
 }
 
 type Label struct {
@@ -69,9 +74,11 @@ func Default() *ServerConfig {
 			PathPlaceholder: PathPlaceholder{
 				User: "id",
 			},
+			NSBSignerPrivateKey: "2333bfffffffffffffff2333bbffffffffffffff2333bbffffffffffffffffff2333bfffffffffffffff2333bbffffffffffffff2333bbffffffffffffffffff",
+			NSBSignerChainID:    3,
 		},
 		LevelDBConfig: LevelDBConfig{
-			LocalPath:"./level-test",
+			LocalPath: "./level-test",
 		},
 	}
 }

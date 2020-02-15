@@ -2,7 +2,11 @@ package server
 
 import (
 	"context"
+	"encoding/hex"
 	"github.com/DeanThompson/ginpprof"
+	base_account "github.com/HyperService-Consortium/go-uip/base-account"
+	"github.com/HyperService-Consortium/go-uip/signaturer"
+	"github.com/HyperService-Consortium/go-uip/uiptypes"
 	"github.com/Myriad-Dreamin/go-ves/lib/jwt"
 	"github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/go-ves/ves/config"
@@ -140,18 +144,30 @@ func newCloseHandler() types.CloseHandler {
 	return &CloseHandler{}
 }
 
+func (srv *Server) prepareBeforeLocalInit(cfgPath string) bool {
+
+	if !(srv.InitRespAccount() &&
+		srv.PrepareFileSystem() &&
+		srv.PrepareRemoteService() &&
+		srv.PrepareDatabase()) {
+		return false
+	}
+	return true
+}
+
 func New(cfgPath string, options ...Option) (srv *Server, err error) {
 	srv, err = newServer(options)
 	if err != nil {
 		return
 	}
-	if !(srv.LoadConfig(cfgPath) &&
-		srv.PrepareFileSystem() &&
-		srv.PrepareDatabase() &&
-		srv.PrepareRemoteService()) {
-		panic("build failed")
-		return
+	if !srv.LoadConfig(cfgPath) {
+		panic("build error")
 	}
+
+	if !srv.prepareBeforeLocalInit(cfgPath) {
+		panic("build failed")
+	}
+
 	defer func() {
 		if err := recover(); err != nil {
 			srv.handlerPanicError(err)
@@ -268,4 +284,20 @@ func (srv *Server) handlerPanicError(err interface{}) {
 	sugar.PrintStack()
 	srv.Logger.Error("panic error", "error", err)
 	srv.Terminate()
+}
+
+func (srv *Server) InitRespAccount() bool {
+	signer := sugar.HandlerError(signaturer.NewTendermintNSBSigner(
+		sugar.HandlerError(
+			hex.DecodeString(srv.Cfg.BaseParametersConfig.NSBSignerPrivateKey)).([]byte))).(uiptypes.Signer)
+	srv.Module.Provide(config.ModulePath.Global.Signer, signer)
+	////&uipbase.Account{Address: server.Signer.GetPublicKey(), ChainId: 3}
+	srv.Module.Provide(config.ModulePath.Global.RespAccount, &base_account.Account{
+		ChainId: srv.Cfg.BaseParametersConfig.NSBSignerChainID,
+		Address: signer.GetPublicKey(),
+	})
+	srv.Logger.Info("using resp account",
+		"chain-id", srv.Cfg.BaseParametersConfig.NSBSignerChainID,
+		"public-address", hex.EncodeToString(signer.GetPublicKey()))
+	return true
 }

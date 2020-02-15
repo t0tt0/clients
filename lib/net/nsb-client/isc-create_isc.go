@@ -5,6 +5,8 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	transactiontype "github.com/HyperService-Consortium/NSB/application/transaction-type"
+	"github.com/Myriad-Dreamin/go-ves/lib/wrapper"
+	"github.com/Myriad-Dreamin/go-ves/types"
 	"math/big"
 
 	ISC "github.com/HyperService-Consortium/NSB/contract/isc"
@@ -29,8 +31,14 @@ func (nc *NSBClient) CreateISC(
 		return nil, err
 	}
 	ret, err := nc.sendContractTx(transactiontype.CreateContract, txHeader)
+
 	if err != nil {
 		return nil, err
+	}
+
+	if len(ret.DeliverTx.Log) != 0 {
+		//todo: CodeExecContractError
+		return nil, wrapper.WrapString(types.CodeExecuteError, ret.DeliverTx.Log)
 	}
 	return ret.DeliverTx.Data, nil
 }

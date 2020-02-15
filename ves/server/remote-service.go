@@ -2,13 +2,10 @@ package server
 
 import (
 	"fmt"
-	base_account "github.com/HyperService-Consortium/go-uip/base-account"
-	"github.com/HyperService-Consortium/go-uip/signaturer"
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
 	nsbcli "github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client"
 	"github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/go-ves/ves/config"
-	"github.com/Myriad-Dreamin/minimum-lib/sugar"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/keepalive"
 )
@@ -36,8 +33,5 @@ func (srv *Server) PrepareRemoteService() bool {
 	srv.Module.Provide(config.ModulePath.Global.CentralVESClient, uiprpc.NewCenteredVESClient(conn))
 	fmt.Println(srv.Module.Require(config.ModulePath.Global.CentralVESClient))
 	srv.Module.Provide(config.ModulePath.Global.NSBClient, nsbcli.NewNSBClient(nsbHost))
-
-	srv.Module.Provide(config.ModulePath.Global.Signer, sugar.HandlerError(signaturer.NewTendermintNSBSigner(make([]byte, 64))))
-	srv.Module.Provide(config.ModulePath.Global.RespAccount, &base_account.Account{})
 	return true
 }

@@ -49,6 +49,7 @@ func PingFunc(c controller.MContext) {
 
 func NewRootRouter(m module.Module) (r *RootRouter) {
 	rr := controller.NewRouterGroup()
+	m.Provide(config.ModulePath.Global.Router, rr)
 	apiRouterV1 := rr.Group("/v1")
 	b := m.Require(config.ModulePath.Minimum.Middleware.JWT).(*jwt.Middleware).Build()
 	authRouterV1 := apiRouterV1.Group("", b)

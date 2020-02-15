@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"github.com/Myriad-Dreamin/go-magic-package/instance"
 	parser "github.com/Myriad-Dreamin/go-parse-package"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/control"
 	"github.com/Myriad-Dreamin/go-ves/lib/serial"
 	types2 "github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
@@ -89,7 +88,7 @@ func Mock(options ...Option) (srv *Mocker) {
 	}()
 
 	srv.HttpEngine.Use(mockw.ContextRecorder())
-	control.BuildHttp(srv.Router.Root, srv.HttpEngine)
+	sugar.HandlerError0(srv.HttpEngine.Build(srv.Module))
 	srv.Module.Debug(srv.Logger)
 	ctx, cancel := context.WithCancel(context.Background())
 	defer func() {

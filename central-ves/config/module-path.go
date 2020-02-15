@@ -6,14 +6,18 @@ import (
 )
 
 var (
-	joiner = filepath.Join
-	base   = "ves"
-	global = joiner(base, "global")
-	userDB = joiner(global, "userDB")
+	joiner       = filepath.Join
+	base         = "ves"
+	global       = joiner(base, "global")
+	userDB       = joiner(global, "userDB")
+	loggerWriter = joiner(global, "LoggerWriter")
+	router       = joiner(global, "Router")
 )
 
 type GlobalPathS struct {
-	UserDB string
+	UserDB       string
+	LoggerWriter string
+	Router       string
 }
 
 type ModulePathS struct {
@@ -22,5 +26,7 @@ type ModulePathS struct {
 }
 
 var ModulePath = ModulePathS{Minimum: mcore.DefaultNamespace,
-	Global: GlobalPathS{UserDB: userDB},
+	Global: GlobalPathS{
+		UserDB:       userDB,
+		LoggerWriter: loggerWriter},
 }
