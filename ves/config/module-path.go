@@ -27,6 +27,8 @@ var (
 	modelModule = joiner(dbInstance, "ModelModule")
 
 	vesServer = joiner(service, "VesServer")
+	chainDNS = joiner(service, "ChainDNS")
+	opIntentInitializer = joiner(service, "OpIntentInitializer")
 )
 
 type GlobalPathS struct {
@@ -48,6 +50,8 @@ type DBInstanceS struct {
 
 type ServiceS struct {
 	VESServer string
+	ChainDNS  string
+	OpIntentInitializer string
 }
 
 type ModulePathS struct {
@@ -76,5 +80,7 @@ var ModulePath = ModulePathS{Minimum: mcore.DefaultNamespace,
 
 	Service: ServiceS{
 		VESServer: vesServer,
+		ChainDNS: chainDNS,
+		OpIntentInitializer: opIntentInitializer,
 	},
 }

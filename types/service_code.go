@@ -124,6 +124,12 @@ const (
 	CodeTransactionFindError Code = iota + 13000
 	CodeDeserializeTransactionError
 	CodeAttestationSendError
+	CodeNotEnoughParamInformation
+	CodeEnsureTransactionValueError
+	CodeParsePaymentOptionInconsistentValueError
+	CodeTransactionPrepareTranslateError
+	CodeTransactionTranslateError
+	CodeTransactionRawSerializeError
 
 	CodeTransactionServiceErrorR
 	CodeTransactionServiceErrorL = CodeTransactionFindError
@@ -132,9 +138,12 @@ const (
 const (
 	CodeChainIDNotFound Code = iota + 14000
 	CodeChainTypeNotFound
+	CodeTransactionTypeNotFound
+	CodeValueTypeNotFound
+	CodeGetBlockChainInterfaceError
 
-	CodeChainDNSErrorR
-	CodeChainDNSErrorL = CodeChainIDNotFound
+	CodeBlockChainErrorR
+	CodeBlockChainErrorL = CodeChainIDNotFound
 )
 
 const (
@@ -180,7 +189,7 @@ func init() {
 		{CodeUserServiceErrorL, CodeUserServiceErrorR},
 		{CodeSessionServiceErrorL, CodeSessionServiceErrorR},
 		{CodeTransactionServiceErrorL, CodeTransactionServiceErrorR},
-		{CodeChainDNSErrorL, CodeChainDNSErrorR},
+		{CodeBlockChainErrorL, CodeBlockChainErrorR},
 		{CodeConvertErrorL, CodeConvertErrorR},
 		{CodeWebSocketErrorL, CodeWebSocketErrorR},
 		{CodeGRPCErrorL, CodeGRPCErrorR},

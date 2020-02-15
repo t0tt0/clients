@@ -69,69 +69,125 @@ func _() {
 	_ = x[CodeTransactionFindError-13000]
 	_ = x[CodeDeserializeTransactionError-13001]
 	_ = x[CodeAttestationSendError-13002]
-	_ = x[CodeTransactionServiceErrorR-13003]
+	_ = x[CodeNotEnoughParamInformation-13003]
+	_ = x[CodeEnsureTransactionValueError-13004]
+	_ = x[CodeParsePaymentOptionInconsistentValueError-13005]
+	_ = x[CodeTransactionPrepareTranslateError-13006]
+	_ = x[CodeTransactionTranslateError-13007]
+	_ = x[CodeTransactionRawSerializeError-13008]
+	_ = x[CodeTransactionServiceErrorR-13009]
 	_ = x[CodeChainIDNotFound-14000]
 	_ = x[CodeChainTypeNotFound-14001]
-	_ = x[CodeChainDNSErrorR-14002]
+	_ = x[CodeTransactionTypeNotFound-14002]
+	_ = x[CodeValueTypeNotFound-14003]
+	_ = x[CodeGetBlockChainInterfaceError-14004]
+	_ = x[CodeBlockChainErrorR-14005]
 	_ = x[CodeConvertSignerError-15000]
 	_ = x[CodeDecodeAdditionError-15001]
 	_ = x[CodeDecodeAddressError-15002]
 	_ = x[CodeConvertErrorR-15003]
+	_ = x[CodeReadMessageError-16000]
+	_ = x[CodeReadMessageIDError-16001]
+	_ = x[CodeWebSocketErrorR-16002]
+	_ = x[CodeNotConnected-17000]
+	_ = x[CodeGetVESHostError-17001]
+	_ = x[CodeExecuteError-17002]
+	_ = x[CodeGRPCErrorR-17003]
 }
 
-const (
-	_CodeType_name_0 = "CodeOKCodeBindErrorCodeUnserializeDataErrorCodeInvalidParametersCodeGetRawDataErrorCodeToDoCodeGenericErrorR"
-	_CodeType_name_1 = "CodeInsertErrorCodeSelectErrorCodeNotFoundCodeDeleteNoEffectCodeDuplicatePrimaryKeyCodeUpdateErrorCodeDeleteErrorCodeBeginTransactionErrorCodeCommitTransactionErrorCodeDatabaseIncorrectStringValueCodeUpdateNoEffectCodeDatabaseErrorR"
-	_CodeType_name_2 = "CodeAuthGenerateTokenErrorCodeAuthenticatePasswordErrorCodeAuthenticatePolicyErrorCodeChangeOwnerErrorCodeGroupCreateErrorCodeAddReadPrivilegeErrorCodeAddWritePrivilegeErrorCodeGrantNoEffectCodeGrantErrorCodeAuthenticationErrorR"
-	_CodeType_name_3 = "CodeUserIDMissingCodeUserWrongPasswordCodeWeakPasswordCodeInvalidCityCodeCodeBadPhoneCodeUserServiceErrorR"
-	_CodeType_name_4 = "CodeSubmissionUploadedCodeFSExecErrorCodeUploadFileErrorCodeConfigModifyErrorCodeStatErrorCodeFileSystemErrorR"
-	_CodeType_name_5 = "CodeSessionInitErrorCodeSessionRequestNSBErrorCodeSessionInitGUIDErrorCodeSessionInitOpIntentsErrorCodeSessionRedisGetAckCountErrorCodeSessionInsertAccountErrorCodeSessionFindErrorCodeSessionNotFindErrorCodeSessionAcknowledgeErrorCodeSessionAccountFindErrorCodeSessionAccountNotFoundCodeSessionAccountGetTotolErrorCodeSessionAccountGetAcknowledgedErrorCodeSessionSignTxsErrorCodeSessionFreezeInfoErrorCodeSessionInitInternalRequestErrorCodeSessionServiceErrorR"
-	_CodeType_name_6 = "CodeTransactionFindErrorCodeDeserializeTransactionErrorCodeAttestationSendErrorCodeTransactionServiceErrorR"
-	_CodeType_name_7 = "CodeChainIDNotFoundCodeChainTypeNotFoundCodeChainDNSErrorR"
-	_CodeType_name_8 = "CodeConvertSignerErrorCodeDecodeAdditionErrorCodeDecodeAddressErrorCodeConvertErrorR"
-)
+const _CodeType_name = "CodeOKCodeBindErrorCodeUnserializeDataErrorCodeInvalidParametersCodeGetRawDataErrorCodeToDoCodeGenericErrorRCodeInsertErrorCodeSelectErrorCodeNotFoundCodeDeleteNoEffectCodeDuplicatePrimaryKeyCodeUpdateErrorCodeDeleteErrorCodeBeginTransactionErrorCodeCommitTransactionErrorCodeDatabaseIncorrectStringValueCodeUpdateNoEffectCodeDatabaseErrorRCodeAuthGenerateTokenErrorCodeAuthenticatePasswordErrorCodeAuthenticatePolicyErrorCodeChangeOwnerErrorCodeGroupCreateErrorCodeAddReadPrivilegeErrorCodeAddWritePrivilegeErrorCodeGrantNoEffectCodeGrantErrorCodeAuthenticationErrorRCodeUserIDMissingCodeUserWrongPasswordCodeWeakPasswordCodeInvalidCityCodeCodeBadPhoneCodeUserServiceErrorRCodeSubmissionUploadedCodeFSExecErrorCodeUploadFileErrorCodeConfigModifyErrorCodeStatErrorCodeFileSystemErrorRCodeSessionInitErrorCodeSessionRequestNSBErrorCodeSessionInitGUIDErrorCodeSessionInitOpIntentsErrorCodeSessionRedisGetAckCountErrorCodeSessionInsertAccountErrorCodeSessionFindErrorCodeSessionNotFindErrorCodeSessionAcknowledgeErrorCodeSessionAccountFindErrorCodeSessionAccountNotFoundCodeSessionAccountGetTotolErrorCodeSessionAccountGetAcknowledgedErrorCodeSessionSignTxsErrorCodeSessionFreezeInfoErrorCodeSessionInitInternalRequestErrorCodeSessionServiceErrorRCodeTransactionFindErrorCodeDeserializeTransactionErrorCodeAttestationSendErrorCodeNotEnoughParamInformationCodeEnsureTransactionValueErrorCodeParsePaymentOptionInconsistentValueErrorCodeTransactionPrepareTranslateErrorCodeTransactionTranslateErrorCodeTransactionRawSerializeErrorCodeTransactionServiceErrorRCodeChainIDNotFoundCodeChainTypeNotFoundCodeTransactionTypeNotFoundCodeValueTypeNotFoundCodeGetBlockChainInterfaceErrorCodeBlockChainErrorRCodeConvertSignerErrorCodeDecodeAdditionErrorCodeDecodeAddressErrorCodeConvertErrorRCodeReadMessageErrorCodeReadMessageIDErrorCodeWebSocketErrorRCodeNotConnectedCodeGetVESHostErrorCodeExecuteErrorCodeGRPCErrorR"
 
-var (
-	_CodeType_index_0 = [...]uint8{0, 6, 19, 43, 64, 83, 91, 108}
-	_CodeType_index_1 = [...]uint8{0, 15, 30, 42, 60, 83, 98, 113, 138, 164, 196, 214, 232}
-	_CodeType_index_2 = [...]uint8{0, 26, 55, 82, 102, 122, 147, 173, 190, 204, 228}
-	_CodeType_index_3 = [...]uint8{0, 17, 38, 54, 73, 85, 106}
-	_CodeType_index_4 = [...]uint8{0, 22, 37, 56, 77, 90, 110}
-	_CodeType_index_5 = [...]uint16{0, 20, 46, 70, 99, 131, 160, 180, 203, 230, 257, 283, 314, 352, 375, 401, 436, 460}
-	_CodeType_index_6 = [...]uint8{0, 24, 55, 79, 107}
-	_CodeType_index_7 = [...]uint8{0, 19, 40, 58}
-	_CodeType_index_8 = [...]uint8{0, 22, 45, 67, 84}
-)
+var _CodeType_map = map[CodeType]string{
+	0:     _CodeType_name[0:6],
+	1:     _CodeType_name[6:19],
+	2:     _CodeType_name[19:43],
+	3:     _CodeType_name[43:64],
+	4:     _CodeType_name[64:83],
+	5:     _CodeType_name[83:91],
+	6:     _CodeType_name[91:108],
+	100:   _CodeType_name[108:123],
+	101:   _CodeType_name[123:138],
+	102:   _CodeType_name[138:150],
+	103:   _CodeType_name[150:168],
+	104:   _CodeType_name[168:191],
+	105:   _CodeType_name[191:206],
+	106:   _CodeType_name[206:221],
+	107:   _CodeType_name[221:246],
+	108:   _CodeType_name[246:272],
+	109:   _CodeType_name[272:304],
+	110:   _CodeType_name[304:322],
+	111:   _CodeType_name[322:340],
+	1000:  _CodeType_name[340:366],
+	1001:  _CodeType_name[366:395],
+	1002:  _CodeType_name[395:422],
+	1003:  _CodeType_name[422:442],
+	1004:  _CodeType_name[442:462],
+	1005:  _CodeType_name[462:487],
+	1006:  _CodeType_name[487:513],
+	1007:  _CodeType_name[513:530],
+	1008:  _CodeType_name[530:544],
+	1009:  _CodeType_name[544:568],
+	10000: _CodeType_name[568:585],
+	10001: _CodeType_name[585:606],
+	10002: _CodeType_name[606:622],
+	10003: _CodeType_name[622:641],
+	10004: _CodeType_name[641:653],
+	10005: _CodeType_name[653:674],
+	11000: _CodeType_name[674:696],
+	11001: _CodeType_name[696:711],
+	11002: _CodeType_name[711:730],
+	11003: _CodeType_name[730:751],
+	11004: _CodeType_name[751:764],
+	11005: _CodeType_name[764:784],
+	12000: _CodeType_name[784:804],
+	12001: _CodeType_name[804:830],
+	12002: _CodeType_name[830:854],
+	12003: _CodeType_name[854:883],
+	12004: _CodeType_name[883:915],
+	12005: _CodeType_name[915:944],
+	12006: _CodeType_name[944:964],
+	12007: _CodeType_name[964:987],
+	12008: _CodeType_name[987:1014],
+	12009: _CodeType_name[1014:1041],
+	12010: _CodeType_name[1041:1067],
+	12011: _CodeType_name[1067:1098],
+	12012: _CodeType_name[1098:1136],
+	12013: _CodeType_name[1136:1159],
+	12014: _CodeType_name[1159:1185],
+	12015: _CodeType_name[1185:1220],
+	12016: _CodeType_name[1220:1244],
+	13000: _CodeType_name[1244:1268],
+	13001: _CodeType_name[1268:1299],
+	13002: _CodeType_name[1299:1323],
+	13003: _CodeType_name[1323:1352],
+	13004: _CodeType_name[1352:1383],
+	13005: _CodeType_name[1383:1427],
+	13006: _CodeType_name[1427:1463],
+	13007: _CodeType_name[1463:1492],
+	13008: _CodeType_name[1492:1524],
+	13009: _CodeType_name[1524:1552],
+	14000: _CodeType_name[1552:1571],
+	14001: _CodeType_name[1571:1592],
+	14002: _CodeType_name[1592:1619],
+	14003: _CodeType_name[1619:1640],
+	14004: _CodeType_name[1640:1671],
+	14005: _CodeType_name[1671:1691],
+	15000: _CodeType_name[1691:1713],
+	15001: _CodeType_name[1713:1736],
+	15002: _CodeType_name[1736:1758],
+	15003: _CodeType_name[1758:1775],
+	16000: _CodeType_name[1775:1795],
+	16001: _CodeType_name[1795:1817],
+	16002: _CodeType_name[1817:1836],
+	17000: _CodeType_name[1836:1852],
+	17001: _CodeType_name[1852:1871],
+	17002: _CodeType_name[1871:1887],
+	17003: _CodeType_name[1887:1901],
+}
 
 func (i CodeType) String() string {
-	switch {
-	case 0 <= i && i <= 6:
-		return _CodeType_name_0[_CodeType_index_0[i]:_CodeType_index_0[i+1]]
-	case 100 <= i && i <= 111:
-		i -= 100
-		return _CodeType_name_1[_CodeType_index_1[i]:_CodeType_index_1[i+1]]
-	case 1000 <= i && i <= 1009:
-		i -= 1000
-		return _CodeType_name_2[_CodeType_index_2[i]:_CodeType_index_2[i+1]]
-	case 10000 <= i && i <= 10005:
-		i -= 10000
-		return _CodeType_name_3[_CodeType_index_3[i]:_CodeType_index_3[i+1]]
-	case 11000 <= i && i <= 11005:
-		i -= 11000
-		return _CodeType_name_4[_CodeType_index_4[i]:_CodeType_index_4[i+1]]
-	case 12000 <= i && i <= 12016:
-		i -= 12000
-		return _CodeType_name_5[_CodeType_index_5[i]:_CodeType_index_5[i+1]]
-	case 13000 <= i && i <= 13003:
-		i -= 13000
-		return _CodeType_name_6[_CodeType_index_6[i]:_CodeType_index_6[i+1]]
-	case 14000 <= i && i <= 14002:
-		i -= 14000
-		return _CodeType_name_7[_CodeType_index_7[i]:_CodeType_index_7[i+1]]
-	case 15000 <= i && i <= 15003:
-		i -= 15000
-		return _CodeType_name_8[_CodeType_index_8[i]:_CodeType_index_8[i+1]]
-	default:
-		return "CodeType(" + strconv.FormatInt(int64(i), 10) + ")"
+	if str, ok := _CodeType_map[i]; ok {
+		return str
 	}
+	return "CodeType(" + strconv.FormatInt(int64(i), 10) + ")"
 }

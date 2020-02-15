@@ -5,7 +5,6 @@ import (
 	"context"
 	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
-	xconfig "github.com/Myriad-Dreamin/go-ves/config"
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
 	"github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/go-ves/ves/config"
@@ -30,6 +29,7 @@ type Service struct {
 	respAccount    uiptypes.Account
 	storage        types.SessionKV
 	storageHandler types.StorageHandler
+	dns types.ChainDNSInterface
 }
 
 func (svc *Service) UserRegister(context.Context, *uiprpc.UserRegisterRequest) (*uiprpc.UserRegisterReply, error) {
@@ -70,10 +70,12 @@ func (svc *Service) InformShortenMerkleProof(context.Context, *uiprpc.ShortenMer
 
 func (svc *Service) SessionServiceSignatureXXX() interface{} { return svc }
 
+
 func NewService(m module.Module) (control.SessionService, error) {
 	var a = new(Service)
 	provider := m.Require(config.ModulePath.Minimum.Provider.Model).(*model.Provider)
 	a.accountDB = provider.SessionAccountDB()
+	a.dns = m.Require(config.ModulePath.Service.ChainDNS).(types.ChainDNSInterface)
 	a.cVes = m.Require(config.ModulePath.Global.CentralVESClient).(uiprpc.CenteredVESClient)
 	a.cfg = m.Require(config.ModulePath.Minimum.Global.Configuration).(*config.ServerConfig)
 	a.logger = m.Require(config.ModulePath.Minimum.Global.Logger).(types.Logger)
@@ -83,8 +85,7 @@ func NewService(m module.Module) (control.SessionService, error) {
 	a.nsbClient = m.Require(config.ModulePath.Global.NSBClient).(types.NSBClient)
 	a.storageHandler = m.Require(config.ModulePath.Global.StorageHandler).(types.StorageHandler)
 	a.storage = m.Require(config.ModulePath.Global.Storage).(types.SessionKV)
-	// todo move out
-	a.opInitializer = opintent.NewOpIntentInitializer(xconfig.UserMap)
+	a.opInitializer = m.Require(config.ModulePath.Service.OpIntentInitializer).(*opintent.OpIntentInitializer)
 	a.sesFSet = fset.NewSessionFSet(provider, index)
 	a.key = "sid"
 	a.db = provider.SessionDB()

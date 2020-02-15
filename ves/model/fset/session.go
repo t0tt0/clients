@@ -103,9 +103,6 @@ func (s SessionFSet) InitSessionInfo(
 
 func (s SessionFSet) AckForInit(ses *model.Session, acc uiptypes.Account, signature uiptypes.Signature) error {
 	var (
-		//addr         = acc.GetAddress()
-		//acknowledges = bitmap.GetBitMap(
-		//	ses.GetGUID(), mredis.RedisCacheClient.Pool.Get())
 		sac = &model.SessionAccount{
 			SessionID: ses.ISCAddress,
 			ChainID:   acc.GetChainId(),
@@ -114,7 +111,6 @@ func (s SessionFSet) AckForInit(ses *model.Session, acc uiptypes.Account, signat
 		has bool
 		err error
 	)
-	//todo: database transaction
 	//verifySignature
 
 	if has, err = sac.Find(); err != nil {
@@ -129,7 +125,6 @@ func (s SessionFSet) AckForInit(ses *model.Session, acc uiptypes.Account, signat
 	} else if aff == 0 {
 		return wrapper.WrapCode(types.CodeUpdateNoEffect)
 	}
-	// todo: NSB
 	return nil
 }
 

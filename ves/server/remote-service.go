@@ -2,6 +2,8 @@ package server
 
 import (
 	"fmt"
+	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
+	xconfig "github.com/Myriad-Dreamin/go-ves/config"
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
 	nsbcli "github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client"
 	"github.com/Myriad-Dreamin/go-ves/types"
@@ -29,7 +31,7 @@ func (srv *Server) PrepareRemoteService() bool {
 
 	srv.Module.Require(config.ModulePath.Global.CloseHandler).(types.CloseHandler).Handle(conn)
 	// conn.Close()
-
+	srv.Module.Provide(config.ModulePath.Service.OpIntentInitializer, opintent.NewOpIntentInitializer(xconfig.UserMap))
 	srv.Module.Provide(config.ModulePath.Global.CentralVESClient, uiprpc.NewCenteredVESClient(conn))
 	fmt.Println(srv.Module.Require(config.ModulePath.Global.CentralVESClient))
 	srv.Module.Provide(config.ModulePath.Global.NSBClient, nsbcli.NewNSBClient(nsbHost))
