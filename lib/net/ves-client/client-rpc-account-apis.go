@@ -11,9 +11,9 @@ import (
 )
 
 func (vc *VesClient) buildAccountRPCApis(p iris.Party) {
-	p.Get("account-list", vc.IrisListAccount)
-	id := p.Party("account-list/{aid}")
-	p.Post("account", miris.ToIrisHandler(vc.IrisPostAccount))
+	p.Get("/account-list", vc.IrisListAccount)
+	id := p.Party("account/{aid}")
+	p.Post("/account", miris.ToIrisHandler(vc.IrisPostAccount))
 	id.Delete("", miris.ToIrisHandler(vc.IrisDeleteAccount))
 	id.Put("", miris.ToIrisHandler(vc.IrisPutAccount))
 }

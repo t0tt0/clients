@@ -51,11 +51,7 @@ func NewSession() *Session {
 }
 
 func (ses Session) migrate(dep *modelModule) error {
-	if err := dep.sessionTraits.Migrate(); err != nil {
-		return err
-	}
-
-	return dep.GormDB.Model(&ses).AddUniqueIndex("ci_ac", "address", "chain_id").Error
+	return dep.sessionTraits.Migrate()
 }
 
 func (ses Session) migration(dep *modelModule) func() error {

@@ -1,4 +1,4 @@
-package objectservice
+package sessionservice
 
 import (
 	"encoding/hex"

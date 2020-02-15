@@ -12,6 +12,12 @@ var (
 	isDebug = flag.Bool("debug", false, "serve with debug mode")
 )
 
+func init() {
+	if !flag.Parsed() {
+		flag.Parse()
+	}
+}
+
 func main() {
 	srv := server.New("./config")
 	if srv == nil {

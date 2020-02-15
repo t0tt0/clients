@@ -30,6 +30,7 @@ type Provider struct {
 	module.BaseModuler
 
 	objectService ObjectService
+	sessionService SessionService
 
 	subControllers []SubController
 }
@@ -51,6 +52,10 @@ func (s *Provider) Register(name string, service interface{}) {
 	switch ss := service.(type) {
 	case ObjectService:
 		s.objectService = ss
+		s.subControllers = append(s.subControllers, JustProvide(&ss))
+		return
+	case SessionService:
+		s.sessionService = ss
 		s.subControllers = append(s.subControllers, JustProvide(&ss))
 		return
 	default:

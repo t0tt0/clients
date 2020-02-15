@@ -90,6 +90,9 @@ func NewVesClient(rOptions ...interface{}) (vc *VesClient, err error) {
 	if vc.db, err = NewAccountDB(vc.module); err != nil {
 		return
 	}
+	if vc.sessionDB, err = NewSessionDB(vc.module); err != nil {
+		return
+	}
 	var conn ves_websocket.SocketConn
 	conn, _, err = new(websocket.Dialer).Dial((&url.URL{Scheme: "ws", Host: options.addr, Path: "/"}).String(), nil)
 	if err != nil {

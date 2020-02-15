@@ -7,15 +7,14 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-func (srv *Server) InstantiateLogger() bool {
+func (srv *Server) instantiateLogger() error {
 	var err error
 	srv.Logger, err = logger.NewZapLogger(logger.NewZapDevelopmentSugarOption(), zapcore.DebugLevel)
 	if err != nil {
-		fmt.Println(err)
-		return false
+		return err
 	}
 	srv.Module.Provide(config.ModulePath.Minimum.Global.Logger, srv.Logger)
-	return true
+	return nil
 }
 
 func (srv *Server) println(a ...interface{}) {

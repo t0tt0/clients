@@ -2,6 +2,7 @@ package index
 
 import (
 	"errors"
+	"github.com/Myriad-Dreamin/go-ves/types"
 )
 
 var engine Engine
@@ -29,8 +30,21 @@ type Engine interface {
 	Get([]byte) (ByteObject, error)
 	Put([]byte, []byte) error
 	Delete([]byte) error
+	//Batch([][]byte, [][]byte) error
 	Close() error
 }
+
+type ToIndexInterface interface {
+	ToIndex() types.Index
+}
+
+func ToIndex(e Engine) types.Index {
+	if x, ok := e.(ToIndexInterface); ok {
+		return x.ToIndex()
+	}
+	return nil
+}
+
 
 func RegisterEngine(e Engine) error {
 	engine = e

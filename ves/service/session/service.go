@@ -1,7 +1,8 @@
 //go:generate package-attach-to-path -generate_register_map
-package objectservice
+package sessionservice
 
 import (
+	"context"
 	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
 	xconfig "github.com/Myriad-Dreamin/go-ves/config"
@@ -29,6 +30,42 @@ type Service struct {
 	respAccount    uiptypes.Account
 	storage        types.SessionKV
 	storageHandler types.StorageHandler
+}
+
+func (svc *Service) UserRegister(context.Context, *uiprpc.UserRegisterRequest) (*uiprpc.UserRegisterReply, error) {
+	panic("implement me")
+}
+
+func (svc *Service) SessionRequireTransact(context.Context, *uiprpc.SessionRequireTransactRequest) (*uiprpc.SessionRequireTransactReply, error) {
+	panic("implement me")
+}
+
+func (svc *Service) SessionRequireRawTransact(context.Context, *uiprpc.SessionRequireRawTransactRequest) (*uiprpc.SessionRequireRawTransactReply, error) {
+	panic("implement me")
+}
+
+func (svc *Service) AttestationReceive(context.Context, *uiprpc.AttestationReceiveRequest) (*uiprpc.AttestationReceiveReply, error) {
+	panic("implement me")
+}
+
+func (svc *Service) MerkleProofReceive(context.Context, *uiprpc.MerkleProofReceiveRequest) (*uiprpc.MerkleProofReceiveReply, error) {
+	panic("implement me")
+}
+
+func (svc *Service) ShrotenMerkleProofReceive(context.Context, *uiprpc.ShortenMerkleProofReceiveRequest) (*uiprpc.ShortenMerkleProofReceiveReply, error) {
+	panic("implement me")
+}
+
+func (svc *Service) InformAttestation(context.Context, *uiprpc.AttestationReceiveRequest) (*uiprpc.AttestationReceiveReply, error) {
+	panic("implement me")
+}
+
+func (svc *Service) InformMerkleProof(context.Context, *uiprpc.MerkleProofReceiveRequest) (*uiprpc.MerkleProofReceiveReply, error) {
+	panic("implement me")
+}
+
+func (svc *Service) InformShortenMerkleProof(context.Context, *uiprpc.ShortenMerkleProofReceiveRequest) (*uiprpc.ShortenMerkleProofReceiveReply, error) {
+	panic("implement me")
 }
 
 func (svc *Service) SessionServiceSignatureXXX() interface{} { return svc }

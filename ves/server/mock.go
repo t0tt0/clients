@@ -8,7 +8,6 @@ import (
 	parser "github.com/Myriad-Dreamin/go-parse-package"
 	"github.com/Myriad-Dreamin/go-ves/lib/serial"
 	"github.com/Myriad-Dreamin/go-ves/types"
-	"github.com/Myriad-Dreamin/go-ves/ves/control"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"io"
 	"io/ioutil"
@@ -46,21 +45,22 @@ type Res = mock.GinResultI
 
 func Mock(options ...Option) (srv *Mocker) {
 	srv = new(Mocker)
-	srv.Server = newServer(options)
+	var err error
+	srv.Server, err = newServer(options)
+	if err != nil {
+		panic(err)
+	}
 	srv.header = make(map[string]string)
-	if !(srv.InstantiateLogger() &&
-		srv.UseDefaultConfig() &&
+	if !(srv.UseDefaultConfig() &&
 		srv.PrepareFileSystem() &&
 		srv.MockDatabase()) {
-		srv = nil
+		panic("build failed")
 		return
 	}
 
 	defer func() {
 		if err := recover(); err != nil {
-			sugar.PrintStack()
-			srv.Logger.Error("panic error", "error", err)
-			srv.Terminate()
+			srv.handlerPanicError(err)
 		} else if srv == nil {
 			srv.Terminate()
 		}
@@ -69,7 +69,7 @@ func Mock(options ...Option) (srv *Mocker) {
 	if !(srv.PrepareMiddleware() &&
 		srv.PrepareService() &&
 		srv.BuildRouter()) {
-		srv = nil
+		panic("build failed")
 		return
 	}
 
@@ -80,16 +80,8 @@ func Mock(options ...Option) (srv *Mocker) {
 		srv.println("install database provider error", err)
 	}
 
-	defer func() {
-		if err := recover(); err != nil {
-			sugar.PrintStack()
-			srv.Logger.Error("panic error", "error", err)
-			srv.Terminate()
-		}
-	}()
-
-	srv.HttpEngine.Use(mockw.ContextRecorder())
-	control.BuildHttp(srv.Router.Root, srv.HttpEngine)
+	srv.HTTPEngine.Use(mockw.ContextRecorder())
+	sugar.HandlerError0(srv.HTTPEngine.Build(srv.Module))
 	srv.Module.Debug(srv.Logger)
 	ctx, cancel := context.WithCancel(context.Background())
 	defer func() {
@@ -104,7 +96,7 @@ func Mock(options ...Option) (srv *Mocker) {
 
 	if err := dblayer.GetRawInstance().Ping(); err != nil {
 		srv.Logger.Debug("database died", "error", err)
-		srv = nil
+		panic("build failed")
 		return
 	}
 	srv.cancel = cancel
@@ -215,7 +207,7 @@ func (mocker *Mocker) mockServe(r *Request, params ...interface{}) (w *mock.Resp
 		}
 	}
 
-	mocker.HttpEngine.ServeHTTP(w, r)
+	mocker.HTTPEngine.ServeHTTP(w, r)
 
 	if mocker.contextHelper != nil && mocker.assertNoError {
 		if !mocker.NoErr(w) {

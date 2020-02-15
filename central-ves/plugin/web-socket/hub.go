@@ -106,8 +106,6 @@ func (h *Hub) removeClient(client *Client) {
 func (h *Hub) registerClient(client *Client) {
 	select {
 	case <-client.helloed:
-		// do nothing
-
 		h.clients[client] = true
 		h.reverseClients[client.user.GetID()] = client
 		h.reverseNameClients[client.user.GetName()] = client

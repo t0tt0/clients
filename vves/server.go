@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	nsbcli "github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client"
-	"github.com/Myriad-Dreamin/go-ves/vves/vs"
 	"github.com/Myriad-Dreamin/minimum-lib/logger"
 	"io"
 	"net"

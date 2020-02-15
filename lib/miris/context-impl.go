@@ -230,27 +230,27 @@ func (c Context) BindUri(obj interface{}) error {
 }
 
 func (c Context) ShouldBind(obj interface{}) error {
-	panic("implement me")
+	return binding.JSON.Bind(c.Context.Request(), obj)
 }
 
 func (c Context) ShouldBindJSON(obj interface{}) error {
-	panic("implement me")
+	return binding.JSON.Bind(c.Context.Request(), obj)
 }
 
 func (c Context) ShouldBindXML(obj interface{}) error {
-	panic("implement me")
+	return binding.XML.Bind(c.Context.Request(), obj)
 }
 
 func (c Context) ShouldBindQuery(obj interface{}) error {
-	panic("implement me")
+	return binding.Query.Bind(c.Context.Request(), obj)
 }
 
 func (c Context) ShouldBindYAML(obj interface{}) error {
-	panic("implement me")
+	return binding.YAML.Bind(c.Context.Request(), obj)
 }
 
 func (c Context) ShouldBindHeader(obj interface{}) error {
-	panic("implement me")
+	return binding.Header.Bind(c.Context.Request(), obj)
 }
 
 func (c Context) ShouldBindUri(obj interface{}) error {

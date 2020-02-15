@@ -3,12 +3,10 @@ package vves
 import (
 	"errors"
 	"fmt"
-	"github.com/Myriad-Dreamin/go-ves/vves/vs"
 	"time"
 
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
 	uipbase "github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
-	"github.com/Myriad-Dreamin/go-ves/vves/service"
 	"golang.org/x/net/context"
 )
 

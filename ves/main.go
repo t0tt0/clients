@@ -3,26 +3,34 @@ package main
 import (
 	"flag"
 	"github.com/Myriad-Dreamin/go-ves/ves/server"
+	"log"
 	_ "net/http/pprof"
 )
 
 var (
-	port    = flag.String("port", ":23336", "serve on port")
-	isDebug = flag.Bool("debug", false, "serve with debug mode")
+	httpPort  = flag.String("port", ":23335", "serve http on port")
+	gRPCPport = flag.String("grpc", ":23351", "serve grpc on port")
+	isDebug   = flag.Bool("debug", false, "serve with debug mode")
 )
 
+func init() {
+	if !flag.Parsed() {
+		flag.Parse()
+	}
+}
+
 func main() {
-	srv := server.New("./config")
-	if srv == nil {
-		return
+	srv, err := server.New("./config")
+	if err != nil {
+		log.Fatal(err)
 	}
 
 	// srv.Inject(myPlugins...)
-
+	//httpPort, gRPCPort
 	if *isDebug {
-		srv.ServeWithPProf(*port)
+		srv.ServeWithPProf(*httpPort, *gRPCPport)
 	} else {
-		srv.Serve(*port)
+		srv.Serve(*httpPort, *gRPCPport)
 	}
 
 }

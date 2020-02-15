@@ -20,33 +20,33 @@ import (
 	"github.com/gomodule/redigo/redis"
 	"io"
 	"os"
+	"reflect"
 	"sync"
 	"syscall"
 )
 
 type Server struct {
-	Cfg          *config.ServerConfig
-	Logger       types.Logger
+	Cfg             *config.ServerConfig
+	Logger          types.Logger
+	Module          module.Module
+	CloseHandler    types.CloseHandler
+	ServiceProvider *service.Provider
+	ModelProvider   *model.Provider
+	RouterProvider  *router.Provider
+	plugins         []plugin.Plugin
+
 	LoggerWriter io.Writer
+	levelDB      index.Engine
+	RedisPool    *redis.Pool
 
-	RedisPool  *redis.Pool
-	HttpEngine *control.HttpEngine
+	HTTPEngine *control.HttpEngine
+	GRPCEngine *control.GRPCEngine
 	Router     *router.RootRouter
-
-	contestPath string
 
 	jwtMW *jwt.Middleware
 	//var authMW *privileger.MiddleWare
 	routerAuthMW *controller.Middleware
 	corsMW       gin.HandlerFunc
-
-	Module          module.Module
-	ServiceProvider *service.Provider
-	ModelProvider   *model.Provider
-	RouterProvider  *router.Provider
-
-	plugins []plugin.Plugin
-	levelDB index.Engine
 }
 
 func NewServer() *Server {
@@ -54,6 +54,7 @@ func NewServer() *Server {
 }
 
 func (srv *Server) Terminate() {
+	_ = srv.CloseHandler.Close()
 	model.Close(srv.Module)
 	syscall.Exit(0)
 }
@@ -71,8 +72,13 @@ type OptionRouterLoggerWriter struct {
 	Writer io.Writer
 }
 
-func newServer(options []Option) *Server {
-	srv := NewServer()
+type OptionCloseHandler struct {
+	OptionImpl
+	Handler types.CloseHandler
+}
+
+func newServer(options []Option) (srv *Server, err error) {
+	srv = NewServer()
 
 	for i := range options {
 		switch option := options[i].(type) {
@@ -80,38 +86,75 @@ func newServer(options []Option) *Server {
 			srv.LoggerWriter = option.Writer
 		case *OptionRouterLoggerWriter:
 			srv.LoggerWriter = option.Writer
+		case OptionCloseHandler:
+			srv.CloseHandler = option.Handler
+		case *OptionCloseHandler:
+			srv.CloseHandler = option.Handler
 		}
 	}
 
 	if srv.LoggerWriter == nil {
 		srv.LoggerWriter = os.Stdout
 	}
+	if srv.CloseHandler == nil {
+		srv.CloseHandler = newCloseHandler()
+	}
+
+	if srv.Logger == nil {
+		err = srv.instantiateLogger()
+	}
+
+	srv.Module.Provide(config.ModulePath.Global.CloseHandler, srv.CloseHandler)
+	srv.Module.Provide(config.ModulePath.Global.LoggerWriter, srv.LoggerWriter)
 
 	srv.ServiceProvider = new(service.Provider)
 	srv.ModelProvider = model.NewProvider(config.ModulePath.Minimum.Provider.Model)
 	srv.RouterProvider = router.NewProvider(config.ModulePath.Minimum.Provider.Router)
+	srv.HTTPEngine = control.NewHttpEngine(srv.Module)
+	srv.GRPCEngine = control.NewGRPCEngine(srv.Module)
 
 	_ = model.SetProvider(srv.ModelProvider)
 	srv.Module.Provide(config.ModulePath.Minimum.Provider.Service, srv.ServiceProvider)
 	srv.Module.Provide(config.ModulePath.Minimum.Provider.Model, srv.ModelProvider)
 	srv.Module.Provide(config.ModulePath.Minimum.Provider.Router, srv.RouterProvider)
-	return srv
+
+	return
 }
 
-func New(cfgPath string, options ...Option) (srv *Server) {
-	srv = newServer(options)
-	if !(srv.InstantiateLogger() &&
-		srv.LoadConfig(cfgPath) &&
+type CloseHandler struct {
+	c []io.Closer
+}
+
+func (c *CloseHandler) Close() error {
+	for i := range c.c {
+		_ = c.c[i].Close()
+	}
+	return nil
+}
+
+func (c *CloseHandler) Handle(closer io.Closer) {
+	c.c = append(c.c, closer)
+}
+
+func newCloseHandler() types.CloseHandler {
+	return &CloseHandler{}
+}
+
+func New(cfgPath string, options ...Option) (srv *Server, err error) {
+	srv, err = newServer(options)
+	if err != nil {
+		return
+	}
+	if !(srv.LoadConfig(cfgPath) &&
 		srv.PrepareFileSystem() &&
-		srv.PrepareDatabase()) {
-		srv = nil
+		srv.PrepareDatabase() &&
+		srv.PrepareRemoteService()) {
+		panic("build failed")
 		return
 	}
 	defer func() {
 		if err := recover(); err != nil {
-			sugar.PrintStack()
-			srv.Logger.Error("panic error", "error", err)
-			srv.Terminate()
+			srv.handlerPanicError(err)
 		} else if srv == nil {
 			srv.Terminate()
 		}
@@ -120,19 +163,19 @@ func New(cfgPath string, options ...Option) (srv *Server) {
 	if !(srv.PrepareMiddleware() &&
 		srv.PrepareService() &&
 		srv.BuildRouter()) {
-		srv = nil
+		panic("build failed")
 		return
 	}
 
-	if err := srv.Module.Install(srv.RouterProvider); err != nil {
-		srv.println("install router provider error", err)
+	if err = srv.Module.Install(srv.RouterProvider); err != nil {
+		return
 	}
-	if err := srv.Module.Install(srv.ModelProvider); err != nil {
-		srv.println("install database provider error", err)
+	if err = srv.Module.Install(srv.ModelProvider); err != nil {
+		return
 	}
 	//
 	//if !PreparePlugin(cfg) {
-	//	srv = nil
+	//	panic("build failed")
 	//return
 	//}
 
@@ -143,9 +186,7 @@ func New(cfgPath string, options ...Option) (srv *Server) {
 func (srv *Server) Inject(plugins ...plugin.Plugin) (injectSuccess bool) {
 	defer func() {
 		if err := recover(); err != nil {
-			sugar.PrintStack()
-			srv.Logger.Error("panic error", "error", err)
-			srv.Terminate()
+			srv.handlerPanicError(err)
 		} else if injectSuccess == false {
 			srv.Terminate()
 		}
@@ -165,18 +206,21 @@ func (srv *Server) Inject(plugins ...plugin.Plugin) (injectSuccess bool) {
 	return true
 }
 
-func (srv *Server) Serve(port string) {
+func (srv *Server) Serve(httpPort, gRPCPort string) {
+
+	// serve recover from panic
 	defer func() {
 		if err := recover(); err != nil {
-			sugar.PrintStack()
-			srv.Logger.Error("panic error", "error", err)
-			srv.Terminate()
+			srv.handlerPanicError(err)
 		}
 	}()
 
-	control.BuildHttp(srv.Router.Root, srv.HttpEngine)
-	srv.Module.Debug(srv.Logger)
+	// lazy build
+	sugar.HandlerError0(srv.HTTPEngine.Build(srv.Module))
+	sugar.HandlerError0(srv.GRPCEngine.Build(srv.Module))
 
+	// all is ready
+	srv.Module.Debug(srv.Logger)
 	ctx, cancel := context.WithCancel(context.Background())
 	defer func() {
 		cancel()
@@ -192,19 +236,36 @@ func (srv *Server) Serve(port string) {
 	}
 
 	var wg sync.WaitGroup
-	wg.Add(1)
-	go func() {
-		if err := srv.HttpEngine.Run(port); err != nil {
-			srv.Logger.Debug("IRouter run error", "error", err)
-		}
-		wg.Done()
-	}()
-
-	//do something
+	type pTask struct {
+		engine control.RunnableEngine
+		port   string
+	}
+	for _, task := range []pTask{
+		{srv.HTTPEngine, httpPort},
+		{srv.GRPCEngine, gRPCPort},
+	} {
+		wg.Add(1)
+		go func(task pTask) {
+			if err := task.engine.Run(task.port); err != nil {
+				srv.Logger.Debug("run error",
+					"error", err,
+					"engine", reflect.TypeOf(task.engine), "port", task.port)
+			}
+			wg.Done()
+		}(task)
+	}
+	//before engine built
 	wg.Wait()
+	// ensure engine built
 }
 
-func (srv *Server) ServeWithPProf(port string) {
-	ginpprof.Wrap(srv.HttpEngine)
-	srv.Serve(port)
+func (srv *Server) ServeWithPProf(httpPort, gRPCPort string) {
+	ginpprof.Wrap(srv.HTTPEngine.Engine)
+	srv.Serve(httpPort, gRPCPort)
+}
+
+func (srv *Server) handlerPanicError(err interface{}) {
+	sugar.PrintStack()
+	srv.Logger.Error("panic error", "error", err)
+	srv.Terminate()
 }

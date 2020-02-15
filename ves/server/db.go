@@ -5,7 +5,9 @@ import (
 	"github.com/Myriad-Dreamin/functional-go"
 	"github.com/Myriad-Dreamin/go-ves/ves/config"
 	"github.com/Myriad-Dreamin/go-ves/ves/model"
+	"github.com/Myriad-Dreamin/go-ves/ves/model/index"
 	"github.com/Myriad-Dreamin/minimum-lib/rbac"
+	"reflect"
 )
 
 type dbResult struct {
@@ -103,6 +105,13 @@ func (srv *Server) initIndex() bool {
 		return false
 	}
 
-	srv.Module.Provide(config.ModulePath.DBInstance.Index, srv.levelDB)
+	if i := index.ToIndex(srv.levelDB); i == nil {
+		srv.Logger.Debug("oss engine cannot convert to index", "type", reflect.TypeOf(srv.levelDB))
+	} else {
+		srv.Module.Provide(config.ModulePath.DBInstance.Index, i)
+		srv.Module.Provide(config.ModulePath.Global.Storage, index.NewSessionKV(i))
+		srv.Module.Provide(config.ModulePath.Global.StorageHandler, index.NewStorageHandler(i))
+	}
+
 	return true
 }

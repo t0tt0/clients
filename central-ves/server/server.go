@@ -86,15 +86,16 @@ func newServer(options []Option) *Server {
 		srv.LoggerWriter = os.Stdout
 	}
 
-	srv.ServiceProvider = new(service.Provider)
 	srv.ModelProvider = model.NewProvider(config.ModulePath.Minimum.Provider.Model)
 	srv.RouterProvider = router.NewProvider(config.ModulePath.Minimum.Provider.Router)
+	srv.ServiceProvider = new(service.Provider)
+	srv.HttpEngine = control.NewHttpEngine(srv.Module)
 
 	_ = model.SetProvider(srv.ModelProvider)
 	srv.Module.Provide(config.ModulePath.Minimum.Provider.Service, srv.ServiceProvider)
 	srv.Module.Provide(config.ModulePath.Minimum.Provider.Model, srv.ModelProvider)
 	srv.Module.Provide(config.ModulePath.Minimum.Provider.Router, srv.RouterProvider)
-	srv.Module.Provide(config.ModulePath.Global.UserDB, &fset.AccountFSet{srv.ModelProvider})
+	srv.Module.Provide(config.ModulePath.Global.UserDB, &fset.AccountFSet{Provider: srv.ModelProvider})
 	return srv
 }
 

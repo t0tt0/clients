@@ -1,6 +1,7 @@
 package vesclient
 
 import (
+	"fmt"
 	"github.com/Myriad-Dreamin/go-ves/lib/miris"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"github.com/kataras/iris"
@@ -15,6 +16,9 @@ func (vc *VesClient) ListenHTTP(port string) error {
 
 	v1 := r.Party("/v1")
 	v1.PartyFunc("", vc.buildAccountRPCApis)
+	v1.PartyFunc("", vc.buildSessionRPCApis)
+
+	fmt.Println(r.GetRoutes())
 
 	return r.Run(iris.Addr(port))
 }

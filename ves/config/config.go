@@ -70,6 +70,9 @@ func Default() *ServerConfig {
 				User: "id",
 			},
 		},
+		LevelDBConfig: LevelDBConfig{
+			LocalPath:"./level-test",
+		},
 	}
 }
 
