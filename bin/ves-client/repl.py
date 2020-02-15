@@ -12,7 +12,8 @@ import requests
 
 
 def t():
-    return ves.cli.send_op_intents('intent.json')
+    # return ves.cli.send_op_intents('intent.json')
+    pass
 
 
 # interact #####################################
@@ -199,6 +200,7 @@ class CVESClient(Client):
         super().__init__(host)
         self.identities = []
         self.token = None
+        self.id = None
         self.refresh_token = None
 
     def ping(self):
@@ -218,10 +220,36 @@ class CVESClient(Client):
         if response.status_code == 200:
             data = response.json()
             if data['code'] == 0:
+                self.id = data['id']
                 self.identities = data['identity']
                 self.token = data['token']
                 self.refresh_token = data['refresh_token']
         return response
+
+    def post_chain_info(self, chain_id, address, user_id=None):
+        user_id = user_id or self.id
+        # todo
+        pass
+
+    def get_chain_info(self, chain_id=None, address=None, user_id=None):
+        # todo
+        pass
+
+    def put_chain_info(self, chain_id=None, address=None, user_id=None):
+        # todo
+        pass
+
+    def delete_chain_info(self, chain_id=None, address=None, user_id=None):
+        # todo
+        pass
+
+    def list_chain_info(self, chain_id=None, address=None, uesr_id=None):
+        # todo
+        pass
+
+    def list_user(self):
+        # todo
+        pass
 
 
 class VESRemoteClient(Client):
@@ -322,6 +350,14 @@ class Console(object):
     def send_op_intents_in_file(self, filepath=None):
         response = self.cli.send_op_intents_in_file(filepath)
         return response
+
+    def switch(self, name=None, password=None):
+        # todo
+        pass
+
+    def message_to(self, msg, target_name=None, target_id=None):
+        # todo
+        pass
 
 
 def main_load_cfg():

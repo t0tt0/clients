@@ -22,3 +22,10 @@ func (vc *VesClient) ListenHTTP(port string) error {
 
 	return r.Run(iris.Addr(port))
 }
+//	//		if err = vc.SendMessage(
+//	//			bytes.TrimSpace(toBytes),
+//	//			bytes.TrimSpace(buf.Bytes()),
+//	//		); err != nil {
+//	//			vc.logger.Error("error found", "error", err)
+//	//			continue
+//	//		}

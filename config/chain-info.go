@@ -52,6 +52,12 @@ func getRelay(domain uint64) (uiptypes.Account, error) {
 			ChainId: 4,
 			Address: b,
 		}, err
+	case 6:
+		b, err := hex.DecodeString("0a8f483d32e20a7b17b598235489570b92f67e31")
+		return &base_account.Account{
+			ChainId: 6,
+			Address: b,
+		}, err
 	default:
 		return nil, errors.New("not found")
 	}
@@ -87,6 +93,12 @@ func searchAccount(name string, chainId uint64) (uiptypes.Account, error) {
 			b, err := hex.DecodeString("604bdd2dd4b7e1b761e2ac96db99bb2bda386bb0d075b51a8f49c5103ebaa985")
 			return &base_account.Account{
 				ChainId: 4,
+				Address: b,
+			}, err
+		case 6:
+			b, err := hex.DecodeString("0a8f483d32e20a7b17b598235489570b92f67e31")
+			return &base_account.Account{
+				ChainId: 6,
 				Address: b,
 			}, err
 		default:
