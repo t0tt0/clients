@@ -48,16 +48,19 @@ func (svc *Service) RequireRawTransaction(
 	}
 
 	var dest *uiprpc_base.Account
-	if ti.TransType == transtype.Payment {
+	switch ti.TransType {
+	case transtype.Payment:
 		dest = &uiprpc_base.Account{
 			Address: ti.Dst,
 			ChainId: ti.ChainID,
 		}
-	} else {
+	case transtype.ContractInvoke:
 		dest = &uiprpc_base.Account{
 			Address: svc.respAccount.GetAddress(),
 			ChainId: svc.respAccount.GetChainId(),
 		}
+	default:
+		return nil, wrapper.WrapCode(types.CodeDestinationRespUnknown)
 	}
 
 	return &uiprpc.SessionRequireRawTransactReply{

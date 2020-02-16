@@ -3,9 +3,11 @@ package sessionservice
 import (
 	"errors"
 	base_variable "github.com/HyperService-Consortium/go-uip/base-variable"
+	"github.com/HyperService-Consortium/go-uip/const/trans_type"
 	"github.com/HyperService-Consortium/go-uip/const/value_type"
 	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/Myriad-Dreamin/go-ves/lib/bni/upstream"
 	"github.com/Myriad-Dreamin/go-ves/lib/encoding"
 	"github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/go-ves/ves/mock"
@@ -18,7 +20,7 @@ import (
 
 func createTranslateEnvField(options ...interface{}) *prepareTranslateEnvironment {
 	t := &prepareTranslateEnvironment{
-		Service: createService(options ...),
+		Service: createService(options...),
 		ses:     nil,
 		ti:      nil,
 		bn:      nil,
@@ -37,21 +39,6 @@ func createTranslateEnvField(options ...interface{}) *prepareTranslateEnvironmen
 	}
 	return t
 }
-
-//Type: "uint256",
-//Value: marshal(map[string]interface{}{
-//	"contract": "0000000000000000000000000000000000000000",
-//	"pos":      "00",
-//	"field":    "staking",
-//}),
-//	uiptypes.RawParams{
-//								{
-//									Type: "uint256",
-//									Value: marshal(h{
-//										"constant": 1001,
-//									}),
-//								},
-//							}
 
 func Test_prepareTranslateEnvironment_ensureValue(t *testing.T) {
 	ctl := gomock.NewController(t)
@@ -73,7 +60,7 @@ func Test_prepareTranslateEnvironment_ensureValue(t *testing.T) {
 		sugar.HandlerError(encoding.DecodeHex("00")).([]byte),
 		sugar.HandlerError(encoding.DecodeHex("00")).([]byte),
 		[]byte("goodButErrorType")).Return(base_variable.Variable{
-			Type: value_type.Uint128, Value: nil}, nil)
+		Type: value_type.Uint128, Value: nil}, nil)
 
 	bn.EXPECT().GetStorageAt(
 		ti.ChainID, value_type.Uint256,
@@ -167,6 +154,150 @@ func Test_prepareTranslateEnvironment_ensureValue(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if err := tt.env.ensureValue(tt.args.param); (err != nil) != tt.wantErr {
 				t.Errorf("ensureValue() error = %v, wantErr %v", err, tt.wantErr)
+			} else if err != nil {
+				checkErrorCode(t, err, tt.wantCode)
+				return
+			}
+		})
+	}
+}
+
+func Test_prepareTranslateEnvironment_do(t *testing.T) {
+	ctl := gomock.NewController(t)
+	defer ctl.Finish()
+
+	_, ti, _ := dataGoodTransactionIntent(t)
+	ti0 := *ti
+	ti0.TransType = trans_type.ContractInvoke + 23333
+	ti1 := *ti
+	ti1.TransType = trans_type.ContractInvoke
+	ti1.Meta = sugar.HandlerError(upstream.Serializer.Meta.Contract.Marshal(
+		&uiptypes.ContractInvokeMeta{
+			FuncName: "updateStake",
+			Params: []uiptypes.RawParams{
+				{
+					Type: "uint256",
+					Value: marshal(map[string]interface{}{
+						"constant": 1001,
+					}),
+				},
+			},
+		})).([]byte)
+	ti2 := *ti
+	ti2.TransType = trans_type.Payment
+
+	tests := []struct {
+		name    string
+		env     *prepareTranslateEnvironment
+		wantErr bool
+		wantCode int
+	}{
+		{name: "transactionTypeNotFound", env: createTranslateEnvField(
+			&ti0,
+		), wantErr: true, wantCode:types.CodeTransactionTypeNotFound},
+		{name: "okContractInvoke", env: createTranslateEnvField(
+			&ti1,
+		), wantErr: false},
+		{name: "okPayment", env: createTranslateEnvField(
+			&ti2,
+		), wantErr: false},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := tt.env.do(); (err != nil) != tt.wantErr {
+				t.Errorf("do() error = %v, wantErr %v", err, tt.wantErr)
+			} else if err != nil {
+				checkErrorCode(t, err, tt.wantCode)
+				return
+			}
+		})
+	}
+}
+
+func Test_prepareTranslateEnvironment_doContractInvoke(t *testing.T) {
+	ctl := gomock.NewController(t)
+	defer ctl.Finish()
+
+	_, ti, _ := dataGoodTransactionIntent(t)
+	ti1, ti0 := *ti, *ti
+
+	ti.TransType = trans_type.ContractInvoke
+	ti0.TransType = trans_type.ContractInvoke
+	ti1.TransType = trans_type.ContractInvoke
+
+	ti.Meta = nil
+	ti0.Meta = sugar.HandlerError(upstream.Serializer.Meta.Contract.Marshal(
+		&uiptypes.ContractInvokeMeta{
+			FuncName: "updateStake",
+			Params: []uiptypes.RawParams{
+				{
+					Type: "uint256",
+					Value: nil,
+				},
+			},
+		})).([]byte)
+	ti1.Meta = sugar.HandlerError(upstream.Serializer.Meta.Contract.Marshal(
+		&uiptypes.ContractInvokeMeta{
+			FuncName: "updateStake",
+			Params: []uiptypes.RawParams{
+				{
+					Type: "uint256",
+					Value: marshal(map[string]interface{}{
+						"constant": 1001,
+					}),
+				},
+			},
+		})).([]byte)
+
+
+	tests := []struct {
+		name    string
+		env     *prepareTranslateEnvironment
+		wantErr bool
+		wantCode int
+	}{
+		{name: "DeserializeTransactionError", env: createTranslateEnvField(
+			ti,
+		), wantErr: true, wantCode: types.CodeDeserializeTransactionError},
+		{name: "EnsureTransactionValueError", env: createTranslateEnvField(
+			&ti0,
+		), wantErr: true, wantCode: types.CodeEnsureTransactionValueError},
+		{name: "ok", env: createTranslateEnvField(
+			&ti1,
+		), wantErr: false},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := tt.env.doContractInvoke(); (err != nil) != tt.wantErr {
+				t.Errorf("doContractInvoke() error = %v, wantErr %v", err, tt.wantErr)
+			} else if err != nil {
+				checkErrorCode(t, err, tt.wantCode)
+				return
+			}
+		})
+	}
+}
+
+func Test_prepareTranslateEnvironment_doPayment(t *testing.T) {
+	ctl := gomock.NewController(t)
+	defer ctl.Finish()
+	_, ti, _ := dataGoodTransactionIntent(t)
+	ti.TransType = trans_type.Payment
+	//todo test option
+	tests := []struct {
+		name    string
+		env     *prepareTranslateEnvironment
+		wantErr bool
+		wantCode int
+	}{
+		{name: "ok", env: createTranslateEnvField(
+			ti,
+		), wantErr: false},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := tt.env.doPayment(); (err != nil) != tt.wantErr {
+				t.Errorf("doPayment() error = %v, wantErr %v", err, tt.wantErr)
 			} else if err != nil {
 				checkErrorCode(t, err, tt.wantCode)
 				return

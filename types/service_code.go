@@ -145,6 +145,7 @@ const (
 	CodeGetStorageError
 	CodeGetStorageTypeError
 	CodeSetStorageError
+	CodeDestinationRespUnknown
 
 	CodeBlockChainErrorR
 	CodeBlockChainErrorL = CodeChainIDNotFound
