@@ -17,11 +17,9 @@ import (
 	"testing"
 )
 
-
 var describer = wrapper.Describer{
 	Pack: "github.com/Myriad-Dreamin/go-ves/ves/service/session",
 	Rel:  sugar.HandlerError(os.Getwd()).(string)}
-
 
 var (
 	sessionIDNotFound                            = []byte("xx")
@@ -33,6 +31,7 @@ var (
 	sessionIDOk                                  = []byte("zx")
 	sessionIDOk2                                 = []byte("zy")
 	sessionIDAttestationSendError                = []byte("zz")
+	sessionIDGetBlockChainError                  = []byte("xxx")
 	sessionIDDeserializeTransactionError         = []byte("xyz")
 	sessionIDFindSessionWithAcknowledgeError     = []byte("x")
 	sessionIDFindSessionWithGetAcknowledgedError = []byte("y")

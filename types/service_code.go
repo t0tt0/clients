@@ -141,6 +141,7 @@ const (
 	CodeTransactionTypeNotFound
 	CodeValueTypeNotFound
 	CodeGetBlockChainInterfaceError
+	CodeGetTransactionIntentError
 
 	CodeBlockChainErrorR
 	CodeBlockChainErrorL = CodeChainIDNotFound

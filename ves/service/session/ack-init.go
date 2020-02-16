@@ -17,8 +17,6 @@ func (svc *Service) SessionAckForInit(ctx context.Context, in *uiprpc.SessionAck
 		return nil, wrapper.WrapCode(types.CodeSessionNotFind)
 	}
 
-	//s.DB.ActivateSession(s.GetSessionId())
-	//defer s.DB.InactivateSession(s.GetSessionId())
 	// todo: get Session Acked from isc
 	if err = svc.sesFSet.AckForInit(
 		ses, in.GetUser(),

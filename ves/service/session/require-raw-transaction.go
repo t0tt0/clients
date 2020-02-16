@@ -22,9 +22,9 @@ func (svc *Service) RequireRawTransaction(
 		return nil, wrapper.WrapCode(types.CodeSessionNotFind)
 	}
 
-	ti, err := svc.getTransactionIntent(ses.GetGUID(), ses.UnderTransacting)
+	ti, err := svc.getTransactionIntent(in.GetSessionId(), ses.UnderTransacting)
 	if err != nil {
-		return nil, err
+		return nil, wrapper.Wrap(types.CodeGetTransactionIntentError, err)
 	}
 
 	bn, err := svc.getBlockChainInterface(ti.ChainID)
