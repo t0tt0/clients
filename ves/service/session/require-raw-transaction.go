@@ -2,7 +2,6 @@ package sessionservice
 
 import (
 	"encoding/json"
-	ChainType "github.com/HyperService-Consortium/go-uip/const/chain_type"
 	"github.com/Myriad-Dreamin/go-ves/lib/encoding"
 	"github.com/Myriad-Dreamin/go-ves/lib/wrapper"
 	"github.com/Myriad-Dreamin/go-ves/types"
@@ -13,24 +12,8 @@ import (
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
-	ethbni "github.com/Myriad-Dreamin/go-ves/lib/bni/eth"
-	tenbni "github.com/Myriad-Dreamin/go-ves/lib/bni/ten"
 )
 
-func (svc *Service) getBlockChainInterface(chainID uint64) (uiptypes.BlockChainInterface, error) {
-	if ci, err := svc.dns.GetChainInfo(chainID); err != nil {
-		return nil, wrapper.Wrap(types.CodeChainIDNotFound, err)
-	} else {
-		switch ci.GetChainType() {
-		case ChainType.Ethereum:
-			return ethbni.NewBN(svc.dns), nil
-		case ChainType.TendermintNSB:
-			return tenbni.NewBN(svc.dns), nil
-		default:
-			return nil, wrapper.WrapCode(types.CodeChainTypeNotFound)
-		}
-	}
-}
 
 func (svc *Service) RequireRawTransaction(
 	ctx context.Context, in *uiprpc.SessionRequireRawTransactRequest) (

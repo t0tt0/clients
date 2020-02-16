@@ -1,6 +1,7 @@
 package sessionservice
 
 import (
+	"github.com/HyperService-Consortium/go-uip/uiptypes"
 	logger2 "github.com/Myriad-Dreamin/go-ves/lib/log"
 	"github.com/Myriad-Dreamin/go-ves/lib/wrapper"
 	"github.com/Myriad-Dreamin/go-ves/types"
@@ -8,11 +9,19 @@ import (
 	"github.com/Myriad-Dreamin/go-ves/ves/control"
 	"github.com/Myriad-Dreamin/go-ves/ves/mock"
 	"github.com/Myriad-Dreamin/minimum-lib/logger"
+	"github.com/Myriad-Dreamin/minimum-lib/sugar"
 	"github.com/golang/mock/gomock"
 	"go.uber.org/zap/zapcore"
 	"log"
+	"os"
 	"testing"
 )
+
+
+var describer = wrapper.Describer{
+	Pack: "github.com/Myriad-Dreamin/go-ves/ves/service/session",
+	Rel:  sugar.HandlerError(os.Getwd()).(string)}
+
 
 var (
 	sessionIDNotFound                            = []byte("xx")
@@ -46,6 +55,19 @@ type fields struct {
 	nsbClient      control.NSBClient
 }
 
+type ChainInfo struct {
+	ChainType uiptypes.ChainType
+	ChainHost string
+}
+
+func (c ChainInfo) GetChainType() uiptypes.ChainType {
+	return c.ChainType
+}
+
+func (c ChainInfo) GetChainHost() string {
+	return c.ChainHost
+}
+
 func MockSessionDB(ctl *gomock.Controller) *mock.SessionDB {
 	return mock.NewSessionDB(ctl)
 }
@@ -60,6 +82,10 @@ func MockSessionAccountDB(ctl *gomock.Controller) *mock.SessionAccountDB {
 
 func MockCentralVESClient(ctl *gomock.Controller) *mock.CentralVESClient {
 	return mock.NewCentralVESClient(ctl)
+}
+
+func MockChainDNS(ctl *gomock.Controller) *mock.ChainDNS {
+	return mock.NewChainDNS(ctl)
 }
 
 func createField(options ...interface{}) fields {
@@ -78,6 +104,8 @@ func createField(options ...interface{}) fields {
 			f.accountDB = o
 		case *mock.CentralVESClient:
 			f.cVes = o
+		case *mock.ChainDNS:
+			f.dns = o
 		}
 	}
 
@@ -109,7 +137,7 @@ func checkErrorCode(t *testing.T, err error, i int) {
 				t.Errorf("not expected code, error code %v, wantCode %v", f.GetCode(), i)
 			} else {
 				ensureTestLogger()
-				testLogger.Info("expected good error", "error", err)
+				testLogger.Info("expected good error", "error", describer.Describe(err))
 			}
 		} else {
 			t.Error("not frame error wrapped")

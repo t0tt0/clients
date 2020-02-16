@@ -2,7 +2,10 @@ package sessionservice
 
 import (
 	"encoding/json"
+	"errors"
+	ChainType "github.com/HyperService-Consortium/go-uip/const/chain_type"
 	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
+	"github.com/HyperService-Consortium/go-uip/uiptypes"
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
 	uiprpc_base "github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
 	"github.com/Myriad-Dreamin/go-ves/ves/mock"
@@ -41,5 +44,27 @@ func newMockGoodInternalPushTransaction(t *testing.T, f *fields, sesID []byte, s
 		SessionId: sesID,
 		Host:      f.cfg.BaseParametersConfig.ExposeHost,
 		Accounts:  []*uiprpc_base.Account{srcAcc},
-	}).Return(&uiprpc.InternalRequestComingReply{Ok:true}, nil)
+	}).Return(&uiprpc.InternalRequestComingReply{Ok: true}, nil)
+}
+
+const (
+	ethereumChainID uiptypes.ChainTypeUnderlyingType = iota
+	tendermintChainID
+	unknownChainTypeID
+	unknownChainID
+)
+
+func newMockDNS(f *fields, dns *mock.ChainDNS) {
+	dns.EXPECT().GetChainInfo(ethereumChainID).Return(ChainInfo{
+		ChainType: ChainType.Ethereum,
+		ChainHost: "orz.cc:23333",
+	}, nil)
+	dns.EXPECT().GetChainInfo(tendermintChainID).Return(ChainInfo{
+		ChainType: ChainType.TendermintNSB,
+		ChainHost: "orz.cc:23332",
+	}, nil)
+	dns.EXPECT().GetChainInfo(unknownChainTypeID).Return(ChainInfo{
+		ChainType: ChainType.Unassigned,
+	}, nil).MinTimes(0)
+	dns.EXPECT().GetChainInfo(unknownChainID).Return(nil, errors.New("not found"))
 }
