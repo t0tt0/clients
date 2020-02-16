@@ -20,11 +20,13 @@ func TestService_SessionAckForInit(t *testing.T) {
 	sesDB := MockSessionDB(ctl)
 	sesFSet := MockSessionFSet(ctl)
 	sesAccountDB := MockSessionAccountDB(ctl)
+	cVes := MockCentralVESClient(ctl)
 
 	f := createField(
 		sesDB,
 		sesFSet,
 		sesAccountDB,
+		cVes,
 	)
 
 	// mock queryGUIDFindError
@@ -81,6 +83,73 @@ func TestService_SessionAckForInit(t *testing.T) {
 		GetAcknowledged(ses.ISCAddress).
 		Return(int64(0), errors.New("get acknowledged error"))
 
+	ses = &model.Session{
+		ISCAddress:       model.EncodeAddress(sessionIDOk),
+		AccountsCount: 2,
+		//ID:               0,
+		//CreatedAt:        time.Time{},
+		//UpdatedAt:        time.Time{},
+		//ISCAddress:       nil,
+		//UnderTransacting: 0,
+		//Status:           0,
+		//Content:          "",
+		//AccountsCount:    0,
+	}
+	var inOk = &uiprpc.SessionAckForInitRequest{
+		SessionId: ses.GetGUID(),
+		User:      nil,
+		UserSignature: &uiprpc_base.Signature{
+			SignatureType: 0,
+			Content:       nil,
+		},
+	}
+	sesDB.EXPECT().
+		QueryGUIDByBytes(ses.GetGUID()).Return(ses, nil)
+	sesFSet.EXPECT().
+		AckForInit(
+			ses, inOk.GetUser(),
+			mock.MatchSignature(
+				signaturer.FromRaw(inOk.GetUserSignature().Content,
+					inOk.GetUserSignature().SignatureType))).
+		Return(nil)
+	sesAccountDB.EXPECT().
+		GetAcknowledged(ses.ISCAddress).
+		Return(int64(1), nil)
+
+	ses = &model.Session{
+		ISCAddress:       model.EncodeAddress(sessionIDOk2),
+		AccountsCount: 1,
+		//ID:               0,
+		//CreatedAt:        time.Time{},
+		//UpdatedAt:        time.Time{},
+		//ISCAddress:       nil,
+		//UnderTransacting: 0,
+		//Status:           0,
+		//Content:          "",
+		//AccountsCount:    0,
+	}
+	newMockGoodInternalPushTransaction(t, &f, sessionIDOk2, sesFSet, cVes)
+	var inOk2 = &uiprpc.SessionAckForInitRequest{
+		SessionId: ses.GetGUID(),
+		User:      nil,
+		UserSignature: &uiprpc_base.Signature{
+			SignatureType: 0,
+			Content:       nil,
+		},
+	}
+	sesDB.EXPECT().
+		QueryGUIDByBytes(ses.GetGUID()).Return(ses, nil)
+	sesFSet.EXPECT().
+		AckForInit(
+			ses, inOk2.GetUser(),
+			mock.MatchSignature(
+				signaturer.FromRaw(inOk2.GetUserSignature().Content,
+					inOk2.GetUserSignature().SignatureType))).
+		Return(nil)
+	sesAccountDB.EXPECT().
+		GetAcknowledged(ses.ISCAddress).
+		Return(int64(1), nil)
+
 	type args struct {
 		ctx context.Context
 		in  *uiprpc.SessionAckForInitRequest
@@ -93,30 +162,38 @@ func TestService_SessionAckForInit(t *testing.T) {
 		wantErr  bool
 		wantCode int
 	}{
-		{"queryGUIDFindError", f, args{
-			context.Background(),
-			&uiprpc.SessionAckForInitRequest{
+		{name: "queryGUIDFindError", fields: f, args: args{
+			ctx: context.Background(),
+			in: &uiprpc.SessionAckForInitRequest{
 				SessionId:     sessionIDFindError,
 				User:          nil,
 				UserSignature: nil,
 			},
-		}, false, true, types.CodeSessionFindError},
-		{"queryGUIDNotFind", f, args{
-			context.Background(),
-			&uiprpc.SessionAckForInitRequest{
+		}, wantErr: true, wantCode: types.CodeSessionFindError},
+		{name: "queryGUIDNotFind", fields: f, args: args{
+			ctx: context.Background(),
+			in: &uiprpc.SessionAckForInitRequest{
 				SessionId:     sessionIDNotFound,
 				User:          nil,
 				UserSignature: nil,
 			},
-		}, false, true, types.CodeSessionNotFind},
-		{"queryFindSessionWithAcknowledgeError", f, args{
-			context.Background(),
-			inFindSessionWithAcknowledgeError,
-		}, false, true, types.CodeSessionAcknowledgeError},
-		{"queryFindSessionWithGetAcknowledgedError", f, args{
-			context.Background(),
-			inFindSessionWithGetAcknowledgedError,
-		}, false, true, types.CodeSessionAccountGetAcknowledgedError},
+		}, wantErr: true, wantCode: types.CodeSessionNotFind},
+		{name: "queryFindSessionWithAcknowledgeError", fields: f, args: args{
+			ctx: context.Background(),
+			in:  inFindSessionWithAcknowledgeError,
+		}, wantErr: true, wantCode: types.CodeSessionAcknowledgeError},
+		{name: "queryFindSessionWithGetAcknowledgedError", fields: f, args: args{
+			ctx: context.Background(),
+			in:  inFindSessionWithGetAcknowledgedError,
+		}, wantErr: true, wantCode: types.CodeSessionAccountGetAcknowledgedError},
+		{name: "Ok", fields: f, args: args{
+			ctx: context.Background(),
+			in:  inOk,
+		}, want: true},
+		{name: "OkWithCallback", fields: f, args: args{
+			ctx: context.Background(),
+			in:  inOk2,
+		}, want: true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

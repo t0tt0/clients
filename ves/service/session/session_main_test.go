@@ -21,6 +21,8 @@ var (
 	sessionIDAttestationSendErrorNotOk           = []byte("yx")
 	sessionIDFindError                           = []byte("yy")
 	sessionIDAttestationSendErrorNotOk2          = []byte("yz")
+	sessionIDOk                                  = []byte("zx")
+	sessionIDOk2                                 = []byte("zy")
 	sessionIDAttestationSendError                = []byte("zz")
 	sessionIDDeserializeTransactionError         = []byte("xyz")
 	sessionIDFindSessionWithAcknowledgeError     = []byte("x")
