@@ -2,9 +2,7 @@ package sessionservice
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
-	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
 	uiprpc_base "github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
 	"github.com/Myriad-Dreamin/go-ves/types"
@@ -17,74 +15,32 @@ func TestService_pushTransaction(t *testing.T) {
 	ctl := gomock.NewController(t)
 	defer ctl.Finish()
 
-	sesDB := MockSessionDB(ctl)
 	sesFSet := MockSessionFSet(ctl)
-	sesAccountDB := MockSessionAccountDB(ctl)
 	cVes := MockCentralVESClient(ctl)
 
-
-
 	f := createField(
-		sesDB,
 		sesFSet,
-		sesAccountDB,
 		cVes,
 	)
 
+	//FindTransactionError
 	var sesFindTransactionError = &model.Session{
 		ISCAddress: model.EncodeAddress(sessionIDFindTransactionError),
-		//ID:               0,
-		//CreatedAt:        time.Time{},
-		//UpdatedAt:        time.Time{},
-		//ISCAddress:       "",
-		//UnderTransacting: 0,
-		//Status:           0,
-		//Content:          "",
-		//AccountsCount:    0,
 	}
 	sesFSet.EXPECT().FindTransaction(sessionIDFindTransactionError, int64(0)).
 		Return(nil, errors.New("find transaction error"))
 
+	//DeserializeTransactionError
 	var sesDeserializeTransactionError = &model.Session{
 		ISCAddress: model.EncodeAddress(sessionIDDeserializeTransactionError),
-		//ID:               0,
-		//CreatedAt:        time.Time{},
-		//UpdatedAt:        time.Time{},
-		//ISCAddress:       "",
-		//UnderTransacting: 0,
-		//Status:           0,
-		//Content:          "",
-		//AccountsCount:    0,
 	}
 	sesFSet.EXPECT().FindTransaction(sessionIDDeserializeTransactionError, int64(0)).
 		Return([]byte(""), nil)
 
-	var srcAcc = &uiprpc_base.Account{
-		ChainId: 233,
-		Address: []byte{2, 3, 3},
-	}
-	var ti = opintent.TransactionIntent{
-		TransType: 0,
-		Src:       srcAcc.Address,
-		Dst:       nil,
-		Meta:      nil,
-		Amt:       "3e8",
-		ChainID:   srcAcc.ChainId,
-	}
-	b, err := json.Marshal(&ti)
-	if err != nil {
-		t.Fatal("ser", err)
-	}
+	srcAcc, _, b := dataGoodTransactionIntent(t)
+	//AttestationSendError
 	var sesAttestationSendError = &model.Session{
 		ISCAddress: model.EncodeAddress(sessionIDAttestationSendError),
-		//ID:               0,
-		//CreatedAt:        time.Time{},
-		//UpdatedAt:        time.Time{},
-		//ISCAddress:       "",
-		//UnderTransacting: 0,
-		//Status:           0,
-		//Content:          "",
-		//AccountsCount:    0,
 	}
 	sesFSet.EXPECT().FindTransaction(sessionIDAttestationSendError, int64(0)).
 		Return(b, nil)
@@ -94,16 +50,9 @@ func TestService_pushTransaction(t *testing.T) {
 		Accounts:  []*uiprpc_base.Account{srcAcc},
 	}).Return(nil, errors.New("send error"))
 
+	//AttestationSendErrorNotOk
 	var sesAttestationSendErrorNotOk = &model.Session{
 		ISCAddress: model.EncodeAddress(sessionIDAttestationSendErrorNotOk),
-		//ID:               0,
-		//CreatedAt:        time.Time{},
-		//UpdatedAt:        time.Time{},
-		//ISCAddress:       "",
-		//UnderTransacting: 0,
-		//Status:           0,
-		//Content:          "",
-		//AccountsCount:    0,
 	}
 	sesFSet.EXPECT().FindTransaction(sessionIDAttestationSendErrorNotOk, int64(0)).
 		Return(b, nil)
@@ -111,18 +60,11 @@ func TestService_pushTransaction(t *testing.T) {
 		SessionId: sesAttestationSendErrorNotOk.GetGUID(),
 		Host:      f.cfg.BaseParametersConfig.ExposeHost,
 		Accounts:  []*uiprpc_base.Account{srcAcc},
-	}).Return(&uiprpc.InternalRequestComingReply{Ok:false}, nil)
+	}).Return(&uiprpc.InternalRequestComingReply{Ok: false}, nil)
 
+	//AttestationSendErrorNotOk2
 	var sesAttestationSendErrorNotOk2 = &model.Session{
 		ISCAddress: model.EncodeAddress(sessionIDAttestationSendErrorNotOk2),
-		//ID:               0,
-		//CreatedAt:        time.Time{},
-		//UpdatedAt:        time.Time{},
-		//ISCAddress:       "",
-		//UnderTransacting: 0,
-		//Status:           0,
-		//Content:          "",
-		//AccountsCount:    0,
 	}
 	sesFSet.EXPECT().FindTransaction(sessionIDAttestationSendErrorNotOk2, int64(0)).
 		Return(b, nil)
@@ -132,24 +74,11 @@ func TestService_pushTransaction(t *testing.T) {
 		Accounts:  []*uiprpc_base.Account{srcAcc},
 	}).Return(nil, nil)
 
+	//Ok
+	newMockGoodInternalPushTransaction(t, &f, sessionIDPushTransactionNotNil, sesFSet, cVes)
 	var sesOk = &model.Session{
 		ISCAddress: model.EncodeAddress(sessionIDPushTransactionNotNil),
-		//ID:               0,
-		//CreatedAt:        time.Time{},
-		//UpdatedAt:        time.Time{},
-		//ISCAddress:       "",
-		//UnderTransacting: 0,
-		//Status:           0,
-		//Content:          "",
-		//AccountsCount:    0,
 	}
-	sesFSet.EXPECT().FindTransaction(sessionIDPushTransactionNotNil, int64(0)).
-		Return(b, nil)
-	cVes.EXPECT().InternalAttestationSending(gomock.Any(), &uiprpc.InternalRequestComingRequest{
-		SessionId: sesOk.GetGUID(),
-		Host:      f.cfg.BaseParametersConfig.ExposeHost,
-		Accounts:  []*uiprpc_base.Account{srcAcc},
-	}).Return(&uiprpc.InternalRequestComingReply{Ok:true}, nil)
 
 	type args struct {
 		ctx           context.Context
