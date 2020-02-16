@@ -80,6 +80,21 @@ func newMockGetTransactionIntentWithError(sessionID []byte, sesFSet *mock.Sessio
 		Return([]byte(""), nil)
 }
 
+func newEnsureStorage() {
+	//v := base_variable.Variable{
+	//	Type: value_type.Uint256, Value: big.NewInt(1)}
+	//bn.EXPECT().GetStorageAt(
+	//	ti.ChainID, value_type.Uint256,
+	//	sugar.HandlerError(encoding.DecodeHex("00")).([]byte),
+	//	sugar.HandlerError(encoding.DecodeHex("00")).([]byte),
+	//	[]byte("good")).Return(v, nil)
+	//storageHandler.EXPECT().SetStorageOf(
+	//	ti.ChainID, value_type.Uint256,
+	//	sugar.HandlerError(encoding.DecodeHex("00")).([]byte),
+	//	sugar.HandlerError(encoding.DecodeHex("00")).([]byte),
+	//	[]byte("good"), v).Return(nil)
+}
+
 
 const (
 	ethereumChainID uiptypes.ChainTypeUnderlyingType = iota

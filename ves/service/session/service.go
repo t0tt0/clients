@@ -24,10 +24,12 @@ type Service struct {
 	logger         types.Logger
 	cVes           control.CentralVESClient
 	respAccount    control.Account
-	storage        control.SessionKV
 	storageHandler control.StorageHandler
 	dns            control.ChainDNS
 	nsbClient      control.NSBClient
+
+	// remove?
+	storage        control.SessionKV
 
 }
 

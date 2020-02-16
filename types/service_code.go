@@ -142,6 +142,9 @@ const (
 	CodeValueTypeNotFound
 	CodeGetBlockChainInterfaceError
 	CodeGetTransactionIntentError
+	CodeGetStorageError
+	CodeGetStorageTypeError
+	CodeSetStorageError
 
 	CodeBlockChainErrorR
 	CodeBlockChainErrorL = CodeChainIDNotFound
@@ -151,6 +154,8 @@ const (
 	CodeConvertSignerError Code = iota + 15000
 	CodeDecodeAdditionError
 	CodeDecodeAddressError
+	CodeBadContractField
+	CodeBadPosField
 
 	CodeConvertErrorR
 	CodeConvertErrorL = CodeConvertSignerError

@@ -1,18 +1,24 @@
 package sessionservice
 
 import (
+	"errors"
+	base_variable "github.com/HyperService-Consortium/go-uip/base-variable"
 	"github.com/HyperService-Consortium/go-uip/const/value_type"
 	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/Myriad-Dreamin/go-ves/lib/encoding"
 	"github.com/Myriad-Dreamin/go-ves/types"
-	"github.com/Myriad-Dreamin/go-ves/ves/control"
+	"github.com/Myriad-Dreamin/go-ves/ves/mock"
 	"github.com/Myriad-Dreamin/go-ves/ves/model"
+	"github.com/Myriad-Dreamin/minimum-lib/sugar"
+	"github.com/golang/mock/gomock"
+	"math/big"
 	"testing"
 )
 
 func createTranslateEnvField(options ...interface{}) *prepareTranslateEnvironment {
 	t := &prepareTranslateEnvironment{
-		Service: createService(options),
+		Service: createService(options ...),
 		ses:     nil,
 		ti:      nil,
 		bn:      nil,
@@ -25,7 +31,7 @@ func createTranslateEnvField(options ...interface{}) *prepareTranslateEnvironmen
 			t.ses = o
 		case *opintent.TransactionIntent:
 			t.ti = o
-		case control.BlockChainInterfaceI:
+		case *mock.BlockChainInterface:
 			t.bn = o
 		}
 	}
@@ -48,7 +54,58 @@ func createTranslateEnvField(options ...interface{}) *prepareTranslateEnvironmen
 //							}
 
 func Test_prepareTranslateEnvironment_ensureValue(t *testing.T) {
-	s := createService()
+	ctl := gomock.NewController(t)
+	defer ctl.Finish()
+
+	bn := MockBlockChainInterface(ctl)
+	storageHandler := MockStorageHandler(ctl)
+
+	_, ti, _ := dataGoodTransactionIntent(t)
+
+	bn.EXPECT().GetStorageAt(
+		ti.ChainID, value_type.Uint256,
+		sugar.HandlerError(encoding.DecodeHex("00")).([]byte),
+		sugar.HandlerError(encoding.DecodeHex("00")).([]byte),
+		[]byte("bad")).Return(nil, errors.New("get error"))
+
+	bn.EXPECT().GetStorageAt(
+		ti.ChainID, value_type.Uint256,
+		sugar.HandlerError(encoding.DecodeHex("00")).([]byte),
+		sugar.HandlerError(encoding.DecodeHex("00")).([]byte),
+		[]byte("goodButErrorType")).Return(base_variable.Variable{
+			Type: value_type.Uint128, Value: nil}, nil)
+
+	bn.EXPECT().GetStorageAt(
+		ti.ChainID, value_type.Uint256,
+		sugar.HandlerError(encoding.DecodeHex("00")).([]byte),
+		sugar.HandlerError(encoding.DecodeHex("00")).([]byte),
+		[]byte("goodButErrorType2")).Return(base_variable.Variable{
+		Type: value_type.Uint128, Value: 1}, nil)
+
+	v := base_variable.Variable{
+		Type: value_type.Uint256, Value: big.NewInt(1)}
+	bn.EXPECT().GetStorageAt(
+		ti.ChainID, value_type.Uint256,
+		sugar.HandlerError(encoding.DecodeHex("00")).([]byte),
+		sugar.HandlerError(encoding.DecodeHex("00")).([]byte),
+		[]byte("goodButSetError")).Return(v, nil)
+	storageHandler.EXPECT().SetStorageOf(
+		ti.ChainID, value_type.Uint256,
+		sugar.HandlerError(encoding.DecodeHex("00")).([]byte),
+		sugar.HandlerError(encoding.DecodeHex("00")).([]byte),
+		[]byte("goodButSetError"), v).Return(errors.New("set error"))
+
+	bn.EXPECT().GetStorageAt(
+		ti.ChainID, value_type.Uint256,
+		sugar.HandlerError(encoding.DecodeHex("00")).([]byte),
+		sugar.HandlerError(encoding.DecodeHex("00")).([]byte),
+		[]byte("good")).Return(v, nil)
+	storageHandler.EXPECT().SetStorageOf(
+		ti.ChainID, value_type.Uint256,
+		sugar.HandlerError(encoding.DecodeHex("00")).([]byte),
+		sugar.HandlerError(encoding.DecodeHex("00")).([]byte),
+		[]byte("good"), v).Return(nil)
+
 	type args struct {
 		param uiptypes.RawParams
 	}
@@ -59,13 +116,13 @@ func Test_prepareTranslateEnvironment_ensureValue(t *testing.T) {
 		wantErr  bool
 		wantCode int
 	}{
-		{name: "valueTypeNotFound", env: createTranslateEnvField(s), args: args{
+		{name: "valueTypeNotFound", env: createTranslateEnvField(), args: args{
 			param: newRawMeta(value_type.Unknown, ""),
 		}, wantErr: true, wantCode: types.CodeValueTypeNotFound},
-		{name: "constantOk", env: createTranslateEnvField(s), args: args{
+		{name: "constantOk", env: createTranslateEnvField(), args: args{
 			param: newRawMeta(value_type.Uint256, ""),
 		}},
-		{name: "notEnoughParamInformation", env: createTranslateEnvField(s), args: args{
+		{name: "notEnoughParamInformation", env: createTranslateEnvField(), args: args{
 			param: uiptypes.RawParams{
 				Type: valueTypeToString(value_type.Uint256),
 				Value: marshal(map[string]interface{}{
@@ -73,7 +130,38 @@ func Test_prepareTranslateEnvironment_ensureValue(t *testing.T) {
 					"pos":      "yy",
 				}),
 			},
-		}, wantErr:true, wantCode:types.CodeNotEnoughParamInformation},
+		}, wantErr: true, wantCode: types.CodeNotEnoughParamInformation},
+		{name: "badContractField", env: createTranslateEnvField(), args: args{
+			param: newVarRawMeta(value_type.Uint256, "xx", "00", "bad"),
+		}, wantErr: true, wantCode: types.CodeBadContractField},
+		{name: "badPosField", env: createTranslateEnvField(), args: args{
+			param: newVarRawMeta(value_type.Uint256, "00", "yy", "bad"),
+		}, wantErr: true, wantCode: types.CodeBadPosField},
+		{name: "getStorageError", env: createTranslateEnvField(
+			ti, bn,
+		), args: args{
+			param: newVarRawMeta(value_type.Uint256, "00", "00", "bad"),
+		}, wantErr: true, wantCode: types.CodeGetStorageError},
+		{name: "getStorageTypeError", env: createTranslateEnvField(
+			ti, bn,
+		), args: args{
+			param: newVarRawMeta(value_type.Uint256, "00", "00", "goodButErrorType"),
+		}, wantErr: true, wantCode: types.CodeGetStorageTypeError},
+		{name: "getStorageTypeError", env: createTranslateEnvField(
+			ti, bn,
+		), args: args{
+			param: newVarRawMeta(value_type.Uint256, "00", "00", "goodButErrorType2"),
+		}, wantErr: true, wantCode: types.CodeGetStorageTypeError},
+		{name: "setStorageError", env: createTranslateEnvField(
+			ti, bn, storageHandler,
+		), args: args{
+			param: newVarRawMeta(value_type.Uint256, "00", "00", "goodButSetError"),
+		}, wantErr: true, wantCode: types.CodeSetStorageError},
+		{name: "ok", env: createTranslateEnvField(
+			ti, bn, storageHandler,
+		), args: args{
+			param: newVarRawMeta(value_type.Uint256, "00", "00", "good"),
+		}, wantErr: false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

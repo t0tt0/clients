@@ -9,6 +9,7 @@ import (
 	"github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
 	payment_option "github.com/Myriad-Dreamin/go-ves/lib/bni/payment-option"
+	"github.com/Myriad-Dreamin/go-ves/lib/bni/upstream"
 	"github.com/Myriad-Dreamin/go-ves/lib/encoding"
 	"github.com/Myriad-Dreamin/go-ves/lib/wrapper"
 	"github.com/Myriad-Dreamin/go-ves/types"
@@ -54,7 +55,7 @@ func (svc *prepareTranslateEnvironment) doContractInvoke() error {
 	var meta uiptypes.ContractInvokeMeta
 	err := json.Unmarshal(svc.ti.Meta, &meta)
 	if err != nil {
-		return err
+		return wrapper.Wrap(types.CodeDeserializeTransactionError, err)
 	}
 	for i, param := range meta.Params {
 
@@ -71,15 +72,8 @@ func (svc *prepareTranslateEnvironment) doPayment() error {
 		return wrapper.Wrap(types.CodeParsePaymentOptionInconsistentValueError, err)
 	}
 	if ok {
-		v, err := svc.bn.GetStorageAt(n.ChainID, n.TypeID, n.ContractAddress, n.Pos, n.Description)
-		if err != nil {
-			return err
-		}
-		svc.logger.Info("getting state from blockchain",
-			"address", hex.EncodeToString(n.ContractAddress),
-			"value:", v.GetValue(), "type", v.GetType(), "at pos", hex.EncodeToString(n.Pos))
-		err = svc.storageHandler.SetStorageOf(n.ChainID, n.TypeID, n.ContractAddress, n.Pos, n.Description, v)
-		if err != nil {
+		if err = svc.ensureStorage(
+			svc.bn, n.ChainID, n.TypeID, n.ContractAddress, n.Pos, n.Description); err != nil {
 			return err
 		}
 	}
@@ -97,26 +91,18 @@ func (svc *prepareTranslateEnvironment) ensureValue(param uiptypes.RawParams) er
 		if result.Get("contract").Exists() &&
 			result.Get("pos").Exists() &&
 			result.Get("field").Exists() {
+			// todo move to uip
 			ca, err := encoding.DecodeHex(result.Get("contract").String())
 			if err != nil {
-				return err
+				return wrapper.Wrap(types.CodeBadContractField, err)
 			}
 			pos, err := encoding.DecodeHex(result.Get("pos").String())
 			if err != nil {
-				return err
+				return wrapper.Wrap(types.CodeBadPosField, err)
 			}
 			desc := []byte(result.Get("field").String())
-
-			v, err := svc.bn.GetStorageAt(svc.ti.ChainID, intDesc, ca, pos, desc)
-			if err != nil {
-				return err
-			}
-			vv, err := json.Marshal(v)
-			if err != nil {
-				return err
-			}
-			err = svc.storage.SetKV(svc.ses.GetGUID(), desc, vv)
-			if err != nil {
+			if err = svc.ensureStorage(
+				svc.bn, svc.ti.ChainID, intDesc, ca, pos, desc); err != nil {
 				return err
 			}
 		} else {
@@ -124,5 +110,35 @@ func (svc *prepareTranslateEnvironment) ensureValue(param uiptypes.RawParams) er
 		}
 	}
 
+	return nil
+}
+
+func (svc *Service) ensureStorage(
+// todo: uip-types.Storage
+	source control.BlockChainInterfaceI,
+	chainID uiptypes.ChainIDUnderlyingType, typeID uiptypes.TypeID,
+	contractAddress []byte, pos []byte, description []byte) error {
+
+	v, err := source.GetStorageAt(chainID, typeID, contractAddress, pos, description)
+	if err != nil {
+		return wrapper.Wrap(types.CodeGetStorageError, err)
+	}
+
+	if v.GetType() != typeID {
+		return wrapper.WrapString(types.CodeGetStorageTypeError, "type not expected")
+	}
+
+	if upstream.StorageValueIsValid(v.GetValue(), v.GetType()) == false {
+		return wrapper.WrapString(types.CodeGetStorageTypeError, "type not expected")
+	}
+
+	svc.logger.Info("getting state from blockchain",
+		"address", hex.EncodeToString(contractAddress),
+		"value:", v.GetValue(), "type", v.GetType(), "at pos", hex.EncodeToString(pos))
+
+	err = svc.storageHandler.SetStorageOf(chainID, typeID, contractAddress, pos, description, v)
+	if err != nil {
+		return wrapper.Wrap(types.CodeSetStorageError, err)
+	}
 	return nil
 }

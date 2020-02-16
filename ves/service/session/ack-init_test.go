@@ -170,6 +170,10 @@ func TestService_SessionAckForInit(t *testing.T) {
 			ctx: context.Background(),
 			in:  inFindSessionWithGetAcknowledgedError,
 		}, wantErr: true, wantCode: types.CodeSessionAccountGetAcknowledgedError},
+		//{name: "callbackError", fields: f, args: args{
+		//	ctx: context.Background(),
+		//	in:  inOk2,
+		//}, want: true},
 		{name: "Ok", fields: f, args: args{
 			ctx: context.Background(),
 			in:  inOk,

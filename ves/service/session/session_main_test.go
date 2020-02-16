@@ -72,6 +72,14 @@ func MockChainDNS(ctl *gomock.Controller) *mock.ChainDNS {
 	return mock.NewChainDNS(ctl)
 }
 
+func MockBlockChainInterface(ctl *gomock.Controller) *mock.BlockChainInterface {
+	return mock.NewBlockChainInterface(ctl)
+}
+
+func MockStorageHandler(ctl *gomock.Controller) *mock.StorageHandler {
+	return mock.NewStorageHandler(ctl)
+}
+
 func createService(options ...interface{}) *Service {
 	ensureTestLogger()
 	f := &Service{
@@ -90,6 +98,8 @@ func createService(options ...interface{}) *Service {
 			f.cVes = o
 		case *mock.ChainDNS:
 			f.dns = o
+		case *mock.StorageHandler:
+			f.storageHandler = o
 		}
 	}
 
