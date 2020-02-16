@@ -19,4 +19,3 @@ func (svc *Service) getTransactionIntent(sessionID []byte, transactionID int64) 
 	}
 	return &ti, nil
 }
-

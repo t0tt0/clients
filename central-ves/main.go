@@ -9,6 +9,7 @@ import (
 
 var (
 	port    = flag.String("port", ":23336", "serve on port")
+	config  = flag.String("config", "./config", "config file path")
 	isDebug = flag.Bool("debug", false, "serve with debug mode")
 )
 
@@ -19,7 +20,7 @@ func init() {
 }
 
 func main() {
-	srv := server.New("./config")
+	srv := server.New(*config)
 	if srv == nil {
 		return
 	}

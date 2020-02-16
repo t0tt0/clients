@@ -1,4 +1,4 @@
-package server
+package chs
 
 import "github.com/Myriad-Dreamin/minimum-lib/logger"
 
@@ -27,4 +27,3 @@ func parseOptions(rOptions []interface{}) ServerOptions {
 	}
 	return options
 }
-

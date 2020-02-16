@@ -187,14 +187,14 @@ func Test_prepareTranslateEnvironment_do(t *testing.T) {
 	ti2.TransType = trans_type.Payment
 
 	tests := []struct {
-		name    string
-		env     *prepareTranslateEnvironment
-		wantErr bool
+		name     string
+		env      *prepareTranslateEnvironment
+		wantErr  bool
 		wantCode int
 	}{
 		{name: "transactionTypeNotFound", env: createTranslateEnvField(
 			&ti0,
-		), wantErr: true, wantCode:types.CodeTransactionTypeNotFound},
+		), wantErr: true, wantCode: types.CodeTransactionTypeNotFound},
 		{name: "okContractInvoke", env: createTranslateEnvField(
 			&ti1,
 		), wantErr: false},
@@ -231,7 +231,7 @@ func Test_prepareTranslateEnvironment_doContractInvoke(t *testing.T) {
 			FuncName: "updateStake",
 			Params: []uiptypes.RawParams{
 				{
-					Type: "uint256",
+					Type:  "uint256",
 					Value: nil,
 				},
 			},
@@ -249,11 +249,10 @@ func Test_prepareTranslateEnvironment_doContractInvoke(t *testing.T) {
 			},
 		})).([]byte)
 
-
 	tests := []struct {
-		name    string
-		env     *prepareTranslateEnvironment
-		wantErr bool
+		name     string
+		env      *prepareTranslateEnvironment
+		wantErr  bool
 		wantCode int
 	}{
 		{name: "DeserializeTransactionError", env: createTranslateEnvField(
@@ -285,9 +284,9 @@ func Test_prepareTranslateEnvironment_doPayment(t *testing.T) {
 	ti.TransType = trans_type.Payment
 	//todo test option
 	tests := []struct {
-		name    string
-		env     *prepareTranslateEnvironment
-		wantErr bool
+		name     string
+		env      *prepareTranslateEnvironment
+		wantErr  bool
 		wantCode int
 	}{
 		{name: "ok", env: createTranslateEnvField(

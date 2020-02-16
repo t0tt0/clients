@@ -1,4 +1,4 @@
-package client
+package chs
 
 import (
 	"github.com/gorilla/websocket"
@@ -31,5 +31,3 @@ var Upgrader = websocket.Upgrader{
 		return true
 	},
 }
-
-

@@ -17,7 +17,6 @@ func (vc *VesClient) buildSessionRPCApis(p iris.Party) {
 	id.Put("", miris.ToIrisHandler(vc.IrisPutSession))
 }
 
-
 func (vc *VesClient) IrisDeleteSession(c controller.MContext) {
 	id, ok := ginhelper.ParseUint(c, "pid")
 	if ok {

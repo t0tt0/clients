@@ -61,7 +61,6 @@ func Mock(options ...Option) (srv *Mocker) {
 		return
 	}
 
-
 	defer func() {
 		if err := recover(); err != nil {
 			srv.handlerPanicError(err)

@@ -114,7 +114,7 @@ func (svc *prepareTranslateEnvironment) ensureValue(param uiptypes.RawParams) er
 }
 
 func (svc *Service) ensureStorage(
-// todo: uip-types.Storage
+	// todo: uip-types.Storage
 	source control.BlockChainInterfaceI,
 	chainID uiptypes.ChainIDUnderlyingType, typeID uiptypes.TypeID,
 	contractAddress []byte, pos []byte, description []byte) error {

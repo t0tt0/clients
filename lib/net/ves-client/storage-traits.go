@@ -30,7 +30,7 @@ type modelModule struct {
 
 	accountTraits accountTraits
 	sessionTraits sessionTraits
-	Opened bool
+	Opened        bool
 }
 
 func newModelModule() modelModule {

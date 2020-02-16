@@ -86,5 +86,3 @@ func (vc *VesClient) ProcessAttestationSendingRequest(attestationSendingRequest 
 	}
 	vc.logger.Info("post next attestation request successfully")
 }
-
-

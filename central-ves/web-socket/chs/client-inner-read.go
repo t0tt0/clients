@@ -1,5 +1,4 @@
-package client
-
+package chs
 
 // readPump pumps messages from the websocket connection to the hub.
 //
@@ -18,4 +17,3 @@ func (c *Client) ReadPump() {
 	}
 	c.Conn.ReadRoutine()
 }
-

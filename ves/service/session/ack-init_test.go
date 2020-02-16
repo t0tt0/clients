@@ -38,8 +38,7 @@ func TestService_SessionAckForInit(t *testing.T) {
 		QueryGUIDByBytes(sessionIDNotFound).Return(nil, nil)
 
 	// mock queryFindSessionWithAcknowledgeError
-	var ses = &model.Session{
-	}
+	var ses = &model.Session{}
 	var inFindSessionWithAcknowledgeError = &uiprpc.SessionAckForInitRequest{
 		SessionId: sessionIDFindSessionWithAcknowledgeError,
 		User:      nil,
@@ -84,7 +83,7 @@ func TestService_SessionAckForInit(t *testing.T) {
 		Return(int64(0), errors.New("get acknowledged error"))
 
 	ses = &model.Session{
-		ISCAddress:       model.EncodeAddress(sessionIDOk),
+		ISCAddress:    model.EncodeAddress(sessionIDOk),
 		AccountsCount: 2,
 	}
 	var inOk = &uiprpc.SessionAckForInitRequest{
@@ -109,7 +108,7 @@ func TestService_SessionAckForInit(t *testing.T) {
 		Return(int64(1), nil)
 
 	ses = &model.Session{
-		ISCAddress:       model.EncodeAddress(sessionIDOk2),
+		ISCAddress:    model.EncodeAddress(sessionIDOk2),
 		AccountsCount: 1,
 	}
 	newMockGoodInternalPushTransaction(t, f, sessionIDOk2, sesFSet, cVes)

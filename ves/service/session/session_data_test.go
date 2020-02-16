@@ -95,7 +95,6 @@ func newEnsureStorage() {
 	//	[]byte("good"), v).Return(nil)
 }
 
-
 const (
 	ethereumChainID uiptypes.ChainTypeUnderlyingType = iota
 	tendermintChainID

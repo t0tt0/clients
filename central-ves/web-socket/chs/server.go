@@ -1,9 +1,8 @@
-package server
+package chs
 
 import (
 	"context"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/model/fset"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/web-socket/hub"
 	"github.com/Myriad-Dreamin/minimum-lib/logger"
 	"net/http"
 )
@@ -13,7 +12,7 @@ import (
 type Server struct {
 	Logger logger.Logger
 	*http.Server
-	hub     *hub.Hub
+	hub     *Hub
 	UserDB  *fset.AccountFSet
 	rpcPort string
 	Nsbip   string
@@ -27,14 +26,12 @@ func NewServer(rpcPort, addr string, db *fset.AccountFSet, rOptions ...interface
 			Handler: http.NewServeMux(),
 			Addr:    addr,
 		},
-		hub:     hub.NewHub(),
+		hub:     NewHub(options.logger, db),
 		UserDB:  db,
 		rpcPort: rpcPort,
 		Logger:  options.logger,
 		Nsbip:   options.nsbHost,
 	}
-
-	srv.hub.Server = srv
 	return
 }
 
@@ -43,4 +40,3 @@ func (srv *Server) Start(ctx context.Context) error {
 	go srv.ListenAndServeRpc(ctx, srv.rpcPort)
 	return srv.ListenAndServe(ctx, srv.Addr)
 }
-

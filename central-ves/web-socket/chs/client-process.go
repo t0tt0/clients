@@ -1,9 +1,8 @@
-package client
+package chs
 
 import (
 	"fmt"
 	base_account "github.com/HyperService-Consortium/go-uip/base-account"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/web-socket/hub"
 	"github.com/Myriad-Dreamin/go-ves/grpc/wsrpc"
 	"github.com/gogo/protobuf/proto"
 )
@@ -20,7 +19,7 @@ func (c *Client) ProcessMessage(message []byte, messageID wsrpc.MessageType) {
 		}
 		c.Hub.Server.Logger.Info("message request",
 			"from", "todo", "to", s.GetTo())
-		c.Hub.Broadcast <- hub.NewWriteMessageTask(wsrpc.CodeMessageReply, &s)
+		c.Hub.Broadcast <- NewWriteMessageTask(wsrpc.CodeMessageReply, &s)
 	case wsrpc.CodeRawProto:
 
 		var s wsrpc.RawMessage
@@ -32,7 +31,7 @@ func (c *Client) ProcessMessage(message []byte, messageID wsrpc.MessageType) {
 		c.Hub.Server.Logger.Info("raw proto",
 			"from", "todo", "to", s.GetTo())
 
-		c.Hub.Unicast <- &hub.UniMessage{Target: s.GetTo(), Task: hub.NewRawWriteMessageTask(
+		c.Hub.Unicast <- &UniMessage{Target: s.GetTo(), Task: NewRawWriteMessageTask(
 			wsrpc.MessageType(s.MessageType),
 			s.GetContents())}
 	case wsrpc.CodeClientHelloRequest:
@@ -58,9 +57,9 @@ func (c *Client) ProcessMessage(message []byte, messageID wsrpc.MessageType) {
 			var t wsrpc.ClientHelloReply
 			t.GrpcHost = gRpcIPs[0]
 			t.NsbHost = c.Hub.Server.Nsbip
-			c.Hub.Unicast <- &hub.UniMessage{Target: &base_account.Account{
-				ChainId: hub.PlaceHolderChain, Address: s.GetName(),
-			}, Task: hub.NewWriteMessageTask(wsrpc.CodeClientHelloReply, &t)}
+			c.Hub.Unicast <- &UniMessage{Target: &base_account.Account{
+				ChainId: PlaceHolderChain, Address: s.GetName(),
+			}, Task: NewWriteMessageTask(wsrpc.CodeClientHelloReply, &t)}
 		default:
 		}
 
@@ -85,4 +84,3 @@ func (c *Client) ProcessMessage(message []byte, messageID wsrpc.MessageType) {
 
 	// c.hub.broadcast <- &broMessage{bytes.TrimSpace(bytes.Replace(message, newline, space, -1)), func() {}}
 }
-

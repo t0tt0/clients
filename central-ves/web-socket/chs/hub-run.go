@@ -1,4 +1,4 @@
-package hub
+package chs
 
 import (
 	"context"
@@ -19,15 +19,15 @@ func (h *Hub) Run(ctx context.Context) {
 				client, ok := h.reverseNameClients[string(message.Target.GetAddress())]
 				h.unicastMessage(client, ok, message)
 			} else {
-				user, err := h.Server.UserDB.InvertFind(message.Target)
+				user, err := h.db.InvertFind(message.Target)
 				if err != nil {
-					h.Server.Logger.Info("debugging unknown aim",
+					h.Logger.Info("debugging unknown aim",
 						"err", err,
 						"chain id", message.Target.GetChainId(),
 						"address", hex.EncodeToString(message.Target.GetAddress()))
 					continue
 				} else if user == nil {
-					h.Server.Logger.Info("debugging unknown aim",
+					h.Logger.Info("debugging unknown aim",
 						"err", "!!not found",
 						"chain id", message.Target.GetChainId(),
 						"address", hex.EncodeToString(message.Target.GetAddress()))

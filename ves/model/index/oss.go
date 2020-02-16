@@ -45,7 +45,6 @@ func ToIndex(e Engine) types.Index {
 	return nil
 }
 
-
 func RegisterEngine(e Engine) error {
 	engine = e
 	return nil

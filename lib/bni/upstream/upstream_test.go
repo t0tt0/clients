@@ -59,7 +59,6 @@ func TestMockValue_IsValid(t *testing.T) {
 			V: uint64(64),
 		}},
 
-
 		{name: "int128VGood", fields: fields{
 			T: value_type.Int128,
 			V: big.NewInt(8),
@@ -114,7 +113,6 @@ func TestMockValue_IsValid(t *testing.T) {
 			V: uint64(64),
 		}, want: true},
 
-
 		{name: "uint128VGood", fields: fields{
 			T: value_type.Uint128,
 			V: big.NewInt(8),
@@ -132,7 +130,6 @@ func TestMockValue_IsValid(t *testing.T) {
 			T: value_type.Uint256,
 			V: 8,
 		}},
-
 
 		{name: "SliceInt8VGood", fields: fields{
 			T: value_type.SliceInt8,
@@ -169,7 +166,6 @@ func TestMockValue_IsValid(t *testing.T) {
 			T: value_type.SliceInt64,
 			V: []uint64{64},
 		}},
-
 
 		{name: "SliceInt128VGood", fields: fields{
 			T: value_type.SliceInt128,
@@ -225,7 +221,6 @@ func TestMockValue_IsValid(t *testing.T) {
 			V: []uint64{64},
 		}, want: true},
 
-
 		{name: "SliceUint128VGood", fields: fields{
 			T: value_type.SliceUint128,
 			V: []*big.Int{big.NewInt(8)},
@@ -246,7 +241,7 @@ func TestMockValue_IsValid(t *testing.T) {
 		{name: "String", fields: fields{
 			T: value_type.String,
 			V: "",
-		}, want:true},
+		}, want: true},
 		{name: "StringBad", fields: fields{
 			T: value_type.String,
 			V: []byte(""),
@@ -254,7 +249,7 @@ func TestMockValue_IsValid(t *testing.T) {
 		{name: "Bool", fields: fields{
 			T: value_type.Bool,
 			V: true,
-		}, want:true},
+		}, want: true},
 		{name: "BoolBad", fields: fields{
 			T: value_type.Bool,
 			V: "",
@@ -271,11 +266,11 @@ func TestMockValue_IsValid(t *testing.T) {
 		{name: "BytesNil", fields: fields{
 			T: value_type.Bytes,
 			V: nil,
-		}, want:true},
+		}, want: true},
 		{name: "SliceWithNil", fields: fields{
 			T: value_type.SliceUint256,
 			V: nil,
-		}, want:true},
+		}, want: true},
 		{name: "BigIntWithNil", fields: fields{
 			T: value_type.Uint256,
 			V: nil,

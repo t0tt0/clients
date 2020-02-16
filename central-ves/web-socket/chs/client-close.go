@@ -1,4 +1,4 @@
-package client
+package chs
 
 func (c *Client) Close() {
 	if c.Closed.CAS(false, true) {

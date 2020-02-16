@@ -112,4 +112,3 @@ type SocketConn interface {
 	// compression levels.
 	SetCompressionLevel(level int) error
 }
-

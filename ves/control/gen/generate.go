@@ -51,7 +51,7 @@ func newStruct(i interface{}) *Struct {
 func newStructByType(t reflect.Type) *Struct {
 	var (
 		et = getReflectTypeElementType(t)
-		s     = &Struct{
+		s  = &Struct{
 			structType:     t,
 			elemStructType: et,
 			methods:        nil,
@@ -184,8 +184,8 @@ func main() {
 		newStruct(&opintent.OpIntentInitializer{}),
 		newStructByType(reflect.TypeOf(&x).Elem()),
 	}
-	for _, s := range [] struct{
-		l []*Struct
+	for _, s := range []struct {
+		l  []*Struct
 		fp string
 	}{
 		{mockList, "./gen-model-interface.go"}, {externMockList, "./gen-external-interface.go"},

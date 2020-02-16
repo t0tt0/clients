@@ -24,7 +24,7 @@ func (vc *VesClient) getVESConn(targetHost string, c *vesConn) (err error) {
 func (vc *VesClient) ensureVESConn(targetHost string, c *vesConn) bool {
 	err := vc.getVESConn(targetHost, c)
 	if err != nil {
-		vc.logger.Error("get ves conn error", "error" ,err)
+		vc.logger.Error("get ves conn error", "error", err)
 		return false
 	}
 	return true
@@ -37,9 +37,8 @@ func (vc *VesClient) putVESConn(c *vesConn) error {
 func (vc *VesClient) mustPutVESConn(c *vesConn) bool {
 	err := vc.putVESConn(c)
 	if err != nil {
-		vc.logger.Error("put ves conn error", "error" ,err)
+		vc.logger.Error("put ves conn error", "error", err)
 		return false
 	}
 	return true
 }
-

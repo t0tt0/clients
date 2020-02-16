@@ -1,4 +1,4 @@
-package hub
+package chs
 
 import (
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
@@ -18,18 +18,17 @@ type UniMessage struct {
 }
 
 func NewRawWriteMessageTask(messageID wsrpc.MessageType, msg []byte) *WriteMessageTask {
-	return &WriteMessageTask{MessageType: messageID, Message:msg}
+	return &WriteMessageTask{MessageType: messageID, Message: msg}
 }
 
 func NewWriteMessageTask(messageID wsrpc.MessageType, msg proto.Message) *WriteMessageTask {
-	return &WriteMessageTask{MessageType: messageID, Message:msg}
+	return &WriteMessageTask{MessageType: messageID, Message: msg}
 }
 
 func NewRawBroMessage(messageID wsrpc.MessageType, msg []byte) *WriteMessageTask {
-	return &WriteMessageTask{MessageType: messageID, Message:msg}
+	return &WriteMessageTask{MessageType: messageID, Message: msg}
 }
 
 func NewBroMessage(messageID wsrpc.MessageType, msg proto.Message) *WriteMessageTask {
-	return &WriteMessageTask{MessageType: messageID, Message:msg}
+	return &WriteMessageTask{MessageType: messageID, Message: msg}
 }
-

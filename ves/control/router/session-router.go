@@ -1,6 +1,5 @@
 package router
 
-
 //func GetHTTPServeMux(server *Server) *gin.Engine {
 //	r := gin.Default()
 //

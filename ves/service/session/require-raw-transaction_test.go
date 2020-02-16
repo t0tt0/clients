@@ -63,7 +63,6 @@ func TestService_RequireRawTransaction(t *testing.T) {
 	_, _, b := dataTransactionIntentWithBadChainID(t)
 	newMockGoodGetTransactionIntent(b, sessionIDGetBlockChainError, sesFSet)
 
-
 	type args struct {
 		ctx context.Context
 		in  *uiprpc.SessionRequireRawTransactRequest

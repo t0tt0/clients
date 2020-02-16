@@ -2,25 +2,27 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package hub
+package chs
 
 import (
-	"github.com/Myriad-Dreamin/go-ves/central-ves/web-socket/client"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/web-socket/server"
+	"github.com/Myriad-Dreamin/go-ves/central-ves/model/fset"
+	"github.com/Myriad-Dreamin/minimum-lib/logger"
 	"sync"
 )
 
 // Hub maintains the set of active clients and broadcasts messages to the
 // clients.
 type Hub struct {
+	Server *Server
+	Logger logger.Logger
 	// Registered clients.
-	clients map[*client.Client]bool
+	clients map[*Client]bool
 
 	// Registered clients.
-	reverseClients map[uint]*client.Client
+	reverseClients map[uint]*Client
 
 	// Registered clients.
-	reverseNameClients map[string]*client.Client
+	reverseNameClients map[string]*Client
 
 	// Inbound messages from the clients.
 	Broadcast chan *BroMessage
@@ -29,25 +31,25 @@ type Hub struct {
 	Unicast chan *UniMessage
 
 	// Register requests from the clients.
-	Register chan *client.Client
+	Register chan *Client
 
 	// Unregister requests from clients.
-	Unregister chan *client.Client
-
-	Server *server.Server
+	Unregister chan *Client
 
 	mapMutex sync.Mutex
+	db       *fset.AccountFSet
 }
 
-func NewHub() *Hub {
+func NewHub(logger logger.Logger, db *fset.AccountFSet) *Hub {
 	return &Hub{
+		Logger:             logger,
+		db:                 db,
 		Broadcast:          make(chan *BroMessage),
 		Unicast:            make(chan *UniMessage),
-		reverseClients:     make(map[uint]*client.Client),
-		reverseNameClients: make(map[string]*client.Client),
-		Register:           make(chan *client.Client),
-		Unregister:         make(chan *client.Client),
-		clients:            make(map[*client.Client]bool),
+		reverseClients:     make(map[uint]*Client),
+		reverseNameClients: make(map[string]*Client),
+		Register:           make(chan *Client),
+		Unregister:         make(chan *Client),
+		clients:            make(map[*Client]bool),
 	}
 }
-

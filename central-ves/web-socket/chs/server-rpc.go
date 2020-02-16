@@ -1,10 +1,9 @@
-package server
+package chs
 
 import (
 	"context"
 	"encoding/hex"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/web-socket/hub"
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
 	uiprpc_base "github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
 	"github.com/Myriad-Dreamin/go-ves/grpc/wsrpc"
@@ -98,8 +97,8 @@ func (srv *Server) requestComing(acc uiptypes.Account, iscAddress []byte, grpcHo
 		Address: acc.GetAddress(),
 		ChainId: acc.GetChainId(),
 	}
-	srv.hub.Unicast <- &hub.UniMessage{
-		Target: acc, Task: hub.NewWriteMessageTask(
+	srv.hub.Unicast <- &UniMessage{
+		Target: acc, Task: NewWriteMessageTask(
 			wsrpc.CodeRequestComingRequest, &msg)}
 	return nil
 }
@@ -116,7 +115,7 @@ func (srv *Server) attestationSending(acc uiptypes.Account, iscAddress []byte, g
 
 	// log.Infof("attestating network gate", )
 
-	srv.hub.Unicast <- &hub.UniMessage{Target: acc, Task: hub.NewWriteMessageTask(
+	srv.hub.Unicast <- &UniMessage{Target: acc, Task: NewWriteMessageTask(
 		wsrpc.CodeAttestationSendingRequest, &msg)}
 	return nil
 }
@@ -156,7 +155,7 @@ func (srv *Server) closeSession(acc uiptypes.Account, iscAddress []byte, grpcHos
 	msg.GrpcHost = grpcHost
 	msg.SessionId = iscAddress
 
-	srv.hub.Unicast <- &hub.UniMessage{Target: acc, Task: hub.NewWriteMessageTask(
+	srv.hub.Unicast <- &UniMessage{Target: acc, Task: NewWriteMessageTask(
 		wsrpc.CodeCloseSessionRequest,
 		&msg,
 	)}

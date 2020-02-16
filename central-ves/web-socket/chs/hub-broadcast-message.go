@@ -1,4 +1,4 @@
-package hub
+package chs
 
 func (h *Hub) broadcastMessage(message *WriteMessageTask) {
 	for client := range h.clients {

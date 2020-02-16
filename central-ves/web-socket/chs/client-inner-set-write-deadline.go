@@ -1,4 +1,4 @@
-package client
+package chs
 
 import "time"
 
@@ -7,5 +7,3 @@ func (c *Client) setWriteDeadLine() {
 		c.Hub.Server.Logger.Error("set write ddl error", "error", err)
 	}
 }
-
-

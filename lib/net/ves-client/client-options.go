@@ -21,7 +21,7 @@ type ServerOptions struct {
 	nsbHost    string
 	nsbBase    string
 	clientName []byte
-	constant *ClientConstant
+	constant   *ClientConstant
 }
 
 var globalLogger = logger.NewStdLogger()
@@ -40,7 +40,7 @@ func defaultServerOptions() ServerOptions {
 		addr:       "127.0.0.1:23452",
 		nsbBase:    "ten1",
 		nsbHost:    "127.0.0.1:27667",
-		constant: NewConstantOption(),
+		constant:   NewConstantOption(),
 	}
 }
 

@@ -1,4 +1,4 @@
-package client
+package chs
 
 import (
 	"github.com/gogo/protobuf/proto"

@@ -1,11 +1,10 @@
-package hub
+package chs
 
 import (
-	"github.com/Myriad-Dreamin/go-ves/central-ves/web-socket/client"
 	"time"
 )
 
-func (h *Hub) registerClient(client *client.Client) {
+func (h *Hub) registerClient(client *Client) {
 	select {
 	case <-client.Helloed:
 		h.clients[client] = true
@@ -17,4 +16,3 @@ func (h *Hub) registerClient(client *client.Client) {
 		return
 	}
 }
-

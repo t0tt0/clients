@@ -29,7 +29,7 @@ func JustProvide(controllers ...interface{}) SubController {
 type Provider struct {
 	module.BaseModuler
 
-	objectService ObjectService
+	objectService  ObjectService
 	sessionService SessionService
 
 	subControllers []SubController

@@ -13,8 +13,8 @@ import (
 )
 
 type Service struct {
-	cfg            *config.ServerConfig
-	key            string
+	cfg *config.ServerConfig
+	key string
 
 	accountDB      control.SessionAccountDBI
 	db             control.SessionDBI
@@ -29,8 +29,7 @@ type Service struct {
 	nsbClient      control.NSBClient
 
 	// remove?
-	storage        control.SessionKV
-
+	storage control.SessionKV
 }
 
 func (svc *Service) UserRegister(context.Context, *uiprpc.UserRegisterRequest) (*uiprpc.UserRegisterReply, error) {
@@ -75,10 +74,10 @@ func NewService(m module.Module) (control.SessionService, error) {
 	provider := m.Require(config.ModulePath.Minimum.Provider.Model).(*model.Provider)
 	index := m.Require(config.ModulePath.DBInstance.Index).(types.Index)
 	var a = &Service{
-		key:            "sid",
-		accountDB:      provider.SessionAccountDB(),
-		db:             provider.SessionDB(),
-		sesFSet:        fset.NewSessionFSet(provider, index),
+		key:       "sid",
+		accountDB: provider.SessionAccountDB(),
+		db:        provider.SessionDB(),
+		sesFSet:   fset.NewSessionFSet(provider, index),
 
 		dns:            m.Require(config.ModulePath.Service.ChainDNS).(control.ChainDNS),
 		opInitializer:  m.Require(config.ModulePath.Service.OpIntentInitializer).(control.OpIntentInitializerI),
