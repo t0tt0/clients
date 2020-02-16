@@ -72,7 +72,7 @@ func (s Session) GetID() uint {
 
 func (s Session) GetGUID() []byte {
 	if s.decodedISCAddress == nil {
-		s.decodedISCAddress = decodeBase64(s.ISCAddress)
+		s.decodedISCAddress = DecodeAddress(s.ISCAddress)
 	}
 	return s.decodedISCAddress
 }
@@ -130,6 +130,10 @@ func (sessionDB *SessionDB) ID_(db *gorm.DB, id uint) (session *Session, err err
 
 func (sessionDB *SessionDB) QueryGUID(iscAddress string) (session *Session, err error) {
 	return wrapToSession(sessionQueryISCAddress(iscAddress))
+}
+
+func (sessionDB *SessionDB) QueryGUIDByBytes(iscAddress []byte) (session *Session, err error) {
+	return wrapToSession(sessionQueryISCAddress(EncodeAddress(iscAddress)))
 }
 
 type SessionQuery struct {

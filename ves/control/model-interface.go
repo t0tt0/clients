@@ -1,9 +1,6 @@
 package control
 
 import (
-	"encoding/json"
-
-	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
 	gorm_crud_dao "github.com/Myriad-Dreamin/go-model-traits/gorm-crud-dao"
 	"github.com/Myriad-Dreamin/go-ves/types"
@@ -18,6 +15,7 @@ type SessionDBI interface {
 	ID_(*gorm.DB, uint) (*dblayer.Session, error)
 	QueryChain() *dblayer.SessionQuery
 	QueryGUID(string) (*dblayer.Session, error)
+	QueryGUIDByBytes([]byte) (*dblayer.Session, error)
 }
 
 type SessionAccountDBI interface {
@@ -40,11 +38,4 @@ type SessionFSetI interface {
 	NotifyAttestation(types.NSBInterface, uiptypes.BlockChainInterface, uiptypes.Attestation) (interface{}, interface{}, error)
 	ProcessAttestation(types.NSBInterface, uiptypes.BlockChainInterface, uiptypes.Attestation) (interface{}, interface{}, error)
 	SyncFromISC() error
-}
-
-type OpIntentInitializerI interface {
-	InitContractInvocationOpIntent(string, json.RawMessage) ([]*uiptypes.TransactionIntent, []*uiptypes.MerkleProofProposal, error)
-	InitOpIntent(uiptypes.OpIntents) ([]*uiptypes.TransactionIntent, []*uiptypes.MerkleProofProposal, error)
-	InitPaymentOpIntent(string, json.RawMessage) ([]*uiptypes.TransactionIntent, []*uiptypes.MerkleProofProposal, error)
-	TopologicalSort([][]*uiptypes.TransactionIntent, []opintent.Dependency) error
 }

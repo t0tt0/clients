@@ -40,7 +40,7 @@ func (svc *Service) RequireRawTransaction(
 	if err != nil {
 		return nil, wrapper.Wrap(types.CodeSessionFindError, err)
 	} else if ses == nil {
-		return nil, wrapper.WrapCode(types.CodeSessionNotFindError)
+		return nil, wrapper.WrapCode(types.CodeSessionNotFind)
 	}
 
 	txb, err := svc.sesFSet.FindTransaction(ses.GetGUID(), ses.UnderTransacting)

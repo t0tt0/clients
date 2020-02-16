@@ -56,7 +56,7 @@ func _() {
 	_ = x[CodeSessionRedisGetAckCountError-12004]
 	_ = x[CodeSessionInsertAccountError-12005]
 	_ = x[CodeSessionFindError-12006]
-	_ = x[CodeSessionNotFindError-12007]
+	_ = x[CodeSessionNotFind-12007]
 	_ = x[CodeSessionAcknowledgeError-12008]
 	_ = x[CodeSessionAccountFindError-12009]
 	_ = x[CodeSessionAccountNotFound-12010]

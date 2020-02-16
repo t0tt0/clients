@@ -130,3 +130,11 @@ func decodeBase64(src string) []byte {
 	}
 	return b
 }
+
+func DecodeAddress(src string) []byte {
+	return decodeBase64(src)
+}
+
+func EncodeAddress(src []byte) string {
+	return encoding.EncodeBase64(src)
+}

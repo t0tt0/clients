@@ -3,7 +3,6 @@ package sessionservice
 import (
 	"github.com/HyperService-Consortium/go-uip/signaturer"
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
-	"github.com/Myriad-Dreamin/go-ves/lib/encoding"
 	"github.com/Myriad-Dreamin/go-ves/lib/wrapper"
 	"github.com/Myriad-Dreamin/go-ves/types"
 	"golang.org/x/net/context"
@@ -11,11 +10,11 @@ import (
 
 func (svc *Service) SessionAckForInit(ctx context.Context, in *uiprpc.SessionAckForInitRequest) (*uiprpc.SessionAckForInitReply, error) {
 	//s.Logger.Info("session acknowledging... ", "address", hex.EncodeToString(s.GetUser().GetAddress()))
-	ses, err := svc.db.QueryGUID(encoding.EncodeBase64(in.GetSessionId()))
+	ses, err := svc.db.QueryGUIDByBytes(in.GetSessionId())
 	if err != nil {
 		return nil, wrapper.Wrap(types.CodeSessionFindError, err)
 	} else if ses == nil {
-		return nil, wrapper.WrapCode(types.CodeSessionNotFindError)
+		return nil, wrapper.WrapCode(types.CodeSessionNotFind)
 	}
 
 	//s.DB.ActivateSession(s.GetSessionId())

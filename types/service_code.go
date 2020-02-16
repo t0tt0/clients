@@ -106,7 +106,7 @@ const (
 	CodeSessionRedisGetAckCountError
 	CodeSessionInsertAccountError
 	CodeSessionFindError
-	CodeSessionNotFindError
+	CodeSessionNotFind
 	CodeSessionAcknowledgeError
 	CodeSessionAccountFindError
 	CodeSessionAccountNotFound
