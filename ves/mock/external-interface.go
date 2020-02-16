@@ -6,8 +6,6 @@ package mock
 
 import (
 	context "context"
-	json "encoding/json"
-	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	uiptypes "github.com/HyperService-Consortium/go-uip/uiptypes"
 	uiprpc "github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
 	nsb_message "github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client/nsb-message"
@@ -234,89 +232,4 @@ func (m *NSBClient) CreateISC(signer uiptypes.Signer, uint32s []uint32, bytes, b
 func (mr *NSBClientMockRecorder) CreateISC(signer, uint32s, bytes, bytes2, bytes3 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateISC", reflect.TypeOf((*NSBClient)(nil).CreateISC), signer, uint32s, bytes, bytes2, bytes3)
-}
-
-// OpIntentInitializer is a mock of OpIntentInitializerI interface
-type OpIntentInitializer struct {
-	ctrl     *gomock.Controller
-	recorder *OpIntentInitializerMockRecorder
-}
-
-// OpIntentInitializerMockRecorder is the mock recorder for OpIntentInitializer
-type OpIntentInitializerMockRecorder struct {
-	mock *OpIntentInitializer
-}
-
-// NewOpIntentInitializer creates a new mock instance
-func NewOpIntentInitializer(ctrl *gomock.Controller) *OpIntentInitializer {
-	mock := &OpIntentInitializer{ctrl: ctrl}
-	mock.recorder = &OpIntentInitializerMockRecorder{mock}
-	return mock
-}
-
-// EXPECT returns an object that allows the caller to indicate expected use
-func (m *OpIntentInitializer) EXPECT() *OpIntentInitializerMockRecorder {
-	return m.recorder
-}
-
-// InitContractInvocationOpIntent mocks base method
-func (m *OpIntentInitializer) InitContractInvocationOpIntent(arg0 string, arg1 json.RawMessage) ([]*uiptypes.TransactionIntent, []*uiptypes.MerkleProofProposal, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "InitContractInvocationOpIntent", arg0, arg1)
-	ret0, _ := ret[0].([]*uiptypes.TransactionIntent)
-	ret1, _ := ret[1].([]*uiptypes.MerkleProofProposal)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
-}
-
-// InitContractInvocationOpIntent indicates an expected call of InitContractInvocationOpIntent
-func (mr *OpIntentInitializerMockRecorder) InitContractInvocationOpIntent(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "InitContractInvocationOpIntent", reflect.TypeOf((*OpIntentInitializer)(nil).InitContractInvocationOpIntent), arg0, arg1)
-}
-
-// InitOpIntent mocks base method
-func (m *OpIntentInitializer) InitOpIntent(arg0 uiptypes.OpIntents) ([]*uiptypes.TransactionIntent, []*uiptypes.MerkleProofProposal, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "InitOpIntent", arg0)
-	ret0, _ := ret[0].([]*uiptypes.TransactionIntent)
-	ret1, _ := ret[1].([]*uiptypes.MerkleProofProposal)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
-}
-
-// InitOpIntent indicates an expected call of InitOpIntent
-func (mr *OpIntentInitializerMockRecorder) InitOpIntent(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "InitOpIntent", reflect.TypeOf((*OpIntentInitializer)(nil).InitOpIntent), arg0)
-}
-
-// InitPaymentOpIntent mocks base method
-func (m *OpIntentInitializer) InitPaymentOpIntent(arg0 string, arg1 json.RawMessage) ([]*uiptypes.TransactionIntent, []*uiptypes.MerkleProofProposal, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "InitPaymentOpIntent", arg0, arg1)
-	ret0, _ := ret[0].([]*uiptypes.TransactionIntent)
-	ret1, _ := ret[1].([]*uiptypes.MerkleProofProposal)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
-}
-
-// InitPaymentOpIntent indicates an expected call of InitPaymentOpIntent
-func (mr *OpIntentInitializerMockRecorder) InitPaymentOpIntent(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "InitPaymentOpIntent", reflect.TypeOf((*OpIntentInitializer)(nil).InitPaymentOpIntent), arg0, arg1)
-}
-
-// TopologicalSort mocks base method
-func (m *OpIntentInitializer) TopologicalSort(arg0 [][]*uiptypes.TransactionIntent, arg1 []opintent.Dependency) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "TopologicalSort", arg0, arg1)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// TopologicalSort indicates an expected call of TopologicalSort
-func (mr *OpIntentInitializerMockRecorder) TopologicalSort(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "TopologicalSort", reflect.TypeOf((*OpIntentInitializer)(nil).TopologicalSort), arg0, arg1)
 }

@@ -12,6 +12,7 @@ import (
 	"github.com/Myriad-Dreamin/go-ves/lib/encoding"
 	"github.com/Myriad-Dreamin/go-ves/lib/wrapper"
 	"github.com/Myriad-Dreamin/go-ves/types"
+	"github.com/Myriad-Dreamin/go-ves/ves/control"
 	"github.com/Myriad-Dreamin/go-ves/ves/model"
 	"github.com/tidwall/gjson"
 	"strconv"
@@ -21,7 +22,7 @@ type prepareTranslateEnvironment struct {
 	*Service
 	ses *model.Session
 	ti  *opintent.TransactionIntent
-	bn  uiptypes.BlockChainInterface
+	bn  control.BlockChainInterfaceI
 }
 
 func newPrepareTranslateEnvironment(service *Service, ses *model.Session,

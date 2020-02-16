@@ -1,12 +1,13 @@
 package sessionservice
 
 import (
+	"encoding/json"
+	"github.com/HyperService-Consortium/go-uip/const/value_type"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
 	logger2 "github.com/Myriad-Dreamin/go-ves/lib/log"
 	"github.com/Myriad-Dreamin/go-ves/lib/wrapper"
 	"github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/go-ves/ves/config"
-	"github.com/Myriad-Dreamin/go-ves/ves/control"
 	"github.com/Myriad-Dreamin/go-ves/ves/mock"
 	"github.com/Myriad-Dreamin/minimum-lib/logger"
 	"github.com/Myriad-Dreamin/minimum-lib/sugar"
@@ -22,37 +23,21 @@ var describer = wrapper.Describer{
 	Rel:  sugar.HandlerError(os.Getwd()).(string)}
 
 var (
-	sessionIDNotFound                            = []byte("xx")
-	sessionIDFindTransactionError                = []byte("xy")
-	sessionIDPushTransactionNotNil               = []byte("xz")
-	sessionIDAttestationSendErrorNotOk           = []byte("yx")
-	sessionIDFindError                           = []byte("yy")
-	sessionIDAttestationSendErrorNotOk2          = []byte("yz")
-	sessionIDOk                                  = []byte("zx")
-	sessionIDOk2                                 = []byte("zy")
-	sessionIDAttestationSendError                = []byte("zz")
-	sessionIDGetBlockChainError                  = []byte("xxx")
+	sessionIDNotFound                   = []byte("xx")
+	sessionIDFindTransactionError       = []byte("xy")
+	sessionIDPushTransactionNotNil      = []byte("xz")
+	sessionIDAttestationSendErrorNotOk  = []byte("yx")
+	sessionIDFindError                  = []byte("yy")
+	sessionIDAttestationSendErrorNotOk2 = []byte("yz")
+	sessionIDOk                         = []byte("zx")
+	sessionIDOk2                        = []byte("zy")
+	sessionIDAttestationSendError       = []byte("zz")
+	sessionIDGetBlockChainError         = []byte("xxx")
+
 	sessionIDDeserializeTransactionError         = []byte("xyz")
 	sessionIDFindSessionWithAcknowledgeError     = []byte("x")
 	sessionIDFindSessionWithGetAcknowledgedError = []byte("y")
 )
-
-type fields struct {
-	cfg            *config.ServerConfig
-	key            string
-	accountDB      control.SessionAccountDBI
-	db             control.SessionDBI
-	sesFSet        control.SessionFSetI
-	opInitializer  control.OpIntentInitializerI
-	signer         control.Signer
-	logger         types.Logger
-	cVes           control.CentralVESClient
-	respAccount    control.Account
-	storage        control.SessionKV
-	storageHandler control.StorageHandler
-	dns            control.ChainDNS
-	nsbClient      control.NSBClient
-}
 
 type ChainInfo struct {
 	ChainType uiptypes.ChainType
@@ -87,9 +72,9 @@ func MockChainDNS(ctl *gomock.Controller) *mock.ChainDNS {
 	return mock.NewChainDNS(ctl)
 }
 
-func createField(options ...interface{}) fields {
+func createService(options ...interface{}) *Service {
 	ensureTestLogger()
-	f := fields{
+	f := &Service{
 		logger: testLogger,
 		cfg:    config.Default(),
 	}
@@ -141,5 +126,91 @@ func checkErrorCode(t *testing.T, err error, i int) {
 		} else {
 			t.Error("not frame error wrapped")
 		}
+	}
+}
+
+func marshal(x interface{}) []byte {
+	return sugar.HandlerError(json.Marshal(x)).([]byte)
+}
+
+func valueTypeToString(t value_type.Type) string {
+	switch t {
+	case value_type.Bytes:
+		return "bytes"
+	case value_type.String:
+		return "string"
+	case value_type.Uint8:
+		return "uint8"
+	case value_type.Uint16:
+		return "uint16"
+	case value_type.Uint32:
+		return "uint32"
+	case value_type.Uint64:
+		return "uint64"
+	case value_type.Uint128:
+		return "uint128"
+	case value_type.Uint256:
+		return "uint256"
+	case value_type.Int8:
+		return "int8"
+	case value_type.Int16:
+		return "int16"
+	case value_type.Int32:
+		return "int32"
+	case value_type.Int64:
+		return "int64"
+	case value_type.Int128:
+		return "int128"
+	case value_type.Int256:
+		return "int256"
+	case value_type.SliceUint8:
+		return "[]uint8"
+	case value_type.SliceUint16:
+		return "[]uint16"
+	case value_type.SliceUint32:
+		return "[]uint32"
+	case value_type.SliceUint64:
+		return "[]uint64"
+	case value_type.SliceUint128:
+		return "[]uint128"
+	case value_type.SliceUint256:
+		return "[]uint256"
+	case value_type.SliceInt8:
+		return "[]int8"
+	case value_type.SliceInt16:
+		return "[]int16"
+	case value_type.SliceInt32:
+		return "[]int32"
+	case value_type.SliceInt64:
+		return "[]int64"
+	case value_type.SliceInt128:
+		return "[]int128"
+	case value_type.SliceInt256:
+		return "[]int256"
+	case value_type.Bool:
+		return "bool"
+	default:
+		return "<error-type>"
+	}
+
+}
+
+func newRawMeta(t value_type.Type, value string) uiptypes.RawParams {
+	return uiptypes.RawParams{
+		Type: valueTypeToString(t),
+		Value: marshal(map[string]interface{}{
+			"constant": value,
+		}),
+	}
+}
+
+func newVarRawMeta(t value_type.Type, contract, pos, field string) uiptypes.RawParams {
+	return uiptypes.RawParams{
+		Type: valueTypeToString(t),
+		Value: marshal(map[string]interface{}{
+			"contract": contract,
+			"pos":      pos,
+			"field":    field,
+		}),
 	}
 }

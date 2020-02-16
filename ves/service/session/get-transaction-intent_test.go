@@ -15,7 +15,7 @@ func TestService_getTransactionIntent(t *testing.T) {
 
 	sesFSet := MockSessionFSet(ctl)
 
-	f := createField(
+	f := createService(
 		sesFSet,
 	)
 
@@ -37,11 +37,11 @@ func TestService_getTransactionIntent(t *testing.T) {
 		transactionID int64
 	}
 	tests := []struct {
-		name    string
-		fields  fields
-		args    args
-		want    *opintent.TransactionIntent
-		wantErr bool
+		name     string
+		fields   *Service
+		args     args
+		want     *opintent.TransactionIntent
+		wantErr  bool
 		wantCode int
 	}{
 		{name: "FindTransactionError", fields: f, args: args{

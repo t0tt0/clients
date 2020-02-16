@@ -21,14 +21,14 @@ func TestService_RequireRawTransaction(t *testing.T) {
 	cVes := MockCentralVESClient(ctl)
 	dns := MockChainDNS(ctl)
 
-	f := createField(
+	f := createService(
 		sesDB,
 		sesFSet,
 		sesAccountDB,
 		cVes,
 		dns,
 	)
-	newMockDNS(&f, dns)
+	newMockDNS(f, dns)
 
 	// mock queryGUIDFindError
 	sesDB.EXPECT().
@@ -70,7 +70,7 @@ func TestService_RequireRawTransaction(t *testing.T) {
 	}
 	tests := []struct {
 		name     string
-		fields   fields
+		fields   *Service
 		args     args
 		want     *uiprpc.SessionRequireRawTransactReply
 		wantErr  bool

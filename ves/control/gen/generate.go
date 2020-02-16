@@ -3,6 +3,8 @@ package main
 import (
 	"bytes"
 	"fmt"
+	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
+	"github.com/HyperService-Consortium/go-uip/uiptypes"
 	"github.com/Myriad-Dreamin/artisan"
 	"github.com/Myriad-Dreamin/go-ves/ves/model"
 	"github.com/Myriad-Dreamin/go-ves/ves/model/fset"
@@ -43,9 +45,12 @@ func getReflectTypeElementType(t reflect.Type) reflect.Type {
 }
 
 func newStruct(i interface{}) *Struct {
+	return newStructByType(reflect.TypeOf(i))
+}
+
+func newStructByType(t reflect.Type) *Struct {
 	var (
-		t     = reflect.TypeOf(i)
-		_, et = getElements(i)
+		et = getReflectTypeElementType(t)
 		s     = &Struct{
 			structType:     t,
 			elemStructType: et,
@@ -77,7 +82,7 @@ func FormatCode(code string) ([]byte, error) {
 func (s Struct) importList(pkg artisan.PackageSet) {
 	for _, method := range s.methods {
 		t := method.Type
-		for i := 1; i < t.NumIn(); i++ {
+		for i := hasRecv(s.elemStructType); i < t.NumIn(); i++ {
 			in := getReflectTypeElementType(t.In(i))
 			if len(in.PkgPath()) != 0 {
 				pkg[in.PkgPath()] = true
@@ -92,15 +97,31 @@ func (s Struct) importList(pkg artisan.PackageSet) {
 	}
 }
 
+func hasRecv(elemStructType reflect.Type) int {
+	if elemStructType.Kind() == reflect.Interface {
+		return 0
+	}
+	return 1
+}
+
 func (s Struct) interfaceListToStream(indentCount int, stream *bytes.Buffer) {
 	for _, method := range s.methods {
 		t := method.Type
 		writeIndent(stream, indentCount)
 		stream.WriteString(method.Name)
 		stream.WriteByte('(')
-		for i := 1; i < t.NumIn(); i++ {
+		for i := hasRecv(s.elemStructType); i < t.NumIn(); i++ {
 			in := t.In(i)
-			stream.WriteString(in.String())
+			if i == t.NumIn()-1 {
+				if t.IsVariadic() {
+					stream.WriteString("...")
+					stream.WriteString(in.Elem().String())
+				} else {
+					stream.WriteString(in.String())
+				}
+			} else {
+				stream.WriteString(in.String())
+			}
 			if i != t.NumIn()-1 {
 				stream.WriteByte(',')
 			}
@@ -152,13 +173,29 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	var pkg = make(artisan.PackageSet)
 	mockList := []*Struct{
 		newStruct(&model.SessionDB{}),
 		newStruct(&model.SessionAccountDB{}),
 		newStruct(&fset.SessionFSet{}),
-		// newStruct(&opintent.OpIntentInitializer{}),
 	}
+
+	var x uiptypes.BlockChainInterface
+	externMockList := []*Struct{
+		newStruct(&opintent.OpIntentInitializer{}),
+		newStructByType(reflect.TypeOf(&x).Elem()),
+	}
+	for _, s := range [] struct{
+		l []*Struct
+		fp string
+	}{
+		{mockList, "./gen-model-interface.go"}, {externMockList, "./gen-external-interface.go"},
+	} {
+		printMock(s.l, s.fp)
+	}
+}
+
+func printMock(mockList []*Struct, filepath string) {
+	var pkg = make(artisan.PackageSet)
 
 	for _, s := range mockList {
 		s.importList(pkg)
@@ -183,7 +220,7 @@ import(
 		if err != nil {
 			log.Fatal(err)
 		}
-	}, "./gen-model-interface.go")
+	}, filepath)
 }
 
 func printPkgPaths(pkg artisan.PackageSet) string {

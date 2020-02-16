@@ -58,7 +58,7 @@ func dataTransactionIntentWithBadChainID(t *testing.T) (
 	return srcAcc, &ti, b
 }
 
-func newMockGoodInternalPushTransaction(t *testing.T, f *fields, sesID []byte, sesFSet *mock.SessionFSet, cVes *mock.CentralVESClient) {
+func newMockGoodInternalPushTransaction(t *testing.T, f *Service, sesID []byte, sesFSet *mock.SessionFSet, cVes *mock.CentralVESClient) {
 	srcAcc, _, b := dataGoodTransactionIntent(t)
 
 	sesFSet.EXPECT().FindTransaction(sesID, int64(0)).
@@ -88,7 +88,7 @@ const (
 	unknownChainID
 )
 
-func newMockDNS(f *fields, dns *mock.ChainDNS) {
+func newMockDNS(f *Service, dns *mock.ChainDNS) {
 	dns.EXPECT().GetChainInfo(ethereumChainID).Return(ChainInfo{
 		ChainType: ChainType.Ethereum,
 		ChainHost: "orz.cc:23333",

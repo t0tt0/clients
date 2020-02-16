@@ -2,9 +2,9 @@
 package control
 
 import (
+    "github.com/Myriad-Dreamin/go-ves/ves/model/db-layer"
     "github.com/Myriad-Dreamin/minimum-lib/controller"
     "github.com/Myriad-Dreamin/go-model-traits/gorm-crud-dao"
-    "github.com/Myriad-Dreamin/go-ves/ves/model/db-layer"
 
 )
 
@@ -33,8 +33,8 @@ type PostObjectRequest struct {
 }
 
 type PostObjectReply struct {
-    Code int `json:"code" form:"code"`
-    Object *dblayer.Object `form:"object" json:"object"`
+    Code int `form:"code" json:"code"`
+    Object *dblayer.Object `json:"object" form:"object"`
 }
 
 type InspectObjectReply struct {
@@ -44,7 +44,7 @@ type InspectObjectReply struct {
 
 type GetObjectReply struct {
     Code int `json:"code" form:"code"`
-    Object *dblayer.Object `json:"object" form:"object"`
+    Object *dblayer.Object `form:"object" json:"object"`
 }
 
 type PutObjectRequest struct {

@@ -2,8 +2,6 @@ package control
 
 import (
 	"context"
-	"encoding/json"
-	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
 	nsb_message "github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client/nsb-message"
@@ -36,11 +34,4 @@ type NSBClient interface {
 		tid, aid uint64,
 	) (*nsb_message.DeliverTx, error)
 	CreateISC(signer uiptypes.Signer, uint32s []uint32, bytes [][]byte, bytes2 [][]byte, bytes3 []byte) ([]byte, error)
-}
-
-type OpIntentInitializerI interface {
-	InitContractInvocationOpIntent(string, json.RawMessage) ([]*uiptypes.TransactionIntent, []*uiptypes.MerkleProofProposal, error)
-	InitOpIntent(uiptypes.OpIntents) ([]*uiptypes.TransactionIntent, []*uiptypes.MerkleProofProposal, error)
-	InitPaymentOpIntent(string, json.RawMessage) ([]*uiptypes.TransactionIntent, []*uiptypes.MerkleProofProposal, error)
-	TopologicalSort([][]*uiptypes.TransactionIntent, []opintent.Dependency) error
 }

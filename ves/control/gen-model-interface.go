@@ -15,7 +15,7 @@ type SessionDBI interface {
 	ID_(*gorm.DB, uint) (*dblayer.Session, error)
 	QueryChain() *dblayer.SessionQuery
 	QueryGUID(string) (*dblayer.Session, error)
-	QueryGUIDByBytes([]byte) (*dblayer.Session, error)
+	QueryGUIDByBytes([]uint8) (*dblayer.Session, error)
 }
 
 type SessionAccountDBI interface {
@@ -39,6 +39,3 @@ type SessionFSetI interface {
 	ProcessAttestation(types.NSBInterface, uiptypes.BlockChainInterface, uiptypes.Attestation) (interface{}, interface{}, error)
 	SyncFromISC() error
 }
-
-
-

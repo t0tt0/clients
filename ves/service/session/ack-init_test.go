@@ -22,7 +22,7 @@ func TestService_SessionAckForInit(t *testing.T) {
 	sesAccountDB := MockSessionAccountDB(ctl)
 	cVes := MockCentralVESClient(ctl)
 
-	f := createField(
+	f := createService(
 		sesDB,
 		sesFSet,
 		sesAccountDB,
@@ -86,14 +86,6 @@ func TestService_SessionAckForInit(t *testing.T) {
 	ses = &model.Session{
 		ISCAddress:       model.EncodeAddress(sessionIDOk),
 		AccountsCount: 2,
-		//ID:               0,
-		//CreatedAt:        time.Time{},
-		//UpdatedAt:        time.Time{},
-		//ISCAddress:       nil,
-		//UnderTransacting: 0,
-		//Status:           0,
-		//Content:          "",
-		//AccountsCount:    0,
 	}
 	var inOk = &uiprpc.SessionAckForInitRequest{
 		SessionId: ses.GetGUID(),
@@ -119,16 +111,8 @@ func TestService_SessionAckForInit(t *testing.T) {
 	ses = &model.Session{
 		ISCAddress:       model.EncodeAddress(sessionIDOk2),
 		AccountsCount: 1,
-		//ID:               0,
-		//CreatedAt:        time.Time{},
-		//UpdatedAt:        time.Time{},
-		//ISCAddress:       nil,
-		//UnderTransacting: 0,
-		//Status:           0,
-		//Content:          "",
-		//AccountsCount:    0,
 	}
-	newMockGoodInternalPushTransaction(t, &f, sessionIDOk2, sesFSet, cVes)
+	newMockGoodInternalPushTransaction(t, f, sessionIDOk2, sesFSet, cVes)
 	var inOk2 = &uiprpc.SessionAckForInitRequest{
 		SessionId: ses.GetGUID(),
 		User:      nil,
@@ -156,7 +140,7 @@ func TestService_SessionAckForInit(t *testing.T) {
 	}
 	tests := []struct {
 		name     string
-		fields   fields
+		fields   *Service
 		args     args
 		want     bool
 		wantErr  bool

@@ -18,7 +18,7 @@ func TestService_pushTransaction(t *testing.T) {
 	sesFSet := MockSessionFSet(ctl)
 	cVes := MockCentralVESClient(ctl)
 
-	f := createField(
+	f := createService(
 		sesFSet,
 		cVes,
 	)
@@ -75,7 +75,7 @@ func TestService_pushTransaction(t *testing.T) {
 	}).Return(nil, nil)
 
 	//Ok
-	newMockGoodInternalPushTransaction(t, &f, sessionIDPushTransactionNotNil, sesFSet, cVes)
+	newMockGoodInternalPushTransaction(t, f, sessionIDPushTransactionNotNil, sesFSet, cVes)
 	var sesOk = &model.Session{
 		ISCAddress: model.EncodeAddress(sessionIDPushTransactionNotNil),
 	}
@@ -87,7 +87,7 @@ func TestService_pushTransaction(t *testing.T) {
 	}
 	tests := []struct {
 		name     string
-		fields   fields
+		fields   *Service
 		args     args
 		wantErr  bool
 		wantCode int

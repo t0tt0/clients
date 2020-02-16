@@ -19,18 +19,18 @@ func TestService_getBlockChainInterface(t *testing.T) {
 	defer ctl.Finish()
 
 	dns := MockChainDNS(ctl)
-	f := createField(
+	f := createService(
 		dns,
 	)
 
-	newMockDNS(&f, dns)
+	newMockDNS(f, dns)
 
 	type args struct {
 		chainID uint64
 	}
 	tests := []struct {
 		name     string
-		fields   fields
+		fields   *Service
 		args     args
 		wantType reflect.Type
 		wantErr  bool
