@@ -1,55 +1,43 @@
 package sessionservice
 
 import (
-	"encoding/json"
-	"github.com/Myriad-Dreamin/go-ves/lib/encoding"
 	"github.com/Myriad-Dreamin/go-ves/lib/wrapper"
 	"github.com/Myriad-Dreamin/go-ves/types"
 	"golang.org/x/net/context"
 
 	transtype "github.com/HyperService-Consortium/go-uip/const/trans_type"
-	tx "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
 )
 
-
 func (svc *Service) RequireRawTransaction(
 	ctx context.Context, in *uiprpc.SessionRequireRawTransactRequest) (
 	*uiprpc.SessionRequireRawTransactReply, error) {
 
-	ses, err := svc.db.QueryGUID(encoding.EncodeBase64(in.GetSessionId()))
+	ses, err := svc.db.QueryGUIDByBytes(in.GetSessionId())
 	if err != nil {
 		return nil, wrapper.Wrap(types.CodeSessionFindError, err)
 	} else if ses == nil {
 		return nil, wrapper.WrapCode(types.CodeSessionNotFind)
 	}
 
-	txb, err := svc.sesFSet.FindTransaction(ses.GetGUID(), ses.UnderTransacting)
+	ti, err := svc.getTransactionIntent(ses.GetGUID(), ses.UnderTransacting)
 	if err != nil {
-		return nil, wrapper.Wrap(types.CodeTransactionFindError, err)
+		return nil, err
 	}
 
-	var transactionIntent tx.TransactionIntent
-	err = json.Unmarshal(txb, &transactionIntent)
-	if err != nil {
-		return nil, wrapper.Wrap(types.CodeDeserializeTransactionError, err)
-	}
-
-	//fmt.Println(".......")
-
-	bn, err := svc.getBlockChainInterface(transactionIntent.ChainID)
+	bn, err := svc.getBlockChainInterface(ti.ChainID)
 	if err != nil {
 		return nil, wrapper.Wrap(types.CodeGetBlockChainInterfaceError, err)
 	}
 
-	if err = newPrepareTranslateEnvironment(svc, ses, &transactionIntent, bn).do(); err != nil {
+	if err = newPrepareTranslateEnvironment(svc, ses, ti, bn).do(); err != nil {
 		return nil, wrapper.Wrap(types.CodeTransactionPrepareTranslateError, err)
 	}
 
 	var b uiptypes.RawTransaction
-	b, err = bn.Translate(&transactionIntent, svc.storageHandler)
+	b, err = bn.Translate(ti, svc.storageHandler)
 	if err != nil {
 		return nil, wrapper.Wrap(types.CodeTransactionTranslateError, err)
 	}
@@ -60,10 +48,10 @@ func (svc *Service) RequireRawTransaction(
 	}
 
 	var dest *uiprpc_base.Account
-	if transactionIntent.TransType == transtype.Payment {
+	if ti.TransType == transtype.Payment {
 		dest = &uiprpc_base.Account{
-			Address: transactionIntent.Dst,
-			ChainId: transactionIntent.ChainID,
+			Address: ti.Dst,
+			ChainId: ti.ChainID,
 		}
 	} else {
 		dest = &uiprpc_base.Account{
@@ -76,8 +64,8 @@ func (svc *Service) RequireRawTransaction(
 		RawTransaction: x,
 		Tid:            uint64(ses.UnderTransacting),
 		Src: &uiprpc_base.Account{
-			Address: transactionIntent.Src,
-			ChainId: transactionIntent.ChainID,
+			Address: ti.Src,
+			ChainId: ti.ChainID,
 		},
 		Dst: dest,
 	}, nil

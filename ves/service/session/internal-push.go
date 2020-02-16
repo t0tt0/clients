@@ -3,8 +3,6 @@ package sessionservice
 import (
 	"context"
 	"encoding/hex"
-	"encoding/json"
-	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
 	uiprpc_base "github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
 	"github.com/Myriad-Dreamin/go-ves/lib/wrapper"
@@ -15,21 +13,16 @@ import (
 
 func (svc *Service) pushTransaction(
 	ctx context.Context, ses *model.Session, transactionID int64) (err error) {
-	txb, err := svc.sesFSet.FindTransaction(ses.GetGUID(), transactionID)
+	ti, err := svc.getTransactionIntent(ses.GetGUID(), transactionID)
 	if err != nil {
-		return wrapper.Wrap(types.CodeTransactionFindError, err)
-	}
-	var kvs opintent.TransactionIntent
-	err = json.Unmarshal(txb, &kvs)
-	if err != nil {
-		return wrapper.Wrap(types.CodeDeserializeTransactionError, err)
+		return err
 	}
 	var accounts []*uiprpc_base.Account
 	accounts = append(accounts, &uiprpc_base.Account{
-		Address: kvs.Src,
-		ChainId: kvs.ChainID,
+		Address: ti.Src,
+		ChainId: ti.ChainID,
 	})
-	svc.logger.Info("sending attestation request", "chain id", kvs.ChainID, "address", hex.EncodeToString(kvs.Src))
+	svc.logger.Info("sending attestation request", "chain id", ti.ChainID, "address", hex.EncodeToString(ti.Src))
 
 	ctx, cancel := context.WithTimeout(ctx, time.Second*10)
 	defer cancel()
