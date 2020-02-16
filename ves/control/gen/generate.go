@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"fmt"
-	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/Myriad-Dreamin/artisan"
 	"github.com/Myriad-Dreamin/go-ves/ves/model"
 	"github.com/Myriad-Dreamin/go-ves/ves/model/fset"
@@ -158,7 +157,7 @@ func main() {
 		newStruct(&model.SessionDB{}),
 		newStruct(&model.SessionAccountDB{}),
 		newStruct(&fset.SessionFSet{}),
-		newStruct(&opintent.OpIntentInitializer{}),
+		// newStruct(&opintent.OpIntentInitializer{}),
 	}
 
 	for _, s := range mockList {
@@ -184,7 +183,7 @@ import(
 		if err != nil {
 			log.Fatal(err)
 		}
-	}, "./model-interface.go")
+	}, "./gen-model-interface.go")
 }
 
 func printPkgPaths(pkg artisan.PackageSet) string {

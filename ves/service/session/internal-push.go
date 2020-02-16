@@ -15,8 +15,6 @@ import (
 
 func (svc *Service) pushTransaction(
 	ctx context.Context, ses *model.Session, transactionID int64) (err error) {
-	ctx, cancel := context.WithTimeout(ctx, time.Second*10)
-	defer cancel()
 	txb, err := svc.sesFSet.FindTransaction(ses.GetGUID(), transactionID)
 	if err != nil {
 		return wrapper.Wrap(types.CodeTransactionFindError, err)
@@ -33,7 +31,9 @@ func (svc *Service) pushTransaction(
 	})
 	svc.logger.Info("sending attestation request", "chain id", kvs.ChainID, "address", hex.EncodeToString(kvs.Src))
 
-	_, err = svc.cVes.InternalAttestationSending(ctx, &uiprpc.InternalRequestComingRequest{
+	ctx, cancel := context.WithTimeout(ctx, time.Second*10)
+	defer cancel()
+	reply, err := svc.cVes.InternalAttestationSending(ctx, &uiprpc.InternalRequestComingRequest{
 		SessionId: ses.GetGUID(),
 		Host:      svc.cfg.BaseParametersConfig.ExposeHost,
 		Accounts:  accounts,
@@ -41,6 +41,10 @@ func (svc *Service) pushTransaction(
 	if err != nil {
 		return wrapper.Wrap(types.CodeAttestationSendError, err)
 	}
+	if reply.GetOk() != true {
+		return wrapper.WrapCode(types.CodeAttestationSendError)
+	}
+
 	return nil
 }
 func (svc *Service) pushInternalInitRequest(ctx context.Context, iscAddress []byte, accounts []*model.SessionAccount) (bool, error) {
@@ -63,5 +67,5 @@ func (svc *Service) pushInternalInitRequest(ctx context.Context, iscAddress []by
 	if err != nil {
 		return false, wrapper.Wrap(types.CodeSessionInitInternalRequestError, err)
 	}
-	return r.Ok, nil
+	return r.GetOk(), nil
 }

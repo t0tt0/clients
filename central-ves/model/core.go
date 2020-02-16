@@ -4,6 +4,7 @@ import (
 	"github.com/Myriad-Dreamin/go-ves/central-ves/model/db-layer"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/model/sp-layer"
 	"github.com/Myriad-Dreamin/go-ves/types"
+	"github.com/Myriad-Dreamin/go-ves/ves/control"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 )
 
@@ -47,8 +48,8 @@ type VESDB interface {
 	SetIndex(types.Index) (successOrNot bool)
 	SetMultiIndex(types.MultiIndex) (successOrNot bool)
 	SetSessionBase(types.SessionBase) (successOrNot bool)
-	SetSessionKVBase(types.SessionKV) (successOrNot bool)
-	SetStorageHandler(types.StorageHandler) (successOrNot bool)
+	SetSessionKVBase(control.SessionKV) (successOrNot bool)
+	SetStorageHandler(control.StorageHandler) (successOrNot bool)
 	SetChainDNS(types.ChainDNS) (successOrNot bool)
 
 	// insert accounts maps from guid to account
@@ -71,9 +72,6 @@ type VESDB interface {
 
 	SetKV(iscAddress []byte, provedKey []byte, provedValue []byte) error
 	GetKV(iscAddress []byte, provedKey []byte) (provedValue []byte, err error)
-
-	GetSetter(iscAddress []byte) types.KVSetter
-	GetGetter(iscAddress []byte) types.KVGetter
 
 	types.StorageHandlerInterface
 	types.ChainDNSInterface

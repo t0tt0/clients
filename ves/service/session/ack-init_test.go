@@ -2,11 +2,9 @@ package sessionservice
 
 import (
 	"errors"
-	"fmt"
 	"github.com/HyperService-Consortium/go-uip/signaturer"
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
 	uiprpc_base "github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
-	"github.com/Myriad-Dreamin/go-ves/lib/wrapper"
 	"github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/go-ves/ves/mock"
 	"github.com/Myriad-Dreamin/go-ves/ves/model"
@@ -19,12 +17,6 @@ func TestService_SessionAckForInit(t *testing.T) {
 	ctl := gomock.NewController(t)
 	defer ctl.Finish()
 
-	var (
-		sessionIDNotFound                            = []byte("abc")
-		sessionIDFindError                           = []byte("abe")
-		sessionIDFindSessionWithAcknowledgeError     = []byte("x")
-		sessionIDFindSessionWithGetAcknowledgedError = []byte("y")
-	)
 	sesDB := MockSessionDB(ctl)
 	sesFSet := MockSessionFSet(ctl)
 	sesAccountDB := MockSessionAccountDB(ctl)
@@ -35,21 +27,16 @@ func TestService_SessionAckForInit(t *testing.T) {
 		sesAccountDB,
 	)
 
+	// mock queryGUIDFindError
 	sesDB.EXPECT().
 		QueryGUIDByBytes(sessionIDFindError).Return(nil, errors.New("find error"))
 
+	// mock queryGUIDNotFind
 	sesDB.EXPECT().
 		QueryGUIDByBytes(sessionIDNotFound).Return(nil, nil)
 
+	// mock queryFindSessionWithAcknowledgeError
 	var ses = &model.Session{
-		//ID:               0,
-		//CreatedAt:        time.Time{},
-		//UpdatedAt:        time.Time{},
-		//ISCAddress:       "",
-		//UnderTransacting: 0,
-		//Status:           0,
-		//Content:          "",
-		//AccountsCount:    0,
 	}
 	var inFindSessionWithAcknowledgeError = &uiprpc.SessionAckForInitRequest{
 		SessionId: sessionIDFindSessionWithAcknowledgeError,
@@ -69,18 +56,9 @@ func TestService_SessionAckForInit(t *testing.T) {
 					inFindSessionWithAcknowledgeError.GetUserSignature().SignatureType))).
 		Return(errors.New("ack error"))
 
-	//sessionIDFindSessionWithGetAcknowledgedError
-
+	//queryFindSessionWithGetAcknowledgedError
 	ses = &model.Session{
 		ISCAddress: model.EncodeAddress(sessionIDFindSessionWithGetAcknowledgedError),
-		//ID:               0,
-		//CreatedAt:        time.Time{},
-		//UpdatedAt:        time.Time{},
-		//ISCAddress:       "",
-		//UnderTransacting: 0,
-		//Status:           0,
-		//Content:          "",
-		//AccountsCount:    0,
 	}
 	var inFindSessionWithGetAcknowledgedError = &uiprpc.SessionAckForInitRequest{
 		SessionId: sessionIDFindSessionWithGetAcknowledgedError,
@@ -92,7 +70,6 @@ func TestService_SessionAckForInit(t *testing.T) {
 	}
 	sesDB.EXPECT().
 		QueryGUIDByBytes(sessionIDFindSessionWithGetAcknowledgedError).Return(ses, nil)
-
 	sesFSet.EXPECT().
 		AckForInit(
 			ses, inFindSessionWithGetAcknowledgedError.GetUser(),
@@ -100,7 +77,6 @@ func TestService_SessionAckForInit(t *testing.T) {
 				signaturer.FromRaw(inFindSessionWithGetAcknowledgedError.GetUserSignature().Content,
 					inFindSessionWithGetAcknowledgedError.GetUserSignature().SignatureType))).
 		Return(nil)
-
 	sesAccountDB.EXPECT().
 		GetAcknowledged(ses.ISCAddress).
 		Return(int64(0), errors.New("get acknowledged error"))
@@ -166,17 +142,7 @@ func TestService_SessionAckForInit(t *testing.T) {
 				return
 			}
 			if err != nil {
-				if tt.wantCode != types.CodeOK {
-					if f, ok := wrapper.FromError(err); ok {
-						if f.GetCode() != tt.wantCode {
-							t.Errorf("not expected code, error code %v, wantCode %v", f.GetCode(), tt.wantCode)
-						} else {
-							fmt.Println("good", err)
-						}
-					} else {
-						t.Error("not frame error wrapped")
-					}
-				}
+				checkErrorCode(t, err, tt.wantCode)
 				return
 			}
 			if got.GetOk() != tt.want {

@@ -5,13 +5,138 @@
 package mock
 
 import (
+	context "context"
 	json "encoding/json"
 	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	uiptypes "github.com/HyperService-Consortium/go-uip/uiptypes"
+	uiprpc "github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
 	nsb_message "github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client/nsb-message"
+	types "github.com/Myriad-Dreamin/go-ves/types"
 	gomock "github.com/golang/mock/gomock"
+	grpc "google.golang.org/grpc"
 	reflect "reflect"
 )
+
+// ChainDNS is a mock of ChainDNS interface
+type ChainDNS struct {
+	ctrl     *gomock.Controller
+	recorder *ChainDNSMockRecorder
+}
+
+// ChainDNSMockRecorder is the mock recorder for ChainDNS
+type ChainDNSMockRecorder struct {
+	mock *ChainDNS
+}
+
+// NewChainDNS creates a new mock instance
+func NewChainDNS(ctrl *gomock.Controller) *ChainDNS {
+	mock := &ChainDNS{ctrl: ctrl}
+	mock.recorder = &ChainDNSMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *ChainDNS) EXPECT() *ChainDNSMockRecorder {
+	return m.recorder
+}
+
+// GetChainInfo mocks base method
+func (m *ChainDNS) GetChainInfo(chainID uint64) (types.ChainInfo, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetChainInfo", chainID)
+	ret0, _ := ret[0].(types.ChainInfo)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetChainInfo indicates an expected call of GetChainInfo
+func (mr *ChainDNSMockRecorder) GetChainInfo(chainID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetChainInfo", reflect.TypeOf((*ChainDNS)(nil).GetChainInfo), chainID)
+}
+
+// CentralVESClient is a mock of CentralVESClient interface
+type CentralVESClient struct {
+	ctrl     *gomock.Controller
+	recorder *CentralVESClientMockRecorder
+}
+
+// CentralVESClientMockRecorder is the mock recorder for CentralVESClient
+type CentralVESClientMockRecorder struct {
+	mock *CentralVESClient
+}
+
+// NewCentralVESClient creates a new mock instance
+func NewCentralVESClient(ctrl *gomock.Controller) *CentralVESClient {
+	mock := &CentralVESClient{ctrl: ctrl}
+	mock.recorder = &CentralVESClientMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *CentralVESClient) EXPECT() *CentralVESClientMockRecorder {
+	return m.recorder
+}
+
+// InternalRequestComing mocks base method
+func (m *CentralVESClient) InternalRequestComing(ctx context.Context, in *uiprpc.InternalRequestComingRequest, opts ...grpc.CallOption) (*uiprpc.InternalRequestComingReply, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "InternalRequestComing", varargs...)
+	ret0, _ := ret[0].(*uiprpc.InternalRequestComingReply)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// InternalRequestComing indicates an expected call of InternalRequestComing
+func (mr *CentralVESClientMockRecorder) InternalRequestComing(ctx, in interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "InternalRequestComing", reflect.TypeOf((*CentralVESClient)(nil).InternalRequestComing), varargs...)
+}
+
+// InternalAttestationSending mocks base method
+func (m *CentralVESClient) InternalAttestationSending(ctx context.Context, in *uiprpc.InternalRequestComingRequest, opts ...grpc.CallOption) (*uiprpc.InternalRequestComingReply, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "InternalAttestationSending", varargs...)
+	ret0, _ := ret[0].(*uiprpc.InternalRequestComingReply)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// InternalAttestationSending indicates an expected call of InternalAttestationSending
+func (mr *CentralVESClientMockRecorder) InternalAttestationSending(ctx, in interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "InternalAttestationSending", reflect.TypeOf((*CentralVESClient)(nil).InternalAttestationSending), varargs...)
+}
+
+// InternalCloseSession mocks base method
+func (m *CentralVESClient) InternalCloseSession(ctx context.Context, in *uiprpc.InternalCloseSessionRequest, opts ...grpc.CallOption) (*uiprpc.InternalCloseSessionReply, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, in}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "InternalCloseSession", varargs...)
+	ret0, _ := ret[0].(*uiprpc.InternalCloseSessionReply)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// InternalCloseSession indicates an expected call of InternalCloseSession
+func (mr *CentralVESClientMockRecorder) InternalCloseSession(ctx, in interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, in}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "InternalCloseSession", reflect.TypeOf((*CentralVESClient)(nil).InternalCloseSession), varargs...)
+}
 
 // NSBClient is a mock of NSBClient interface
 type NSBClient struct {

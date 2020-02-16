@@ -21,12 +21,12 @@ type Service struct {
 	sesFSet        control.SessionFSetI
 	opInitializer  control.OpIntentInitializerI
 	signer         control.Signer
-	logger         control.Logger
-	cVes           control.CenteredVESClient
+	logger         types.Logger
+	cVes           control.CentralVESClient
 	respAccount    control.Account
 	storage        control.SessionKV
 	storageHandler control.StorageHandler
-	dns            control.ChainDNSInterface
+	dns            control.ChainDNS
 	nsbClient      control.NSBClient
 
 }
@@ -78,11 +78,11 @@ func NewService(m module.Module) (control.SessionService, error) {
 		db:             provider.SessionDB(),
 		sesFSet:        fset.NewSessionFSet(provider, index),
 
-		dns:            m.Require(config.ModulePath.Service.ChainDNS).(control.ChainDNSInterface),
+		dns:            m.Require(config.ModulePath.Service.ChainDNS).(control.ChainDNS),
 		opInitializer:  m.Require(config.ModulePath.Service.OpIntentInitializer).(control.OpIntentInitializerI),
 		cfg:            m.Require(config.ModulePath.Minimum.Global.Configuration).(*config.ServerConfig),
-		logger:         m.Require(config.ModulePath.Minimum.Global.Logger).(control.Logger),
-		cVes:           m.Require(config.ModulePath.Global.CentralVESClient).(control.CenteredVESClient),
+		logger:         m.Require(config.ModulePath.Minimum.Global.Logger).(types.Logger),
+		cVes:           m.Require(config.ModulePath.Global.CentralVESClient).(control.CentralVESClient),
 		signer:         m.Require(config.ModulePath.Global.Signer).(control.Signer),
 		respAccount:    m.Require(config.ModulePath.Global.RespAccount).(control.Account),
 		nsbClient:      m.Require(config.ModulePath.Global.NSBClient).(control.NSBClient),

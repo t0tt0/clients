@@ -37,9 +37,9 @@ func (svc *Service) SessionAckForInit(ctx context.Context, in *uiprpc.SessionAck
 		}
 	}
 
-	if _, err = ses.Update(); err != nil {
-		return nil, wrapper.Wrap(types.CodeUpdateError, err)
-	}
+	//if _, err = ses.Update(); err != nil {
+	//	return nil, wrapper.Wrap(types.CodeUpdateError, err)
+	//}
 
 	return &uiprpc.SessionAckForInitReply{
 		Ok: true,

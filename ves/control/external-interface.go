@@ -1,21 +1,27 @@
 package control
 
 import (
+	"context"
 	"encoding/json"
 	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
 	nsb_message "github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client/nsb-message"
 	"github.com/Myriad-Dreamin/go-ves/types"
+	"google.golang.org/grpc"
 )
 
 type Signer = uiptypes.Signer
-type Logger = types.Logger
-type CenteredVESClient = uiprpc.CenteredVESClient
+type ChainDNS interface {
+	GetChainInfo(chainID uint64) (types.ChainInfo, error)
+}
+
+type CentralVESClient interface {
+	InternalRequestComing(ctx context.Context, in *uiprpc.InternalRequestComingRequest, opts ...grpc.CallOption) (*uiprpc.InternalRequestComingReply, error)
+	InternalAttestationSending(ctx context.Context, in *uiprpc.InternalRequestComingRequest, opts ...grpc.CallOption) (*uiprpc.InternalRequestComingReply, error)
+	InternalCloseSession(ctx context.Context, in *uiprpc.InternalCloseSessionRequest, opts ...grpc.CallOption) (*uiprpc.InternalCloseSessionReply, error)
+}
 type Account = uiptypes.Account
-type SessionKV = types.SessionKV
-type StorageHandler = types.StorageHandler
-type ChainDNSInterface = types.ChainDNSInterface
 
 type NSBClient interface {
 	FreezeInfo(signer uiptypes.Signer, guid []byte, u uint64) ([]byte, error)
