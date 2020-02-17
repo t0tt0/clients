@@ -2,3 +2,6 @@ binary/
 data/
 index_data/
 json/
+level-test/
+**.out
+

@@ -27,6 +27,8 @@ github.com/Knetic/govaluate v3.0.1-0.20171022003610-9aa49832a739+incompatible/go
 github.com/KyleBanks/depth v1.2.1/go.mod h1:jzSb9d0L43HxTQfT+oSA1EEp2q+ne2uh6XgeJcm8brE=
 github.com/Myriad-Dreamin/artisan v0.8.1-0.20200118100121-229688818652 h1:TWQLG3y9WtDVTqLbUSqL4FzNuHvudk3JJetCICBcTpc=
 github.com/Myriad-Dreamin/artisan v0.8.1-0.20200118100121-229688818652/go.mod h1:zxrF+fyxIJhhQK+hyEZPGZVjD/xldrmB5j+Ys7OXnj0=
+github.com/Myriad-Dreamin/artisan v0.8.1-0.20200204040619-76955d01aad9 h1:7GJ+qaNU1SHNTaNy722yX20FC2R82792IxvUElMdb0k=
+github.com/Myriad-Dreamin/artisan v0.8.1-0.20200204040619-76955d01aad9/go.mod h1:zxrF+fyxIJhhQK+hyEZPGZVjD/xldrmB5j+Ys7OXnj0=
 github.com/Myriad-Dreamin/core-oj v1.0.0/go.mod h1:Bzykxe9H/YQkIXpqDy1Pk6sWduxwJ503opA/rH8nEQ4=
 github.com/Myriad-Dreamin/core-oj v1.0.1/go.mod h1:Bzykxe9H/YQkIXpqDy1Pk6sWduxwJ503opA/rH8nEQ4=
 github.com/Myriad-Dreamin/dorm v0.0.0-20191029104746-dbf265ce2754/go.mod h1:seclVAhgZxO4QmqSRwX2PyCJaQ1wAgVn1q5VJkXdMrk=

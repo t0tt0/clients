@@ -16,9 +16,9 @@ func (svc *Service) SerializePost(c controller.MContext) base_service.CRUDEntity
 
 	var obj = new(model.ChainInfo)
 	// fill here
-	obj.UserID = req.UserID
+	obj.UserID = req.UserId
 	obj.Address = req.Address
-	obj.ChainID = req.ChainID
+	obj.ChainID = req.ChainId
 	return obj
 }
 

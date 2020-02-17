@@ -154,11 +154,11 @@ func (srv *Server) Inject(plugins ...plugin.Plugin) (injectSuccess bool) {
 	}()
 
 	for _, plg := range plugins {
-		plg = plg.Configuration(srv.Logger, srv.FetchConfig, srv.Cfg)
+		plg, _ = plg.Configuration(srv.Logger, srv.FetchConfig, srv.Cfg)
 		if plg == nil {
 			return false
 		}
-		plg = plg.Inject(srv.ServiceProvider, srv.ModelProvider, srv.Module)
+		plg, _ = plg.Inject(srv.ServiceProvider, srv.ModelProvider, srv.Module)
 		if plg == nil {
 			return false
 		}

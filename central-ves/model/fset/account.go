@@ -17,6 +17,10 @@ func encodeBase64(que []byte) (res string) {
 	return base64.StdEncoding.EncodeToString(que)
 }
 
+func NewAccountFSet(p *model.Provider) *AccountFSet {
+	return &AccountFSet{p}
+}
+
 func (i AccountFSet) InsertAccount(userName string, acc uiptypes.Account) error {
 	// todo transaction
 	userDB := i.UserDB()

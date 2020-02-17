@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+import base64
 import code
 import copy
 import getpass
@@ -168,6 +169,8 @@ def unwrap(e):
 class Client(object):
     def __init__(self, host):
         self.host = host
+        self.identities = []
+        self.token = None
         if not (self.host.startswith('http://') or self.host.startswith('https://')):
             self.host = 'http://' + host
 
@@ -178,12 +181,19 @@ class Client(object):
         """
         return urllib.parse.urljoin(self.host, path)
 
+    def parse_kwargs(self, kwargs):
+        if self.token is not None:
+            headers = kwargs.get('headers', dict())
+            headers['Authorization'] = 'Bearer ' + self.token
+            kwargs['headers'] = headers
+        return kwargs
+
     def get(self, url, *args, **kwargs):
         """
         :return: :class:`Response <Response>` object
         :rtype: requests.Response
         """
-        return requests.get(self.parse_url(url), *args, **kwargs)
+        return requests.get(self.parse_url(url), *args, **self.parse_kwargs(kwargs))
 
     def post(self, url, *args, **kwargs):
         """
@@ -191,15 +201,29 @@ class Client(object):
         :return: :class:`Response <Response>` object
         :rtype: requests.Response
         """
-        return requests.post(self.parse_url(url), *args, **kwargs)
+        return requests.post(self.parse_url(url), *args, **self.parse_kwargs(kwargs))
+
+    def delete(self, url, **kwargs):
+        """
+        :param url: {string}
+        :return: :class:`Response <Response>` object
+        :rtype: requests.Response
+        """
+        return requests.delete(self.parse_url(url), **self.parse_kwargs(kwargs))
+
+    def put(self, url, *args, **kwargs):
+        """
+        :param url: {string}
+        :return: :class:`Response <Response>` object
+        :rtype: requests.Response
+        """
+        return requests.put(self.parse_url(url), *args, **self.parse_kwargs(kwargs))
 
 
 # '39.10.145.91:26670'
 class CVESClient(Client):
     def __init__(self, host='127.0.0.1:23336'):
         super().__init__(host)
-        self.identities = []
-        self.token = None
         self.id = None
         self.refresh_token = None
 
@@ -226,26 +250,42 @@ class CVESClient(Client):
                 self.refresh_token = data['refresh_token']
         return response
 
+    @staticmethod
+    def encode_address(src):
+        if isinstance(src, str):
+            src = bytes.fromhex(src)
+        if isinstance(src, bytes):
+            return base64.encodebytes(src).decode()
+        raise TypeError(f'encode address error: {type(src)}')
+
     def post_chain_info(self, chain_id, address, user_id=None):
         user_id = user_id or self.id
-        # todo
-        pass
+        if not isinstance(chain_id, int) or chain_id < 0:
+            raise TypeError(f'chain_id type error: {type(chain_id)}')
+        response = self.post('/v1/chain_info', json={
+            'user_id': user_id,
+            'chain_id': chain_id,
+            'address': self.encode_address(address),
+        })
+        return response
 
-    def get_chain_info(self, chain_id=None, address=None, user_id=None):
-        # todo
-        pass
+    def get_chain_info(self, cid=None, chain_id=None, address=None, user_id=None):
+        response = self.get(f'/v1/chain_info/{cid}')
+        return response
 
     def put_chain_info(self, chain_id=None, address=None, user_id=None):
-        # todo
         pass
 
-    def delete_chain_info(self, chain_id=None, address=None, user_id=None):
-        # todo
-        pass
+    def delete_chain_info(self, cid=None, chain_id=None, address=None, user_id=None):
+        response = self.delete(f'/v1/chain_info/{cid}')
+        return response
 
-    def list_chain_info(self, chain_id=None, address=None, uesr_id=None):
-        # todo
-        pass
+    def list_chain_info(self, chain_id=None, address=None, user_id=None, page=1, page_size=10):
+        response = self.get('/v1/chain_info-list', params={
+            'page': page,
+            'page_size': page_size,
+        })
+        return response
 
     def list_user(self):
         # todo
@@ -351,12 +391,51 @@ class Console(object):
         response = self.cli.send_op_intents_in_file(filepath)
         return response
 
+    @wrap_response
+    def post_chain_info(self, chain_id, address, user_id=None):
+        response = self.c_ves.post_chain_info(chain_id, address, user_id)
+        return response
+
+    @wrap_response
+    def get_chain_info(self, cid=None, chain_id=None, address=None, user_id=None):
+        response = self.c_ves.get_chain_info(cid, chain_id, address, user_id)
+        return response
+
+    # @wrap_response
+    # def put_chain_info(self, chain_id=None, address=None, user_id=None):
+    #     response = self.c_ves.put_chain_info(chain_id, address, user_id)
+    #     return response
+
+    @wrap_response
+    def delete_chain_info(self, cid=None, chain_id=None, address=None, user_id=None):
+        response = self.c_ves.delete_chain_info(cid, chain_id, address, user_id)
+        return response
+
+    @wrap_response
+    def list_chain_info(self, chain_id=None, address=None, user_id=None, page=1, page_size=10):
+        response = self.c_ves.list_chain_info(chain_id=chain_id, address=address, user_id=user_id, page=page, page_size=page_size)
+        return response
+
+    def list_user(self):
+        # todo
+        pass
+
     def switch(self, name=None, password=None):
         # todo
         pass
 
     def message_to(self, msg, target_name=None, target_id=None):
         # todo
+        pass
+
+class FS(object):
+    def __init__(self):
+        pass
+
+    def read_op_intents(self):
+        pass
+
+    def read_address_list(self):
         pass
 
 

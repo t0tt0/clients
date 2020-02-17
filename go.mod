@@ -16,7 +16,7 @@ require (
 	github.com/HyperService-Consortium/go-rlp v1.0.1-0.20190903144357-b5693c05a6b8
 	github.com/HyperService-Consortium/go-uip v0.0.0-20200117063617-d1d70e0d421c
 	github.com/Joker/jade v1.0.0 // indirect
-	github.com/Myriad-Dreamin/artisan v0.8.1-0.20200118100121-229688818652
+	github.com/Myriad-Dreamin/artisan v0.8.1-0.20200204040619-76955d01aad9
 	github.com/Myriad-Dreamin/dorm v0.0.0-20191205101004-33dbc61bb34e
 	github.com/Myriad-Dreamin/functional-go v0.0.0-20191104092509-c2b7f373dd31
 	github.com/Myriad-Dreamin/gin-middleware v0.0.0-20191222015112-6e9c660fff45
