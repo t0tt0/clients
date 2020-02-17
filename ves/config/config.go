@@ -74,6 +74,7 @@ func Default() *ServerConfig {
 			PathPlaceholder: PathPlaceholder{
 				User: "id",
 			},
+			ExposeHost: "127.0.0.1:23452",
 			NSBSignerPrivateKey: "2333bfffffffffffffff2333bbffffffffffffff2333bbffffffffffffffffff2333bfffffffffffffff2333bbffffffffffffff2333bbffffffffffffffffff",
 			NSBSignerChainID:    3,
 		},

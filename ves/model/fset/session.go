@@ -81,17 +81,18 @@ func (s SessionFSet) InitSessionInfo(
 	iscAddress []byte, intents []*opintent.TransactionIntent, accounts []*model.SessionAccount) (
 	ses *model.Session, err error) {
 	ses = model.NewSession(iscAddress)
-	ses.AccountsCount, err = s.AccountDB.GetTotal(ses.ISCAddress)
-	if err != nil {
-		err = wrapper.Wrap(types.CodeSessionAccountGetTotolError, err)
-		return
-	}
 	for i := range accounts {
 		accounts[i].SessionID = ses.ISCAddress
 		if _, err = accounts[i].Create(); err != nil {
 			err = wrapper.Wrap(types.CodeSessionInsertAccountError, err)
 			return
 		}
+	}
+
+	ses.AccountsCount, err = s.AccountDB.GetTotal(ses.ISCAddress)
+	if err != nil {
+		err = wrapper.Wrap(types.CodeSessionAccountGetTotolError, err)
+		return
 	}
 
 	//todo add transaction
@@ -120,7 +121,7 @@ func (s SessionFSet) AckForInit(ses *model.Session, acc uiptypes.Account, signat
 	}
 
 	sac.Acknowledged = true
-	if aff, err := sac.Update(); err != nil {
+	if aff, err := sac.UpdateAcknowledged(); err != nil {
 		return wrapper.Wrap(types.CodeUpdateError, err)
 	} else if aff == 0 {
 		return wrapper.WrapCode(types.CodeUpdateNoEffect)

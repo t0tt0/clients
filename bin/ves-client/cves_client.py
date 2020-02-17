@@ -1,9 +1,9 @@
-import base64
+# import base64
+# from service_code import Code
 from client import Client
 
 
 # '39.10.145.91:26670'
-from service_code import Code
 
 
 class CVESClient(Client):
@@ -36,14 +36,6 @@ class CVESClient(Client):
             self.token = data['token']
             self.refresh_token = data['refresh_token']
         return r
-
-    @staticmethod
-    def encode_address(src):
-        if isinstance(src, str):
-            src = bytes.fromhex(src)
-        if isinstance(src, bytes):
-            return base64.encodebytes(src).decode()
-        raise TypeError(f'encode address error: {type(src)}')
 
     def post_chain_info(self, chain_id, address, user_id=None):
         user_id = user_id or self.id

@@ -41,3 +41,8 @@ func (srv *Server) Start(ctx context.Context) error {
 	go srv.ListenAndServeRpc(ctx, srv.rpcPort)
 	return srv.ListenAndServe(ctx, srv.Addr)
 }
+
+func (srv *Server) ProvideUserDB(db *fset.AccountFSet) {
+	srv.UserDB = db
+	srv.hub.db = db
+}

@@ -6,7 +6,8 @@ from console import Console
 from interact import interact
 from wrapper import is_wrap_error, unwrap, Frame
 from fs import FS
-
+from interact import init
+import copy
 
 class Utils:
     unwrap = staticmethod(unwrap)
@@ -39,13 +40,18 @@ def main_load_cfg():
     if default_user is not None:
         print('config: use "%s" as default user' % (default_user[0]))
         response = ves.c_ves.login(default_user[0], default_user[1])
-        if response.status_code == 200 and response.json()['code'] == 0:
+        if response.resp.status_code == 200 and response.body['code'] == 0:
             print('config: login as "%s" successfully' % (default_user[0]))
         else:
             print_response(response)
 
+def create_local():
+    _local = copy.copy(locals())
+    _local.update(globals())
+    return _local
 
 if __name__ == '__main__':
+    init()
     class ConsoleDesc(object):
         def __init__(self, _='', ):
             self.content = f"""ves: {Console}
@@ -75,5 +81,6 @@ Type "desc" for more information"""
 
     print('entering ves console...')
     interact(banner=banner,
-             exitmsg='exiting ves client console...'
+             exitmsg='exiting ves client console...',
+             local=create_local(),
              )

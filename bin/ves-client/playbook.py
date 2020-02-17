@@ -80,7 +80,15 @@ class Role(object):
             raise ValueError(f'{self.name}.central_ves.id is None')
         r = self.central_ves.post_chain_info(account['chain_id'], account['address'])
 
-        if r.code != Code.InsertError.value and r.code != Code.DuplicatePrimaryKey.value\
+        if r.code != Code.InsertError.value and r.code != Code.DuplicatePrimaryKey.value \
+                and r.code != Code.OK.value:
+            raise r.to_error()
+
+        r = self.client.post_account(
+            chain_type=account['chain_type'], alias=account['alias'], chain_id=account['chain_id'],
+            address=account['address'], addition=account.get('private_address'))
+
+        if r.code != Code.InsertError.value and r.code != Code.DuplicatePrimaryKey.value \
                 and r.code != Code.OK.value:
             raise r.to_error()
 
@@ -233,4 +241,5 @@ def run_playbook(playbook: Playbook):
 if __name__ == '__main__':
     pb = Playbook(file_path='playbook.example.yaml')
     run_playbook(pb)
+    input('enter any keys to exit')
     pb.close()

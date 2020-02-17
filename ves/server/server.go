@@ -7,6 +7,7 @@ import (
 	base_account "github.com/HyperService-Consortium/go-uip/base-account"
 	"github.com/HyperService-Consortium/go-uip/signaturer"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	xconfig "github.com/Myriad-Dreamin/go-ves/config"
 	"github.com/Myriad-Dreamin/go-ves/lib/jwt"
 	"github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/go-ves/ves/config"
@@ -110,6 +111,7 @@ func newServer(options []Option) (srv *Server, err error) {
 
 	srv.Module.Provide(config.ModulePath.Global.CloseHandler, srv.CloseHandler)
 	srv.Module.Provide(config.ModulePath.Global.LoggerWriter, srv.LoggerWriter)
+	srv.Module.Provide(config.ModulePath.Service.ChainDNS, xconfig.ChainDNS)
 
 	srv.ServiceProvider = new(service.Provider)
 	srv.ModelProvider = model.NewProvider(config.ModulePath.Minimum.Provider.Model)
@@ -234,6 +236,8 @@ func (srv *Server) Serve(httpPort, gRPCPort string) {
 	// lazy build
 	sugar.HandlerError0(srv.HTTPEngine.Build(srv.Module))
 	sugar.HandlerError0(srv.GRPCEngine.Build(srv.Module))
+
+	srv.Cfg.BaseParametersConfig.ExposeHost = "127.0.0.1" + gRPCPort
 
 	// all is ready
 	srv.Module.Debug(srv.Logger)

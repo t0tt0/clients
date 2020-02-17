@@ -21,7 +21,7 @@ func GetSessionAccountDB(m module.Module) (*SessionAccountDB, error) {
 func SessionAccountsToUIPAccounts(accounts []SessionAccount) (uipAccounts []uiptypes.Account) {
 	uipAccounts = make([]uiptypes.Account, len(accounts))
 	for i := range accounts {
-		uipAccounts[i] = accounts[i]
+		uipAccounts[i] = &accounts[i]
 	}
 	return uipAccounts
 }

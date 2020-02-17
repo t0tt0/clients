@@ -22,6 +22,17 @@ class VESRemoteClient(Client):
                 time.sleep(interval)
         return None
 
+    def post_account(self, chain_type, alias, chain_id, address, addition):
+        j = {
+            'chain_type': chain_type,
+            'alias': alias,
+            'chain_id': chain_id,
+            'address': self.encode_address(address),
+        }
+        if addition is not None:
+            j['addition'] = self.encode_address(addition)
+        return self.post('/v1/account', json=j)
+
     def send_op_intents(self, file_path=None, intents=None, dependencies=None):
         if file_path is not None:
             return self.send_op_intents_in_file(file_path)

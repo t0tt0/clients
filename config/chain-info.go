@@ -201,6 +201,10 @@ func getTransactionProofType(chainId uint64) (uiptypes.MerkleProofType, error) {
 		return merkleprooftype.MerklePatriciaTrieUsingKeccak256, nil
 	case 4: // tendermint chain 2
 		return merkleprooftype.MerklePatriciaTrieUsingKeccak256, nil
+	case 5: // ethereum chain 3
+		return merkleprooftype.SecureMerklePatriciaTrieUsingKeccak256, nil
+	case 6: // ethereum chain 4
+		return merkleprooftype.SecureMerklePatriciaTrieUsingKeccak256, nil
 	default:
 		return merkleprooftype.Invalid, errors.New("not found")
 	}

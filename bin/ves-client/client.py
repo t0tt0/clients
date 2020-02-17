@@ -1,5 +1,5 @@
 import urllib.parse
-
+import base64
 import requests
 from service_code import *
 
@@ -62,6 +62,15 @@ class Client(object):
             headers['Authorization'] = 'Bearer ' + self.token
             kwargs['headers'] = headers
         return kwargs
+
+    @staticmethod
+    def encode_address(src):
+        if isinstance(src, str):
+            src = bytes.fromhex(src)
+        if isinstance(src, bytes):
+            # print('|', base64.encodebytes(src).decode()[:-1], '|')
+            return base64.encodebytes(src).decode()[:-1]
+        raise TypeError(f'encode address error: {type(src)}')
 
     @process_response
     def get(self, url, *args, **kwargs):

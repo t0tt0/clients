@@ -50,8 +50,10 @@ func NewSessionAccount(chainID uiptypes.ChainIDUnderlyingType, address []byte) *
 	}
 }
 
-func (sa SessionAccount) Find() (bool, error) {
-	db := p.GormDB.Find(&sa)
+func (sa *SessionAccount) Find() (bool, error) {
+	db := p.GormDB.Model(sa).
+		Where("session_id = ? and chain_id = ? and address = ?",
+			sa.SessionID, sa.ChainID, sa.Address).Find(&sa)
 	if db.RecordNotFound() {
 		return false, nil
 	} else if db.Error != nil {
@@ -64,7 +66,7 @@ func (sa SessionAccount) GetChainId() uiptypes.ChainID {
 	return sa.ChainID
 }
 
-func (sa SessionAccount) GetAddress() uiptypes.Address {
+func (sa *SessionAccount) GetAddress() uiptypes.Address {
 	if sa.decodedAddress == nil {
 		sa.decodedAddress = decodeBase64(sa.Address)
 	}
@@ -94,8 +96,10 @@ func (sa *SessionAccount) Create() (int64, error) {
 	return sessionAccountTraits.Create(sa)
 }
 
-func (sa *SessionAccount) Update() (int64, error) {
-	return sessionAccountTraits.Update(sa)
+func (sa *SessionAccount) UpdateAcknowledged() (int64, error) {
+	db := sessionAccountTraits.GormDB.Debug()
+	db = db.Model(sa).Where("session_id = ? and chain_id = ? and address = ?", sa.SessionID, sa.ChainID, sa.Address).Update("acknowledged", sa.Acknowledged)
+	return db.RowsAffected, db.Error
 }
 
 func (sa *SessionAccount) Delete() (int64, error) {

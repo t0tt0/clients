@@ -1,4 +1,3 @@
-import copy
 import rlcompleter
 import readline
 import code
@@ -10,12 +9,7 @@ def init():
     readline.parse_and_bind('tab: complete')
 
 
-def create_local():
-    _local = copy.copy(locals())
-    _local.update(globals())
-    return _local
-
 
 def interact(*args, **kwargs):
-    kwargs['local'] = kwargs.get('local', create_local())
+    # kwargs['local'] = kwargs.get('local')
     code.interact(*args, **kwargs)

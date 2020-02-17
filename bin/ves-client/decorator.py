@@ -1,7 +1,7 @@
 def print_response(response):
     if response is not None:
-        print('status  :', response.status_code,
-              '\nresponse:', response.json(), '\n')
+        print('status  :', response.resp.status_code,
+              '\nresponse:', response.body, '\n')
     return response
 
 
