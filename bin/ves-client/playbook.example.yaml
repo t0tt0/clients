@@ -1,0 +1,10 @@
+name: example
+source: intent.json
+ves-clients:
+  - name: ves
+    password: 123456
+    accounts: ves.yaml
+  - name: a1
+    password: 123456
+    accounts: a1.yaml
+
