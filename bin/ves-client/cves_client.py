@@ -3,9 +3,15 @@ from client import Client
 
 
 # '39.10.145.91:26670'
+from service_code import Code
+
+
 class CVESClient(Client):
-    def __init__(self, host='127.0.0.1:23336'):
-        super().__init__(host)
+    def __init__(self, host=None):
+        if isinstance(host, CVESClient):
+            host = host.host
+
+        super().__init__(host or '127.0.0.1:23336')
         self.id = None
         self.refresh_token = None
 
@@ -19,18 +25,17 @@ class CVESClient(Client):
         })
 
     def login(self, name, password):
-        response = self.post('/v1/login', json={
+        r = self.post('/v1/login', json={
             'name': name,
             'password': password,
         })
-        if response.status_code == 200:
-            data = response.json()
-            if data['code'] == 0:
-                self.id = data['id']
-                self.identities = data['identity']
-                self.token = data['token']
-                self.refresh_token = data['refresh_token']
-        return response
+        if r.avail:
+            data = r.body
+            self.id = data['id']
+            self.identities = data['identity']
+            self.token = data['token']
+            self.refresh_token = data['refresh_token']
+        return r
 
     @staticmethod
     def encode_address(src):

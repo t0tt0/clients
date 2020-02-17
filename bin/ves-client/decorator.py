@@ -10,3 +10,4 @@ def wrap_response(req_func):
         return print_response(req_func(*args, **kwargs))
 
     return wrap
+

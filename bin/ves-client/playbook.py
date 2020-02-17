@@ -1,6 +1,11 @@
 import yaml
 import json
 
+from service_code import Code
+from cves_client import CVESClient
+from ves_local_client import VESLocalClient
+from ves_remote_client import VESRemoteClient
+
 
 def _load_all(stream):
     """
@@ -21,18 +26,69 @@ def _load(stream) -> dict:
 
 
 class Role(object):
-    def __init__(self, name, password, accounts):
+    def __init__(self, name, password, accounts, central_ves: CVESClient = None):
         """
         :param name:
         :param password:
         :param accounts:
         """
+
+        self.chain_map = dict()
+
+        self.client = None
         self.name = name
+        if not isinstance(password, str):
+            raise TypeError(type(password))
+
         self.password = password
         if isinstance(accounts, list):
             self.accounts = accounts
         elif isinstance(accounts, str):
-            self.accounts = _load(open(accounts))
+            with open(accounts) as f:
+                self.accounts = _load(f)
+
+        # check accounts
+        if not isinstance(self.accounts, list):
+            raise TypeError(f'self.accounts is not good type: {type(self.accounts)}')
+
+        for account in self.accounts:
+            self.chain_map[account['chain_id']] = account['address']
+
+        self.central_ves = CVESClient(central_ves)
+        self.process: VESLocalClient
+        self.process = None
+        self.log_file = open(f'client.{self.name}.out', 'w')
+
+    def try_login(self):
+        r = self.central_ves.register(self.name, self.password)
+        if r.code != Code.InsertError.value and r.code != Code.OK.value:
+            raise r.to_error()
+        self.central_ves.login(self.name, self.password).maybe_raise()
+
+    def try_start_local_client(self):
+
+        self.process = VESLocalClient.from_role(self, log_file=self.log_file)
+        self.client = VESRemoteClient(self.process.host)
+        r = self.client.try_ping()
+        if r:
+            print(r.body)
+        else:
+            raise ConnectionError('ping failed')
+
+    def try_register_account(self, account):
+        if self.central_ves.id is None:
+            raise ValueError(f'{self.name}.central_ves.id is None')
+        r = self.central_ves.post_chain_info(account['chain_id'], account['address'])
+
+        if r.code != Code.InsertError.value and r.code != Code.DuplicatePrimaryKey.value\
+                and r.code != Code.OK.value:
+            raise r.to_error()
+
+    def try_close(self):
+        if self.log_file is not None:
+            self.log_file.close()
+        if self.process is not None:
+            self.process.kill()
 
 
 class Account(object):
@@ -94,36 +150,47 @@ class Playbook(object):
     ves-clients.password: {string} login central ves by this passphrase
     ves-clients.accounts: {array|string} describe resp accounts
     accounts<array>[].chain_id: {int} which chain the resp account is at
-    accounts<array>[].address: {hex string} this account's private address
+    accounts<array>[].address: {hex string} this account's public address
 
     accounts[string]: the target file (in yaml) describe the resp's accounts
     """
 
-    def __init__(self, stream=None, file_path='playbook.yaml'):
+    def __init__(self, stream=None,
+                 file_path='playbook.yaml',
+                 central_ves_host=None):
         """
+        :type central_ves_host: str
         :param stream:
         :param file_path:
         :type file_path: str
         :type stream TextIO
         """
+
+        self.role_map = dict()
+
         if file_path is not None:
             stream = stream or open(file_path)
         if stream is None:
             raise ValueError('stream is None')
         obj = _load(stream)
         self.name = obj.get('name', '<none>')
-        self.intents = self.prepare_intent_file(obj.get('source', 'intent.json'))
+        self.intent_file_name = obj.get('source', 'intent.json')
+        self.intents = self.prepare_intent_file(self.intent_file_name)
+        self.central_ves = CVESClient(central_ves_host)
+        r = self.central_ves.ping()
+        if not r.avail:
+            raise ConnectionError(f'ping failed: {r.fail_string()}')
         self.roles = self.process_roles(obj.get('ves-clients', []))
         self.build_role_map()
 
-    @staticmethod
-    def process_roles(roles):
+    def process_roles(self, roles):
         parsed_roles = []
         for role in roles:
             parsed_roles.append(Role(
-                name=role['name'],
-                password=role['password'],
+                name=str(role['name']),
+                password=str(role['password']),
                 accounts=role['accounts'],
+                central_ves=self.central_ves,
             ))
         return parsed_roles
 
@@ -135,19 +202,35 @@ class Playbook(object):
 
     def build_role_map(self):
         for role in self.roles:
+            role.try_start_local_client()
+            role.try_login()
             for account in role.accounts:
-                pass
-                # print(account)
+                role.try_register_account(account)
+                self.role_map[role.name] = role
+
+    def close(self):
+        for role in self.roles:
+            role.try_close()
 
 
 def run_playbook(playbook: Playbook):
-    resp_accounts = set()
+    some_role: Role
+    some_role = None
     for intents in playbook.intents.intents:
         for account in intents.resp_accounts:
-            resp_accounts.add(account)
+            if account.domain not in playbook.role_map[account.user_name].chain_map:
+                raise ValueError(f'<{account.domain}, {account.user_name}> is not in playbook')
+            some_role = playbook.role_map[account.user_name]
+    if some_role is not None:
+        r = some_role.client.send_op_intents(playbook.intent_file_name)
+        print(r, type(r), getattr(r, 'code', None),
+              getattr(getattr(r, 'resp', {}), 'status_code'), getattr(r, 'body', None))
+    else:
+        raise ValueError('some_role not found')
     # print(resp_accounts)
 
 
 if __name__ == '__main__':
     pb = Playbook(file_path='playbook.example.yaml')
     run_playbook(pb)
+    pb.close()

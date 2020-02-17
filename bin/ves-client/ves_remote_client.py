@@ -1,6 +1,7 @@
 import json
 
 from client import Client
+import time
 
 
 class VESRemoteClient(Client):
@@ -9,6 +10,17 @@ class VESRemoteClient(Client):
 
     def ping(self):
         return self.get('ping')
+
+    def try_ping(self, timeout=10, interval=1):
+        time.sleep(0.2)
+        x = time.clock()
+        while time.clock() - x <= timeout:
+            try:
+                return self.ping()
+            except Exception as e:
+                _ = e
+                time.sleep(interval)
+        return None
 
     def send_op_intents(self, file_path=None, intents=None, dependencies=None):
         if file_path is not None:

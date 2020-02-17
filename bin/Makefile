@@ -29,4 +29,7 @@ login:
 repl:
 	./ves-client/repl.py
 
-.PHONY: client server ves-server cves-server up up-ves up-cves down-cves repl
+dump-code:
+	go run -v ./dump-service-code -o ./ves-client/service_code.py -target-language py
+
+.PHONY: client server ves-server cves-server up up-ves up-cves down-cves repl dump-code

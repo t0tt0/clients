@@ -32,6 +32,7 @@ func NewServer(rpcPort, addr string, db *fset.AccountFSet, rOptions ...interface
 		Logger:  options.logger,
 		Nsbip:   options.nsbHost,
 	}
+	srv.hub.Server = srv
 	return
 }
 

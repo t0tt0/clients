@@ -1,6 +1,44 @@
 import urllib.parse
 
 import requests
+from service_code import *
+
+
+class Response(object):
+    def __init__(self, response):
+        """
+        :param response:
+        :type response requests.Response
+        """
+        self.resp = response
+        self.avail = True
+        if self.resp.status_code != 200:
+            self.avail = False
+        if self.resp.headers['Content-Type'].startswith('application/json'):
+            self.body = self.resp.json()
+            self.code = self.body.get('code')
+            if self.code != 0:
+                self.avail = False
+
+    def fail_string(self):
+        return f'<code:{self.code}, err:{self.get_error()}, status_code:{self.resp.status_code}>'
+
+    def get_error(self):
+        return self.body.get("error")
+
+    def to_error(self):
+        return response_to_error(self)
+
+    def maybe_raise(self):
+        if not self.avail:
+            raise self.to_error()
+
+
+def process_response(req_func):
+    def wrap(*args, **kwargs):
+        return Response(req_func(*args, **kwargs))
+
+    return wrap
 
 
 class Client(object):
@@ -25,33 +63,37 @@ class Client(object):
             kwargs['headers'] = headers
         return kwargs
 
+    @process_response
     def get(self, url, *args, **kwargs):
         """
         :return: :class:`Response <Response>` object
-        :rtype: requests.Response
+        :rtype: Response
         """
         return requests.get(self.parse_url(url), *args, **self.parse_kwargs(kwargs))
 
+    @process_response
     def post(self, url, *args, **kwargs):
         """
         :param url: {string}
         :return: :class:`Response <Response>` object
-        :rtype: requests.Response
+        :rtype: Response
         """
         return requests.post(self.parse_url(url), *args, **self.parse_kwargs(kwargs))
 
+    @process_response
     def delete(self, url, **kwargs):
         """
         :param url: {string}
         :return: :class:`Response <Response>` object
-        :rtype: requests.Response
+        :rtype: Response
         """
         return requests.delete(self.parse_url(url), **self.parse_kwargs(kwargs))
 
+    @process_response
     def put(self, url, *args, **kwargs):
         """
         :param url: {string}
         :return: :class:`Response <Response>` object
-        :rtype: requests.Response
+        :rtype: Response
         """
         return requests.put(self.parse_url(url), *args, **self.parse_kwargs(kwargs))
