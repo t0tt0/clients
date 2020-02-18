@@ -40,10 +40,6 @@ func (svc *Service) SessionRequireTransact(context.Context, *uiprpc.SessionRequi
 	panic("implement me")
 }
 
-func (svc *Service) SessionRequireRawTransact(context.Context, *uiprpc.SessionRequireRawTransactRequest) (*uiprpc.SessionRequireRawTransactReply, error) {
-	panic("implement me")
-}
-
 func (svc *Service) AttestationReceive(context.Context, *uiprpc.AttestationReceiveRequest) (*uiprpc.AttestationReceiveReply, error) {
 	panic("implement me")
 }
@@ -53,10 +49,6 @@ func (svc *Service) MerkleProofReceive(context.Context, *uiprpc.MerkleProofRecei
 }
 
 func (svc *Service) ShrotenMerkleProofReceive(context.Context, *uiprpc.ShortenMerkleProofReceiveRequest) (*uiprpc.ShortenMerkleProofReceiveReply, error) {
-	panic("implement me")
-}
-
-func (svc *Service) InformAttestation(context.Context, *uiprpc.AttestationReceiveRequest) (*uiprpc.AttestationReceiveReply, error) {
 	panic("implement me")
 }
 

@@ -35,7 +35,7 @@ type SessionFSetI interface {
 	GetAckCount(*dblayer.Session) (int64, error)
 	GetTransactingTransaction(*dblayer.Session) ([]uint8, error)
 	InitSessionInfo([]uint8, []*uiptypes.TransactionIntent, []*dblayer.SessionAccount) (*dblayer.Session, error)
-	NotifyAttestation(types.NSBInterface, uiptypes.BlockChainInterface, uiptypes.Attestation) (interface{}, interface{}, error)
+	NotifyAttestation(*dblayer.Session, types.NSBInterface, uiptypes.BlockChainInterface, uiptypes.Attestation) error
 	ProcessAttestation(types.NSBInterface, uiptypes.BlockChainInterface, uiptypes.Attestation) (interface{}, interface{}, error)
 	SyncFromISC() error
 }

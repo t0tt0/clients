@@ -39,7 +39,7 @@ type Session struct {
 	Content string `dorm:"content" gorm:"column:content;not_null" json:"content"`
 
 	AccountsCount    int64 `dorm:"accounts_cnt" gorm:"column:accounts_cnt;not_null" json:"accounts_cnt"`
-	TransactionCount int64 `dorm:"accounts_cnt" gorm:"column:accounts_cnt;not_null" json:"accounts_cnt"`
+	TransactionCount int64 `dorm:"transaction_cnt" gorm:"column:transaction_cnt;not_null" json:"transaction_cnt"`
 
 	//Accounts
 	//Transactions

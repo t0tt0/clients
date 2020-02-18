@@ -19,7 +19,6 @@ func (svc *Service) SessionStart(ctx context.Context, in *uiprpc.SessionStartReq
 		intents    []*opintent.TransactionIntent
 		accounts   []*model.SessionAccount
 		iscAddress []byte
-		ok         bool
 		err        error
 	)
 
@@ -47,12 +46,12 @@ func (svc *Service) SessionStart(ctx context.Context, in *uiprpc.SessionStartReq
 		}
 	}
 
-	if ok, err = svc.pushInternalInitRequest(ctx, iscAddress, accounts); err != nil {
+	if err = svc.pushInternalInitRequestBySessionAccount(ctx, iscAddress, accounts); err != nil {
 		return nil, err
 	}
 
 	return &uiprpc.SessionStartReply{
-		Ok:        ok,
+		Ok:        true,
 		SessionId: iscAddress,
 	}, nil
 }

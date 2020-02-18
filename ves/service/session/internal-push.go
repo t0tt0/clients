@@ -40,25 +40,65 @@ func (svc *Service) pushTransaction(
 
 	return nil
 }
-func (svc *Service) pushInternalInitRequest(ctx context.Context, iscAddress []byte, accounts []*model.SessionAccount) (bool, error) {
+
+func (svc *Service) pushInternalInitRequestBySessionAccount(ctx context.Context, iscAddress []byte, accounts []*model.SessionAccount) error {
+	return svc.pushInternalInitRequest(ctx, iscAddress, func() (uaccs []*uiprpc_base.Account) {
+		for _, acc := range accounts {
+			uaccs = append(uaccs, &uiprpc_base.Account{
+				Address: acc.GetAddress(),
+				ChainId: acc.GetChainId(),
+			})
+		}
+		return
+	}())
+}
+
+func (svc *Service) pushInternalInitRequest(ctx context.Context, iscAddress []byte, accounts []*uiprpc_base.Account) error {
 	ctx, cancel := context.WithTimeout(ctx, time.Second*10)
 	defer cancel()
 	r, err := svc.cVes.InternalRequestComing(ctx, &uiprpc.InternalRequestComingRequest{
 		SessionId: iscAddress,
 		Host:      svc.cfg.BaseParametersConfig.ExposeHost,
-		Accounts: func() (uaccs []*uiprpc_base.Account) {
-			for _, acc := range accounts {
-				uaccs = append(uaccs, &uiprpc_base.Account{
-					Address: acc.GetAddress(),
-					ChainId: acc.GetChainId(),
-				})
-			}
-			return
-		}(),
+		Accounts:  accounts,
 	})
 
 	if err != nil {
-		return false, wrapper.Wrap(types.CodeSessionInitInternalRequestError, err)
+		return wrapper.Wrap(types.CodeSessionInitInternalRequestError, err)
 	}
-	return r.GetOk(), nil
+	if !r.GetOk() {
+		return wrapper.WrapCode(types.CodeSessionInitInternalRequestError)
+	}
+	return nil
+}
+
+func (svc *Service) pushInternalCloseRequestBySessionAccount(ctx context.Context, iscAddress []byte, accounts []model.SessionAccount) error {
+	return svc.pushInternalCloseRequest(ctx, iscAddress, func() (uaccs []*uiprpc_base.Account) {
+		for _, acc := range accounts {
+			uaccs = append(uaccs, &uiprpc_base.Account{
+				Address: acc.GetAddress(),
+				ChainId: acc.GetChainId(),
+			})
+		}
+		return
+	}())
+}
+
+func (svc *Service) pushInternalCloseRequest(ctx context.Context, iscAddress []byte, accounts []*uiprpc_base.Account) error {
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+	r, err := svc.cVes.InternalCloseSession(ctx, &uiprpc.InternalCloseSessionRequest{
+		SessionId: iscAddress,
+		NsbHost:   svc.cfg.BaseParametersConfig.NSBHost,
+		GrpcHost:  svc.cfg.BaseParametersConfig.ExposeHost,
+		Accounts:  accounts,
+	})
+	if err != nil {
+		return wrapper.Wrap(types.CodeSessionCloseInternalRequestError, err)
+	}
+	if r.GetOk() != true {
+		return wrapper.WrapCode(types.CodeAttestationSendError)
+	}
+
+	return nil
 }

@@ -14,7 +14,6 @@ import (
 
 const (
 	centerAddress = "127.0.0.1:23352"
-	nsbHost       = "39.100.145.91:26657"
 )
 
 func (srv *Server) PrepareRemoteService() bool {
@@ -34,6 +33,6 @@ func (srv *Server) PrepareRemoteService() bool {
 	srv.Module.Provide(config.ModulePath.Service.OpIntentInitializer, opintent.NewOpIntentInitializer(xconfig.UserMap))
 	srv.Module.Provide(config.ModulePath.Global.CentralVESClient, uiprpc.NewCenteredVESClient(conn))
 	fmt.Println(srv.Module.Require(config.ModulePath.Global.CentralVESClient))
-	srv.Module.Provide(config.ModulePath.Global.NSBClient, nsbcli.NewNSBClient(nsbHost))
+	srv.Module.Provide(config.ModulePath.Global.NSBClient, nsbcli.NewNSBClient(srv.Cfg.BaseParametersConfig.NSBHost))
 	return true
 }

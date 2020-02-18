@@ -11,25 +11,18 @@ import (
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
 )
 
-func (svc *Service) RequireRawTransaction(
+func (svc *Service) SessionRequireRawTransact(
 	ctx context.Context, in *uiprpc.SessionRequireRawTransactRequest) (
 	*uiprpc.SessionRequireRawTransactReply, error) {
 
-	ses, err := svc.db.QueryGUIDByBytes(in.GetSessionId())
+	ses, err := svc.getSession(in.GetSessionId())
 	if err != nil {
-		return nil, wrapper.Wrap(types.CodeSessionFindError, err)
-	} else if ses == nil {
-		return nil, wrapper.WrapCode(types.CodeSessionNotFind)
+		return nil, err
 	}
 
-	ti, err := svc.getTransactionIntent(in.GetSessionId(), ses.UnderTransacting)
+	ti, bn, err := svc.getCurrentTxIntentWithExecutor(ses)
 	if err != nil {
-		return nil, wrapper.Wrap(types.CodeGetTransactionIntentError, err)
-	}
-
-	bn, err := svc.getBlockChainInterface(ti.ChainID)
-	if err != nil {
-		return nil, wrapper.Wrap(types.CodeGetBlockChainInterfaceError, err)
+		return nil, err
 	}
 
 	if err = newPrepareTranslateEnvironment(svc, ses, ti, bn).do(); err != nil {

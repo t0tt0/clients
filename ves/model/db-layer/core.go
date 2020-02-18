@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"github.com/Myriad-Dreamin/dorm"
 	"github.com/Myriad-Dreamin/go-ves/lib/core"
-	"github.com/Myriad-Dreamin/go-ves/lib/encoding"
 	"github.com/Myriad-Dreamin/go-ves/lib/extend-traits"
 	"github.com/Myriad-Dreamin/go-ves/lib/fcg"
 	"github.com/Myriad-Dreamin/go-ves/ves/config"
@@ -114,7 +113,7 @@ func (m *modelModule) InstallMock(dep module.Module, callback mcore.MockCallback
 func (modelModule) Migrates() error {
 	return fcg.Calls([]fcg.MaybeInitializer{
 		//migrations
-        Transaction{}.migrate,
+		Transaction{}.migrate,
 		SessionAccount{}.migrate,
 		Session{}.migrate,
 	})
@@ -123,7 +122,7 @@ func (modelModule) Migrates() error {
 func (modelModule) Injects() error {
 	return fcg.Calls([]fcg.MaybeInitializer{
 		//injections
-        injectTransactionTraits,
+		injectTransactionTraits,
 		injectSessionAccountTraits,
 		injectSessionTraits,
 	})

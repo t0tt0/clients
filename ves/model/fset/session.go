@@ -1,6 +1,8 @@
 package fset
 
 import (
+	"fmt"
+	"github.com/HyperService-Consortium/NSB/contract/isc/TxState"
 	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
 	"github.com/Myriad-Dreamin/go-ves/lib/encoding"
@@ -38,7 +40,7 @@ func (s SessionFSet) FindTransaction(
 	tx := new(model.Transaction)
 	has, err := tx.FindSessionIndex(model.EncodeAddress(iscAddress), transactionID)
 	if err != nil {
-		return 	nil, wrapper.Wrap(types.CodeSelectError, err)
+		return nil, wrapper.Wrap(types.CodeSelectError, err)
 	} else if !has {
 		return nil, wrapper.WrapCode(types.CodeNotFound)
 	}
@@ -66,17 +68,14 @@ func (s SessionFSet) InitSessionInfo(
 
 	ses.AccountsCount, err = s.AccountDB.GetTotal(ses.ISCAddress)
 	if err != nil {
-		err = wrapper.Wrap(types.CodeSessionAccountGetTotalError, err)
-		return
+		return nil, wrapper.Wrap(types.CodeSessionAccountGetTotalError, err)
 	}
 
 	ses.TransactionCount = int64(len(intents))
 	for i := range intents {
-		//todo
 		b, err := upstream.Serializer.TransactionIntent.Marshal(intents[i])
 		if err != nil {
-			err = wrapper.Wrap(types.CodeTransactionIntentSerializeError, err)
-			return
+			return nil, wrapper.Wrap(types.CodeTransactionIntentSerializeError, err)
 		}
 
 		if _, err = (&model.Transaction{
@@ -84,8 +83,7 @@ func (s SessionFSet) InitSessionInfo(
 			Index:     int64(i),
 			Content:   model.EncodeContent(b),
 		}).Create(); err != nil {
-			err = wrapper.Wrap(types.CodeSessionInsertTransactionError, err)
-			return
+			return nil, wrapper.Wrap(types.CodeSessionInsertTransactionError, err)
 		}
 	}
 
@@ -120,8 +118,41 @@ func (s SessionFSet) AckForInit(ses *model.Session, acc uiptypes.Account, signat
 	return nil
 }
 
-func (s SessionFSet) NotifyAttestation(types.NSBInterface, uiptypes.BlockChainInterface, uiptypes.Attestation) (interface{}, interface{}, error) {
-	panic("implement me")
+type NotCurrentTransactionError struct {
+	Requiring int64 `json:"requiring"`
+	Current   int64 `json:"current"`
+}
+
+func (n NotCurrentTransactionError) Error() string {
+	return fmt.Sprintf("requiring:%v,current:%v", n.Requiring, n.Current)
+}
+
+func (s SessionFSet) NotifyAttestation(
+	ses *model.Session, nsb types.NSBInterface,
+	bn uiptypes.BlockChainInterface, attestation uiptypes.Attestation) (err error) {
+	if attestation.GetTid() != uint64(ses.UnderTransacting) {
+		return wrapper.Wrap(types.CodeSessionNotCurrentTransaction, NotCurrentTransactionError{
+			Requiring: int64(attestation.GetTid()),
+			Current:   ses.UnderTransacting,
+		})
+	}
+	switch attestation.GetAid() {
+	case TxState.Unknown, TxState.Initing, TxState.Inited:
+		return nil
+	case TxState.Instantiating, TxState.Instantiated, TxState.Open, TxState.Opened:
+		return nil
+	case TxState.Closed:
+		ses.UnderTransacting++
+		if ses.UnderTransacting == ses.TransactionCount {
+			err = nsb.SettleContract(ses.GetGUID())
+			if err != nil {
+				return wrapper.Wrap(types.CodeSettleContractError, err)
+			}
+		}
+		return nil
+	default:
+		return wrapper.WrapCode(types.CodeTransactionStateNotFound)
+	}
 }
 
 func (s SessionFSet) ProcessAttestation(types.NSBInterface, uiptypes.BlockChainInterface, uiptypes.Attestation) (interface{}, interface{}, error) {

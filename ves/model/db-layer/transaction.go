@@ -29,7 +29,7 @@ type Transaction struct {
 	UpdatedAt time.Time `dorm:"updated_at" gorm:"column:updated_at;default:CURRENT_TIMESTAMP;not null;" json:"updated_at"`
 
 	SessionID string `dorm:"session_id" gorm:"column:session_id;not null;" json:"session_id"`
-	Index     int64    `dorm:"index" gorm:"column:index;not null;" json:"index"`
+	Index     int64    `dorm:"idx" gorm:"column:idx;default:0;not null;" json:"idx"`
 	Content   string `dorm:"contents" gorm:"column:content;not null;" json:"content"`
 }
 
@@ -47,7 +47,7 @@ func (d Transaction) GetID() uint {
 }
 
 func findObject(g *gorm.DB, d interface{}) (has bool, err error) {
-	db := g.Find(&d)
+	db := g.Find(d)
 	if db.RecordNotFound() {
 		return false, nil
 	} else if db.Error != nil {
@@ -56,8 +56,8 @@ func findObject(g *gorm.DB, d interface{}) (has bool, err error) {
 	return true, nil
 }
 
-func (d *Transaction) FindSessionIndex(sessionID string, index int64) (bool, error) {
-	return findObject(p.GormDB.Where("session_id = ? and index = ?", sessionID, index), d)
+func (d *Transaction) FindSessionIndex(sessionID string, idx int64) (bool, error) {
+	return findObject(p.GormDB.Where("session_id = ? and idx = ?", sessionID, idx), d)
 }
 
 func (d *Transaction) Create() (int64, error) {

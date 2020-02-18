@@ -101,7 +101,7 @@ func parseConfig(dep module.Module) (string, string, error) {
 	return cfg.ConnectionType, url + options, nil
 }
 
-type initGormFunc func(dep module.Module) (*gorm.DB, error)
+type InitGormFunc func(dep module.Module) (*gorm.DB, error)
 
 func OpenGORM(dep module.Module) (*gorm.DB, error) {
 	dialect, args, err := parseConfig(dep)
@@ -116,7 +116,7 @@ func OpenGORM(dep module.Module) (*gorm.DB, error) {
 	return db, nil
 }
 
-func MockGORM(callback MockCallback) initGormFunc {
+func MockGORM(callback MockCallback) InitGormFunc {
 	return func(dep module.Module) (db *gorm.DB, e error) {
 		mockDB, sqlMock, err := sqlmock.New()
 		if err != nil {
@@ -126,7 +126,11 @@ func MockGORM(callback MockCallback) initGormFunc {
 		if err := callback(dep, sqlMock); err != nil {
 			return nil, err
 		}
-
-		return gorm.Open("mock", mockDB)
+		db , e = gorm.Open("mock", mockDB)
+		if e != nil {
+			return nil, e
+		}
+		db = db.Debug()
+		return
 	}
 }
