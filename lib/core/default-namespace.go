@@ -19,6 +19,7 @@ var (
 	dbinstanceRedisPool = joiner(dbinstance, "redisPool")
 	globalConfiguration = joiner(global, "configuration")
 	globalHttpEngine    = joiner(global, "httpEngine")
+	sqlMock = joiner(global, "SQLMock")
 	providerModel       = joiner(provider, "model")
 	providerService     = joiner(provider, "service")
 	providerRouter      = joiner(provider, "router")
@@ -35,6 +36,7 @@ var DefaultNamespace = ModulePathS{
 		Logger:        globalLogger,
 		Configuration: globalConfiguration,
 		HttpEngine:    globalHttpEngine,
+		SQLMock: sqlMock,
 	},
 	Provider: providerS{
 		Model:   providerModel,
@@ -65,6 +67,7 @@ type globalS struct {
 	Logger        string
 	Configuration string
 	HttpEngine    string
+	SQLMock       string
 }
 
 type providerS struct {

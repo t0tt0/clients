@@ -10,7 +10,6 @@ type ModelCallbacks interface {
 }
 
 func ModelCallback(callback ModelCallbacks, dep module.Module) bool {
-	return true &&
-		Maybe(dep, "inject callback error", callback.Injects()) &&
+	return Maybe(dep, "inject callback error", callback.Injects()) &&
 		Maybe(dep, "migrate callback error", callback.Migrates())
 }

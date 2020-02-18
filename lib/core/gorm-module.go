@@ -2,6 +2,7 @@ package mcore
 
 import (
 	"errors"
+	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/Myriad-Dreamin/go-ves/lib/core-cfg"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"github.com/jinzhu/gorm"
@@ -37,8 +38,12 @@ func (m *GormModule) InstallFromConfiguration(dep module.Module) bool {
 	return m.installFromConfiguration(OpenGORM, dep)
 }
 
-func (m *GormModule) InstallMockFromConfiguration(dep module.Module) bool {
-	return m.installFromConfiguration(MockGORM, dep)
+type MockCallback func(dep module.Module, s sqlmock.Sqlmock) error
+func (m *GormModule) InstallMockFromConfiguration(
+	callback MockCallback) func(dep module.Module) bool {
+	return func(dep module.Module) bool {
+		return m.installFromConfiguration(MockGORM(callback), dep)
+	}
 }
 
 func (m *GormModule) GetGormInstance() *gorm.DB {
@@ -96,6 +101,8 @@ func parseConfig(dep module.Module) (string, string, error) {
 	return cfg.ConnectionType, url + options, nil
 }
 
+type initGormFunc func(dep module.Module) (*gorm.DB, error)
+
 func OpenGORM(dep module.Module) (*gorm.DB, error) {
 	dialect, args, err := parseConfig(dep)
 	if err != nil {
@@ -109,7 +116,17 @@ func OpenGORM(dep module.Module) (*gorm.DB, error) {
 	return db, nil
 }
 
-func MockGORM(_ module.Module) (*gorm.DB, error) {
+func MockGORM(callback MockCallback) initGormFunc {
+	return func(dep module.Module) (db *gorm.DB, e error) {
+		mockDB, sqlMock, err := sqlmock.New()
+		if err != nil {
+			return nil, err
+		}
+		dep.Provide(DefaultNamespace.Global.SQLMock, sqlMock)
+		if err := callback(dep, sqlMock); err != nil {
+			return nil, err
+		}
 
-	return gorm.Open("sqlite3", ":memory:")
+		return gorm.Open("mock", mockDB)
+	}
 }

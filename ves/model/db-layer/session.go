@@ -2,7 +2,6 @@ package dblayer
 
 import (
 	"github.com/Myriad-Dreamin/dorm"
-	"github.com/Myriad-Dreamin/go-ves/lib/encoding"
 	extend_traits "github.com/Myriad-Dreamin/go-ves/lib/extend-traits"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"github.com/jinzhu/gorm"
@@ -44,14 +43,12 @@ type Session struct {
 	//Transactions
 	//Acks
 
-	decodedISCAddress []byte `gorm:"-" json:"-"`
 	//	Signer uiptypes.Signer `json:"-" xorm:"-"`
 }
 
 func NewSession(iscAddress []byte) *Session {
 	return &Session{
-		ISCAddress:        encoding.EncodeBase64(iscAddress),
-		decodedISCAddress: iscAddress,
+		ISCAddress:        EncodeAddress(iscAddress),
 		UnderTransacting:  0,
 		Status:            0,
 	}
@@ -70,11 +67,11 @@ func (s Session) GetID() uint {
 	return s.ID
 }
 
-func (s Session) GetGUID() []byte {
-	if s.decodedISCAddress == nil {
-		s.decodedISCAddress = DecodeAddress(s.ISCAddress)
-	}
-	return s.decodedISCAddress
+func (s *Session) GetGUID() []byte {
+	//if s.decodedISCAddress == nil {
+	//	s.decodedISCAddress = DecodeAddress(s.ISCAddress)
+	//}
+	return DecodeAddress(s.ISCAddress)
 }
 
 func (s *Session) Create() (int64, error) {

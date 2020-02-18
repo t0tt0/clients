@@ -12,7 +12,6 @@ import (
 	"github.com/jinzhu/gorm"
 
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	_ "github.com/mattn/go-sqlite3"
 )
 
 var p = newModelModule()
@@ -37,8 +36,8 @@ func Install(dep module.Module) bool {
 	return p.Install(dep)
 }
 
-func InstallMock(dep module.Module) bool {
-	return p.InstallMock(dep)
+func InstallMock(dep module.Module, callback mcore.MockCallback) bool {
+	return p.InstallMock(dep, callback)
 }
 
 func Close(dep module.Module) bool {
@@ -98,11 +97,17 @@ func (m *modelModule) FromContext(dep module.Module) bool {
 
 func (m *modelModule) Install(dep module.Module) bool {
 	m.Opened = m.install(m.GormModule.InstallFromConfiguration, dep)
+	if m.Opened {
+		m.GormDB = m.GormDB.Debug()
+	}
 	return m.Opened
 }
 
-func (m *modelModule) InstallMock(dep module.Module) bool {
-	m.Opened = m.install(m.GormModule.InstallMockFromConfiguration, dep)
+func (m *modelModule) InstallMock(dep module.Module, callback mcore.MockCallback) bool {
+	m.Opened = m.install(m.GormModule.InstallMockFromConfiguration(callback), dep)
+	if m.Opened {
+		m.GormDB = m.GormDB.Debug()
+	}
 	return m.Opened
 }
 
