@@ -4,8 +4,6 @@ import (
 	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
 	"github.com/Myriad-Dreamin/go-ves/config"
-	bitmap "github.com/Myriad-Dreamin/go-ves/lib/bitmapping/redis-bitmap"
-	mredis "github.com/Myriad-Dreamin/go-ves/lib/database/redis"
 	"github.com/Myriad-Dreamin/go-ves/lib/encoding"
 	"github.com/Myriad-Dreamin/go-ves/lib/serial_helper"
 	"github.com/Myriad-Dreamin/go-ves/lib/wrapper"
@@ -40,35 +38,31 @@ func (s SessionFSet) GetAccounts(ses *model.Session) ([]uiptypes.Account, error)
 //}
 
 func (s SessionFSet) GetAckCount(ses *model.Session) (int64, error) {
-	count, err := bitmap.GetBitMap(ses.GetGUID(), mredis.RedisCacheClient.Pool.Get()).Count()
-	if err != nil {
-		return 0, wrapper.Wrap(types.CodeSessionRedisGetAckCountError, err)
-	}
-	return count, nil
+	return s.AccountDB.GetAcknowledged(ses.ISCAddress)
 }
 
 func (s SessionFSet) FindTransaction(
 	iscAddress []byte,
 	transactionID int64) (b []byte, err error) {
-	var k []byte
-	k, err = serial_helper.DecoratePrefix([]byte{
-		uint8((transactionID >> 56) & 0xff), uint8((transactionID >> 48) & 0xff),
-		uint8((transactionID >> 40) & 0xff), uint8((transactionID >> 32) & 0xff),
-		uint8((transactionID >> 24) & 0xff), uint8((transactionID >> 16) & 0xff),
-		uint8((transactionID >> 8) & 0xff), uint8((transactionID >> 0) & 0xff),
-	}, iscAddress)
-	if err != nil {
-		return
-	}
-	k, err = serial_helper.DecoratePrefix(config.TransactionPrefix, k)
-	if err != nil {
-		return
-	}
-	b, err = s.Index.Get(k)
-	if err != nil {
-		return
-	}
-	return
+	//var k []byte
+	//k, err = serial_helper.DecoratePrefix([]byte{
+	//	uint8((transactionID >> 56) & 0xff), uint8((transactionID >> 48) & 0xff),
+	//	uint8((transactionID >> 40) & 0xff), uint8((transactionID >> 32) & 0xff),
+	//	uint8((transactionID >> 24) & 0xff), uint8((transactionID >> 16) & 0xff),
+	//	uint8((transactionID >> 8) & 0xff), uint8((transactionID >> 0) & 0xff),
+	//}, iscAddress)
+	//if err != nil {
+	//	return
+	//}
+	//k, err = serial_helper.DecoratePrefix(config.TransactionPrefix, k)
+	//if err != nil {
+	//	return
+	//}
+	//b, err = s.Index.Get(k)
+	//if err != nil {
+	//	return
+	//}
+	//return
 }
 
 //?
