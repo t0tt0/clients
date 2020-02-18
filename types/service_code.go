@@ -105,12 +105,13 @@ const (
 	CodeSessionInitOpIntentsError
 	CodeSessionRedisGetAckCountError
 	CodeSessionInsertAccountError
+	CodeSessionInsertTransactionError
 	CodeSessionFindError
 	CodeSessionNotFind
 	CodeSessionAcknowledgeError
 	CodeSessionAccountFindError
 	CodeSessionAccountNotFound
-	CodeSessionAccountGetTotolError
+	CodeSessionAccountGetTotalError
 	CodeSessionAccountGetAcknowledgedError
 	CodeSessionSignTxsError
 	CodeSessionFreezeInfoError
@@ -129,7 +130,9 @@ const (
 	CodeParsePaymentOptionInconsistentValueError
 	CodeTransactionPrepareTranslateError
 	CodeTransactionTranslateError
+
 	CodeTransactionRawSerializeError
+	CodeTransactionIntentSerializeError
 
 	CodeTransactionServiceErrorR
 	CodeTransactionServiceErrorL = CodeTransactionFindError

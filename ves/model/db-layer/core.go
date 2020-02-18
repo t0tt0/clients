@@ -114,6 +114,7 @@ func (m *modelModule) InstallMock(dep module.Module, callback mcore.MockCallback
 func (modelModule) Migrates() error {
 	return fcg.Calls([]fcg.MaybeInitializer{
 		//migrations
+        Transaction{}.migrate,
 		SessionAccount{}.migrate,
 		Session{}.migrate,
 	})
@@ -122,24 +123,8 @@ func (modelModule) Migrates() error {
 func (modelModule) Injects() error {
 	return fcg.Calls([]fcg.MaybeInitializer{
 		//injections
+        injectTransactionTraits,
 		injectSessionAccountTraits,
 		injectSessionTraits,
 	})
-}
-
-func decodeBase64(src string) []byte {
-	b, err := encoding.DecodeBase64(src)
-	if err != nil {
-		p.Logger.Debug("decode failed", "error", err, "source", src)
-		return nil
-	}
-	return b
-}
-
-func DecodeAddress(src string) []byte {
-	return decodeBase64(src)
-}
-
-func EncodeAddress(src []byte) string {
-	return encoding.EncodeBase64(src)
 }

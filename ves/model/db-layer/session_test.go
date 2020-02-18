@@ -114,7 +114,7 @@ func TestSession_Update(t *testing.T) {
 			sqlmock.AnyArg(), // updated_at
 			"", // isc_address
 			0, 0, "",
-			1, // accounts count
+			1, 0, // accounts/transaction count
 			1, // where session_id = ?
 		).WillReturnResult(sqlmock.NewResult(1, 1))
 	m.ExpectCommit()
@@ -124,7 +124,8 @@ func TestSession_Update(t *testing.T) {
 		WithArgs(
 			sqlmock.AnyArg(), // updated_at
 			EncodeAddress(a), // isc_address
-			0, 0, "", 0,
+			0, 0, "",
+			0, 0, // accounts/transaction count
 			1, // where session_id = ?
 			).WillReturnResult(sqlmock.NewResult(1, 1))
 	m.ExpectCommit()

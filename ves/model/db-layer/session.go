@@ -34,10 +34,12 @@ type Session struct {
 
 	ISCAddress       string `dorm:"isc_address" gorm:"column:isc_address;not_null" json:"isc_address"`
 	UnderTransacting int64  `dorm:"under_transacting" gorm:"column:under_transacting;not_null" json:"under_transacting"`
-	Status           uint8  `dorm:"status" gorm:"column:status;not_null" json:"status"`
-	Content          string `dorm:"content" gorm:"column:content;not_null" json:"content"`
 
-	AccountsCount int64 `dorm:"accounts_cnt" gorm:"column:accounts_cnt;not_null" json:"accounts_cnt"`
+	Status  uint8  `dorm:"status" gorm:"column:status;not_null" json:"status"`
+	Content string `dorm:"content" gorm:"column:content;not_null" json:"content"`
+
+	AccountsCount    int64 `dorm:"accounts_cnt" gorm:"column:accounts_cnt;not_null" json:"accounts_cnt"`
+	TransactionCount int64 `dorm:"accounts_cnt" gorm:"column:accounts_cnt;not_null" json:"accounts_cnt"`
 
 	//Accounts
 	//Transactions
@@ -48,9 +50,9 @@ type Session struct {
 
 func NewSession(iscAddress []byte) *Session {
 	return &Session{
-		ISCAddress:        EncodeAddress(iscAddress),
-		UnderTransacting:  0,
-		Status:            0,
+		ISCAddress:       EncodeAddress(iscAddress),
+		UnderTransacting: 0,
+		Status:           0,
 	}
 }
 

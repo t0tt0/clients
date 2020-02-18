@@ -29,6 +29,8 @@ func TestMain(m *testing.M) {
 }
 
 func mockExpectation(dep module.Module, s sqlmock.Sqlmock) error {
+	s.ExpectExec(`CREATE TABLE "transaction"`).WillReturnResult(
+		sqlmock.NewResult(0, 1))
 	s.ExpectExec(`CREATE TABLE "session_account"`).WillReturnResult(
 		sqlmock.NewResult(0, 1))
 	s.ExpectExec(`CREATE UNIQUE INDEX sa_sca`).WillReturnResult(

@@ -60,7 +60,7 @@ func _() {
 	_ = x[CodeSessionAcknowledgeError-12008]
 	_ = x[CodeSessionAccountFindError-12009]
 	_ = x[CodeSessionAccountNotFound-12010]
-	_ = x[CodeSessionAccountGetTotolError-12011]
+	_ = x[CodeSessionAccountGetTotalError-12011]
 	_ = x[CodeSessionAccountGetAcknowledgedError-12012]
 	_ = x[CodeSessionSignTxsError-12013]
 	_ = x[CodeSessionFreezeInfoError-12014]

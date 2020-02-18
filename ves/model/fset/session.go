@@ -3,9 +3,8 @@ package fset
 import (
 	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
-	"github.com/Myriad-Dreamin/go-ves/config"
 	"github.com/Myriad-Dreamin/go-ves/lib/encoding"
-	"github.com/Myriad-Dreamin/go-ves/lib/serial_helper"
+	"github.com/Myriad-Dreamin/go-ves/lib/upstream"
 	"github.com/Myriad-Dreamin/go-ves/lib/wrapper"
 	"github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/go-ves/ves/model"
@@ -29,14 +28,6 @@ func (s SessionFSet) GetAccounts(ses *model.Session) ([]uiptypes.Account, error)
 	return model.SessionAccountsToUIPAccounts(accounts), nil
 }
 
-//func (s SessionFSet) GetTransaction(interface{}) interface{} {
-//	panic("implement me")
-//}
-//
-//func (s SessionFSet) GetTransactions() []interface{} {
-//	panic("implement me")
-//}
-
 func (s SessionFSet) GetAckCount(ses *model.Session) (int64, error) {
 	return s.AccountDB.GetAcknowledged(ses.ISCAddress)
 }
@@ -44,25 +35,15 @@ func (s SessionFSet) GetAckCount(ses *model.Session) (int64, error) {
 func (s SessionFSet) FindTransaction(
 	iscAddress []byte,
 	transactionID int64) (b []byte, err error) {
-	//var k []byte
-	//k, err = serial_helper.DecoratePrefix([]byte{
-	//	uint8((transactionID >> 56) & 0xff), uint8((transactionID >> 48) & 0xff),
-	//	uint8((transactionID >> 40) & 0xff), uint8((transactionID >> 32) & 0xff),
-	//	uint8((transactionID >> 24) & 0xff), uint8((transactionID >> 16) & 0xff),
-	//	uint8((transactionID >> 8) & 0xff), uint8((transactionID >> 0) & 0xff),
-	//}, iscAddress)
-	//if err != nil {
-	//	return
-	//}
-	//k, err = serial_helper.DecoratePrefix(config.TransactionPrefix, k)
-	//if err != nil {
-	//	return
-	//}
-	//b, err = s.Index.Get(k)
-	//if err != nil {
-	//	return
-	//}
-	//return
+	tx := new(model.Transaction)
+	has, err := tx.FindSessionIndex(model.EncodeAddress(iscAddress), transactionID)
+	if err != nil {
+		return 	nil, wrapper.Wrap(types.CodeSelectError, err)
+	} else if !has {
+		return nil, wrapper.WrapCode(types.CodeNotFound)
+	}
+
+	return model.DecodeContent(tx.Content), nil
 }
 
 //?
@@ -85,12 +66,28 @@ func (s SessionFSet) InitSessionInfo(
 
 	ses.AccountsCount, err = s.AccountDB.GetTotal(ses.ISCAddress)
 	if err != nil {
-		err = wrapper.Wrap(types.CodeSessionAccountGetTotolError, err)
+		err = wrapper.Wrap(types.CodeSessionAccountGetTotalError, err)
 		return
 	}
 
-	//todo add transaction
-	//_ = transactions
+	ses.TransactionCount = int64(len(intents))
+	for i := range intents {
+		//todo
+		b, err := upstream.Serializer.TransactionIntent.Marshal(intents[i])
+		if err != nil {
+			err = wrapper.Wrap(types.CodeTransactionIntentSerializeError, err)
+			return
+		}
+
+		if _, err = (&model.Transaction{
+			SessionID: ses.ISCAddress,
+			Index:     int64(i),
+			Content:   model.EncodeContent(b),
+		}).Create(); err != nil {
+			err = wrapper.Wrap(types.CodeSessionInsertTransactionError, err)
+			return
+		}
+	}
 
 	_, err = ses.Create()
 	return
