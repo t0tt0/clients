@@ -8,7 +8,7 @@ import (
 	"github.com/HyperService-Consortium/go-uip/signaturer"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
 	xconfig "github.com/Myriad-Dreamin/go-ves/config"
-	"github.com/Myriad-Dreamin/go-ves/lib/jwt"
+	"github.com/Myriad-Dreamin/go-ves/lib/backend/jwt"
 	"github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/go-ves/ves/config"
 	"github.com/Myriad-Dreamin/go-ves/ves/control"

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	redispool "github.com/Myriad-Dreamin/go-ves/lib/database/redis"
+	redispool "github.com/Myriad-Dreamin/go-ves/lib/backend/database/redis"
 )
 
 func TestBitMap(t *testing.T) {

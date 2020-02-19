@@ -1,6 +1,6 @@
 package database
 
-import "github.com/Myriad-Dreamin/go-ves/lib/encoding"
+import "github.com/Myriad-Dreamin/go-ves/lib/basic/encoding"
 
 func DecodeAddress(src string) ([]byte, error) {
 	return encoding.DecodeBase64(src)

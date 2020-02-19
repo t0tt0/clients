@@ -2,8 +2,8 @@ package vesclient
 
 import (
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
-	"github.com/Myriad-Dreamin/go-ves/lib/errorc"
-	"github.com/Myriad-Dreamin/go-ves/lib/wrapper"
+	"github.com/Myriad-Dreamin/go-ves/lib/backend/errorc"
+	"github.com/Myriad-Dreamin/go-ves/lib/backend/wrapper"
 )
 
 func (vc *VesClient) getRespSigner(acc uiptypes.Account) (uiptypes.Signer, error) {

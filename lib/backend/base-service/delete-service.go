@@ -1,7 +1,7 @@
 package base_service
 
 import (
-	ginhelper "github.com/Myriad-Dreamin/go-ves/lib/gin-helper"
+	ginhelper "github.com/Myriad-Dreamin/go-ves/lib/backend/gin-helper"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"net/http"
 )

@@ -3,8 +3,8 @@ package userservice
 import (
 	"github.com/Myriad-Dreamin/go-ves/central-ves/control"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/model"
-	ginhelper "github.com/Myriad-Dreamin/go-ves/lib/gin-helper"
-	"github.com/Myriad-Dreamin/go-ves/lib/serial"
+	ginhelper "github.com/Myriad-Dreamin/go-ves/lib/backend/gin-helper"
+	"github.com/Myriad-Dreamin/go-ves/lib/backend/serial"
 	types2 "github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"github.com/Myriad-Dreamin/minimum-lib/rbac"

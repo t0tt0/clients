@@ -1,7 +1,7 @@
 package ginhelper
 
 import (
-	"github.com/Myriad-Dreamin/go-ves/lib/serial"
+	"github.com/Myriad-Dreamin/go-ves/lib/backend/serial"
 	types2 "github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"net/http"

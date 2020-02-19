@@ -1,6 +1,6 @@
 package vesclient
 
-import "github.com/Myriad-Dreamin/go-ves/lib/fcg"
+import "github.com/Myriad-Dreamin/go-ves/lib/basic/fcg"
 
 func (m *modelModule) Migrates() error {
 	return fcg.Calls([]fcg.MaybeInitializer{

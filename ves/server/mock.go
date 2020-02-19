@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"github.com/Myriad-Dreamin/go-magic-package/instance"
 	parser "github.com/Myriad-Dreamin/go-parse-package"
-	"github.com/Myriad-Dreamin/go-ves/lib/serial"
+	"github.com/Myriad-Dreamin/go-ves/lib/backend/serial"
 	"github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/go-ves/ves/model"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"

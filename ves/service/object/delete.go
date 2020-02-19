@@ -1,7 +1,7 @@
 package objectservice
 
 import (
-	"github.com/Myriad-Dreamin/go-ves/lib/serial"
+	"github.com/Myriad-Dreamin/go-ves/lib/backend/serial"
 	"github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/go-ves/ves/model"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"

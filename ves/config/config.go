@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Myriad-Dreamin/go-ves/lib/core-cfg"
+	"github.com/Myriad-Dreamin/go-ves/lib/backend/core-cfg"
 	"github.com/pelletier/go-toml"
 	"gopkg.in/yaml.v2"
 )

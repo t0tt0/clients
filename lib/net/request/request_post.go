@@ -23,10 +23,10 @@ func PostWithBody(url string, obj []byte) (io.ReadCloser, error) {
 	return post(url, req.BodyJSON(obj))
 }
 
-func (jc *RequestClient) PostWithBody(obj []byte) (io.ReadCloser, error) {
+func (jc *Client) PostWithBody(obj []byte) (io.ReadCloser, error) {
 	return post(jc.BaseURL, jc.Header, obj)
 }
 
-func (jc *RequestClient) PostWithJsonObj(obj interface{}) (io.ReadCloser, error) {
+func (jc *Client) PostWithJsonObj(obj interface{}) (io.ReadCloser, error) {
 	return post(jc.BaseURL, jc.Header, req.BodyJSON(obj))
 }

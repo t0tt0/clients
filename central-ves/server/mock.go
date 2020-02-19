@@ -7,7 +7,7 @@ import (
 	"github.com/Myriad-Dreamin/go-magic-package/instance"
 	parser "github.com/Myriad-Dreamin/go-parse-package"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/model"
-	"github.com/Myriad-Dreamin/go-ves/lib/serial"
+	"github.com/Myriad-Dreamin/go-ves/lib/backend/serial"
 	types2 "github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"io"

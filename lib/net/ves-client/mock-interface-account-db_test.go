@@ -7,7 +7,7 @@ import (
 	base_account "github.com/HyperService-Consortium/go-uip/base-account"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
 	"github.com/Myriad-Dreamin/dorm"
-	"github.com/Myriad-Dreamin/go-ves/lib/encoding"
+	"github.com/Myriad-Dreamin/go-ves/lib/basic/encoding"
 	"github.com/jinzhu/gorm"
 )
 

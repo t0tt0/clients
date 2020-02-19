@@ -3,7 +3,7 @@ package chainInfoservice
 import (
 	"github.com/Myriad-Dreamin/go-ves/central-ves/control"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/model"
-	ginhelper "github.com/Myriad-Dreamin/go-ves/lib/gin-helper"
+	ginhelper "github.com/Myriad-Dreamin/go-ves/lib/backend/gin-helper"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 )
 

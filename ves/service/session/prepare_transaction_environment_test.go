@@ -7,7 +7,7 @@ import (
 	"github.com/HyperService-Consortium/go-uip/const/value_type"
 	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
-	"github.com/Myriad-Dreamin/go-ves/lib/encoding"
+	"github.com/Myriad-Dreamin/go-ves/lib/basic/encoding"
 	"github.com/Myriad-Dreamin/go-ves/lib/upstream"
 	"github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/go-ves/ves/mock"

@@ -1,7 +1,7 @@
 package router
 
 import (
-	"github.com/Myriad-Dreamin/go-ves/lib/jwt"
+	"github.com/Myriad-Dreamin/go-ves/lib/backend/jwt"
 	"github.com/Myriad-Dreamin/go-ves/ves/config"
 	"github.com/Myriad-Dreamin/go-ves/ves/service"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"

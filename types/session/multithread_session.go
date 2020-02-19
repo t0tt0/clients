@@ -12,11 +12,11 @@ import (
 	account "github.com/HyperService-Consortium/go-uip/base-account"
 	TxState "github.com/HyperService-Consortium/go-uip/const/transaction_state_type"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
-	bitmap "github.com/Myriad-Dreamin/go-ves/lib/bitmapping/redis-bitmap"
-	const_prefix "github.com/Myriad-Dreamin/go-ves/lib/database/const_prefix"
-	redispool "github.com/Myriad-Dreamin/go-ves/lib/database/redis"
-	log "github.com/Myriad-Dreamin/go-ves/lib/log"
-	serial_helper "github.com/Myriad-Dreamin/go-ves/lib/serial_helper"
+	const_prefix "github.com/Myriad-Dreamin/go-ves/lib/backend/database/const_prefix"
+	redispool "github.com/Myriad-Dreamin/go-ves/lib/backend/database/redis"
+	serial_helper "github.com/Myriad-Dreamin/go-ves/lib/backend/serial_helper"
+	bitmap "github.com/Myriad-Dreamin/go-ves/lib/basic/bitmapping/redis-bitmap"
+	log "github.com/Myriad-Dreamin/go-ves/lib/basic/log"
 	"github.com/Myriad-Dreamin/go-ves/types"
 )
 

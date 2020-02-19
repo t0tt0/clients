@@ -6,7 +6,7 @@ package chs
 
 import (
 	"github.com/Myriad-Dreamin/go-ves/central-ves/model"
-	"github.com/Myriad-Dreamin/go-ves/lib/ves-websocket"
+	"github.com/Myriad-Dreamin/go-ves/lib/net/ves-websocket"
 	"go.uber.org/atomic"
 )
 

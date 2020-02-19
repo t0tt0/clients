@@ -3,7 +3,7 @@ package vesclient
 import (
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
 	uiprpc_base "github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
-	"github.com/Myriad-Dreamin/go-ves/lib/encoding"
+	"github.com/Myriad-Dreamin/go-ves/lib/basic/encoding"
 	"github.com/gogo/protobuf/proto"
 )
 

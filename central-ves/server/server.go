@@ -9,7 +9,7 @@ import (
 	"github.com/Myriad-Dreamin/go-ves/central-ves/lib/plugin"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/model"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/service"
-	"github.com/Myriad-Dreamin/go-ves/lib/jwt"
+	"github.com/Myriad-Dreamin/go-ves/lib/backend/jwt"
 	types2 "github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"github.com/Myriad-Dreamin/minimum-lib/module"

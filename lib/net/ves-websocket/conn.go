@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"github.com/Myriad-Dreamin/go-ves/grpc/wsrpc"
-	"github.com/Myriad-Dreamin/go-ves/lib/wrapper"
+	"github.com/Myriad-Dreamin/go-ves/lib/backend/wrapper"
 	"github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/logger"
 	"github.com/gogo/protobuf/proto"

@@ -3,7 +3,7 @@ package sessionservice
 import (
 	"encoding/json"
 	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
-	"github.com/Myriad-Dreamin/go-ves/lib/wrapper"
+	"github.com/Myriad-Dreamin/go-ves/lib/backend/wrapper"
 	"github.com/Myriad-Dreamin/go-ves/types"
 )
 

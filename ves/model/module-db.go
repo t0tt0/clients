@@ -1,9 +1,9 @@
 package model
 
 import (
-	mcore "github.com/Myriad-Dreamin/go-ves/lib/core"
-	extend_traits "github.com/Myriad-Dreamin/go-ves/lib/extend-traits"
-	"github.com/Myriad-Dreamin/go-ves/lib/fcg"
+	mcore "github.com/Myriad-Dreamin/go-ves/lib/backend/core"
+	extend_traits "github.com/Myriad-Dreamin/go-ves/lib/backend/extend-traits"
+	"github.com/Myriad-Dreamin/go-ves/lib/basic/fcg"
 	"github.com/Myriad-Dreamin/go-ves/ves/model/internal/abstraction"
 	dblayer "github.com/Myriad-Dreamin/go-ves/ves/model/internal/db-layer"
 	"github.com/Myriad-Dreamin/minimum-lib/module"

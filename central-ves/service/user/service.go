@@ -5,8 +5,8 @@ import (
 	"github.com/Myriad-Dreamin/go-ves/central-ves/config"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/control"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/model"
-	base_service "github.com/Myriad-Dreamin/go-ves/lib/base-service"
-	"github.com/Myriad-Dreamin/go-ves/lib/jwt"
+	base_service "github.com/Myriad-Dreamin/go-ves/lib/backend/base-service"
+	"github.com/Myriad-Dreamin/go-ves/lib/backend/jwt"
 	types2 "github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 )

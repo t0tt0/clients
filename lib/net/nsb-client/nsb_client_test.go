@@ -10,7 +10,7 @@ import (
 	"github.com/HyperService-Consortium/NSB/math"
 	"github.com/HyperService-Consortium/go-uip/signaturer"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
-	bytespool "github.com/Myriad-Dreamin/go-ves/lib/bytes-pool"
+	bytespool "github.com/Myriad-Dreamin/go-ves/lib/basic/bytes-pool"
 	"github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client/nsb-message"
 	"github.com/Myriad-Dreamin/go-ves/lib/net/request"
 	"github.com/tidwall/gjson"
@@ -39,7 +39,7 @@ func HandlerError(i interface{}, err error) interface{} {
 }
 
 type fields struct {
-	handler    *request.RequestClient
+	handler    *request.Client
 	bufferPool *bytespool.BytesPool
 }
 

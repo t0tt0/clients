@@ -3,7 +3,7 @@ package dblayer
 import (
 	"github.com/Myriad-Dreamin/go-ves/central-ves/model/internal/abstraction"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/model/internal/database"
-	"github.com/Myriad-Dreamin/go-ves/lib/extend-traits"
+	"github.com/Myriad-Dreamin/go-ves/lib/backend/extend-traits"
 	"github.com/Myriad-Dreamin/minimum-lib/crypto"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"github.com/jinzhu/gorm"

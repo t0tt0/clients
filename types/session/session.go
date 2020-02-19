@@ -13,9 +13,9 @@ import (
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
 	"github.com/Myriad-Dreamin/go-ves/types"
 
-	bitmap "github.com/Myriad-Dreamin/go-ves/lib/bitmapping"
-	const_prefix "github.com/Myriad-Dreamin/go-ves/lib/database/const_prefix"
-	serial_helper "github.com/Myriad-Dreamin/go-ves/lib/serial_helper"
+	const_prefix "github.com/Myriad-Dreamin/go-ves/lib/backend/database/const_prefix"
+	serial_helper "github.com/Myriad-Dreamin/go-ves/lib/backend/serial_helper"
+	bitmap "github.com/Myriad-Dreamin/go-ves/lib/basic/bitmapping"
 )
 
 type SerialSession struct {

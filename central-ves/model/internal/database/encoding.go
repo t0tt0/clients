@@ -2,7 +2,7 @@ package database
 
 import (
 	"encoding/base64"
-	"github.com/Myriad-Dreamin/go-ves/lib/encoding"
+	"github.com/Myriad-Dreamin/go-ves/lib/basic/encoding"
 )
 
 func decodeBase64(src string) ([]byte, error) {

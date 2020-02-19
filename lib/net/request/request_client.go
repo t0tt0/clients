@@ -8,46 +8,46 @@ import (
 )
 
 var (
-	request_timeout = 50 * time.Second
+	requestTimeout = 50 * time.Second
 )
 
-type RequestClient struct {
+type Client struct {
 	BaseURL string
 	Header  Header
 }
 
-func NewRequestClient(url string) *RequestClient {
-	return &RequestClient{BaseURL: url}
+func NewRequestClient(url string) *Client {
+	return &Client{BaseURL: url}
 }
 
-func (jc *RequestClient) SetHeader(strMap map[string]string) *RequestClient {
-	jc.Header = Header(strMap)
+func (jc *Client) SetHeader(strMap map[string]string) *Client {
+	jc.Header = strMap
 	return jc
 }
 
-func (jc *RequestClient) SetHeaderWithReqHeader(header Header) *RequestClient {
+func (jc *Client) SetHeaderWithReqHeader(header Header) *Client {
 	jc.Header = header
 	return jc
 }
 
-func (jc *RequestClient) Group(sub string) *RequestClient {
-	return &RequestClient{BaseURL: jc.BaseURL + sub, Header: jc.Header}
+func (jc *Client) Group(sub string) *Client {
+	return &Client{BaseURL: jc.BaseURL + sub, Header: jc.Header}
 }
 
-type RequestClientX struct {
+type ClientX struct {
 	BaseURL string
 	Header  Header
 	path    string
 }
 
-func NewRequestClientX(url string) *RequestClientX {
-	return &RequestClientX{BaseURL: url}
+func NewRequestClientX(url string) *ClientX {
+	return &ClientX{BaseURL: url}
 }
 
-func (jc *RequestClientX) SetHeader(i interface{}) *RequestClientX {
+func (jc *ClientX) SetHeader(i interface{}) *ClientX {
 	switch s := i.(type) {
 	case map[string]string:
-		jc.Header = Header(s)
+		jc.Header = s
 	case Header:
 		jc.Header = s
 	default:
@@ -55,16 +55,16 @@ func (jc *RequestClientX) SetHeader(i interface{}) *RequestClientX {
 	return jc
 }
 
-func (jc *RequestClientX) Group(sub string) *RequestClientX {
-	return &RequestClientX{BaseURL: jc.BaseURL + sub, Header: jc.Header}
+func (jc *ClientX) Group(sub string) *ClientX {
+	return &ClientX{BaseURL: jc.BaseURL + sub, Header: jc.Header}
 }
 
-func (jc *RequestClientX) Path(path string) *RequestClientX {
+func (jc *ClientX) Path(path string) *ClientX {
 	jc.path = path
 	return jc
 }
 
-func (jc *RequestClientX) Use(handler func(*Resp) error) *Context {
+func (jc *ClientX) Use(handler func(*Resp) error) *Context {
 	return &Context{BaseURL: jc.BaseURL + jc.path, Header: jc.Header, handler: handler}
 }
 
@@ -86,7 +86,7 @@ func SetConnPool() {
 	}
 
 	req.SetClient(client)
-	req.SetTimeout(request_timeout)
+	req.SetTimeout(requestTimeout)
 }
 
 func init() {

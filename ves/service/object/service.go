@@ -2,7 +2,7 @@
 package objectservice
 
 import (
-	base_service "github.com/Myriad-Dreamin/go-ves/lib/base-service"
+	base_service "github.com/Myriad-Dreamin/go-ves/lib/backend/base-service"
 	"github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/go-ves/ves/config"
 	"github.com/Myriad-Dreamin/go-ves/ves/control"

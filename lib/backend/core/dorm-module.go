@@ -3,7 +3,7 @@ package mcore
 import (
 	"database/sql"
 	"github.com/Myriad-Dreamin/dorm"
-	"github.com/Myriad-Dreamin/go-ves/lib/core-cfg"
+	"github.com/Myriad-Dreamin/go-ves/lib/backend/core-cfg"
 	"github.com/Myriad-Dreamin/minimum-lib/logger"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 )

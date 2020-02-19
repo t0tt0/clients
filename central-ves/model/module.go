@@ -1,7 +1,7 @@
 package model
 
 import (
-	mcore "github.com/Myriad-Dreamin/go-ves/lib/core"
+	mcore "github.com/Myriad-Dreamin/go-ves/lib/backend/core"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 )
 

@@ -1,9 +1,9 @@
 package ginhelper
 
 import (
-	"github.com/Myriad-Dreamin/go-ves/lib/errorc"
-	"github.com/Myriad-Dreamin/go-ves/lib/jwt"
-	"github.com/Myriad-Dreamin/go-ves/lib/serial"
+	"github.com/Myriad-Dreamin/go-ves/lib/backend/errorc"
+	jwt2 "github.com/Myriad-Dreamin/go-ves/lib/backend/jwt"
+	"github.com/Myriad-Dreamin/go-ves/lib/backend/serial"
 	types2 "github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"github.com/tidwall/gjson"
@@ -309,5 +309,5 @@ func UpdateFields(c controller.MContext, err error) bool {
 
 func GetCustomFields(c controller.MContext) *types2.CustomFields {
 	claims, _ := c.Get("claims")
-	return claims.(*jwt.CustomClaims).CustomField.(*types2.CustomFields)
+	return claims.(*jwt2.CustomClaims).CustomField.(*types2.CustomFields)
 }

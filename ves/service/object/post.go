@@ -1,7 +1,7 @@
 package objectservice
 
 import (
-	"github.com/Myriad-Dreamin/go-ves/lib/gin-helper"
+	"github.com/Myriad-Dreamin/go-ves/lib/backend/gin-helper"
 	"github.com/Myriad-Dreamin/go-ves/ves/control"
 	"github.com/Myriad-Dreamin/go-ves/ves/model"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"

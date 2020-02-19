@@ -1,8 +1,8 @@
 package server
 
 import (
-	"github.com/Myriad-Dreamin/go-ves/lib/gin-helper"
-	"github.com/Myriad-Dreamin/go-ves/lib/jwt"
+	"github.com/Myriad-Dreamin/go-ves/lib/backend/gin-helper"
+	"github.com/Myriad-Dreamin/go-ves/lib/backend/jwt"
 	"github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/go-ves/ves/config"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
