@@ -98,5 +98,6 @@ func (t RawTransaction) Sign(signer uiptypes.Signer, ctxVars ...interface{}) (ui
 		panic("todo")
 	}
 
+	t.IsSigned = true
 	return t, err
 }

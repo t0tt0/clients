@@ -149,6 +149,10 @@ func (s SessionFSet) NotifyAttestation(
 				return wrapper.Wrap(types.CodeSettleContractError, err)
 			}
 		}
+		if _, err = ses.Update(); err != nil {
+			return wrapper.Wrap(types.CodeUpdateError, err)
+		}
+
 		return nil
 	default:
 		return wrapper.WrapCode(types.CodeTransactionStateNotFound)

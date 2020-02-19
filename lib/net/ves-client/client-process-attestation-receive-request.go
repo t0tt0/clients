@@ -6,7 +6,6 @@ import (
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
 	"github.com/Myriad-Dreamin/go-ves/grpc/wsrpc"
-	"github.com/Myriad-Dreamin/go-ves/lib/bni/raw-transaction"
 )
 
 type attestationReceiveRequestService struct {
@@ -179,6 +178,7 @@ type _ARRDoTransactionService struct {
 	*attestationReceiveRequestService
 
 	router uiptypes.Router
+	translator uiptypes.Translator
 }
 
 func (svc *attestationReceiveRequestService) doTransaction() bool {
@@ -195,6 +195,10 @@ func (svc *attestationReceiveRequestService) doTransaction() bool {
 		return false
 	}
 
+	if !svc.client.ensureTranslator(acc.ChainId, &ctx.translator) {
+		return false
+	}
+
 	return (&ctx).doTransaction()
 }
 
@@ -205,7 +209,13 @@ func (svc *_ARRDoTransactionService) doTransaction() bool {
 		return false
 	}
 
-	receipt, err := svc.router.RouteRaw(acc.ChainId, raw_transaction.FromRaw(svc.req.Atte.Content))
+	rawTx, err := svc.translator.Deserialize(svc.req.Atte.Content)
+	if err != nil {
+		svc.client.logger.Error("translator.Deserialize", "error", err)
+		return false
+	}
+
+	receipt, err := svc.router.RouteRaw(acc.ChainId, rawTx)
 	if err != nil {
 		svc.client.logger.Error("router.RouteRaw", "error", err)
 		return false

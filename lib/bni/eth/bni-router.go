@@ -24,10 +24,17 @@ func (bn *BN) RouteWithSigner(signer uiptypes.Signer) (uiptypes.Router, error) {
 
 func (bn *BN) RouteRaw(destination uiptypes.ChainID, rawTransaction uiptypes.RawTransaction) (
 	transactionReceipt uiptypes.TransactionReceipt, err error) {
-	if !rawTransaction.Signed() {
-		return nil, ErrNotSigned
-	}
 
+	if !rawTransaction.Signed() {
+		ci, err := bn.dns.GetChainInfo(destination)
+		if err != nil {
+			return nil, err
+		}
+		rawTransaction, err = rawTransaction.Sign(bn.signer, ci)
+		if err != nil {
+			return nil, err
+		}
+	}
 	return bn.createTransactionReceipt(
 		bn.sendTransaction(destination, rawTransaction))
 }
@@ -99,16 +106,6 @@ func (bn *BN) Route(intent *uiptypes.TransactionIntent, storage uiptypes.Storage
 	rawTransaction, err := bn.Translate(intent, storage)
 	if err != nil {
 		return nil, err
-	}
-	if !rawTransaction.Signed() {
-		ci, err := bn.dns.GetChainInfo(intent.ChainID)
-		if err != nil {
-			return nil, err
-		}
-		rawTransaction, err = rawTransaction.Sign(bn.signer, ci)
-		if err != nil {
-			return nil, err
-		}
 	}
 	return bn.RouteRaw(intent.ChainID, rawTransaction)
 }

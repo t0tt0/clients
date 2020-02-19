@@ -3,10 +3,9 @@ package nsbcli
 import (
 	"encoding/binary"
 	transactiontype "github.com/HyperService-Consortium/NSB/application/transaction-type"
-	"github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client/nsb-message"
-
 	"github.com/HyperService-Consortium/NSB/grpc/nsbrpc"
 	uiptypes "github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client/nsb-message"
 )
 
 func (nc *NSBClient) InsuranceClaim(
@@ -26,7 +25,6 @@ func (nc *NSBClient) InsuranceClaim(
 	if err != nil {
 		return nil, err
 	}
-	// fmt.Println(PretiStruct(ret), err)
 	return &ret.DeliverTx, nil
 }
 
