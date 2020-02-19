@@ -19,8 +19,10 @@ func (vc *VesClient) buildAccountRPCApis(p iris.Party) {
 }
 
 type PostAccountRequest struct {
+	Alias string `json:"alias" form:"alias"`
 	ChainType uiptypes.ChainTypeUnderlyingType `json:"chain_type" form:"chain_type"`
 	ChainID   uiptypes.ChainIDUnderlyingType   `json:"chain_id" form:"chain_id"`
+	Addition []byte `json:"addition" form:"addition"`
 	Address   []byte                           `json:"address" form:"address"`
 }
 
@@ -31,9 +33,11 @@ func (vc *VesClient) IrisPostAccount(c controller.MContext) {
 	}
 
 	var account Account
+	account.Alias = req.Alias
 	account.ChainType = req.ChainType
 	account.ChainID = req.ChainID
 	account.Address = encodeAddress(req.Address)
+	account.Addition = encodeAddition(req.Addition)
 
 	if _, err := vc.db.Create(&account); err != nil {
 		c.JSON(http.StatusOK, errorSerializer(types.CodeInsertError, err))

@@ -78,5 +78,5 @@ func (i AccountFSet) InvertFind(acc uiptypes.Account) (*model.User, error) {
 	if ci == nil {
 		return nil, nil
 	}
-	return i.UserDB().ID(ci.ID)
+	return i.UserDB().ID(ci.UserID)
 }

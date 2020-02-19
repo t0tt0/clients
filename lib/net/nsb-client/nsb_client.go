@@ -8,6 +8,8 @@ import (
 	transactiontype "github.com/HyperService-Consortium/NSB/application/transaction-type"
 	"github.com/HyperService-Consortium/NSB/grpc/nsbrpc"
 	"github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client/nsb-message"
+	"github.com/Myriad-Dreamin/go-ves/lib/wrapper"
+	"github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/golang/protobuf/proto"
 	"io"
 	"strings"
@@ -511,7 +513,18 @@ func (nc *NSBClient) sendContractTx(
 	if err != nil {
 		return nil, err
 	}
-	return nc.BroadcastTxCommit(b)
+
+	ret, err := nc.BroadcastTxCommit(b)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(ret.DeliverTx.Log) != 0 {
+		//todo: CodeExecContractError
+		return nil, wrapper.WrapString(types.CodeExecuteError, ret.DeliverTx.Log)
+	}
+
+	return ret, nil
 }
 
 func (nc *NSBClient) sendContractTxAsync(

@@ -61,3 +61,29 @@ func (vc *VesClient) getBlockStorage(chainID uint64) (uiptypes.Storage, error) {
 		}
 	}
 }
+
+func (vc *VesClient) ensureTranslator(chainID uint64, storage *uiptypes.Translator) bool {
+	if *storage != nil {
+		return true
+	}
+	var err error
+	if *storage, err = vc.getTranslator(chainID); err != nil {
+		vc.logger.Error("get translator error", "error", err)
+	}
+	return err == nil
+}
+
+func (vc *VesClient) getTranslator(chainID uint64) (uiptypes.Translator, error) {
+	if ci, err := vc.dns.GetChainInfo(chainID); err != nil {
+		return nil, wrapper.Wrap(types.CodeChainIDNotFound, err)
+	} else {
+		switch ci.GetChainType() {
+		case ChainType.Ethereum:
+			return ethbni.NewBN(vc.dns), nil
+		case ChainType.TendermintNSB:
+			return nsbbni.NewBN(vc.dns), nil
+		default:
+			return nil, wrapper.WrapCode(types.CodeChainTypeNotFound)
+		}
+	}
+}

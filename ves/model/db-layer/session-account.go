@@ -2,7 +2,6 @@ package dblayer
 
 import (
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
-	"github.com/Myriad-Dreamin/go-ves/lib/encoding"
 	extend_traits "github.com/Myriad-Dreamin/go-ves/lib/extend-traits"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"github.com/jinzhu/gorm"
@@ -38,20 +37,19 @@ type SessionAccount struct {
 	ChainID      uiptypes.ChainIDUnderlyingType `dorm:"chain_id" gorm:"column:chain_id;not_null" json:"chain_id"`
 	Address      string                         `dorm:"address" gorm:"column:address;not_null" json:"address"`
 	Acknowledged bool                           `dorm:"acknowledged" gorm:"column:acknowledged;not_null" json:"acknowledged"`
-
-	decodedAddress []byte `gorm:"-" json:"-"`
 }
 
 func NewSessionAccount(chainID uiptypes.ChainIDUnderlyingType, address []byte) *SessionAccount {
 	return &SessionAccount{
 		ChainID:        chainID,
-		Address:        encoding.EncodeBase64(address),
-		decodedAddress: address,
+		Address:        EncodeAddress(address),
 	}
 }
 
-func (sa SessionAccount) Find() (bool, error) {
-	db := p.GormDB.Find(&sa)
+func (sa *SessionAccount) Find() (bool, error) {
+	db := p.GormDB.Model(sa).
+		Where("session_id = ? and chain_id = ? and address = ?",
+			sa.SessionID, sa.ChainID, sa.Address).Find(&sa)
 	if db.RecordNotFound() {
 		return false, nil
 	} else if db.Error != nil {
@@ -64,11 +62,11 @@ func (sa SessionAccount) GetChainId() uiptypes.ChainID {
 	return sa.ChainID
 }
 
-func (sa SessionAccount) GetAddress() uiptypes.Address {
-	if sa.decodedAddress == nil {
-		sa.decodedAddress = decodeBase64(sa.Address)
-	}
-	return sa.decodedAddress
+func (sa *SessionAccount) GetAddress() uiptypes.Address {
+	//if sa.decodedAddress == nil {
+	//	sa.decodedAddress = decodeBase64(sa.Address)
+	//}
+	return DecodeAddress(sa.Address)
 }
 
 // TableName specification
@@ -94,8 +92,10 @@ func (sa *SessionAccount) Create() (int64, error) {
 	return sessionAccountTraits.Create(sa)
 }
 
-func (sa *SessionAccount) Update() (int64, error) {
-	return sessionAccountTraits.Update(sa)
+func (sa *SessionAccount) UpdateAcknowledged() (int64, error) {
+	db := sessionAccountTraits.GormDB
+	db = db.Model(sa).Where("session_id = ? and chain_id = ? and address = ?", sa.SessionID, sa.ChainID, sa.Address).Update("acknowledged", sa.Acknowledged)
+	return db.RowsAffected, db.Error
 }
 
 func (sa *SessionAccount) Delete() (int64, error) {

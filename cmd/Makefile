@@ -14,13 +14,17 @@ server: ves-server cves-server
 
 up: up-ves up-cves
 
-up-ves: ves-server
+up-ves: 
 	nohup ./binary/ves-server --config ./binary/ves-config.toml >> ves.out &
 
 down-cves:
 	kill -15 `pidof central-ves-server`
 
-up-cves: cves-server
+down-ves:
+	kill -15 `pidof ves-server`
+
+
+up-cves: 
 	nohup ./binary/central-ves-server --config ./binary/cves-config.toml >> cves.out &
 
 login:
@@ -29,4 +33,7 @@ login:
 repl:
 	./ves-client/repl.py
 
-.PHONY: client server ves-server cves-server up up-ves up-cves down-cves repl
+dump-code:
+	go run -v ./dump-service-code -o ./ves-client/service_code.py -target-language py
+
+.PHONY: client server ves-server cves-server up up-ves up-cves down-ves down-cves repl dump-code

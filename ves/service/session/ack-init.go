@@ -10,11 +10,9 @@ import (
 
 func (svc *Service) SessionAckForInit(ctx context.Context, in *uiprpc.SessionAckForInitRequest) (*uiprpc.SessionAckForInitReply, error) {
 	//s.Logger.Info("session acknowledging... ", "address", hex.EncodeToString(s.GetUser().GetAddress()))
-	ses, err := svc.db.QueryGUIDByBytes(in.GetSessionId())
+	ses, err := svc.getSession(in.GetSessionId())
 	if err != nil {
-		return nil, wrapper.Wrap(types.CodeSessionFindError, err)
-	} else if ses == nil {
-		return nil, wrapper.WrapCode(types.CodeSessionNotFind)
+		return nil, err
 	}
 
 	// todo: get Session Acked from isc
@@ -44,4 +42,4 @@ func (svc *Service) SessionAckForInit(ctx context.Context, in *uiprpc.SessionAck
 	}, nil
 }
 
-// request -> start -> pushInternalInitRequest -> acks -> ackForInit
+// request -> start -> pushInternalInitRequestBySessionAccount -> acks -> ackForInit

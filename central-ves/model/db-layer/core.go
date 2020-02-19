@@ -2,6 +2,7 @@ package dblayer
 
 import (
 	"database/sql"
+	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/Myriad-Dreamin/dorm"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/config"
 	"github.com/Myriad-Dreamin/go-ves/lib/core"
@@ -11,7 +12,6 @@ import (
 	"github.com/jinzhu/gorm"
 
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	_ "github.com/mattn/go-sqlite3"
 )
 
 var p = newModelModule()
@@ -101,7 +101,7 @@ func (m *modelModule) Install(dep module.Module) bool {
 }
 
 func (m *modelModule) InstallMock(dep module.Module) bool {
-	m.Opened = m.install(m.GormModule.InstallMockFromConfiguration, dep)
+	m.Opened = m.install(m.GormModule.InstallMockFromConfiguration(func(dep module.Module, s sqlmock.Sqlmock) error { return nil }), dep)
 	return m.Opened
 }
 

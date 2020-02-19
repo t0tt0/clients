@@ -44,6 +44,7 @@ type BaseParametersConfig struct {
 	ExposeHost          string                         `json:"expose-host" yaml:"expose-host" toml:"expose-host" xml:"expose-host"`
 	NSBSignerPrivateKey string                         `json:"signer-key" yaml:"signer-key" toml:"signer-key" xml:"signer-key"`
 	NSBSignerChainID    uiptypes.ChainIDUnderlyingType `json:"signer-chain-id" yaml:"signer-chain-id" toml:"signer-chain-id" xml:"signer-chain-id"`
+	NSBHost             string                         `json:"nsb-host" yaml:"nsb-host" toml:"nsb-host" xml:"nsb-host"`
 }
 
 type Label struct {
@@ -74,6 +75,8 @@ func Default() *ServerConfig {
 			PathPlaceholder: PathPlaceholder{
 				User: "id",
 			},
+			ExposeHost:          "127.0.0.1:23452",
+			NSBHost:             "39.100.145.91:26657",
 			NSBSignerPrivateKey: "2333bfffffffffffffff2333bbffffffffffffff2333bbffffffffffffffffff2333bfffffffffffffff2333bbffffffffffffff2333bbffffffffffffffffff",
 			NSBSignerChainID:    3,
 		},

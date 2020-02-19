@@ -32,6 +32,7 @@ func NewServer(rpcPort, addr string, db *fset.AccountFSet, rOptions ...interface
 		Logger:  options.logger,
 		Nsbip:   options.nsbHost,
 	}
+	srv.hub.Server = srv
 	return
 }
 
@@ -39,4 +40,9 @@ func NewServer(rpcPort, addr string, db *fset.AccountFSet, rOptions ...interface
 func (srv *Server) Start(ctx context.Context) error {
 	go srv.ListenAndServeRpc(ctx, srv.rpcPort)
 	return srv.ListenAndServe(ctx, srv.Addr)
+}
+
+func (srv *Server) ProvideUserDB(db *fset.AccountFSet) {
+	srv.UserDB = db
+	srv.hub.db = db
 }

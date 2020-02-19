@@ -13,6 +13,7 @@ import (
 type GRPCEngine struct {
 	*grpc.Server
 	logger logger.Logger
+	cfg *config.ServerConfig
 }
 
 func NewGRPCEngine(m module.Module) *GRPCEngine {
@@ -41,5 +42,6 @@ func (engine *GRPCEngine) Run(port string) error {
 	if err := engine.Server.Serve(lis); err != nil {
 		return err
 	}
+
 	return nil
 }

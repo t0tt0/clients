@@ -43,6 +43,7 @@ type RootRouter struct {
 // @description result
 func PingFunc(c controller.MContext) {
 	c.JSON(200, gin.H{
+		"code":    0,
 		"message": "pong",
 	})
 }

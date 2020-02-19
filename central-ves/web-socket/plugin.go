@@ -29,7 +29,7 @@ func (srv *CVESWebSocketPlugin) Configuration(logger plugin.Logger, loader plugi
 }
 
 func (srv *CVESWebSocketPlugin) Inject(services *plugin.ServiceProvider, dbs *plugin.DatabaseProvider, module plugin.Module) (plugin.Plugin, error) {
-	srv.UserDB = module.Require(config.ModulePath.Global.UserDB).(*fset.AccountFSet)
+	srv.ProvideUserDB(module.Require(config.ModulePath.Global.UserDB).(*fset.AccountFSet))
 	return srv, nil
 }
 

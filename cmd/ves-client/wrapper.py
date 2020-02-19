@@ -1,3 +1,5 @@
+import os.path
+
 magic = '<84f4446f>'
 
 
@@ -74,9 +76,9 @@ class StackPos:
 
 
 class Frame(object):
-    def __init__(self, pos, code, err):
+    def __init__(self, pos, _code, err):
         self.pos = pos
-        self.code = code
+        self.code = _code
         self.err = err
 
     def __str__(self):
@@ -89,16 +91,13 @@ class Frame(object):
     def unwrap(e):
         if not is_wrap_error(e):
             return e, False
-        c = test_string.split(magic, 3)
+        c = e.split(magic, 3)
         if len(c) < 4:
             return e, False
-        pos, code, err = \
+        pos, _code, err = \
             StackPos.unwrap(c[1][4:-1]), \
             int(c[2][5:-1]), c[3][4:-1]
-        return Frame(pos, code, err), True
-
-
-import os.path
+        return Frame(pos, _code, err), True
 
 
 class Scope(object):
@@ -116,14 +115,12 @@ class Scope(object):
         return os.path.relpath(path, self.wd)
 
 
-if __name__ == '__main__':
-    test_string = '<84f4446f>pos:<<github.com/Myriad-Dreamin/go-ves/lib/net/ves-client.(*VesClient).SendOpIntents,' \
-                  '/home/kamiyoru/work/gosrc/src/github.com/Myriad-Dreamin/go-ves/lib/net/ves-client/client-send' \
-                  '-opintents.go:19>,/home/kamiyoru/work/gosrc/src/github.com/Myriad-Dreamin/go-ves/lib/net/ves' \
-                  '-client/client-send-opintents.go:37>,<84f4446f>code:17002,<84f4446f>err:rpc error: code = ' \
-                  'Unavailable desc = all SubConns are in TransientFailure, latest connection error: connection closed '
-    f, ok = Frame.unwrap(test_string)
+def unwrap(e):
+    e, ok = Frame.unwrap(e)
     if ok:
-        print(f.rel(Scope('github.com/Myriad-Dreamin/go-ves',
-                          '/home/kamiyoru/work/gosrc/src/github.com/Myriad-Dreamin/go-ves/lib'
-                          '/net/ves-client')))
+        n, ok = Frame.unwrap(e.err)
+        if ok:
+            e.err = ''
+            return [e] + n
+        return [e]
+    return []

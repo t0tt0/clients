@@ -1,0 +1,5 @@
+**.db
+intent.json
+__pycache__
+**.yaml
+!playbook.example.yaml

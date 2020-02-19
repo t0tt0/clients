@@ -2,7 +2,6 @@ package dblayer
 
 import (
 	"github.com/Myriad-Dreamin/dorm"
-	"github.com/Myriad-Dreamin/go-ves/lib/encoding"
 	extend_traits "github.com/Myriad-Dreamin/go-ves/lib/extend-traits"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"github.com/jinzhu/gorm"
@@ -35,25 +34,25 @@ type Session struct {
 
 	ISCAddress       string `dorm:"isc_address" gorm:"column:isc_address;not_null" json:"isc_address"`
 	UnderTransacting int64  `dorm:"under_transacting" gorm:"column:under_transacting;not_null" json:"under_transacting"`
-	Status           uint8  `dorm:"status" gorm:"column:status;not_null" json:"status"`
-	Content          string `dorm:"content" gorm:"column:content;not_null" json:"content"`
 
-	AccountsCount int64 `dorm:"accounts_cnt" gorm:"column:accounts_cnt;not_null" json:"accounts_cnt"`
+	Status  uint8  `dorm:"status" gorm:"column:status;not_null" json:"status"`
+	Content string `dorm:"content" gorm:"column:content;not_null" json:"content"`
+
+	AccountsCount    int64 `dorm:"accounts_cnt" gorm:"column:accounts_cnt;not_null" json:"accounts_cnt"`
+	TransactionCount int64 `dorm:"transaction_cnt" gorm:"column:transaction_cnt;not_null" json:"transaction_cnt"`
 
 	//Accounts
 	//Transactions
 	//Acks
 
-	decodedISCAddress []byte `gorm:"-" json:"-"`
 	//	Signer uiptypes.Signer `json:"-" xorm:"-"`
 }
 
 func NewSession(iscAddress []byte) *Session {
 	return &Session{
-		ISCAddress:        encoding.EncodeBase64(iscAddress),
-		decodedISCAddress: iscAddress,
-		UnderTransacting:  0,
-		Status:            0,
+		ISCAddress:       EncodeAddress(iscAddress),
+		UnderTransacting: 0,
+		Status:           0,
 	}
 }
 
@@ -70,11 +69,11 @@ func (s Session) GetID() uint {
 	return s.ID
 }
 
-func (s Session) GetGUID() []byte {
-	if s.decodedISCAddress == nil {
-		s.decodedISCAddress = DecodeAddress(s.ISCAddress)
-	}
-	return s.decodedISCAddress
+func (s *Session) GetGUID() []byte {
+	//if s.decodedISCAddress == nil {
+	//	s.decodedISCAddress = DecodeAddress(s.ISCAddress)
+	//}
+	return DecodeAddress(s.ISCAddress)
 }
 
 func (s *Session) Create() (int64, error) {

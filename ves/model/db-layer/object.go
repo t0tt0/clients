@@ -42,15 +42,6 @@ func (d Object) GetID() uint {
 	return d.ID
 }
 
-func (d Object) Find() (bool, error) {
-	db := p.GormDB.Find(&d)
-	if db.RecordNotFound() {
-		return false, nil
-	} else if db.Error != nil {
-		return false, db.Error
-	}
-	return true, nil
-}
 
 func (d *Object) Create() (int64, error) {
 	return objectTraits.Create(d)

@@ -3,7 +3,6 @@ package nsbcli
 import (
 	"encoding/json"
 	transactiontype "github.com/HyperService-Consortium/NSB/application/transaction-type"
-
 	ISC "github.com/HyperService-Consortium/NSB/contract/isc"
 	"github.com/HyperService-Consortium/NSB/grpc/nsbrpc"
 	uiptypes "github.com/HyperService-Consortium/go-uip/uiptypes"
@@ -26,6 +25,7 @@ func (nc *NSBClient) FreezeInfo(
 	if err != nil {
 		return nil, err
 	}
+
 	// fmt.Println(PretiStruct(ret), err)
 	return nil, nil
 }

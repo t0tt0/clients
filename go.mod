@@ -9,6 +9,7 @@ replace (
 
 require (
 	github.com/BurntSushi/toml v0.3.1
+	github.com/DATA-DOG/go-sqlmock v1.4.1
 	github.com/DeanThompson/ginpprof v0.0.0-20190408063150-3be636683586
 	github.com/HyperService-Consortium/NSB v0.7.3-0.20191110033951-7a0fad01c5fb
 	github.com/HyperService-Consortium/go-ethabi v0.9.1
@@ -29,7 +30,6 @@ require (
 	github.com/Shopify/goreferrer v0.0.0-20181106222321-ec9c9a553398 // indirect
 	github.com/ajg/form v1.5.1 // indirect
 	github.com/aymerick/raymond v2.0.2+incompatible // indirect
-	github.com/boltdb/bolt v1.3.1
 	github.com/casbin/casbin/v2 v2.1.2
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/eknkc/amber v0.0.0-20171010120322-cdade1c07385 // indirect
@@ -38,6 +38,7 @@ require (
 	github.com/gavv/monotime v0.0.0-20190418164738-30dba4353424 // indirect
 	github.com/gin-contrib/cors v1.3.0
 	github.com/gin-gonic/gin v1.5.0
+	github.com/go-logfmt/logfmt v0.4.0 // indirect
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/go-xorm/xorm v0.7.6
 	github.com/gogo/protobuf v1.3.1
@@ -58,12 +59,12 @@ require (
 	github.com/kataras/golog v0.0.10 // indirect
 	github.com/kataras/iris v11.1.1+incompatible
 	github.com/klauspost/compress v1.10.0 // indirect
+	github.com/konsorten/go-windows-terminal-sequences v1.0.2 // indirect
 	github.com/mattn/go-colorable v0.1.4 // indirect
 	github.com/mattn/go-sqlite3 v2.0.3+incompatible
 	github.com/microcosm-cc/bluemonday v1.0.2 // indirect
 	github.com/moul/http2curl v1.0.0 // indirect
 	github.com/pelletier/go-toml v1.6.0
-	github.com/prologic/bitcask v0.3.5
 	github.com/ryanuber/columnize v2.1.0+incompatible // indirect
 	github.com/sergi/go-diff v1.1.0 // indirect
 	github.com/shurcooL/sanitized_anchor_name v1.0.0 // indirect

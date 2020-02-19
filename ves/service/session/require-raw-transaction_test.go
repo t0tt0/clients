@@ -11,7 +11,7 @@ import (
 	"testing"
 )
 
-func TestService_RequireRawTransaction(t *testing.T) {
+func TestService_SessionRequireRawTransact(t *testing.T) {
 	ctl := gomock.NewController(t)
 	defer ctl.Finish()
 
@@ -118,13 +118,13 @@ func TestService_RequireRawTransaction(t *testing.T) {
 				dns:            tt.fields.dns,
 				nsbClient:      tt.fields.nsbClient,
 			}
-			got, err := svc.RequireRawTransaction(tt.args.ctx, tt.args.in)
+			got, err := svc.SessionRequireRawTransact(tt.args.ctx, tt.args.in)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("RequireRawTransaction() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("SessionRequireRawTransact() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("RequireRawTransaction() got = %v, want %v", got, tt.want)
+				t.Errorf("SessionRequireRawTransact() got = %v, want %v", got, tt.want)
 			}
 		})
 	}

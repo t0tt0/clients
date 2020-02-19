@@ -1,4 +1,4 @@
-//go:generate stringer -type=CodeType
+//go:generate stringer -type=Code
 package types
 
 type CodeRawType = int
@@ -105,16 +105,20 @@ const (
 	CodeSessionInitOpIntentsError
 	CodeSessionRedisGetAckCountError
 	CodeSessionInsertAccountError
+	CodeSessionInsertTransactionError
 	CodeSessionFindError
 	CodeSessionNotFind
 	CodeSessionAcknowledgeError
 	CodeSessionAccountFindError
 	CodeSessionAccountNotFound
-	CodeSessionAccountGetTotolError
+	CodeSessionAccountGetTotalError
 	CodeSessionAccountGetAcknowledgedError
 	CodeSessionSignTxsError
 	CodeSessionFreezeInfoError
 	CodeSessionInitInternalRequestError
+	CodeSessionNotCurrentTransaction
+	CodeSessionNotifyAttestationError
+	CodeSessionCloseInternalRequestError
 
 	CodeSessionServiceErrorR
 	CodeSessionServiceErrorL = CodeSessionInitError
@@ -129,7 +133,10 @@ const (
 	CodeParsePaymentOptionInconsistentValueError
 	CodeTransactionPrepareTranslateError
 	CodeTransactionTranslateError
+
 	CodeTransactionRawSerializeError
+	CodeTransactionIntentSerializeError
+	CodeSettleContractError
 
 	CodeTransactionServiceErrorR
 	CodeTransactionServiceErrorL = CodeTransactionFindError
@@ -146,6 +153,7 @@ const (
 	CodeGetStorageTypeError
 	CodeSetStorageError
 	CodeDestinationRespUnknown
+	CodeTransactionStateNotFound
 
 	CodeBlockChainErrorR
 	CodeBlockChainErrorL = CodeChainIDNotFound

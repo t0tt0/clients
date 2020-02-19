@@ -63,6 +63,10 @@ func (signer EthAccount) GetPublicKey() []byte {
 	return b
 }
 
+func (signer EthAccount) GetEthPassword() string {
+	return signer.PassPhrase
+}
+
 func (signer EthAccount) Sign(b []byte, ctxVars ...interface{}) (uiptypes.Signature, error) {
 	// todo: sign b
 	return signaturer.FromRaw(b, uiptypes.SignatureTypeUnderlyingType(signaturetype.Secp256k1)), nil

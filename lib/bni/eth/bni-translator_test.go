@@ -8,7 +8,7 @@ import (
 	"github.com/HyperService-Consortium/go-uip/const/value_type"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
 	"github.com/Myriad-Dreamin/go-ves/config"
-	"github.com/Myriad-Dreamin/go-ves/lib/bni/upstream"
+	"github.com/Myriad-Dreamin/go-ves/lib/upstream"
 	"github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/sugar"
 	"math/big"

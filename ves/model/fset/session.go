@@ -1,13 +1,12 @@
 package fset
 
 import (
+	"fmt"
+	"github.com/HyperService-Consortium/NSB/contract/isc/TxState"
 	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
-	"github.com/Myriad-Dreamin/go-ves/config"
-	bitmap "github.com/Myriad-Dreamin/go-ves/lib/bitmapping/redis-bitmap"
-	mredis "github.com/Myriad-Dreamin/go-ves/lib/database/redis"
 	"github.com/Myriad-Dreamin/go-ves/lib/encoding"
-	"github.com/Myriad-Dreamin/go-ves/lib/serial_helper"
+	"github.com/Myriad-Dreamin/go-ves/lib/upstream"
 	"github.com/Myriad-Dreamin/go-ves/lib/wrapper"
 	"github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/go-ves/ves/model"
@@ -31,44 +30,22 @@ func (s SessionFSet) GetAccounts(ses *model.Session) ([]uiptypes.Account, error)
 	return model.SessionAccountsToUIPAccounts(accounts), nil
 }
 
-//func (s SessionFSet) GetTransaction(interface{}) interface{} {
-//	panic("implement me")
-//}
-//
-//func (s SessionFSet) GetTransactions() []interface{} {
-//	panic("implement me")
-//}
-
 func (s SessionFSet) GetAckCount(ses *model.Session) (int64, error) {
-	count, err := bitmap.GetBitMap(ses.GetGUID(), mredis.RedisCacheClient.Pool.Get()).Count()
-	if err != nil {
-		return 0, wrapper.Wrap(types.CodeSessionRedisGetAckCountError, err)
-	}
-	return count, nil
+	return s.AccountDB.GetAcknowledged(ses.ISCAddress)
 }
 
 func (s SessionFSet) FindTransaction(
 	iscAddress []byte,
 	transactionID int64) (b []byte, err error) {
-	var k []byte
-	k, err = serial_helper.DecoratePrefix([]byte{
-		uint8((transactionID >> 56) & 0xff), uint8((transactionID >> 48) & 0xff),
-		uint8((transactionID >> 40) & 0xff), uint8((transactionID >> 32) & 0xff),
-		uint8((transactionID >> 24) & 0xff), uint8((transactionID >> 16) & 0xff),
-		uint8((transactionID >> 8) & 0xff), uint8((transactionID >> 0) & 0xff),
-	}, iscAddress)
+	tx := new(model.Transaction)
+	has, err := tx.FindSessionIndex(model.EncodeAddress(iscAddress), transactionID)
 	if err != nil {
-		return
+		return nil, wrapper.Wrap(types.CodeSelectError, err)
+	} else if !has {
+		return nil, wrapper.WrapCode(types.CodeNotFound)
 	}
-	k, err = serial_helper.DecoratePrefix(config.TransactionPrefix, k)
-	if err != nil {
-		return
-	}
-	b, err = s.Index.Get(k)
-	if err != nil {
-		return
-	}
-	return
+
+	return model.DecodeContent(tx.Content), nil
 }
 
 //?
@@ -81,11 +58,6 @@ func (s SessionFSet) InitSessionInfo(
 	iscAddress []byte, intents []*opintent.TransactionIntent, accounts []*model.SessionAccount) (
 	ses *model.Session, err error) {
 	ses = model.NewSession(iscAddress)
-	ses.AccountsCount, err = s.AccountDB.GetTotal(ses.ISCAddress)
-	if err != nil {
-		err = wrapper.Wrap(types.CodeSessionAccountGetTotolError, err)
-		return
-	}
 	for i := range accounts {
 		accounts[i].SessionID = ses.ISCAddress
 		if _, err = accounts[i].Create(); err != nil {
@@ -94,8 +66,26 @@ func (s SessionFSet) InitSessionInfo(
 		}
 	}
 
-	//todo add transaction
-	//_ = transactions
+	ses.AccountsCount, err = s.AccountDB.GetTotal(ses.ISCAddress)
+	if err != nil {
+		return nil, wrapper.Wrap(types.CodeSessionAccountGetTotalError, err)
+	}
+
+	ses.TransactionCount = int64(len(intents))
+	for i := range intents {
+		b, err := upstream.Serializer.TransactionIntent.Marshal(intents[i])
+		if err != nil {
+			return nil, wrapper.Wrap(types.CodeTransactionIntentSerializeError, err)
+		}
+
+		if _, err = (&model.Transaction{
+			SessionID: ses.ISCAddress,
+			Index:     int64(i),
+			Content:   model.EncodeContent(b),
+		}).Create(); err != nil {
+			return nil, wrapper.Wrap(types.CodeSessionInsertTransactionError, err)
+		}
+	}
 
 	_, err = ses.Create()
 	return
@@ -120,7 +110,7 @@ func (s SessionFSet) AckForInit(ses *model.Session, acc uiptypes.Account, signat
 	}
 
 	sac.Acknowledged = true
-	if aff, err := sac.Update(); err != nil {
+	if aff, err := sac.UpdateAcknowledged(); err != nil {
 		return wrapper.Wrap(types.CodeUpdateError, err)
 	} else if aff == 0 {
 		return wrapper.WrapCode(types.CodeUpdateNoEffect)
@@ -128,8 +118,45 @@ func (s SessionFSet) AckForInit(ses *model.Session, acc uiptypes.Account, signat
 	return nil
 }
 
-func (s SessionFSet) NotifyAttestation(types.NSBInterface, uiptypes.BlockChainInterface, uiptypes.Attestation) (interface{}, interface{}, error) {
-	panic("implement me")
+type NotCurrentTransactionError struct {
+	Requiring int64 `json:"requiring"`
+	Current   int64 `json:"current"`
+}
+
+func (n NotCurrentTransactionError) Error() string {
+	return fmt.Sprintf("requiring:%v,current:%v", n.Requiring, n.Current)
+}
+
+func (s SessionFSet) NotifyAttestation(
+	ses *model.Session, nsb types.NSBInterface,
+	bn uiptypes.BlockChainInterface, attestation uiptypes.Attestation) (err error) {
+	if attestation.GetTid() != uint64(ses.UnderTransacting) {
+		return wrapper.Wrap(types.CodeSessionNotCurrentTransaction, NotCurrentTransactionError{
+			Requiring: int64(attestation.GetTid()),
+			Current:   ses.UnderTransacting,
+		})
+	}
+	switch attestation.GetAid() {
+	case TxState.Unknown, TxState.Initing, TxState.Inited:
+		return nil
+	case TxState.Instantiating, TxState.Instantiated, TxState.Open, TxState.Opened:
+		return nil
+	case TxState.Closed:
+		ses.UnderTransacting++
+		if ses.UnderTransacting == ses.TransactionCount {
+			err = nsb.SettleContract(ses.GetGUID())
+			if err != nil {
+				return wrapper.Wrap(types.CodeSettleContractError, err)
+			}
+		}
+		if _, err = ses.Update(); err != nil {
+			return wrapper.Wrap(types.CodeUpdateError, err)
+		}
+
+		return nil
+	default:
+		return wrapper.WrapCode(types.CodeTransactionStateNotFound)
+	}
 }
 
 func (s SessionFSet) ProcessAttestation(types.NSBInterface, uiptypes.BlockChainInterface, uiptypes.Attestation) (interface{}, interface{}, error) {

@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/HyperService-Consortium/go-uip/const/value_type"
+	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
 	"github.com/Myriad-Dreamin/minimum-lib/sugar"
 	"github.com/tidwall/gjson"
@@ -15,8 +16,10 @@ import (
 )
 
 type mcs struct{}
+type ts struct {}
 type _serializer struct {
-	Meta struct {
+	TransactionIntent ts
+	Meta              struct {
 		Contract mcs
 	}
 }
@@ -28,6 +31,14 @@ func (mcs) Unmarshal(b []byte, meta *uiptypes.ContractInvokeMeta) error {
 }
 
 func (mcs) Marshal(meta *uiptypes.ContractInvokeMeta) ([]byte, error) {
+	return json.Marshal(meta)
+}
+
+func (ts) Unmarshal(b []byte, meta *opintent.TransactionIntent) error {
+	return json.Unmarshal(b, meta)
+}
+
+func (ts) Marshal(meta *opintent.TransactionIntent) ([]byte, error) {
 	return json.Marshal(meta)
 }
 

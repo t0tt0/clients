@@ -1,6 +1,7 @@
 package model
 
 import (
+	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/Myriad-Dreamin/go-ves/ves/model/db-layer"
 	"github.com/Myriad-Dreamin/go-ves/ves/model/sp-layer"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
@@ -15,7 +16,9 @@ func Install(dep module.Module) bool {
 }
 
 func InstallMock(dep module.Module) bool {
-	return dblayer.InstallMock(dep)
+	return dblayer.InstallMock(dep, func(dep module.Module, s sqlmock.Sqlmock) error {
+		return nil
+	})
 }
 
 func RegisterRedis(dep module.Module) bool {

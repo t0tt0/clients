@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"github.com/Myriad-Dreamin/dorm"
 	"github.com/Myriad-Dreamin/go-ves/lib/core"
-	"github.com/Myriad-Dreamin/go-ves/lib/encoding"
 	"github.com/Myriad-Dreamin/go-ves/lib/extend-traits"
 	"github.com/Myriad-Dreamin/go-ves/lib/fcg"
 	"github.com/Myriad-Dreamin/go-ves/ves/config"
@@ -12,7 +11,6 @@ import (
 	"github.com/jinzhu/gorm"
 
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	_ "github.com/mattn/go-sqlite3"
 )
 
 var p = newModelModule()
@@ -37,8 +35,8 @@ func Install(dep module.Module) bool {
 	return p.Install(dep)
 }
 
-func InstallMock(dep module.Module) bool {
-	return p.InstallMock(dep)
+func InstallMock(dep module.Module, callback mcore.MockCallback) bool {
+	return p.InstallMock(dep, callback)
 }
 
 func Close(dep module.Module) bool {
@@ -98,17 +96,24 @@ func (m *modelModule) FromContext(dep module.Module) bool {
 
 func (m *modelModule) Install(dep module.Module) bool {
 	m.Opened = m.install(m.GormModule.InstallFromConfiguration, dep)
+	if m.Opened {
+		m.GormDB = m.GormDB.Debug()
+	}
 	return m.Opened
 }
 
-func (m *modelModule) InstallMock(dep module.Module) bool {
-	m.Opened = m.install(m.GormModule.InstallMockFromConfiguration, dep)
+func (m *modelModule) InstallMock(dep module.Module, callback mcore.MockCallback) bool {
+	m.Opened = m.install(m.GormModule.InstallMockFromConfiguration(callback), dep)
+	if m.Opened {
+		m.GormDB = m.GormDB.Debug()
+	}
 	return m.Opened
 }
 
 func (modelModule) Migrates() error {
 	return fcg.Calls([]fcg.MaybeInitializer{
 		//migrations
+		Transaction{}.migrate,
 		SessionAccount{}.migrate,
 		Session{}.migrate,
 	})
@@ -117,24 +122,8 @@ func (modelModule) Migrates() error {
 func (modelModule) Injects() error {
 	return fcg.Calls([]fcg.MaybeInitializer{
 		//injections
+		injectTransactionTraits,
 		injectSessionAccountTraits,
 		injectSessionTraits,
 	})
-}
-
-func decodeBase64(src string) []byte {
-	b, err := encoding.DecodeBase64(src)
-	if err != nil {
-		p.Logger.Debug("decode failed", "error", err, "source", src)
-		return nil
-	}
-	return b
-}
-
-func DecodeAddress(src string) []byte {
-	return decodeBase64(src)
-}
-
-func EncodeAddress(src []byte) string {
-	return encoding.EncodeBase64(src)
 }

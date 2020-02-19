@@ -8,3 +8,10 @@ func DecodeAddress(src string) []byte {
 func EncodeAddress(src []byte) string {
 	return dblayer.EncodeAddress(src)
 }
+
+func DecodeContent(src string) []byte {
+	return dblayer.DecodeContent(src)
+}
+func EncodeContent(src []byte) string {
+	return dblayer.EncodeContent(src)
+}

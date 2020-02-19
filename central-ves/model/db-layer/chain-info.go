@@ -5,6 +5,7 @@ import (
 	base_account "github.com/HyperService-Consortium/go-uip/base-account"
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
 	"github.com/Myriad-Dreamin/dorm"
+	"github.com/Myriad-Dreamin/go-ves/lib/encoding"
 	"github.com/Myriad-Dreamin/go-ves/lib/extend-traits"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"github.com/jinzhu/gorm"
@@ -108,12 +109,17 @@ func (chainInfoDB *ChainInfoDB) ID_(db *gorm.DB, id uint) (chainInfo *ChainInfo,
 }
 
 func (chainInfoDB *ChainInfoDB) InvertFind(acc uiptypes.Account) (chainInfo *ChainInfo, err error) {
-	return wrapToChainInfo(chainInfoInvertFind(acc.GetChainId(), acc.GetAddress()))
+	return wrapToChainInfo(chainInfoInvertFind(acc.GetChainId(), EncodeAddress(acc.GetAddress())))
 }
 
 func decodeBase64(src string) ([]byte, error) {
 	return base64.StdEncoding.DecodeString(src)
 }
+
+func EncodeAddress(src []byte) string {
+	return encoding.EncodeBase64(src)
+}
+
 
 func (chainInfoDB *ChainInfoDB) FindAccounts(id uint, chainID uiptypes.ChainIDUnderlyingType) ([]uiptypes.Account, error) {
 	var mid []string
