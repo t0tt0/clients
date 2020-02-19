@@ -1,55 +1,60 @@
 package model
 
 import (
-	"github.com/Myriad-Dreamin/go-ves/central-ves/model/db-layer"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/model/sp-layer"
+	"database/sql"
+	"github.com/Myriad-Dreamin/dorm"
+	"github.com/Myriad-Dreamin/go-ves/central-ves/config"
+	"github.com/Myriad-Dreamin/go-ves/central-ves/model/internal/abstraction"
+	mcore "github.com/Myriad-Dreamin/go-ves/lib/core"
 	"github.com/Myriad-Dreamin/go-ves/types"
-	"github.com/Myriad-Dreamin/go-ves/ves/control"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
+	"github.com/jinzhu/gorm"
 )
 
+var p = NewDBLayerModule()
+
+func GetInstance() *gorm.DB {
+	return p.GetGormInstance()
+}
+
+
+func GetRawInstance() *sql.DB {
+	return p.GetRawSQLInstance()
+}
+
+func GetDormInstance() *dorm.DB {
+	return p.GetDormInstance()
+}
+
 func InstallFromContext(dep module.Module) bool {
-	return dblayer.FromContext(dep)
+	return p.FromContext(dep)
 }
 
 func Install(dep module.Module) bool {
-	return dblayer.Install(dep)
+	return p.Install(dep)
 }
 
-func InstallMock(dep module.Module) bool {
-	return dblayer.InstallMock(dep)
-}
-
-func RegisterRedis(dep module.Module) bool {
-	return splayer.RegisterRedis(dep)
-}
-
-func InstallRedis(dep module.Module) bool {
-	return splayer.Install(dep)
+func InstallMock(dep module.Module, callback mcore.MockCallback) bool {
+	return p.InstallMock(dep, callback)
 }
 
 func Close(dep module.Module) bool {
-	x := dblayer.Close(dep)
-	x = x && splayer.Close(dep)
-	return x
+	return p.Close(dep)
 }
 
-type Provider = splayer.Provider
-
-func NewProvider(namespace string) *Provider {
-	return splayer.NewProvider(namespace)
+func Configuration(cfg *config.ServerConfig) {
+	p.Configuration(cfg)
 }
 
-func SetProvider(p *Provider) *Provider {
-	return splayer.SetProvider(p)
+func (p *DBLayerModule) Configuration(cfg *config.ServerConfig) {
+	p.GetRawSQLInstance().SetMaxIdleConns(cfg.DatabaseConfig.MaxIdle)
+	p.GetRawSQLInstance().SetMaxOpenConns(cfg.DatabaseConfig.MaxActive)
 }
 
 type VESDB interface {
 	SetIndex(types.Index) (successOrNot bool)
 	SetMultiIndex(types.MultiIndex) (successOrNot bool)
 	SetSessionBase(types.SessionBase) (successOrNot bool)
-	SetSessionKVBase(control.SessionKV) (successOrNot bool)
-	SetStorageHandler(control.StorageHandler) (successOrNot bool)
 	SetChainDNS(types.ChainDNS) (successOrNot bool)
 
 	// insert accounts maps from guid to account
@@ -68,7 +73,7 @@ type VESDB interface {
 
 	InactivateSession(iscAddress []byte)
 
-	UserBase
+	abstraction.UserBase
 
 	SetKV(iscAddress []byte, provedKey []byte, provedValue []byte) error
 	GetKV(iscAddress []byte, provedKey []byte) (provedValue []byte, err error)

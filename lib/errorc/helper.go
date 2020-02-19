@@ -23,24 +23,18 @@ type UpdateFieldsable interface {
 	UpdateFields(fields []string) (int64, error)
 }
 
-func UpdateFields(obj UpdateFieldsable, fields []string) serial.ErrorSerializer {
-	_, err := obj.UpdateFields(fields)
+func UpdateFields(err error) serial.ErrorSerializer {
 	if err != nil {
 		return serial.ErrorSerializer{Code: types2.CodeUpdateError, Err: err.Error()}
 	}
 	return serial.ErrorSerializer{Code: types2.CodeOK}
 }
 
-type Creatable interface {
-	Create() (int64, error)
-}
-
 func CheckInsertError(err error) serial.ErrorSerializer {
 	return serial.ErrorSerializer{Code: types2.CodeOK}
 }
 
-func CreateObj(createObj Creatable) serial.ErrorSerializer {
-	affected, err := createObj.Create()
+func CreateObj(aff int64,  err error) serial.ErrorSerializer {
 	if err != nil {
 		if mysqlError, ok := err.(*mysql.MySQLError); ok {
 			switch mysqlError.Number {
@@ -51,7 +45,7 @@ func CreateObj(createObj Creatable) serial.ErrorSerializer {
 			}
 		}
 		return serial.ErrorSerializer{Code: types2.CodeInsertError, Err: err.Error()}
-	} else if affected == 0 {
+	} else if aff == 0 {
 		return serial.ErrorSerializer{Code: types2.CodeInsertError, Err: "affect nothing"}
 	}
 	return serial.ErrorSerializer{Code: types2.CodeOK}

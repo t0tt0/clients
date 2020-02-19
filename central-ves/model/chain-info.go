@@ -1,17 +1,32 @@
 package model
 
 import (
-	splayer "github.com/Myriad-Dreamin/go-ves/central-ves/model/sp-layer"
+	"github.com/Myriad-Dreamin/go-ves/central-ves/model/internal/abstraction"
+	"github.com/Myriad-Dreamin/go-ves/central-ves/model/internal/database"
+	dblayer "github.com/Myriad-Dreamin/go-ves/central-ves/model/internal/db-layer"
+	splayer "github.com/Myriad-Dreamin/go-ves/central-ves/model/internal/sp-layer"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 )
 
-type ChainInfo = splayer.ChainInfo
-type ChainInfoDB = splayer.ChainInfoDB
+type ChainInfo = database.ChainInfo
+type ChainInfoDB = abstraction.ChainInfoDB
 
-func NewChainInfoDB(m module.Module) (*ChainInfoDB, error) {
-	return splayer.NewChainInfoDB(m)
+func (p DBLayerModule) NewChainInfoDB(m module.Module) (ChainInfoDB, error) {
+	return dblayer.NewChainInfoDB(p.newTraits, m)
 }
 
-func GetChainInfoDB(m module.Module) (*ChainInfoDB, error) {
-	return splayer.GetChainInfoDB(m)
+func (p SPLayerModule) NewChainInfoDB(base abstraction.ChainInfoDB, m module.Module) (ChainInfoDB, error) {
+	return splayer.NewChainInfoDB(base, m)
+}
+
+func (p Module) NewChainInfoDB(m module.Module) (ChainInfoDB, error) {
+	base, err := p.dbLayer.NewChainInfoDB(m)
+	if err != nil {
+		return nil, err
+	}
+	return p.spLayer.NewChainInfoDB(base, m)
+}
+
+func NewChainInfoDB(m module.Module) (ChainInfoDB, error) {
+	return p.NewChainInfoDB(m)
 }

@@ -1,7 +1,6 @@
 package ginhelper
 
 import (
-	"fmt"
 	"github.com/Myriad-Dreamin/go-ves/lib/errorc"
 	"github.com/Myriad-Dreamin/go-ves/lib/jwt"
 	"github.com/Myriad-Dreamin/go-ves/lib/serial"
@@ -256,15 +255,14 @@ type Deletable interface {
 	Delete() (int64, error)
 }
 
-func DeleteObj(c controller.MContext, deleteObj Deletable) bool {
-	affected, err := deleteObj.Delete()
+func DeleteObj(c controller.MContext, aff int64, err error) bool {
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusOK, &serial.ErrorSerializer{
 			Code: types2.CodeDeleteError,
 			Err:  err.Error(),
 		})
 		return false
-	} else if affected == 0 {
+	} else if aff == 0 {
 		c.AbortWithStatusJSON(http.StatusOK, &serial.Response{
 			Code: types2.CodeDeleteNoEffect,
 		})
@@ -273,22 +271,12 @@ func DeleteObj(c controller.MContext, deleteObj Deletable) bool {
 	return true
 }
 
-func CreateObj(c controller.MContext, createObj errorc.Creatable) bool {
-	if err := errorc.CreateObj(createObj); err.Code != types2.CodeOK {
+func CreateObj(c controller.MContext, aff int64, err  error) bool {
+	if err := errorc.CreateObj(aff, err); err.Code != types2.CodeOK {
 		c.AbortWithStatusJSON(http.StatusOK, err)
 		return false
 	}
 	return true
-}
-
-func CreateObjWithTip(c controller.MContext, createObj errorc.Creatable) bool {
-	if err := errorc.CreateObj(createObj); err.Code != types2.CodeOK {
-		err.Err = fmt.Sprintf("create %T failed: %v", createObj, err.Err)
-		c.AbortWithStatusJSON(http.StatusOK, err)
-		return false
-	}
-	return true
-
 }
 
 type Updatable interface {
@@ -315,8 +303,8 @@ func UpdateObj(c controller.MContext, updateObj Updatable) bool {
 	return true
 }
 
-func UpdateFields(c controller.MContext, obj errorc.UpdateFieldsable, fields []string) bool {
-	return !applyContext{c}.applyError(errorc.UpdateFields(obj, fields))
+func UpdateFields(c controller.MContext, err error) bool {
+	return !applyContext{c}.applyError(errorc.UpdateFields(err))
 }
 
 func GetCustomFields(c controller.MContext) *types2.CustomFields {

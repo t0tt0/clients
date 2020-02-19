@@ -16,14 +16,16 @@ type CServiceInterface interface {
 }
 
 type CService struct {
-	Tool CObjectToolLite
-	k    string
+	Tool       CObjectToolLite
+	CreateFunc func(object interface{}) (aff int64, err error)
+	k          string
 }
 
-func NewCService(tool CObjectToolLite, k string) CService {
+func NewCService(tool CObjectToolLite, cf func(object interface{}) (aff int64, err error), k string) CService {
 	return CService{
-		Tool: tool,
-		k:    k,
+		Tool:       tool,
+		CreateFunc: cf,
+		k:          k,
 	}
 }
 
@@ -32,7 +34,8 @@ func (srv CService) Post(c controller.MContext) {
 	if c.IsAborted() {
 		return
 	}
-	if ginhelper.CreateObj(c, obj) {
+	aff, err := srv.CreateFunc(obj)
+	if ginhelper.CreateObj(c, aff, err) {
 		c.JSON(http.StatusOK, srv.Tool.ResponsePost(obj))
 	}
 }

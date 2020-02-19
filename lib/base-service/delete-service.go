@@ -16,14 +16,16 @@ type DServiceInterface interface {
 }
 
 type DService struct {
-	Tool DObjectToolLite
-	k    string
+	Tool       DObjectToolLite
+	k          string
+	DeleteFunc func(object interface{}) (aff int64, err error)
 }
 
-func NewDService(tool DObjectToolLite, k string) DService {
+func NewDService(tool DObjectToolLite, df func(object interface{}) (aff int64, err error), k string) DService {
 	return DService{
-		Tool: tool,
-		k:    k,
+		Tool:       tool,
+		DeleteFunc: df,
+		k:          k,
 	}
 }
 
@@ -40,7 +42,8 @@ func (srv DService) Delete(c controller.MContext) {
 		return
 	}
 
-	if ginhelper.DeleteObj(c, obj) {
+	aff, err := srv.DeleteFunc(obj)
+	if ginhelper.DeleteObj(c, aff, err) {
 		c.JSON(http.StatusOK, &ginhelper.ResponseOK)
 	} else {
 	}

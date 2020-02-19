@@ -8,8 +8,6 @@ import (
 	"github.com/Myriad-Dreamin/go-ves/central-ves/control/router"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/lib/plugin"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/model"
-	dblayer "github.com/Myriad-Dreamin/go-ves/central-ves/model/db-layer"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/model/fset"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/service"
 	"github.com/Myriad-Dreamin/go-ves/lib/jwt"
 	types2 "github.com/Myriad-Dreamin/go-ves/types"
@@ -42,7 +40,7 @@ type Server struct {
 
 	Module          module.Module
 	ServiceProvider *service.Provider
-	ModelProvider   *model.Provider
+	ModelProvider   model.Provider
 	RouterProvider  *router.Provider
 
 	plugins []plugin.Plugin
@@ -92,11 +90,10 @@ func newServer(options []Option) *Server {
 	srv.ServiceProvider = new(service.Provider)
 	srv.HttpEngine = control.NewHttpEngine(srv.Module)
 
-	_ = model.SetProvider(srv.ModelProvider)
 	srv.Module.Provide(config.ModulePath.Minimum.Provider.Service, srv.ServiceProvider)
 	srv.Module.Provide(config.ModulePath.Minimum.Provider.Model, srv.ModelProvider)
 	srv.Module.Provide(config.ModulePath.Minimum.Provider.Router, srv.RouterProvider)
-	srv.Module.Provide(config.ModulePath.Global.UserDB, &fset.AccountFSet{Provider: srv.ModelProvider})
+	srv.Module.Provide(config.ModulePath.Global.UserDB, model.NewAccountFSet(srv.ModelProvider))
 	return srv
 }
 
@@ -191,7 +188,7 @@ func (srv *Server) Serve(port string) {
 		go plg.Work(ctx)
 	}
 
-	if err := dblayer.GetRawInstance().Ping(); err != nil {
+	if err := model.GetRawInstance().Ping(); err != nil {
 		srv.Logger.Debug("database died", "error", err)
 		return
 	}

@@ -13,6 +13,9 @@ type Traits struct {
 
 type Interface interface {
 	traits.Interface
+	Where2(template string) Where2Func
+	Has1(template string) Has1Func
+	Count1(template string) Count1Func
 }
 
 //ORMObject

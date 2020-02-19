@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"github.com/Myriad-Dreamin/go-magic-package/instance"
 	parser "github.com/Myriad-Dreamin/go-parse-package"
+	"github.com/Myriad-Dreamin/go-ves/central-ves/model"
 	"github.com/Myriad-Dreamin/go-ves/lib/serial"
 	types2 "github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
@@ -18,7 +19,6 @@ import (
 	"testing"
 
 	"github.com/Myriad-Dreamin/gin-middleware/mock"
-	dblayer "github.com/Myriad-Dreamin/go-ves/central-ves/model/db-layer"
 	abstract_test "github.com/Myriad-Dreamin/minimum-lib/abstract-test"
 	"github.com/Myriad-Dreamin/minimum-lib/mock"
 	"github.com/Myriad-Dreamin/minimum-lib/sugar"
@@ -101,7 +101,7 @@ func Mock(options ...Option) (srv *Mocker) {
 		go plg.Work(ctx)
 	}
 
-	if err := dblayer.GetRawInstance().Ping(); err != nil {
+	if err := model.GetRawInstance().Ping(); err != nil {
 		srv.Logger.Debug("database died", "error", err)
 		srv = nil
 		return

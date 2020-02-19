@@ -37,9 +37,9 @@ func testChainIDPost(t *tester.TesterContext) {
 	//                Code:        "123",
 	//        })
 	resp := t.Post("/v1/chain_info", control.PostChainInfoRequest{
-		UserID:  1,
+		UserId:  1,
 		Address: "A=",
-		ChainID: 3,
+		ChainId: 3,
 	})
 	var x control.PostChainInfoReply
 	t.HandlerError0(resp.JSON(&x))

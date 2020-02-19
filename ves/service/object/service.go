@@ -13,7 +13,7 @@ import (
 type Service struct {
 	base_service.CRUDService
 	base_service.ListService
-	db     *model.ObjectDB
+	db     model.ObjectDB
 	cfg    *config.ServerConfig
 	logger types.Logger
 	key    string
@@ -23,12 +23,12 @@ func (svc *Service) ObjectServiceSignatureXXX() interface{} { return svc }
 
 func NewService(m module.Module) (control.ObjectService, error) {
 	var a = new(Service)
-	provider := m.Require(config.ModulePath.Minimum.Provider.Model).(*model.Provider)
+	provider := m.Require(config.ModulePath.Minimum.Provider.Model).(model.Provider)
 	a.logger = m.Require(config.ModulePath.Minimum.Global.Logger).(types.Logger)
 	a.cfg = m.Require(config.ModulePath.Minimum.Global.Configuration).(*config.ServerConfig)
 	a.key = "oid"
 	a.db = provider.ObjectDB()
-	a.CRUDService = base_service.NewCRUDService(a, a.key)
+	a.CRUDService = base_service.NewCRUDService(a, a.db.GetTraits(), a.key)
 	a.ListService = base_service.NewListService(a, a.db.FilterI)
 	return a, nil
 }

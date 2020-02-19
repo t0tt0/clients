@@ -1,6 +1,8 @@
 package base_service
 
 import (
+	"github.com/Myriad-Dreamin/dorm"
+	dorm_crud_dao "github.com/Myriad-Dreamin/go-model-traits/dorm-crud-dao"
 	ginhelper "github.com/Myriad-Dreamin/go-ves/lib/gin-helper"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"net/http"
@@ -18,11 +20,13 @@ type UServiceInterface interface {
 type UService struct {
 	Tool UObjectToolLite
 	k    string
+	UpdateFields func(obj dorm_crud_dao.ORMObject, fields []string) (int64, error)
 }
 
-func NewUService(tool UObjectToolLite, k string) UService {
+func NewUService(tool UObjectToolLite, uf func(obj dorm_crud_dao.ORMObject, fields []string) (int64, error), k string) UService {
 	return UService{
 		Tool: tool,
+		UpdateFields: uf,
 		k:    k,
 	}
 }
@@ -44,7 +48,8 @@ func (srv UService) Put(c controller.MContext) {
 		return
 	}
 
-	if ginhelper.UpdateFields(c, object, fields) {
+	_, err = srv.UpdateFields(object.(dorm.ORMObject), fields)
+	if ginhelper.UpdateFields(c, err) {
 		c.JSON(http.StatusOK, &ginhelper.ResponseOK)
 	}
 }

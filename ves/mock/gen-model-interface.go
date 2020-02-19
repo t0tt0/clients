@@ -8,7 +8,7 @@ import (
 	uiptypes "github.com/HyperService-Consortium/go-uip/uiptypes"
 	gorm_crud_dao "github.com/Myriad-Dreamin/go-model-traits/gorm-crud-dao"
 	types "github.com/Myriad-Dreamin/go-ves/types"
-	dblayer "github.com/Myriad-Dreamin/go-ves/ves/model/db-layer"
+	dblayer "github.com/Myriad-Dreamin/go-ves/ves/model/internal/db-layer"
 	gomock "github.com/golang/mock/gomock"
 	gorm "github.com/jinzhu/gorm"
 	reflect "reflect"

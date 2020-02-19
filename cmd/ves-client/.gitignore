@@ -1,5 +1,5 @@
 **.db
-intent.json
+../../example/playbook/intent.json
 __pycache__
 **.yaml
-!playbook.example.yaml
+!../../example/playbook/playbook.example.yaml

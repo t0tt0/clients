@@ -7,7 +7,7 @@ import (
 	"github.com/HyperService-Consortium/go-uip/uiptypes"
 	"github.com/Myriad-Dreamin/artisan"
 	"github.com/Myriad-Dreamin/go-ves/ves/model"
-	"github.com/Myriad-Dreamin/go-ves/ves/model/fset"
+	"github.com/Myriad-Dreamin/go-ves/ves/model/internal/fset"
 	"github.com/Myriad-Dreamin/minimum-lib/sugar"
 	"log"
 	"os"

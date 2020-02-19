@@ -1,0 +1,19 @@
+{
+  "op-intents": [
+    {
+      "name": "Op1",
+      "op_type": "Payment",
+      "src": {
+        "domain": 6,
+        "user_name": "a1"
+      },
+      "dst": {
+        "domain": 6,
+        "user_name": "a1"
+      },
+      "amount": "0x2e0",
+      "unit": "wei"
+    }
+  ],
+  "dependencies": []
+}

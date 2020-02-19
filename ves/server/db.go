@@ -2,10 +2,12 @@ package server
 
 import (
 	"fmt"
+	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/Myriad-Dreamin/functional-go"
 	"github.com/Myriad-Dreamin/go-ves/ves/config"
 	"github.com/Myriad-Dreamin/go-ves/ves/model"
 	"github.com/Myriad-Dreamin/go-ves/ves/model/index"
+	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"github.com/Myriad-Dreamin/minimum-lib/rbac"
 	"reflect"
 )
@@ -77,7 +79,9 @@ func (srv *Server) PrepareDatabase() bool {
 func (srv *Server) MockDatabase() bool {
 	srv.Cfg.DatabaseConfig.Debug(srv.Logger)
 
-	if !model.InstallMock(srv.Module) {
+	if !model.InstallMock(srv.Module, func(dep module.Module, s sqlmock.Sqlmock) error {
+		return nil
+	}) {
 		return false
 	}
 

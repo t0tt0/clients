@@ -15,7 +15,6 @@ import (
 	"github.com/Myriad-Dreamin/go-ves/ves/control/router"
 	"github.com/Myriad-Dreamin/go-ves/ves/lib/plugin"
 	"github.com/Myriad-Dreamin/go-ves/ves/model"
-	dblayer "github.com/Myriad-Dreamin/go-ves/ves/model/db-layer"
 	"github.com/Myriad-Dreamin/go-ves/ves/model/index"
 	"github.com/Myriad-Dreamin/go-ves/ves/service"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
@@ -36,7 +35,7 @@ type Server struct {
 	Module          module.Module
 	CloseHandler    types.CloseHandler
 	ServiceProvider *service.Provider
-	ModelProvider   *model.Provider
+	ModelProvider   model.Provider
 	RouterProvider  *router.Provider
 	plugins         []plugin.Plugin
 
@@ -119,7 +118,6 @@ func newServer(options []Option) (srv *Server, err error) {
 	srv.HTTPEngine = control.NewHttpEngine(srv.Module)
 	srv.GRPCEngine = control.NewGRPCEngine(srv.Module)
 
-	_ = model.SetProvider(srv.ModelProvider)
 	srv.Module.Provide(config.ModulePath.Minimum.Provider.Service, srv.ServiceProvider)
 	srv.Module.Provide(config.ModulePath.Minimum.Provider.Model, srv.ModelProvider)
 	srv.Module.Provide(config.ModulePath.Minimum.Provider.Router, srv.RouterProvider)
@@ -250,7 +248,7 @@ func (srv *Server) Serve(httpPort, gRPCPort string) {
 		go plg.Work(ctx)
 	}
 
-	if err := dblayer.GetRawInstance().Ping(); err != nil {
+	if err := model.GetRawInstance().Ping(); err != nil {
 		srv.Logger.Debug("database died", "error", err)
 		return
 	}

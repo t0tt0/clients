@@ -1,22 +1,32 @@
 package model
 
 import (
-	dblayer "github.com/Myriad-Dreamin/go-ves/ves/model/db-layer"
-	splayer "github.com/Myriad-Dreamin/go-ves/ves/model/sp-layer"
+	"github.com/Myriad-Dreamin/go-ves/ves/model/internal/abstraction"
+	"github.com/Myriad-Dreamin/go-ves/ves/model/internal/database"
+	dblayer "github.com/Myriad-Dreamin/go-ves/ves/model/internal/db-layer"
+	splayer "github.com/Myriad-Dreamin/go-ves/ves/model/internal/sp-layer"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 )
 
-type Session = splayer.Session
-type SessionDB = splayer.SessionDB
+type Session = database.Session
+type SessionDB = abstraction.SessionDB
 
-func NewSessionDB(m module.Module) (*SessionDB, error) {
-	return splayer.NewSessionDB(m)
+func (p DBLayerModule) NewSessionDB(m module.Module) (SessionDB, error) {
+	return dblayer.NewSessionDB(p.newTraits, m)
 }
 
-func GetSessionDB(m module.Module) (*SessionDB, error) {
-	return splayer.GetSessionDB(m)
+func (p SPLayerModule) NewSessionDB(base abstraction.SessionDB, m module.Module) (SessionDB, error) {
+	return splayer.NewSessionDB(base, m)
 }
 
-func NewSession(iscAddress []byte) *Session {
-	return dblayer.NewSession(iscAddress)
+func (p Module) NewSessionDB(m module.Module) (SessionDB, error) {
+	base, err := p.dbLayer.NewSessionDB(m)
+	if err != nil {
+		return nil, err
+	}
+	return p.spLayer.NewSessionDB(base, m)
+}
+
+func NewSessionDB(m module.Module) (SessionDB, error) {
+	return p.NewSessionDB(m)
 }

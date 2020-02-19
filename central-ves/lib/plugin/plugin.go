@@ -18,6 +18,6 @@ type Module = module.Module
 
 type Plugin interface {
 	Configuration(logger Logger, loader ConfigLoader, cfg *ServerConfig) (plg Plugin, err error)
-	Inject(services *ServiceProvider, dbs *DatabaseProvider, module Module) (plg Plugin, err error)
+	Inject(services *ServiceProvider, dbs DatabaseProvider, module Module) (plg Plugin, err error)
 	Work(ctx context.Context) (err error)
 }

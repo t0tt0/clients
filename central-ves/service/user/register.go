@@ -31,7 +31,7 @@ func (srv *Service) Register(c controller.MContext) {
 	user.Password = req.Password
 
 	// check default value
-	aff, err := user.Register()
+	aff, err := srv.userDB.Register(user)
 	if err != nil {
 		//fmt.Println(reflect.TypeOf(err))
 		if ginhelper.CheckInsertError(c, err) {
