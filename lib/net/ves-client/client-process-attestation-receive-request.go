@@ -80,13 +80,13 @@ func (svc *attestationReceiveRequestService) procTxStateInstantiating() {
 }
 
 func (svc *attestationReceiveRequestService) procTxStateInstantiated() {
-	if svc.newReq = svc.generateNewAttestationFromOld(); svc.newReq != nil {
+	if svc.newReq = svc.generateNewAttestationFromOld(); svc.newReq != nil && svc.doTransaction() {
 		svc.tellOthers()
 	}
 }
 
 func (svc *attestationReceiveRequestService) procTxStateOpen() {
-	if svc.newReq = svc.generateNewAttestationFromOld(); svc.newReq != nil && svc.doTransaction() {
+	if svc.newReq = svc.generateNewAttestationFromOld(); svc.newReq != nil {
 		svc.tellOthers()
 	}
 }

@@ -141,6 +141,12 @@ func searchAccount(name string, chainId uint64) (uip.Account, error) {
 			//	ChainId: 4,
 			//	Address: b,
 			//}, err
+		case 6: // ethereum chain 1
+			b, err := hex.DecodeString("2b5680581553c2312dba96cb8d7639cc049cece7")
+			return &uip.AccountImpl{
+				ChainId: 6,
+				Address: b,
+			}, err
 		default:
 			return nil, errors.New("not found")
 		}

@@ -3,6 +3,7 @@ package ves_websocket
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"github.com/Myriad-Dreamin/go-ves/grpc/wsrpc"
 	"github.com/Myriad-Dreamin/go-ves/lib/backend/wrapper"
 	"github.com/Myriad-Dreamin/go-ves/types"
@@ -64,6 +65,10 @@ func (soc VESWSSocket) PostRawPacket(code wsrpc.MessageType, msg []byte) error {
 }
 
 func (soc VESWSSocket) ReadRoutine() {
+	defer func() {
+		fmt.Println("exited read routine")
+	}()
+
 	var (
 		messageType int
 		message     []byte

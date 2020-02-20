@@ -4,7 +4,7 @@ go 1.13
 
 replace (
 	github.com/HyperService-Consortium/go-hexutil => github.com/HyperService-Consortium/go-hexutil v1.0.1
-	github.com/HyperService-Consortium/go-uip => github.com/HyperService-Consortium/go-uip v0.0.0-20200220100806-ef9f88d41f96
+	github.com/HyperService-Consortium/go-uip => github.com/HyperService-Consortium/go-uip v0.0.0-20200220185050-7073779ca691
 )
 
 require (
@@ -15,7 +15,7 @@ require (
 	github.com/HyperService-Consortium/go-ethabi v0.9.1
 	github.com/HyperService-Consortium/go-mpt v1.1.1-0.20190903152503-b63ec8d75bd4
 	github.com/HyperService-Consortium/go-rlp v1.0.1-0.20190903144357-b5693c05a6b8
-	github.com/HyperService-Consortium/go-uip v0.0.0-20200220100806-ef9f88d41f96
+	github.com/HyperService-Consortium/go-uip v0.0.0-20200220185050-7073779ca691
 	github.com/Joker/jade v1.0.0 // indirect
 	github.com/Myriad-Dreamin/artisan v0.8.1-0.20200204040619-76955d01aad9
 	github.com/Myriad-Dreamin/dorm v0.0.0-20191205101004-33dbc61bb34e

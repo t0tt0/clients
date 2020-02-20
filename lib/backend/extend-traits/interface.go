@@ -3,6 +3,7 @@ package extend_traits
 import (
 	"github.com/Myriad-Dreamin/dorm"
 	traits "github.com/Myriad-Dreamin/go-model-traits/example-traits"
+	"github.com/Myriad-Dreamin/minimum-lib/sugar"
 	"github.com/jinzhu/gorm"
 )
 
@@ -28,6 +29,7 @@ type Has1Func_ = func(db *gorm.DB, id interface{}) (has bool, err error)
 
 func NewTraits(t ORMObject, g *gorm.DB, d *dorm.DB) Traits {
 	tt := traits.NewModelTraits(t, g, d)
+	tt.DormModel = sugar.HandlerError(d.Model(tt.ObjectFactory().(dorm.ORMObject))).(*dorm.Model)
 	return Traits{
 		ModelTraits: tt,
 		ExtendModel: NewExtendModel(&tt),

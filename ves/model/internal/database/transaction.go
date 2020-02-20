@@ -9,7 +9,7 @@ type Transaction struct {
 
 	SessionID string `dorm:"session_id" gorm:"column:session_id;not null;" json:"session_id"`
 	Index     int64  `dorm:"idx" gorm:"column:idx;default:0;not null;" json:"idx"`
-	Content   string `dorm:"contents" gorm:"column:content;not null;" json:"content"`
+	Content   string `dorm:"contents" gorm:"column:content;type:text;not null;" json:"content"`
 }
 
 // TableName specification

@@ -14,7 +14,7 @@ import (
 )
 
 func (bn *BN) ParseTransactionIntent(intent uip.TxIntentI) (uip.TxIntentI, error) {
-	panic("implement me")
+	return intent, nil
 }
 
 func (bn *BN) Translate(intent *uip.TransactionIntent, storage uip.Storage) (uip.RawTransaction, error) {

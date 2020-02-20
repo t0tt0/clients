@@ -14,7 +14,7 @@ type Session struct {
 	UnderTransacting int64  `dorm:"under_transacting" gorm:"column:under_transacting;not_null" json:"under_transacting"`
 
 	Status  uint8  `dorm:"status" gorm:"column:status;not_null" json:"status"`
-	Content string `dorm:"content" gorm:"column:content;not_null" json:"content"`
+	Content string `dorm:"content" gorm:"column:content;type:text;not_null" json:"content"`
 
 	AccountsCount    int64 `dorm:"accounts_cnt" gorm:"column:accounts_cnt;not_null" json:"accounts_cnt"`
 	TransactionCount int64 `dorm:"transaction_cnt" gorm:"column:transaction_cnt;not_null" json:"transaction_cnt"`

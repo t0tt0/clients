@@ -2,6 +2,7 @@ package vesclient
 
 import (
 	"context"
+	"fmt"
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
 	uiprpc_base "github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
 	"github.com/Myriad-Dreamin/go-ves/lib/backend/wrapper"
@@ -20,6 +21,7 @@ func (vc *VesClient) SendOpIntents(
 	targetHost string, intents [][]byte, deps [][]byte) ([]byte, error) {
 	var c vesConn
 	vc.ensureVESConn(targetHost, &c)
+	fmt.Println(targetHost)
 
 	ctx, cancel := context.WithTimeout(
 		context.Background(), vc.constant.SendOpIntentsTimeout)

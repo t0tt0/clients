@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/hex"
+	"github.com/HyperService-Consortium/go-uip/const/trans_type"
 	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
@@ -78,7 +79,7 @@ func (svc *Service) initOpIntents(opIntents uip.OpIntents) (
 			accounts = append(accounts, model.NewSessionAccount(intent.ChainID, intent.Src))
 		}
 
-		if len(intent.Dst) != 0 && c.Insert(intent.ChainID, intent.Dst) {
+		if len(intent.Dst) != 0 && intent.TransType != trans_type.ContractInvoke && c.Insert(intent.ChainID, intent.Dst) {
 			accounts = append(accounts, model.NewSessionAccount(intent.ChainID, intent.Dst))
 		}
 	}
