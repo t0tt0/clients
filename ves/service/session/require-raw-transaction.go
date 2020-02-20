@@ -6,7 +6,7 @@ import (
 	"golang.org/x/net/context"
 
 	transtype "github.com/HyperService-Consortium/go-uip/const/trans_type"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
 )
@@ -29,7 +29,7 @@ func (svc *Service) SessionRequireRawTransact(
 		return nil, wrapper.Wrap(types.CodeTransactionPrepareTranslateError, err)
 	}
 
-	var b uiptypes.RawTransaction
+	var b uip.RawTransaction
 	b, err = bn.Translate(ti, svc.storageHandler)
 	if err != nil {
 		return nil, wrapper.Wrap(types.CodeTransactionTranslateError, err)

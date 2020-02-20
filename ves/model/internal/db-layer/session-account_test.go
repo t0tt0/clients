@@ -1,17 +1,14 @@
-package dblayer
+package dblayer_test
 
 import (
 	"github.com/DATA-DOG/go-sqlmock"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/Myriad-Dreamin/go-ves/ves/config"
-	"github.com/Myriad-Dreamin/go-ves/ves/model/internal/abstraction"
+	dblayer "github.com/Myriad-Dreamin/go-ves/ves/model/internal/db-layer"
 	"github.com/Myriad-Dreamin/minimum-lib/sugar"
 	"testing"
 )
 
-func n(x interface{}) abstraction.ORMTraits {
-	return NewTraits(x.(TraitsAcceptObject))
-}
 
 func TestSessionAccount_UpdateAcknowledged(t *testing.T) {
 	m := dep.Require(config.ModulePath.Minimum.Global.SQLMock).(sqlmock.Sqlmock)
@@ -39,7 +36,7 @@ func TestSessionAccount_UpdateAcknowledged(t *testing.T) {
 
 	type fields struct {
 		SessionID    string
-		ChainID      uiptypes.ChainIDUnderlyingType
+		ChainID      uip.ChainIDUnderlyingType
 		Address      string
 		Acknowledged bool
 	}
@@ -64,13 +61,13 @@ func TestSessionAccount_UpdateAcknowledged(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			sa := &SessionAccount{
+			sa := &dblayer.SessionAccount{
 				SessionID:    tt.fields.SessionID,
 				ChainID:      tt.fields.ChainID,
 				Address:      tt.fields.Address,
 				Acknowledged: tt.fields.Acknowledged,
 			}
-			got, err := sugar.HandlerError(NewSessionAccountDB(n, dep)).(*SessionAccountDB).UpdateAcknowledged(sa)
+			got, err := sugar.HandlerError(p.NewSessionAccountDB(dep)).(*dblayer.SessionAccountDB).UpdateAcknowledged(sa)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("UpdateAcknowledged() error = %v, wantErr %v", err, tt.wantErr)
 				return

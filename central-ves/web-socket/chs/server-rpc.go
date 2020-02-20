@@ -3,7 +3,7 @@ package chs
 import (
 	"context"
 	"encoding/hex"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
 	uiprpc_base "github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
 	"github.com/Myriad-Dreamin/go-ves/grpc/wsrpc"
@@ -33,7 +33,7 @@ func (srv *Server) InternalRequestComing(
 	ctx context.Context,
 	in *uiprpc.InternalRequestComingRequest,
 ) (*uiprpc.InternalRequestComingReply, error) {
-	if err := srv.RequestComing(func() (accs []uiptypes.Account) {
+	if err := srv.RequestComing(func() (accs []uip.Account) {
 		for _, acc := range in.GetAccounts() {
 			accs = append(accs, acc)
 		}
@@ -50,7 +50,7 @@ func (srv *Server) InternalAttestationSending(
 	ctx context.Context,
 	in *uiprpc.InternalRequestComingRequest,
 ) (*uiprpc.InternalRequestComingReply, error) {
-	if err := srv.AttestationSending(func() (accs []uiptypes.Account) {
+	if err := srv.AttestationSending(func() (accs []uip.Account) {
 		for _, acc := range in.GetAccounts() {
 			accs = append(accs, acc)
 		}
@@ -64,7 +64,7 @@ func (srv *Server) InternalAttestationSending(
 }
 
 // RequestComing do the service of retransmitting message of new session event
-func (srv *Server) RequestComing(accounts []uiptypes.Account, iscAddress []byte, grpcHost string) (err error) {
+func (srv *Server) RequestComing(accounts []uip.Account, iscAddress []byte, grpcHost string) (err error) {
 	// fmt.Println("rpc...", accounts)
 	for _, acc := range accounts {
 		// fmt.Println("hex", acc.GetChainId(), hex.EncodeToString(acc.GetAddress()))
@@ -77,7 +77,7 @@ func (srv *Server) RequestComing(accounts []uiptypes.Account, iscAddress []byte,
 }
 
 // AttestationSending do the service of retransmitting attestation
-func (srv *Server) AttestationSending(accounts []uiptypes.Account, iscAddress []byte, grpcHost string) (err error) {
+func (srv *Server) AttestationSending(accounts []uip.Account, iscAddress []byte, grpcHost string) (err error) {
 	// fmt.Println("rpc...", accounts)
 	for _, acc := range accounts {
 		srv.Logger.Info("sending attestation request", "chain id", acc.GetChainId(), "address", hex.EncodeToString(acc.GetAddress()))
@@ -88,7 +88,7 @@ func (srv *Server) AttestationSending(accounts []uiptypes.Account, iscAddress []
 	return nil
 }
 
-func (srv *Server) requestComing(acc uiptypes.Account, iscAddress []byte, grpcHost string) error {
+func (srv *Server) requestComing(acc uip.Account, iscAddress []byte, grpcHost string) error {
 	var msg wsrpc.RequestComingRequest
 	msg.NsbHost = srv.Nsbip
 	msg.GrpcHost = grpcHost
@@ -103,7 +103,7 @@ func (srv *Server) requestComing(acc uiptypes.Account, iscAddress []byte, grpcHo
 	return nil
 }
 
-func (srv *Server) attestationSending(acc uiptypes.Account, iscAddress []byte, grpcHost string) error {
+func (srv *Server) attestationSending(acc uip.Account, iscAddress []byte, grpcHost string) error {
 	var msg wsrpc.RequestComingRequest
 	msg.NsbHost = srv.Nsbip
 	msg.GrpcHost = grpcHost
@@ -124,7 +124,7 @@ func (srv *Server) InternalCloseSession(
 	ctx context.Context,
 	in *uiprpc.InternalCloseSessionRequest,
 ) (*uiprpc.InternalCloseSessionReply, error) {
-	if err := srv.CloseSession(func() (accs []uiptypes.Account) {
+	if err := srv.CloseSession(func() (accs []uip.Account) {
 		for _, acc := range in.GetAccounts() {
 			accs = append(accs, acc)
 		}
@@ -138,7 +138,7 @@ func (srv *Server) InternalCloseSession(
 }
 
 // CloseSession do the service of retransmitting attestation
-func (srv *Server) CloseSession(accounts []uiptypes.Account, iscAddress []byte, grpcHost, nsbHost string) (err error) {
+func (srv *Server) CloseSession(accounts []uip.Account, iscAddress []byte, grpcHost, nsbHost string) (err error) {
 	// fmt.Println("rpc...", accounts)
 	for _, acc := range accounts {
 		srv.Logger.Info("sending close session", "chain id", acc.GetChainId(), "address", hex.EncodeToString(acc.GetAddress()))
@@ -149,7 +149,7 @@ func (srv *Server) CloseSession(accounts []uiptypes.Account, iscAddress []byte, 
 	return nil
 }
 
-func (srv *Server) closeSession(acc uiptypes.Account, iscAddress []byte, grpcHost, nsbHost string) error {
+func (srv *Server) closeSession(acc uip.Account, iscAddress []byte, grpcHost, nsbHost string) error {
 	var msg wsrpc.CloseSessionRequest
 	msg.NsbHost = nsbHost
 	msg.GrpcHost = grpcHost

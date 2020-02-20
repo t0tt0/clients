@@ -5,7 +5,7 @@ import (
 	"context"
 	"encoding/hex"
 	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
 	"github.com/Myriad-Dreamin/go-ves/lib/backend/wrapper"
 	"github.com/Myriad-Dreamin/go-ves/types"
@@ -56,11 +56,17 @@ func (svc *Service) SessionStart(ctx context.Context, in *uiprpc.SessionStartReq
 	}, nil
 }
 
-func (svc *Service) initOpIntents(opIntents uiptypes.OpIntents) (
+func (svc *Service) initOpIntents(opIntents uip.OpIntents) (
 	intents []*opintent.TransactionIntent, accounts []*model.SessionAccount, err error) {
-	intents, _, err = svc.opInitializer.InitOpIntent(opIntents)
+	var xIntents opintent.TxIntents
+	xIntents, err = svc.opInitializer.Parse(opIntents)
 	if err != nil {
 		return
+	}
+	var yIntents = xIntents.GetTxIntents()
+	intents = make([]*opintent.TransactionIntent, len(yIntents))
+	for i := range yIntents {
+		intents[i] = yIntents[i].GetIntent()
 	}
 	c := uniquer.MakeUniquer()
 	if c.Insert(svc.respAccount.GetChainId(), svc.respAccount.GetAddress()) {
@@ -85,7 +91,7 @@ func (svc *Service) initISCAddress(
 	var (
 		txs       = make([][]byte, len(intents))
 		owners    = make([][]byte, 0, len(accounts))
-		signature uiptypes.Signature
+		signature uip.Signature
 	)
 	for i, intent := range intents {
 		txs[i] = intent.Bytes()

@@ -4,9 +4,8 @@ import (
 	"context"
 	"encoding/hex"
 	"github.com/DeanThompson/ginpprof"
-	base_account "github.com/HyperService-Consortium/go-uip/base-account"
 	"github.com/HyperService-Consortium/go-uip/signaturer"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	xconfig "github.com/Myriad-Dreamin/go-ves/config"
 	"github.com/Myriad-Dreamin/go-ves/lib/backend/jwt"
 	"github.com/Myriad-Dreamin/go-ves/types"
@@ -291,10 +290,10 @@ func (srv *Server) handlerPanicError(err interface{}) {
 func (srv *Server) InitRespAccount() bool {
 	signer := sugar.HandlerError(signaturer.NewTendermintNSBSigner(
 		sugar.HandlerError(
-			hex.DecodeString(srv.Cfg.BaseParametersConfig.NSBSignerPrivateKey)).([]byte))).(uiptypes.Signer)
+			hex.DecodeString(srv.Cfg.BaseParametersConfig.NSBSignerPrivateKey)).([]byte))).(uip.Signer)
 	srv.Module.Provide(config.ModulePath.Global.Signer, signer)
 	////&uipbase.Account{Address: server.Signer.GetPublicKey(), ChainId: 3}
-	srv.Module.Provide(config.ModulePath.Global.RespAccount, &base_account.Account{
+	srv.Module.Provide(config.ModulePath.Global.RespAccount, &uip.AccountImpl{
 		ChainId: srv.Cfg.BaseParametersConfig.NSBSignerChainID,
 		Address: signer.GetPublicKey(),
 	})

@@ -3,7 +3,7 @@ package sessionservice
 import (
 	"encoding/json"
 	"github.com/HyperService-Consortium/go-uip/const/value_type"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/Myriad-Dreamin/go-ves/lib/backend/wrapper"
 	logger2 "github.com/Myriad-Dreamin/go-ves/lib/basic/log"
 	"github.com/Myriad-Dreamin/go-ves/types"
@@ -40,11 +40,11 @@ var (
 )
 
 type ChainInfo struct {
-	ChainType uiptypes.ChainType
+	ChainType uip.ChainType
 	ChainHost string
 }
 
-func (c ChainInfo) GetChainType() uiptypes.ChainType {
+func (c ChainInfo) GetChainType() uip.ChainType {
 	return c.ChainType
 }
 
@@ -205,8 +205,8 @@ func valueTypeToString(t value_type.Type) string {
 
 }
 
-func newRawMeta(t value_type.Type, value string) uiptypes.RawParams {
-	return uiptypes.RawParams{
+func newRawMeta(t value_type.Type, value string) uip.RawParam {
+	return uip.RawParam{
 		Type: valueTypeToString(t),
 		Value: marshal(map[string]interface{}{
 			"constant": value,
@@ -214,8 +214,8 @@ func newRawMeta(t value_type.Type, value string) uiptypes.RawParams {
 	}
 }
 
-func newVarRawMeta(t value_type.Type, contract, pos, field string) uiptypes.RawParams {
-	return uiptypes.RawParams{
+func newVarRawMeta(t value_type.Type, contract, pos, field string) uip.RawParam {
+	return uip.RawParam{
 		Type: valueTypeToString(t),
 		Value: marshal(map[string]interface{}{
 			"contract": contract,

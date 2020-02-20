@@ -23,7 +23,7 @@ type Session struct {
 	//Transactions
 	//Acks
 
-	//	Signer uiptypes.Signer `json:"-" xorm:"-"`
+	//	Signer uip.Signer `json:"-" xorm:"-"`
 }
 
 func NewSession(iscAddress []byte) *Session {

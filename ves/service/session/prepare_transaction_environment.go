@@ -7,7 +7,7 @@ import (
 	"github.com/HyperService-Consortium/go-uip/const/trans_type"
 	"github.com/HyperService-Consortium/go-uip/const/value_type"
 	"github.com/HyperService-Consortium/go-uip/op-intent"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/Myriad-Dreamin/go-ves/lib/backend/wrapper"
 	"github.com/Myriad-Dreamin/go-ves/lib/basic/encoding"
 	payment_option "github.com/Myriad-Dreamin/go-ves/lib/bni/payment-option"
@@ -27,7 +27,7 @@ type prepareTranslateEnvironment struct {
 }
 
 func newPrepareTranslateEnvironment(service *Service, ses *model.Session,
-	ti *opintent.TransactionIntent, bn uiptypes.BlockChainInterface) *prepareTranslateEnvironment {
+	ti *opintent.TransactionIntent, bn uip.BlockChainInterface) *prepareTranslateEnvironment {
 	return &prepareTranslateEnvironment{Service: service, ses: ses, ti: ti, bn: bn}
 }
 
@@ -52,7 +52,7 @@ func (w wrapPos) Error() string {
 }
 
 func (svc *prepareTranslateEnvironment) doContractInvoke() error {
-	var meta uiptypes.ContractInvokeMeta
+	var meta uip.ContractInvokeMeta
 	err := json.Unmarshal(svc.ti.Meta, &meta)
 	if err != nil {
 		return wrapper.Wrap(types.CodeDeserializeTransactionError, err)
@@ -80,8 +80,8 @@ func (svc *prepareTranslateEnvironment) doPayment() error {
 	return nil
 }
 
-func (svc *prepareTranslateEnvironment) ensureValue(param uiptypes.RawParams) error {
-	var intDesc uiptypes.TypeID
+func (svc *prepareTranslateEnvironment) ensureValue(param uip.RawParam) error {
+	var intDesc uip.TypeID
 	if intDesc = value_type.FromString(param.Type); intDesc == value_type.Unknown {
 		return wrapper.WrapString(types.CodeValueTypeNotFound, strconv.Itoa(int(intDesc)))
 	}
@@ -116,7 +116,7 @@ func (svc *prepareTranslateEnvironment) ensureValue(param uiptypes.RawParams) er
 func (svc *Service) ensureStorage(
 	// todo: uip-types.Storage
 	source control.BlockChainInterfaceI,
-	chainID uiptypes.ChainIDUnderlyingType, typeID uiptypes.TypeID,
+	chainID uip.ChainIDUnderlyingType, typeID uip.TypeID,
 	contractAddress []byte, pos []byte, description []byte) error {
 
 	v, err := source.GetStorageAt(chainID, typeID, contractAddress, pos, description)

@@ -6,7 +6,7 @@ package mock
 
 import (
 	context "context"
-	uiptypes "github.com/HyperService-Consortium/go-uip/uiptypes"
+	uip "github.com/HyperService-Consortium/go-uip/uip"
 	uiprpc "github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
 	nsb_message "github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client/nsb-message"
 	types "github.com/Myriad-Dreamin/go-ves/types"
@@ -160,7 +160,7 @@ func (m *NSBClient) EXPECT() *NSBClientMockRecorder {
 }
 
 // FreezeInfo mocks base method
-func (m *NSBClient) FreezeInfo(signer uiptypes.Signer, guid []byte, u uint64) ([]byte, error) {
+func (m *NSBClient) FreezeInfo(signer uip.Signer, guid []byte, u uint64) ([]byte, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FreezeInfo", signer, guid, u)
 	ret0, _ := ret[0].([]byte)
@@ -175,7 +175,7 @@ func (mr *NSBClientMockRecorder) FreezeInfo(signer, guid, u interface{}) *gomock
 }
 
 // AddMerkleProof mocks base method
-func (m *NSBClient) AddMerkleProof(user uiptypes.Signer, toAddress []byte, merkleType uint16, rootHash, proof, key, value []byte) (*nsb_message.ResultInfo, error) {
+func (m *NSBClient) AddMerkleProof(user uip.Signer, toAddress []byte, merkleType uint16, rootHash, proof, key, value []byte) (*nsb_message.ResultInfo, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "AddMerkleProof", user, toAddress, merkleType, rootHash, proof, key, value)
 	ret0, _ := ret[0].(*nsb_message.ResultInfo)
@@ -190,7 +190,7 @@ func (mr *NSBClientMockRecorder) AddMerkleProof(user, toAddress, merkleType, roo
 }
 
 // AddBlockCheck mocks base method
-func (m *NSBClient) AddBlockCheck(user uiptypes.Signer, toAddress []byte, chainID uint64, blockID, rootHash []byte, rcType uint8) (*nsb_message.ResultInfo, error) {
+func (m *NSBClient) AddBlockCheck(user uip.Signer, toAddress []byte, chainID uint64, blockID, rootHash []byte, rcType uint8) (*nsb_message.ResultInfo, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "AddBlockCheck", user, toAddress, chainID, blockID, rootHash, rcType)
 	ret0, _ := ret[0].(*nsb_message.ResultInfo)
@@ -205,7 +205,7 @@ func (mr *NSBClientMockRecorder) AddBlockCheck(user, toAddress, chainID, blockID
 }
 
 // InsuranceClaim mocks base method
-func (m *NSBClient) InsuranceClaim(user uiptypes.Signer, contractAddress []byte, tid, aid uint64) (*nsb_message.DeliverTx, error) {
+func (m *NSBClient) InsuranceClaim(user uip.Signer, contractAddress []byte, tid, aid uint64) (*nsb_message.DeliverTx, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "InsuranceClaim", user, contractAddress, tid, aid)
 	ret0, _ := ret[0].(*nsb_message.DeliverTx)
@@ -220,7 +220,7 @@ func (mr *NSBClientMockRecorder) InsuranceClaim(user, contractAddress, tid, aid 
 }
 
 // CreateISC mocks base method
-func (m *NSBClient) CreateISC(signer uiptypes.Signer, uint32s []uint32, bytes, bytes2 [][]byte, bytes3 []byte) ([]byte, error) {
+func (m *NSBClient) CreateISC(signer uip.Signer, uint32s []uint32, bytes, bytes2 [][]byte, bytes3 []byte) ([]byte, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateISC", signer, uint32s, bytes, bytes2, bytes3)
 	ret0, _ := ret[0].([]byte)
@@ -232,4 +232,19 @@ func (m *NSBClient) CreateISC(signer uiptypes.Signer, uint32s []uint32, bytes, b
 func (mr *NSBClientMockRecorder) CreateISC(signer, uint32s, bytes, bytes2, bytes3 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateISC", reflect.TypeOf((*NSBClient)(nil).CreateISC), signer, uint32s, bytes, bytes2, bytes3)
+}
+
+// SettleContract mocks base method
+func (m *NSBClient) SettleContract(signer uip.Signer, bytes []byte) (*nsb_message.DeliverTx, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SettleContract", signer, bytes)
+	ret0, _ := ret[0].(*nsb_message.DeliverTx)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// SettleContract indicates an expected call of SettleContract
+func (mr *NSBClientMockRecorder) SettleContract(signer, bytes interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SettleContract", reflect.TypeOf((*NSBClient)(nil).SettleContract), signer, bytes)
 }

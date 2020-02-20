@@ -1,7 +1,7 @@
 package vesclient
 
 import (
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	uiprpc_base "github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
 	"github.com/Myriad-Dreamin/go-ves/lib/basic/encoding"
 	"github.com/gogo/protobuf/proto"
@@ -39,9 +39,9 @@ func (vc *VesClient) unmarshalProto(message []byte, target proto.Message) bool {
 	return err == nil
 }
 
-func SignatureFromSTDToRPC(signature uiptypes.Signature) *uiprpc_base.Signature {
+func SignatureFromSTDToRPC(signature uip.Signature) *uiprpc_base.Signature {
 	return &uiprpc_base.Signature{
-		SignatureType: uiptypes.SignatureTypeUnderlyingType(signature.GetSignatureType()),
+		SignatureType: uip.SignatureTypeUnderlyingType(signature.GetSignatureType()),
 		Content:       signature.GetContent(),
 	}
 }

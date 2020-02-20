@@ -5,7 +5,7 @@
 package mock
 
 import (
-	uiptypes "github.com/HyperService-Consortium/go-uip/uiptypes"
+	uip "github.com/HyperService-Consortium/go-uip/uip"
 	gomock "github.com/golang/mock/gomock"
 	reflect "reflect"
 )
@@ -86,10 +86,10 @@ func (m *StorageHandler) EXPECT() *StorageHandlerMockRecorder {
 }
 
 // GetTransactionProof mocks base method
-func (m *StorageHandler) GetTransactionProof(chainID uiptypes.ChainID, blockID uiptypes.BlockID, color []byte) (uiptypes.MerkleProof, error) {
+func (m *StorageHandler) GetTransactionProof(chainID uip.ChainID, blockID uip.BlockID, color []byte) (uip.MerkleProof, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetTransactionProof", chainID, blockID, color)
-	ret0, _ := ret[0].(uiptypes.MerkleProof)
+	ret0, _ := ret[0].(uip.MerkleProof)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -101,10 +101,10 @@ func (mr *StorageHandlerMockRecorder) GetTransactionProof(chainID, blockID, colo
 }
 
 // GetStorageAt mocks base method
-func (m *StorageHandler) GetStorageAt(chainID uiptypes.ChainID, typeID uiptypes.TypeID, contractAddress uiptypes.ContractAddress, pos, description []byte) (uiptypes.Variable, error) {
+func (m *StorageHandler) GetStorageAt(chainID uip.ChainID, typeID uip.TypeID, contractAddress uip.ContractAddress, pos, description []byte) (uip.Variable, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetStorageAt", chainID, typeID, contractAddress, pos, description)
-	ret0, _ := ret[0].(uiptypes.Variable)
+	ret0, _ := ret[0].(uip.Variable)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -116,7 +116,7 @@ func (mr *StorageHandlerMockRecorder) GetStorageAt(chainID, typeID, contractAddr
 }
 
 // SetStorageOf mocks base method
-func (m *StorageHandler) SetStorageOf(chainID uiptypes.ChainID, typeID uiptypes.TypeID, contractAddress uiptypes.ContractAddress, pos, description []byte, variable uiptypes.Variable) error {
+func (m *StorageHandler) SetStorageOf(chainID uip.ChainID, typeID uip.TypeID, contractAddress uip.ContractAddress, pos, description []byte, variable uip.Variable) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "SetStorageOf", chainID, typeID, contractAddress, pos, description, variable)
 	ret0, _ := ret[0].(error)

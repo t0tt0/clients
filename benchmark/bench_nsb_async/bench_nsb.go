@@ -8,7 +8,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	uiptypes "github.com/HyperService-Consortium/go-uip/uiptypes"
+	uip "github.com/HyperService-Consortium/go-uip/uip"
 	nsbclient "github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client"
 
 	signaturer "github.com/HyperService-Consortium/go-uip/signaturer"
@@ -41,7 +41,7 @@ var idleProof, _ = json.Marshal(map[string]interface{}{
 
 var txpadding = make([]byte, 5*(64*5+100))
 
-func NSBRoutine(signer uiptypes.Signer, index int) {
+func NSBRoutine(signer uip.Signer, index int) {
 	// info, err := cli.GetAbciInfo()
 	//iscAddress, err := cli.CreateISCAsync(signer, []uint32{0}, [][]byte{signer.GetPublicKey()}, nil, txpadding, nil)
 	//if err != nil {

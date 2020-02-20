@@ -6,6 +6,7 @@ import (
 	"fmt"
 	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/Myriad-Dreamin/go-ves/config"
+	"github.com/Myriad-Dreamin/go-ves/lib/bni/getter"
 	"github.com/Myriad-Dreamin/minimum-lib/sugar"
 	"io/ioutil"
 	"os"
@@ -38,9 +39,10 @@ func main() {
 	sugar.WithFile(func(f *os.File) {
 		var intents OpIntents
 		sugar.HandlerError0(json.Unmarshal(sugar.HandlerError(ioutil.ReadAll(f)).([]byte), &intents))
-		var ier = opintent.NewOpIntentInitializer(config.UserMap)
-		res := sugar.HandlerError2(ier.InitOpIntent(intents))[0].([]*opintent.TransactionIntent)
+		var ier = sugar.HandlerError(opintent.NewInitializer(config.UserMap, getter.NewBlockChainGetter(config.ChainDNS))).(*opintent.Initializer)
+		res := sugar.HandlerError(ier.Parse(intents)).(opintent.TxIntents).GetTxIntents()
 		for _, intent := range res {
+			intent := intent.GetIntent()
 			fmt.Println("=================================================================")
 			fmt.Println("src:", hex.EncodeToString(intent.Src))
 			fmt.Println("dst:", hex.EncodeToString(intent.Dst))

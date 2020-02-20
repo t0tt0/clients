@@ -5,7 +5,7 @@ import (
 	"encoding/binary"
 	"fmt"
 	"github.com/HyperService-Consortium/go-uip/const/value_type"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/Myriad-Dreamin/go-ves/types"
 	"math/big"
 )
@@ -18,16 +18,16 @@ func NewStorageHandler(i types.Index) *StorageHandler {
 	return &StorageHandler{index: i}
 }
 
-func (g *StorageHandler) GetTransactionProof(chainID uiptypes.ChainID, blockID uiptypes.BlockID, color []byte) (uiptypes.MerkleProof, error) {
+func (g *StorageHandler) GetTransactionProof(chainID uip.ChainID, blockID uip.BlockID, color []byte) (uip.MerkleProof, error) {
 	panic("implement me")
 }
 
 type variable struct {
-	Type  uiptypes.TypeID
+	Type  uip.TypeID
 	Value interface{}
 }
 
-func (v variable) GetType() uiptypes.TypeID {
+func (v variable) GetType() uip.TypeID {
 	return v.Type
 }
 
@@ -37,26 +37,26 @@ func (v variable) GetValue() interface{} {
 
 type Key struct {
 	// todo underlying type
-	ChainID         uiptypes.ChainID
-	ContractAddress uiptypes.ContractAddress
+	ChainID         uip.ChainID
+	ContractAddress uip.ContractAddress
 	Pos             []byte
 	Description     []byte
 }
 
 type KeyHeader struct {
 	// todo underlying type
-	ChainID         uiptypes.ChainID
+	ChainID         uip.ChainID
 	ContractAddress uint64
 	Pos             uint64
 	Description     uint64
 }
 
 func (g *StorageHandler) GetStorageAt(
-	chainID uiptypes.ChainID,
-	typeID uiptypes.TypeID,
-	contractAddress uiptypes.ContractAddress,
+	chainID uip.ChainID,
+	typeID uip.TypeID,
+	contractAddress uip.ContractAddress,
 	pos []byte,
-	description []byte) (uiptypes.Variable, error) {
+	description []byte) (uip.Variable, error) {
 	buf, err := toKey(chainID, contractAddress, pos, description)
 	if err != nil {
 		return nil, err
@@ -66,7 +66,7 @@ func (g *StorageHandler) GetStorageAt(
 		return nil, err
 	}
 	var v variable
-	v.Type = uiptypes.TypeID(binary.BigEndian.Uint16(b[0:2]))
+	v.Type = uip.TypeID(binary.BigEndian.Uint16(b[0:2]))
 
 	// todo, convert?
 	if v.Type != typeID {
@@ -153,7 +153,7 @@ func (g *StorageHandler) GetStorageAt(
 	return v, nil
 }
 
-func toKey(chainID uiptypes.ChainID, contractAddress uiptypes.ContractAddress, pos []byte, description []byte) (*bytes.Buffer, error) {
+func toKey(chainID uip.ChainID, contractAddress uip.ContractAddress, pos []byte, description []byte) (*bytes.Buffer, error) {
 	buf := bytes.NewBufferString("k:")
 	//todo normalize key
 	err := binary.Write(buf, binary.BigEndian, KeyHeader{
@@ -180,7 +180,7 @@ func toKey(chainID uiptypes.ChainID, contractAddress uiptypes.ContractAddress, p
 	return buf, nil
 }
 
-func (g *StorageHandler) SetStorageOf(chainID uiptypes.ChainID, typeID uiptypes.TypeID, contractAddress uiptypes.ContractAddress, pos []byte, description []byte, val uiptypes.Variable) error {
+func (g *StorageHandler) SetStorageOf(chainID uip.ChainID, typeID uip.TypeID, contractAddress uip.ContractAddress, pos []byte, description []byte, val uip.Variable) error {
 
 	buf, err := toKey(chainID, contractAddress, pos, description)
 	if err != nil {

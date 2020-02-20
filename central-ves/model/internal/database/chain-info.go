@@ -1,7 +1,7 @@
 package database
 
 import (
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"time"
 )
 
@@ -12,7 +12,7 @@ type ChainInfo struct {
 
 	UserID  uint                           `dorm:"user_id" gorm:"column:user_id;not_null" json:"user_id"`
 	Address string                         `dorm:"address" gorm:"address;not_null" json:"address"`
-	ChainID uiptypes.ChainIDUnderlyingType `dorm:"chain_id" gorm:"chain_id;not_null" json:"chain_id"`
+	ChainID uip.ChainIDUnderlyingType `dorm:"chain_id" gorm:"chain_id;not_null" json:"chain_id"`
 }
 
 // TableName specification

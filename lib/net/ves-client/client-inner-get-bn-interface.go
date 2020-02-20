@@ -2,7 +2,7 @@ package vesclient
 
 import (
 	ChainType "github.com/HyperService-Consortium/go-uip/const/chain_type"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/Myriad-Dreamin/go-ves/lib/backend/wrapper"
 	"github.com/Myriad-Dreamin/go-ves/types"
 
@@ -10,7 +10,7 @@ import (
 	nsbbni "github.com/Myriad-Dreamin/go-ves/lib/bni/ten"
 )
 
-func (vc *VesClient) ensureRouter(chainID uint64, router *uiptypes.Router) bool {
+func (vc *VesClient) ensureRouter(chainID uint64, router *uip.Router) bool {
 	if *router != nil {
 		return true
 	}
@@ -21,7 +21,7 @@ func (vc *VesClient) ensureRouter(chainID uint64, router *uiptypes.Router) bool 
 	return err == nil
 }
 
-func (vc *VesClient) getRouter(chainID uint64) (uiptypes.Router, error) {
+func (vc *VesClient) getRouter(chainID uint64) (uip.Router, error) {
 	if ci, err := vc.dns.GetChainInfo(chainID); err != nil {
 		return nil, wrapper.Wrap(types.CodeChainIDNotFound, err)
 	} else {
@@ -36,7 +36,7 @@ func (vc *VesClient) getRouter(chainID uint64) (uiptypes.Router, error) {
 	}
 }
 
-func (vc *VesClient) ensureBlockStorage(chainID uint64, storage *uiptypes.Storage) bool {
+func (vc *VesClient) ensureBlockStorage(chainID uint64, storage *uip.Storage) bool {
 	if *storage != nil {
 		return true
 	}
@@ -47,7 +47,7 @@ func (vc *VesClient) ensureBlockStorage(chainID uint64, storage *uiptypes.Storag
 	return err == nil
 }
 
-func (vc *VesClient) getBlockStorage(chainID uint64) (uiptypes.Storage, error) {
+func (vc *VesClient) getBlockStorage(chainID uint64) (uip.Storage, error) {
 	if ci, err := vc.dns.GetChainInfo(chainID); err != nil {
 		return nil, wrapper.Wrap(types.CodeChainIDNotFound, err)
 	} else {
@@ -62,7 +62,7 @@ func (vc *VesClient) getBlockStorage(chainID uint64) (uiptypes.Storage, error) {
 	}
 }
 
-func (vc *VesClient) ensureTranslator(chainID uint64, storage *uiptypes.Translator) bool {
+func (vc *VesClient) ensureTranslator(chainID uint64, storage *uip.Translator) bool {
 	if *storage != nil {
 		return true
 	}
@@ -73,7 +73,7 @@ func (vc *VesClient) ensureTranslator(chainID uint64, storage *uiptypes.Translat
 	return err == nil
 }
 
-func (vc *VesClient) getTranslator(chainID uint64) (uiptypes.Translator, error) {
+func (vc *VesClient) getTranslator(chainID uint64) (uip.Translator, error) {
 	if ci, err := vc.dns.GetChainInfo(chainID); err != nil {
 		return nil, wrapper.Wrap(types.CodeChainIDNotFound, err)
 	} else {

@@ -1,10 +1,9 @@
 package raw_transaction
 
 import (
-	base_raw_transaction "github.com/HyperService-Consortium/go-uip/base-raw-transaction"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 )
 
-func FromRaw(b []byte) uiptypes.RawTransaction {
-	return base_raw_transaction.Transaction(b)
+func FromRaw(b []byte) uip.RawTransaction {
+	return uip.RawTransactionImpl(b)
 }

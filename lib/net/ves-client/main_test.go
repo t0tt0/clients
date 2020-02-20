@@ -2,7 +2,7 @@ package vesclient
 
 import (
 	"errors"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/Myriad-Dreamin/go-ves/lib/backend/wrapper"
 	"github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/sugar"
@@ -15,16 +15,16 @@ var describer = wrapper.Describer{
 	Rel:  sugar.HandlerError(os.Getwd()).(string)}
 
 type ChainDNSMockData struct {
-	K uiptypes.ChainIDUnderlyingType
+	K uip.ChainIDUnderlyingType
 	V ChainInfo
 }
 
 type ChainInfo struct {
-	ChainType uiptypes.ChainType
+	ChainType uip.ChainType
 	ChainHost string
 }
 
-func (c ChainInfo) GetChainType() uiptypes.ChainType {
+func (c ChainInfo) GetChainType() uip.ChainType {
 	return c.ChainType
 }
 
@@ -32,10 +32,10 @@ func (c ChainInfo) GetChainHost() string {
 	return c.ChainHost
 }
 
-type mockChainDNSImpl map[uiptypes.ChainIDUnderlyingType]types.ChainInfo
+type mockChainDNSImpl map[uip.ChainIDUnderlyingType]types.ChainInfo
 
 func (m mockChainDNSImpl) GetChainInfo(
-	chainID uiptypes.ChainIDUnderlyingType) (types.ChainInfo, error) {
+	chainID uip.ChainIDUnderlyingType) (types.ChainInfo, error) {
 	ci, ok := m[chainID]
 	if !ok {
 		return nil, errors.New("not found")

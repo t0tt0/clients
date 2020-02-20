@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/HyperService-Consortium/go-uip/signaturer"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/Myriad-Dreamin/minimum-lib/sugar"
 	"testing"
 	"time"
@@ -53,7 +53,7 @@ func TestVesClient_getNSBSigner(t *testing.T) {
 			vcWithAccountMockData,
 			sugar.HandlerError(
 				signaturer.NewTendermintNSBSigner(
-					accountNSBBasePrivateKey1)).(uiptypes.Signer).GetPublicKey(),
+					accountNSBBasePrivateKey1)).(uip.Signer).GetPublicKey(),
 			false},
 	}
 	for _, tt := range tests {

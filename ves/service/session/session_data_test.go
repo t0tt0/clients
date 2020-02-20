@@ -6,7 +6,7 @@ import (
 	ChainType "github.com/HyperService-Consortium/go-uip/const/chain_type"
 	"github.com/HyperService-Consortium/go-uip/const/trans_type"
 	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
 	uiprpc_base "github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
 	"github.com/Myriad-Dreamin/go-ves/ves/mock"
@@ -81,7 +81,7 @@ func newMockGetTransactionIntentWithError(sessionID []byte, sesFSet *mock.Sessio
 }
 
 func newEnsureStorage() {
-	//v := base_variable.Variable{
+	//v := uip.VariableImpl{
 	//	Type: value_type.Uint256, Value: big.NewInt(1)}
 	//bn.EXPECT().GetStorageAt(
 	//	ti.ChainID, value_type.Uint256,
@@ -96,7 +96,7 @@ func newEnsureStorage() {
 }
 
 const (
-	ethereumChainID uiptypes.ChainTypeUnderlyingType = iota
+	ethereumChainID uip.ChainTypeUnderlyingType = iota
 	tendermintChainID
 	unknownChainTypeID
 	unknownChainID

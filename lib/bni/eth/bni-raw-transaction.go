@@ -5,7 +5,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"errors"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	ethclient "github.com/Myriad-Dreamin/go-ves/lib/net/eth-client"
 )
 
@@ -32,7 +32,7 @@ func (t RawTransaction) Signed() bool {
 }
 
 type PasswordSigner interface {
-	uiptypes.Signer
+	uip.Signer
 	GetEthPassword() string
 }
 
@@ -41,24 +41,24 @@ type passwordSigner struct {
 	ps string
 }
 
-func (p passwordSigner) GetPublicKey() uiptypes.PublicKey {
+func (p passwordSigner) GetPublicKey() uip.PublicKey {
 	return p.pb
 }
 
 var ErrNotUnlock = errors.New("error not unlock")
 
-func (p passwordSigner) Sign(content uiptypes.SignatureContent, ctxVars ...interface{}) (uiptypes.Signature, error) {
+func (p passwordSigner) Sign(content uip.SignatureContent, ctxVars ...interface{}) (uip.Signature, error) {
 
 	var (
 		duration  int
-		chainInfo uiptypes.ChainInfo
+		chainInfo uip.ChainInfo
 	)
 
 	for _, rawV := range ctxVars {
 		switch v := rawV.(type) {
-		case uiptypes.SignerOptionDuration:
+		case uip.SignerOptionDuration:
 			duration = int(v) / 1000
-		case uiptypes.SignerOptionChainInfo:
+		case uip.SignerOptionChainInfo:
 			chainInfo = v
 		}
 	}
@@ -85,7 +85,7 @@ func (p passwordSigner) GetEthPassword() string {
 }
 
 // todo change raw transaction signature = sign(signer, context)
-func (t RawTransaction) Sign(signer uiptypes.Signer, ctxVars ...interface{}) (uiptypes.RawTransaction, error) {
+func (t RawTransaction) Sign(signer uip.Signer, ctxVars ...interface{}) (uip.RawTransaction, error) {
 	address := signer.GetPublicKey()
 	if !bytes.Equal(address, t.Responsible) {
 		return t, ErrNotMatchAddress

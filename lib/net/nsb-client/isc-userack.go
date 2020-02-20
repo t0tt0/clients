@@ -7,11 +7,11 @@ import (
 
 	ISC "github.com/HyperService-Consortium/NSB/contract/isc"
 	"github.com/HyperService-Consortium/NSB/grpc/nsbrpc"
-	uiptypes "github.com/HyperService-Consortium/go-uip/uiptypes"
+	uip "github.com/HyperService-Consortium/go-uip/uip"
 )
 
 func (nc *NSBClient) UserAck(
-	user uiptypes.Signer, contractAddress []byte,
+	user uip.Signer, contractAddress []byte,
 	address, signature []byte,
 ) (*nsb_message.DeliverTx, error) {
 	// fmt.Println(string(buf.Bytes()))

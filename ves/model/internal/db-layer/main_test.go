@@ -1,8 +1,9 @@
-package dblayer
+package dblayer_test
 
 import (
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/Myriad-Dreamin/go-ves/ves/config"
+	"github.com/Myriad-Dreamin/go-ves/ves/model"
 	"github.com/Myriad-Dreamin/minimum-lib/logger"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"go.uber.org/zap/zapcore"
@@ -10,6 +11,8 @@ import (
 	"testing"
 )
 
+
+var p = model.NewDBLayerModule()
 var dep = make(module.Module)
 
 func TestMain(m *testing.M) {
@@ -24,7 +27,7 @@ func TestMain(m *testing.M) {
 			Escaper: `"`,
 		},
 	})
-	InstallMock(dep, mockExpectation)
+	p.InstallMock(dep, mockExpectation)
 	m.Run()
 }
 

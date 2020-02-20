@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/Myriad-Dreamin/go-ves/ves/model/internal/abstraction"
 	"github.com/Myriad-Dreamin/go-ves/ves/model/internal/database"
 	dblayer "github.com/Myriad-Dreamin/go-ves/ves/model/internal/db-layer"
@@ -31,10 +31,10 @@ func (p Module) NewSessionAccountDB(m module.Module) (SessionAccountDB, error) {
 func NewSessionAccountDB(m module.Module) (SessionAccountDB, error) {
 	return p.NewSessionAccountDB(m)
 }
-func SessionAccountsToUIPAccounts(accounts []SessionAccount) (uipAccounts []uiptypes.Account) {
+func SessionAccountsToUIPAccounts(accounts []SessionAccount) (uipAccounts []uip.Account) {
 	return database.SessionAccountsToUIPAccounts(accounts)
 }
 
-func NewSessionAccount(chainID uiptypes.ChainIDUnderlyingType, address []byte) *SessionAccount {
+func NewSessionAccount(chainID uip.ChainIDUnderlyingType, address []byte) *SessionAccount {
 	return database.NewSessionAccount(chainID, address)
 }

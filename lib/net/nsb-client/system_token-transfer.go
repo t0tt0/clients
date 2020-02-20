@@ -7,7 +7,7 @@ import (
 
 	appl "github.com/HyperService-Consortium/NSB/application"
 	"github.com/HyperService-Consortium/NSB/grpc/nsbrpc"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 )
 
 func (nc *NSBClient) CreateTransferPacket(srcAddress, dstAddress []byte, value *math.Uint256) (*nsbrpc.TransactionHeader, error) {
@@ -24,7 +24,7 @@ func (nc *NSBClient) CreateTransferPacket(srcAddress, dstAddress []byte, value *
 }
 
 func (nc *NSBClient) Transfer(
-	user uiptypes.Signer, toAddress []byte,
+	user uip.Signer, toAddress []byte,
 	value *math.Uint256,
 ) (*nsb_message.ResultInfo, error) {
 	h, e := nc.CreateTransferPacket(user.GetPublicKey(), toAddress, value)

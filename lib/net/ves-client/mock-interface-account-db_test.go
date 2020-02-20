@@ -4,8 +4,7 @@ import (
 	"crypto/md5"
 	"encoding/binary"
 	"errors"
-	base_account "github.com/HyperService-Consortium/go-uip/base-account"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/Myriad-Dreamin/dorm"
 	"github.com/Myriad-Dreamin/go-ves/lib/basic/encoding"
 	"github.com/jinzhu/gorm"
@@ -48,7 +47,7 @@ func (m mockAccountDBImpl) ID_(db *gorm.DB, id uint) (account *Account, err erro
 	panic("implement me")
 }
 
-func (m mockAccountDBImpl) InvertFind(acc uiptypes.Account) (account *Account, err error) {
+func (m mockAccountDBImpl) InvertFind(acc uip.Account) (account *Account, err error) {
 	if account, ok := m.invertFindMap[m.invertFindKey(acc)]; ok {
 		return account, nil
 	} else {
@@ -64,7 +63,7 @@ func (m mockAccountDBImpl) QueryAlias(alias string) (account *Account, err error
 	}
 }
 
-func (m mockAccountDBImpl) FindAccounts(id uint, chainID uiptypes.ChainIDUnderlyingType) ([]uiptypes.Account, error) {
+func (m mockAccountDBImpl) FindAccounts(id uint, chainID uip.ChainIDUnderlyingType) ([]uip.Account, error) {
 	panic("implement me")
 }
 
@@ -72,7 +71,7 @@ func (m mockAccountDBImpl) QueryChain() *AccountQuery {
 	panic("implement me")
 }
 
-func (m mockAccountDBImpl) invertFindKey(account uiptypes.Account) string {
+func (m mockAccountDBImpl) invertFindKey(account uip.Account) string {
 	const mg = "<84f4446f>"
 	hashTarget := make([]byte, len(mg)+len(account.GetAddress())+8)
 	binary.BigEndian.PutUint64(hashTarget, account.GetChainId())
@@ -89,7 +88,7 @@ type AccountQueryAliasMockData struct {
 	V *Account
 }
 
-type accountKey = base_account.Account
+type accountKey = uip.AccountImpl
 type AccountInvertFindMockData struct {
 	K *accountKey
 	V *Account

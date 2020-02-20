@@ -5,6 +5,7 @@ import (
 	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	xconfig "github.com/Myriad-Dreamin/go-ves/config"
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
+	"github.com/Myriad-Dreamin/go-ves/lib/bni/getter"
 	nsbcli "github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client"
 	"github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/go-ves/ves/config"
@@ -30,7 +31,14 @@ func (srv *Server) PrepareRemoteService() bool {
 
 	srv.Module.Require(config.ModulePath.Global.CloseHandler).(types.CloseHandler).Handle(conn)
 	// conn.Close()
-	srv.Module.Provide(config.ModulePath.Service.OpIntentInitializer, opintent.NewOpIntentInitializer(xconfig.UserMap))
+
+	initializer, err := opintent.NewInitializer(xconfig.UserMap, getter.NewBlockChainGetter(xconfig.ChainDNS))
+	if err != nil {
+		srv.Logger.Error("init op intent initializer error", "error", err)
+		return false
+	}
+
+	srv.Module.Provide(config.ModulePath.Service.OpIntentInitializer, initializer)
 	srv.Module.Provide(config.ModulePath.Global.CentralVESClient, uiprpc.NewCenteredVESClient(conn))
 	fmt.Println(srv.Module.Require(config.ModulePath.Global.CentralVESClient))
 	srv.Module.Provide(config.ModulePath.Global.NSBClient, nsbcli.NewNSBClient(srv.Cfg.BaseParametersConfig.NSBHost))

@@ -5,7 +5,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	ethclient "github.com/Myriad-Dreamin/go-ves/lib/net/eth-client"
 	"github.com/tidwall/gjson"
 	"strconv"
@@ -16,14 +16,14 @@ func (bn *BN) MustWithSigner() bool {
 	return true
 }
 
-func (bn *BN) RouteWithSigner(signer uiptypes.Signer) (uiptypes.Router, error) {
+func (bn *BN) RouteWithSigner(signer uip.Signer) (uip.Router, error) {
 	nbn := *bn
 	nbn.signer = signer
 	return &nbn, nil
 }
 
-func (bn *BN) RouteRaw(destination uiptypes.ChainID, rawTransaction uiptypes.RawTransaction) (
-	transactionReceipt uiptypes.TransactionReceipt, err error) {
+func (bn *BN) RouteRaw(destination uip.ChainID, rawTransaction uip.RawTransaction) (
+	transactionReceipt uip.TransactionReceipt, err error) {
 
 	if !rawTransaction.Signed() {
 		ci, err := bn.dns.GetChainInfo(destination)
@@ -40,7 +40,7 @@ func (bn *BN) RouteRaw(destination uiptypes.ChainID, rawTransaction uiptypes.Raw
 }
 
 func (bn *BN) sendTransaction(
-	destination uiptypes.ChainID, rawTransaction uiptypes.RawTransaction) (
+	destination uip.ChainID, rawTransaction uip.RawTransaction) (
 	[]byte, error) {
 	ci, err := bn.dns.GetChainInfo(destination)
 	if err != nil {
@@ -54,7 +54,7 @@ func (bn *BN) sendTransaction(
 }
 
 func (bn *BN) createTransactionReceipt(b []byte, err error) (
-	uiptypes.TransactionReceipt, error) {
+	uip.TransactionReceipt, error) {
 	if err != nil {
 		return nil, err
 	}
@@ -75,8 +75,8 @@ func (bn *BN) createTransactionReceipt(b []byte, err error) (
 	return b, nil
 }
 
-func (bn *BN) WaitForTransact(chainID uiptypes.ChainID, transactionReceipt uiptypes.TransactionReceipt,
-	rOptions ...interface{}) (blockID uiptypes.BlockID, color []byte, err error) {
+func (bn *BN) WaitForTransact(chainID uip.ChainID, transactionReceipt uip.TransactionReceipt,
+	rOptions ...interface{}) (blockID uip.BlockID, color []byte, err error) {
 	options := parseOptions(rOptions)
 	chainInfo, err := bn.dns.GetChainInfo(chainID)
 	if err != nil {
@@ -102,7 +102,7 @@ func (bn *BN) WaitForTransact(chainID uiptypes.ChainID, transactionReceipt uipty
 	return nil, nil, ErrTimeout
 }
 
-func (bn *BN) Route(intent *uiptypes.TransactionIntent, storage uiptypes.Storage) ([]byte, error) {
+func (bn *BN) Route(intent *uip.TransactionIntent, storage uip.Storage) ([]byte, error) {
 	rawTransaction, err := bn.Translate(intent, storage)
 	if err != nil {
 		return nil, err

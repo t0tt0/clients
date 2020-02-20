@@ -9,7 +9,7 @@ import (
 	"github.com/HyperService-Consortium/NSB/grpc/nsbrpc"
 	"github.com/HyperService-Consortium/NSB/math"
 	"github.com/HyperService-Consortium/go-uip/signaturer"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	bytespool "github.com/Myriad-Dreamin/go-ves/lib/basic/bytes-pool"
 	"github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client/nsb-message"
 	"github.com/Myriad-Dreamin/go-ves/lib/net/request"
@@ -757,7 +757,7 @@ func Test_decorateHost(t *testing.T) {
 
 func TestNSBClient_AddBlockCheck(t *testing.T) {
 	type args struct {
-		user      uiptypes.Signer
+		user      uip.Signer
 		toAddress []byte
 		chainID   uint64
 		blockID   []byte
@@ -793,7 +793,7 @@ func TestNSBClient_AddBlockCheck(t *testing.T) {
 
 func TestNSBClient_AddMerkleProof(t *testing.T) {
 	type args struct {
-		user       uiptypes.Signer
+		user       uip.Signer
 		toAddress  []byte
 		merkletype uint16
 		rootHash   []byte
@@ -924,7 +924,7 @@ func TestNSBClient_BroadcastTxAsync1(t *testing.T) {
 func TestNSBClient_CreateContractPacket(t *testing.T) {
 
 	type args struct {
-		s         uiptypes.Signer
+		s         uip.Signer
 		toAddress []byte
 		value     []byte
 		pair      *nsbrpc.FAPair

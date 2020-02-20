@@ -1,10 +1,11 @@
-package dblayer
+package dblayer_test
 
 import (
 	"bytes"
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/Myriad-Dreamin/go-ves/ves/config"
 	"github.com/Myriad-Dreamin/go-ves/ves/model/internal/database"
+	dblayer "github.com/Myriad-Dreamin/go-ves/ves/model/internal/db-layer"
 	"github.com/Myriad-Dreamin/minimum-lib/sugar"
 	"github.com/stretchr/testify/assert"
 	"reflect"
@@ -14,7 +15,7 @@ import (
 
 func TestSession_GetGUID(t *testing.T) {
 	var a = assert.New(t)
-	var ses = new(Session)
+	var ses = new(database.Session)
 	var b0, b1 = []byte("123"), []byte("124")
 	ses.ISCAddress = database.EncodeAddress(b0)
 	a.True(bytes.Equal(ses.GetGUID(), b0))
@@ -53,7 +54,7 @@ func TestSession_Create(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := &Session{
+			s := &database.Session{
 				ID:               tt.fields.ID,
 				CreatedAt:        tt.fields.CreatedAt,
 				UpdatedAt:        tt.fields.UpdatedAt,
@@ -63,7 +64,7 @@ func TestSession_Create(t *testing.T) {
 				Content:          tt.fields.Content,
 				AccountsCount:    tt.fields.AccountsCount,
 			}
-			got, err := sugar.HandlerError(NewSessionAccountDB(n, dep)).(*SessionDB).Create(s)
+			got, err := sugar.HandlerError(p.NewSessionDB(dep)).(*dblayer.SessionDB).Create(s)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Create() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -90,7 +91,7 @@ type scf struct {
 	AccountsCount int64 `dorm:"accounts_cnt" gorm:"column:accounts_cnt;not_null" json:"accounts_cnt"`
 }
 
-func filterComparingField(s *Session) scf {
+func filterComparingField(s *database.Session) scf {
 	return scf{
 		ID:               s.ID,
 		ISCAddress:       s.ISCAddress,
@@ -145,19 +146,19 @@ func TestSession_Update(t *testing.T) {
 	tests := []struct {
 		name    string
 		fields  fields
-		result  *Session
+		result  *database.Session
 		want    int64
 		wantErr bool
 	}{
 		{name: "lost-id", fields: fields{
 			ID: 0,
-		}, result: &Session{
+		}, result: &database.Session{
 			ID: 1,
 		}, want: 1},
 		{name: "update-fields-to-non-zero", fields: fields{
 			ID:            1,
 			AccountsCount: 1,
-		}, result: &Session{
+		}, result: &database.Session{
 			ID:            1,
 			AccountsCount: 1,
 		}, want: 1},
@@ -165,7 +166,7 @@ func TestSession_Update(t *testing.T) {
 			ID:            1,
 			ISCAddress:    database.EncodeAddress(a),
 			AccountsCount: 0,
-		}, result: &Session{
+		}, result: &database.Session{
 			ID:            1,
 			ISCAddress:    database.EncodeAddress(a),
 			AccountsCount: 0,
@@ -173,7 +174,7 @@ func TestSession_Update(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := &Session{
+			s := &database.Session{
 				ID:               tt.fields.ID,
 				CreatedAt:        tt.fields.CreatedAt,
 				UpdatedAt:        tt.fields.UpdatedAt,
@@ -183,7 +184,7 @@ func TestSession_Update(t *testing.T) {
 				Content:          tt.fields.Content,
 				AccountsCount:    tt.fields.AccountsCount,
 			}
-			got, err := sugar.HandlerError(NewSessionAccountDB(n, dep)).(*SessionDB).Update(s)
+			got, err := sugar.HandlerError(p.NewSessionDB(dep)).(*dblayer.SessionDB).Update(s)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Update() error = %v, wantErr %v", err, tt.wantErr)
 				return

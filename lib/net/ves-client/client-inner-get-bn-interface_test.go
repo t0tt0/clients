@@ -3,7 +3,7 @@ package vesclient
 import (
 	"fmt"
 	ChainType "github.com/HyperService-Consortium/go-uip/const/chain_type"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	ethbni "github.com/Myriad-Dreamin/go-ves/lib/bni/eth"
 	tenbni "github.com/Myriad-Dreamin/go-ves/lib/bni/ten"
 	"reflect"
@@ -170,7 +170,7 @@ func TestVesClient_getBlockStorage(t *testing.T) {
 func TestVesClient_ensureRouter(t *testing.T) {
 	type args struct {
 		chainID uint64
-		router  uiptypes.Router
+		router  uip.Router
 	}
 	tests := []struct {
 		name     string
@@ -227,7 +227,7 @@ func TestVesClient_ensureRouter(t *testing.T) {
 func TestVesClient_ensureBlockStorage(t *testing.T) {
 	type args struct {
 		chainID uint64
-		router  uiptypes.Storage
+		router  uip.Storage
 	}
 	tests := []struct {
 		name     string

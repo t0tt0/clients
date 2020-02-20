@@ -2,7 +2,7 @@ package nsbcli
 
 import (
 	"github.com/HyperService-Consortium/NSB/grpc/nsbrpc"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client/nsb-message"
 	"io"
 	"reflect"
@@ -11,7 +11,7 @@ import (
 
 func TestNSBClient_CreateISC(t *testing.T) {
 	type args struct {
-		user                    uiptypes.Signer
+		user                    uip.Signer
 		funds                   []uint32
 		iscOwners               [][]byte
 		bytesTransactionIntents [][]byte
@@ -46,7 +46,7 @@ func TestNSBClient_CreateISC(t *testing.T) {
 
 func TestNSBClient_CreateNormalPacket(t *testing.T) {
 	type args struct {
-		s         uiptypes.Signer
+		s         uip.Signer
 		toAddress []byte
 		data      []byte
 		value     []byte
@@ -80,7 +80,7 @@ func TestNSBClient_CreateNormalPacket(t *testing.T) {
 
 func TestNSBClient_FreezeInfo(t *testing.T) {
 	type args struct {
-		user            uiptypes.Signer
+		user            uip.Signer
 		contractAddress []byte
 		tid             uint64
 	}
@@ -583,7 +583,7 @@ func TestNSBClient_GetValidators1(t *testing.T) {
 
 func TestNSBClient_InsuranceClaim(t *testing.T) {
 	type args struct {
-		user            uiptypes.Signer
+		user            uip.Signer
 		contractAddress []byte
 		tid             uint64
 		aid             uint64
@@ -617,7 +617,7 @@ func TestNSBClient_InsuranceClaim(t *testing.T) {
 
 func TestNSBClient_SettleContract(t *testing.T) {
 	type args struct {
-		user            uiptypes.Signer
+		user            uip.Signer
 		contractAddress []byte
 	}
 	tests := []struct {
@@ -649,7 +649,7 @@ func TestNSBClient_SettleContract(t *testing.T) {
 
 func TestNSBClient_UserAck(t *testing.T) {
 	type args struct {
-		user            uiptypes.Signer
+		user            uip.Signer
 		contractAddress []byte
 		address         []byte
 		signature       []byte

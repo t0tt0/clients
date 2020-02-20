@@ -17,8 +17,8 @@ type Service struct {
 
 	accountDB      model.SessionAccountDB
 	db             model.SessionDB
-	sesFSet        control.SessionFSetI
-	opInitializer  control.OpIntentInitializerI
+	sesFSet        model.SessionFSetI
+	opInitializer  control.InitializerI
 	signer         control.Signer
 	logger         types.Logger
 	cVes           control.CentralVESClient
@@ -71,7 +71,7 @@ func NewService(m module.Module) (control.SessionService, error) {
 		sesFSet:   model.NewSessionFSet(provider, index),
 
 		dns:            m.Require(config.ModulePath.Service.ChainDNS).(control.ChainDNS),
-		opInitializer:  m.Require(config.ModulePath.Service.OpIntentInitializer).(control.OpIntentInitializerI),
+		opInitializer:  m.Require(config.ModulePath.Service.OpIntentInitializer).(control.InitializerI),
 		cfg:            m.Require(config.ModulePath.Minimum.Global.Configuration).(*config.ServerConfig),
 		logger:         m.Require(config.ModulePath.Minimum.Global.Logger).(types.Logger),
 		cVes:           m.Require(config.ModulePath.Global.CentralVESClient).(control.CentralVESClient),

@@ -3,7 +3,7 @@ package vesclient
 import (
 	"encoding/hex"
 	"github.com/HyperService-Consortium/go-uip/const/transaction_state_type"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
 	"github.com/Myriad-Dreamin/go-ves/grpc/wsrpc"
 )
@@ -12,7 +12,7 @@ type attestationReceiveRequestService struct {
 	client *VesClient
 	req    *wsrpc.AttestationReceiveRequest
 
-	signer uiptypes.Signer
+	signer uip.Signer
 	newReq *wsrpc.AttestationReceiveRequest
 }
 
@@ -158,7 +158,7 @@ func (svc *attestationReceiveRequestService) tellOthers() {
 }
 
 func (svc *attestationReceiveRequestService) checkSignaturesAndSign(
-	signatures []*uiprpc_base.Signature) (signature uiptypes.Signature) {
+	signatures []*uiprpc_base.Signature) (signature uip.Signature) {
 	if !svc.client.ensureGetNSBSigner(&svc.signer) {
 		return
 	}
@@ -177,8 +177,8 @@ func (svc *attestationReceiveRequestService) checkSignaturesAndSign(
 type _ARRDoTransactionService struct {
 	*attestationReceiveRequestService
 
-	router uiptypes.Router
-	translator uiptypes.Translator
+	router uip.Router
+	translator uip.Translator
 }
 
 func (svc *attestationReceiveRequestService) doTransaction() bool {
@@ -245,7 +245,7 @@ func (svc *_ARRDoTransactionService) doTransaction() bool {
 		return false
 	}
 	cb, err := svc.client.nsbClient.AddMerkleProof(
-		svc.signer, nil, uiptypes.MerkleProofTypeUnderlyingType(proof.GetType()), proof.GetRootHash(), proof.GetProof(), proof.GetKey(), proof.GetValue())
+		svc.signer, nil, uip.MerkleProofTypeUnderlyingType(proof.GetType()), proof.GetRootHash(), proof.GetProof(), proof.GetKey(), proof.GetValue())
 	if err != nil {
 		svc.client.logger.Error("nsbClient.AddMerkleProof", "error", err)
 		return false

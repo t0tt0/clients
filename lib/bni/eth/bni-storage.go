@@ -8,10 +8,9 @@ import (
 	"fmt"
 	"github.com/HyperService-Consortium/go-ethabi"
 	"github.com/HyperService-Consortium/go-rlp"
-	base_variable "github.com/HyperService-Consortium/go-uip/base-variable"
 	"github.com/HyperService-Consortium/go-uip/const/value_type"
 	merkleproof "github.com/HyperService-Consortium/go-uip/merkle-proof"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	ethclient "github.com/Myriad-Dreamin/go-ves/lib/net/eth-client"
 	"github.com/tidwall/gjson"
 	"math/big"
@@ -19,7 +18,7 @@ import (
 	"strconv"
 )
 
-func (bn *BN) GetStorageAt(chainID uiptypes.ChainID, typeID uiptypes.TypeID, contractAddress uiptypes.ContractAddress, pos []byte, description []byte) (uiptypes.Variable, error) {
+func (bn *BN) GetStorageAt(chainID uip.ChainID, typeID uip.TypeID, contractAddress uip.ContractAddress, pos []byte, description []byte) (uip.Variable, error) {
 	// todo
 	ci, err := bn.dns.GetChainInfo(chainID)
 	if err != nil {
@@ -38,7 +37,7 @@ func (bn *BN) GetStorageAt(chainID uiptypes.ChainID, typeID uiptypes.TypeID, con
 			return nil, err
 		}
 		bs, err := ethabi.NewDecoder().Decodes([]string{"bool"}, b)
-		return base_variable.Variable{
+		return uip.VariableImpl{
 			Type:  typeID,
 			Value: bs[0],
 		}, nil
@@ -53,7 +52,7 @@ func (bn *BN) GetStorageAt(chainID uiptypes.ChainID, typeID uiptypes.TypeID, con
 			return nil, err
 		}
 		bs, err := ethabi.NewDecoder().Decodes([]string{"uint256"}, b)
-		return base_variable.Variable{
+		return uip.VariableImpl{
 			Type:  typeID,
 			Value: bs[0],
 		}, nil
@@ -230,7 +229,7 @@ func (bn *BN) GetTransaction(host string, index []byte) (*Transaction, error) {
 	return &qwq, nil
 }
 
-func (bn *BN) GetTransactionProof(chainID uint64, blockID []byte, additional []byte) (uiptypes.MerkleProof, error) {
+func (bn *BN) GetTransactionProof(chainID uint64, blockID []byte, additional []byte) (uip.MerkleProof, error) {
 	cinfo, err := bn.dns.GetChainInfo(chainID)
 	if err != nil {
 		return nil, err
@@ -288,7 +287,7 @@ func (bn *BN) GetTransactionProof(chainID uint64, blockID []byte, additional []b
 	return merkleproof.NewMPTUsingKeccak256(proof, keybuf.Bytes(), txTrie.Get(keybuf.Bytes())), nil
 }
 
-func (bn *BN) GetTransactionProofByHash(chainID uint64, blockID []byte, additional []byte) (uiptypes.MerkleProof, error) {
+func (bn *BN) GetTransactionProofByHash(chainID uint64, blockID []byte, additional []byte) (uip.MerkleProof, error) {
 	cinfo, err := bn.dns.GetChainInfo(chainID)
 	if err != nil {
 		return nil, err

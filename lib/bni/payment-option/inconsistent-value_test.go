@@ -2,9 +2,8 @@ package payment_option
 
 import (
 	"fmt"
-	base_variable "github.com/HyperService-Consortium/go-uip/base-variable"
 	"github.com/HyperService-Consortium/go-uip/const/value_type"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/tidwall/gjson"
 	"math/big"
 	"testing"
@@ -13,19 +12,19 @@ import (
 type storage0777 struct {
 }
 
-func (s storage0777) GetTransactionProof(chainID uiptypes.ChainID, blockID uiptypes.BlockID, color []byte) (uiptypes.MerkleProof, error) {
+func (s storage0777) GetTransactionProof(chainID uip.ChainID, blockID uip.BlockID, color []byte) (uip.MerkleProof, error) {
 	panic("implement me")
 }
 
-func (s storage0777) GetStorageAt(chainID uiptypes.ChainID, typeID uiptypes.TypeID, contractAddress uiptypes.ContractAddress, pos []byte, description []byte) (uiptypes.Variable, error) {
+func (s storage0777) GetStorageAt(chainID uip.ChainID, typeID uip.TypeID, contractAddress uip.ContractAddress, pos []byte, description []byte) (uip.Variable, error) {
 	fmt.Println(chainID, typeID, contractAddress, pos, description)
-	return base_variable.Variable{
+	return uip.VariableImpl{
 		Type:  value_type.Uint256,
 		Value: big.NewInt(0x777),
 	}, nil
 }
 
-func (s storage0777) SetStorageOf(chainID uiptypes.ChainID, typeID uiptypes.TypeID, contractAddress uiptypes.ContractAddress, pos []byte, description []byte, variable uiptypes.Variable) error {
+func (s storage0777) SetStorageOf(chainID uip.ChainID, typeID uip.TypeID, contractAddress uip.ContractAddress, pos []byte, description []byte, variable uip.Variable) error {
 	panic("implement me")
 }
 
@@ -33,7 +32,7 @@ func TestParseInconsistentValueOption(t *testing.T) {
 
 	type args struct {
 		meta         gjson.Result
-		storage      uiptypes.Storage
+		storage      uip.Storage
 		defaultValue string
 	}
 	tests := []struct {

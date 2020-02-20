@@ -9,6 +9,8 @@ github.com/DeanThompson/ginpprof v0.0.0-20190408063150-3be636683586 h1:vDSj8WQZo
 github.com/DeanThompson/ginpprof v0.0.0-20190408063150-3be636683586/go.mod h1:kMi/fSDAgvjo9TYfYwYeQ2vkyj+VTR/tB6u/Tjh39t0=
 github.com/HyperService-Consortium/NSB v0.7.3-0.20191110033951-7a0fad01c5fb h1:7J2+EnT0VsvhVJyA5Mfk1YtQRQAyygDPdP+9oDkhkXw=
 github.com/HyperService-Consortium/NSB v0.7.3-0.20191110033951-7a0fad01c5fb/go.mod h1:dqnG46T6ZuGlOdhJh/Q9P42MLQw83yumpeZfIpx34+k=
+github.com/HyperService-Consortium/NSB v0.7.4-0.20200220123026-f58d4378d7a6 h1:mk1ueR0UA4bamlJ4Ldv4mUbDJHy7yTyUpkKbXFknB64=
+github.com/HyperService-Consortium/NSB v0.7.4-0.20200220123026-f58d4378d7a6/go.mod h1:CCnK0PzEBZzV3d/0RlDIOuUZPBlvYMRK4uhihMabhMU=
 github.com/HyperService-Consortium/go-ethabi v0.9.1 h1:KO5jE1PDMTHuMr+Kp3LxQOm+bD132F0vsDyS9ILBY58=
 github.com/HyperService-Consortium/go-ethabi v0.9.1/go.mod h1:ngPlugEdGFUTCnDFwAoog6YLGdm959cSzgizwzbsJiI=
 github.com/HyperService-Consortium/go-hexutil v1.0.1 h1:pThbi0a+9z7Oq7s3AcRgRsGKWc1qlq7sMBdDscSTKQs=
@@ -19,6 +21,8 @@ github.com/HyperService-Consortium/go-rlp v1.0.1-0.20190903144357-b5693c05a6b8 h
 github.com/HyperService-Consortium/go-rlp v1.0.1-0.20190903144357-b5693c05a6b8/go.mod h1:f6lLuGRJua3AHgMk4m6XvsF64GFlr5ekGeb2n+ymYfQ=
 github.com/HyperService-Consortium/go-uip v0.0.0-20200117063617-d1d70e0d421c h1:zNN/CAI1Zr8PrmsR5ntbHwYRDMWNiIHMbRv+XGnskHw=
 github.com/HyperService-Consortium/go-uip v0.0.0-20200117063617-d1d70e0d421c/go.mod h1:Dsr7r708Jus0ojCM0Bve+Y3CE8A630KTFVooQVgAv9U=
+github.com/HyperService-Consortium/go-uip v0.0.0-20200220100806-ef9f88d41f96 h1:jH6GOQ3kqL0LOdvZxyyY3hHKLf+NF2p3Qe15ixC5Hh4=
+github.com/HyperService-Consortium/go-uip v0.0.0-20200220100806-ef9f88d41f96/go.mod h1:NcvLB95lHN867SaUNi8+PWgO0TNWZGX/1O29L1XQMhA=
 github.com/Joker/hpp v0.0.0-20180418125244-6893e659854a h1:PiDAizhfJbwZMISZ1Itx1ZTFeOFCml89Ofmz3V8rhoU=
 github.com/Joker/hpp v0.0.0-20180418125244-6893e659854a/go.mod h1:MzD2WMdSxvbHw5fM/OXOFily/lipJWRc9C1px0Mt0ZE=
 github.com/Joker/jade v1.0.0 h1:lOCEPvTAtWfLpSZYMOv/g44MGQFAolbKh2khHHGu0Kc=

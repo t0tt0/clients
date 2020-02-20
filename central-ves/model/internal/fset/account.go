@@ -2,7 +2,7 @@ package fset
 
 import (
 	"encoding/base64"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/model/internal/abstraction"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/model/internal/database"
 	"github.com/Myriad-Dreamin/go-ves/lib/backend/errorc"
@@ -22,7 +22,7 @@ func NewAccountFSet(p abstraction.Provider) *AccountFSet {
 	return &AccountFSet{p}
 }
 
-func (i AccountFSet) InsertAccount(userName string, acc uiptypes.Account) error {
+func (i AccountFSet) InsertAccount(userName string, acc uip.Account) error {
 	// todo transaction
 	userDB, chainInfoDB := i.UserDB(), i.ChainInfoDB()
 	var user *database.User
@@ -50,7 +50,7 @@ func (i AccountFSet) FindUser(userName string) (*database.User, error) {
 	return i.UserDB().QueryName(userName)
 }
 
-func (i AccountFSet) FindAccounts(userName string, chainID uint64) ([]uiptypes.Account, error) {
+func (i AccountFSet) FindAccounts(userName string, chainID uint64) ([]uip.Account, error) {
 	user, err := i.UserDB().QueryName(userName)
 	if err := errorc.MaybeSelectError(user, err); err.Code != types2.CodeOK {
 		return nil, err
@@ -59,7 +59,7 @@ func (i AccountFSet) FindAccounts(userName string, chainID uint64) ([]uiptypes.A
 	return i.ChainInfoDB().FindAccounts(user.ID, chainID)
 }
 
-func (i AccountFSet) HasAccount(userName string, acc uiptypes.Account) (has bool, err error) {
+func (i AccountFSet) HasAccount(userName string, acc uip.Account) (has bool, err error) {
 	var user *database.User
 	user, err = i.InvertFind(acc)
 	if err != nil {
@@ -71,7 +71,7 @@ func (i AccountFSet) HasAccount(userName string, acc uiptypes.Account) (has bool
 	return true, nil
 }
 
-func (i AccountFSet) InvertFind(acc uiptypes.Account) (*database.User, error) {
+func (i AccountFSet) InvertFind(acc uip.Account) (*database.User, error) {
 	ci, err := i.ChainInfoDB().InvertFind(acc)
 	if err != nil {
 		return nil, err

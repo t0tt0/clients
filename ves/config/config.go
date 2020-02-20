@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"errors"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -43,7 +43,7 @@ type BaseParametersConfig struct {
 	PathPlaceholder     PathPlaceholder                `json:"path-placeholder" yaml:"path-placeholder" toml:"path-placeholder" xml:"path-placeholder"`
 	ExposeHost          string                         `json:"expose-host" yaml:"expose-host" toml:"expose-host" xml:"expose-host"`
 	NSBSignerPrivateKey string                         `json:"signer-key" yaml:"signer-key" toml:"signer-key" xml:"signer-key"`
-	NSBSignerChainID    uiptypes.ChainIDUnderlyingType `json:"signer-chain-id" yaml:"signer-chain-id" toml:"signer-chain-id" xml:"signer-chain-id"`
+	NSBSignerChainID    uip.ChainIDUnderlyingType `json:"signer-chain-id" yaml:"signer-chain-id" toml:"signer-chain-id" xml:"signer-chain-id"`
 	NSBHost             string                         `json:"nsb-host" yaml:"nsb-host" toml:"nsb-host" xml:"nsb-host"`
 }
 

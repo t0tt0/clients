@@ -4,12 +4,12 @@ import (
 	"github.com/Myriad-Dreamin/go-ves/types"
 	"time"
 
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 )
 
 type BN struct {
 	dns    types.ChainDNSInterface
-	signer uiptypes.Signer
+	signer uip.Signer
 }
 
 type options struct {
@@ -22,7 +22,7 @@ func parseOptions(rOption []interface{}) options {
 		switch option := rOption[i].(type) {
 		case time.Duration:
 			parsedOptions.timeout = option
-		case uiptypes.RouteOptionTimeout:
+		case uip.RouteOptionTimeout:
 			parsedOptions.timeout = time.Duration(option)
 		}
 	}

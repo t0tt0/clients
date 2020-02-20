@@ -1,7 +1,7 @@
 package abstraction
 
 import (
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/model/internal/database"
 )
 
@@ -20,8 +20,8 @@ type ChainInfoDB interface {
 	Filter(f *database.ChainInfoFilter) (objs []database.ChainInfo, err error)
 	FilterI(f interface{}) (obj interface{}, err error)
 
-	InvertFind(acc uiptypes.Account) (obj *database.ChainInfo, err error)
-	FindAccounts(id uint, cid uiptypes.ChainIDUnderlyingType) (as []uiptypes.Account, err error)
+	InvertFind(acc uip.Account) (obj *database.ChainInfo, err error)
+	FindAccounts(id uint, cid uip.ChainIDUnderlyingType) (as []uip.Account, err error)
 	Scan(desc interface{}, opts ...ChainInfoQueryOption) (err error)
 }
 

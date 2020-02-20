@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/HyperService-Consortium/NSB/contract/isc/TxState"
 	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/Myriad-Dreamin/go-ves/lib/backend/wrapper"
 	"github.com/Myriad-Dreamin/go-ves/lib/basic/encoding"
 	"github.com/Myriad-Dreamin/go-ves/lib/upstream"
@@ -30,7 +30,7 @@ func NewSessionFSet(provider abstraction.Provider, index types.Index) *SessionFS
 	}
 }
 
-func (s SessionFSet) GetAccounts(ses *database2.Session) ([]uiptypes.Account, error) {
+func (s SessionFSet) GetAccounts(ses *database2.Session) ([]uip.Account, error) {
 	accounts, err := s.AccountDB.ID(ses.ISCAddress)
 	if err != nil {
 		return nil, wrapper.Wrap(types.CodeSessionAccountFindError, err)
@@ -99,7 +99,7 @@ func (s SessionFSet) InitSessionInfo(
 	return
 }
 
-func (s SessionFSet) AckForInit(ses *database2.Session, acc uiptypes.Account, signature uiptypes.Signature) error {
+func (s SessionFSet) AckForInit(ses *database2.Session, acc uip.Account, signature uip.Signature) error {
 	var (
 		sac = &database2.SessionAccount{
 			SessionID: ses.ISCAddress,
@@ -137,7 +137,7 @@ func (n NotCurrentTransactionError) Error() string {
 
 func (s SessionFSet) NotifyAttestation(
 	ses *database2.Session, nsb types.NSBInterface,
-	bn uiptypes.BlockChainInterface, attestation uiptypes.Attestation) (err error) {
+	bn uip.BlockChainInterface, attestation uip.Attestation) (err error) {
 	if attestation.GetTid() != uint64(ses.UnderTransacting) {
 		return wrapper.Wrap(types.CodeSessionNotCurrentTransaction, NotCurrentTransactionError{
 			Requiring: int64(attestation.GetTid()),
@@ -167,7 +167,7 @@ func (s SessionFSet) NotifyAttestation(
 	}
 }
 
-func (s SessionFSet) ProcessAttestation(types.NSBInterface, uiptypes.BlockChainInterface, uiptypes.Attestation) (interface{}, interface{}, error) {
+func (s SessionFSet) ProcessAttestation(types.NSBInterface, uip.BlockChainInterface, uip.Attestation) (interface{}, interface{}, error) {
 	panic("implement me")
 }
 

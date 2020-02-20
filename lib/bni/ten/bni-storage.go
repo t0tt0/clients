@@ -4,11 +4,11 @@ import (
 	"encoding/json"
 	"errors"
 	merkleproof "github.com/HyperService-Consortium/go-uip/merkle-proof"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	nsbcli "github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client"
 )
 
-func (bn *BN) GetTransactionProof(chainID uint64, blockID []byte, additional []byte) (uiptypes.MerkleProof, error) {
+func (bn *BN) GetTransactionProof(chainID uint64, blockID []byte, additional []byte) (uip.MerkleProof, error) {
 	ci, err := bn.dns.GetChainInfo(chainID)
 
 	if err != nil {
@@ -29,7 +29,7 @@ func (bn *BN) GetTransactionProof(chainID uint64, blockID []byte, additional []b
 	return merkleproof.NewMPTUsingKeccak256(info.Proof, info.Key, info.Value), nil
 }
 
-func (bn *BN) GetStorageAt(chainID uiptypes.ChainID, typeID uiptypes.TypeID, contractAddress uiptypes.ContractAddress, pos []byte, description []byte) (uiptypes.Variable, error) {
+func (bn *BN) GetStorageAt(chainID uip.ChainID, typeID uip.TypeID, contractAddress uip.ContractAddress, pos []byte, description []byte) (uip.Variable, error) {
 	return nil, errors.New("todo")
 	//ci, err := bn.dns.GetChainInfo(chainID)
 	//if err != nil {

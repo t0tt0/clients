@@ -8,7 +8,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	uiptypes "github.com/HyperService-Consortium/go-uip/uiptypes"
+	uip "github.com/HyperService-Consortium/go-uip/uip"
 	nsbclient "github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client"
 
 	signaturer "github.com/HyperService-Consortium/go-uip/signaturer"
@@ -30,7 +30,7 @@ func (tasker *task) nsbRoutine(
 	cli *nsbclient.NSBClient,
 	SignContentSize, ActionLong int,
 	batch bool,
-	signer uiptypes.Signer, index int, txpadding []byte) {
+	signer uip.Signer, index int, txpadding []byte) {
 
 	// info, err := cli.GetAbciInfo()
 	iscAddress, err := cli.CreateISC(signer, []uint32{0}, [][]byte{signer.GetPublicKey()}, nil, txpadding)

@@ -3,7 +3,7 @@ package vesclient
 import (
 	"fmt"
 	ChainType "github.com/HyperService-Consortium/go-uip/const/chain_type"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"testing"
 )
 
@@ -29,7 +29,7 @@ func TestVesClient_AccountToSigner(t *testing.T) {
 			account: &Account{
 				Address:  "00",
 				Addition: "00",
-				ChainType: uiptypes.ChainTypeUnderlyingType(
+				ChainType: uip.ChainTypeUnderlyingType(
 					ChainType.Ethereum),
 				ChainID: 1,
 			},
@@ -38,7 +38,7 @@ func TestVesClient_AccountToSigner(t *testing.T) {
 			account: &Account{
 				Address:  "00",
 				Addition: "00",
-				ChainType: uiptypes.ChainTypeUnderlyingType(
+				ChainType: uip.ChainTypeUnderlyingType(
 					ChainType.TendermintNSB),
 				ChainID: 3,
 			},
@@ -47,7 +47,7 @@ func TestVesClient_AccountToSigner(t *testing.T) {
 			account: &Account{
 				Address:  "0000000000000000000000000000000000000000000000000000000000000000",
 				Addition: "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-				ChainType: uiptypes.ChainTypeUnderlyingType(
+				ChainType: uip.ChainTypeUnderlyingType(
 					ChainType.TendermintNSB),
 				ChainID: 3,
 			},

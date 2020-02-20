@@ -1,7 +1,7 @@
 package vesclient
 
 import (
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/Myriad-Dreamin/minimum-lib/logger"
 	"time"
 )
@@ -16,7 +16,7 @@ type ClientConstant struct {
 
 type ServerOptions struct {
 	logger     logger.Logger
-	waitOpt    uiptypes.RouteOptionTimeout
+	waitOpt    uip.RouteOptionTimeout
 	addr       string
 	nsbHost    string
 	nsbBase    string
@@ -35,7 +35,7 @@ func NewConstantOption() *ClientConstant {
 func defaultServerOptions() ServerOptions {
 	return ServerOptions{
 		logger:     globalLogger,
-		waitOpt:    uiptypes.RouteOptionTimeout(time.Second * 60),
+		waitOpt:    uip.RouteOptionTimeout(time.Second * 60),
 		clientName: []byte("test"),
 		addr:       "127.0.0.1:23452",
 		nsbBase:    "ten1",
@@ -50,7 +50,7 @@ func parseOptions(rOptions []interface{}) ServerOptions {
 		switch option := rOptions[i].(type) {
 		case logger.Logger:
 			options.logger = option
-		case uiptypes.RouteOptionTimeout:
+		case uip.RouteOptionTimeout:
 			options.waitOpt = option
 		case CVesHostOption:
 			options.addr = string(option)

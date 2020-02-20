@@ -1,26 +1,25 @@
 package config
 
 import (
-	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 )
 
 type accountProvider struct {
 }
 
-func (a accountProvider) AccountBase() opintent.AccountBase {
+func (a accountProvider) AccountBase() uip.AccountBase {
 	return a
 }
 
-func (accountProvider) Get(name string, chainId uint64) (uiptypes.Account, error) {
+func (accountProvider) Get(name string, chainId uint64) (uip.Account, error) {
 	return searchAccount(name, chainId)
 }
 
-func (accountProvider) GetRelay(domain uint64) (uiptypes.Account, error) {
+func (accountProvider) GetRelay(domain uint64) (uip.Account, error) {
 	return getRelay(domain)
 }
 
-func (accountProvider) GetTransactionProofType(chainId uint64) (uiptypes.MerkleProofType, error) {
+func (accountProvider) GetTransactionProofType(chainId uint64) (uip.MerkleProofType, error) {
 	return getTransactionProofType(chainId)
 }
 

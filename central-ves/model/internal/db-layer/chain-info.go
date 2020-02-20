@@ -1,8 +1,7 @@
 package dblayer
 
 import (
-	base_account "github.com/HyperService-Consortium/go-uip/base-account"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/Myriad-Dreamin/dorm"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/model/internal/abstraction"
 	"github.com/Myriad-Dreamin/go-ves/lib/backend/extend-traits"
@@ -80,11 +79,11 @@ func (c ChainInfoDB) ID_(db *gorm.DB, id uint) (chainInfo *ChainInfo, err error)
 	return wrapToChainInfo(c.traits.ID_(db, id))
 }
 
-func (c ChainInfoDB) InvertFind(acc uiptypes.Account) (chainInfo *ChainInfo, err error) {
+func (c ChainInfoDB) InvertFind(acc uip.Account) (chainInfo *ChainInfo, err error) {
 	return wrapToChainInfo(c.invertFind(acc.GetChainId(), encodeAddress(acc.GetAddress())))
 }
 
-func (c ChainInfoDB) FindAccounts(id uint, chainID uiptypes.ChainIDUnderlyingType) ([]uiptypes.Account, error) {
+func (c ChainInfoDB) FindAccounts(id uint, chainID uip.ChainIDUnderlyingType) ([]uip.Account, error) {
 	var mid []string
 	var err = c.traits.GetGormDB().Where("id = ? and chain_id = ?", id, chainID).
 		Select("address").
@@ -92,13 +91,13 @@ func (c ChainInfoDB) FindAccounts(id uint, chainID uiptypes.ChainIDUnderlyingTyp
 	if err != nil {
 		return nil, err
 	}
-	var results []uiptypes.Account
+	var results []uip.Account
 	for i := range mid {
 		add, err := decodeAddress(mid[i])
 		if err != nil {
 			return nil, err
 		}
-		results = append(results, &base_account.Account{
+		results = append(results, &uip.AccountImpl{
 			ChainId: chainID,
 			Address: add,
 		})
