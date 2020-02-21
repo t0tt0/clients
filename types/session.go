@@ -1,12 +1,12 @@
 package types
 
-import uiptypes "github.com/HyperService-Consortium/go-uip/uiptypes"
+import uip "github.com/HyperService-Consortium/go-uip/uip"
 
 type isc_address = []byte
 
 type NSBInterface interface {
-	SaveAttestation(isc_address, uiptypes.Attestation) error
-	InsuranceClaim(isc_address, uiptypes.Attestation) error
+	SaveAttestation(isc_address, uip.Attestation) error
+	InsuranceClaim(isc_address, uip.Attestation) error
 	SettleContract(isc_address) error
 }
 
@@ -18,10 +18,10 @@ type Session interface {
 	// session is a kv-object
 	KVObject
 
-	SetSigner(uiptypes.Signer)
+	SetSigner(uip.Signer)
 
 	GetGUID() isc_address
-	GetAccounts() []uiptypes.Account
+	GetAccounts() []uip.Account
 	GetTransaction(transaction_local_id) transaction
 	GetTransactions() []transaction
 
@@ -29,10 +29,10 @@ type Session interface {
 	GetTransactingTransaction() (transaction_local_id, error)
 
 	// error reports Internal errors, help_info reports Logic errors
-	InitFromOpIntents(opIntents uiptypes.OpIntents) error
-	AckForInit(uiptypes.Account, uiptypes.Signature) (success_or_not, help_info, error)
-	NotifyAttestation(NSBInterface, uiptypes.BlockChainInterface, uiptypes.Attestation) (success_or_not, help_info, error)
-	ProcessAttestation(NSBInterface, uiptypes.BlockChainInterface, uiptypes.Attestation) (success_or_not, help_info, error)
+	InitFromOpIntents(opIntents uip.OpIntents) error
+	AckForInit(uip.Account, uip.Signature) (success_or_not, help_info, error)
+	NotifyAttestation(NSBInterface, uip.BlockChainInterface, uip.Attestation) (success_or_not, help_info, error)
+	ProcessAttestation(NSBInterface, uip.BlockChainInterface, uip.Attestation) (success_or_not, help_info, error)
 
 	SyncFromISC() error
 }

@@ -2,7 +2,7 @@ package config
 
 import (
 	ChainType "github.com/HyperService-Consortium/go-uip/const/chain_type"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/Myriad-Dreamin/go-ves/types"
 	chain_dns "github.com/Myriad-Dreamin/go-ves/types/chain-dns"
 )
@@ -44,7 +44,7 @@ type IdleChainDNS struct {
 	dns types.ChainDNS
 }
 
-func (i IdleChainDNS) GetChainInfo(chainId uiptypes.ChainID) (types.ChainInfo, error) {
+func (i IdleChainDNS) GetChainInfo(chainId uip.ChainID) (types.ChainInfo, error) {
 	return i.dns.GetChainInfo(nil, chainId)
 }
 

@@ -2,8 +2,8 @@ package userservice
 
 import (
 	"github.com/Myriad-Dreamin/go-ves/central-ves/control"
-	ginhelper "github.com/Myriad-Dreamin/go-ves/lib/gin-helper"
-	"github.com/Myriad-Dreamin/go-ves/lib/serial"
+	ginhelper "github.com/Myriad-Dreamin/go-ves/lib/backend/gin-helper"
+	"github.com/Myriad-Dreamin/go-ves/lib/backend/serial"
 	types2 "github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"net/http"
@@ -23,16 +23,18 @@ func (srv *Service) ChangePassword(c controller.MContext) {
 		return
 	}
 
-	user, err := srv.userDB.Query(id)
+	user, err := srv.userDB.ID(id)
 	if ginhelper.MaybeSelectError(c, user, err) {
 		return
 	}
 
-	if !ginhelper.AuthenticatePassword(c, user, req.OldPassword) {
+	ok, err = srv.userDB.AuthenticatePassword(user, req.OldPassword)
+	if !ginhelper.AuthenticatePassword(c, ok, err) {
 		return
 	}
 
-	if ginhelper.ResetPassword(c, user, req.NewPassword) {
+	_, err = srv.userDB.ResetPassword(user, req.NewPassword)
+	if ginhelper.ResetPassword(c, err) {
 		c.JSON(http.StatusOK, &ginhelper.ResponseOK)
 	}
 }

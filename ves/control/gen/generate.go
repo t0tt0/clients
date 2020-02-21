@@ -4,10 +4,8 @@ import (
 	"bytes"
 	"fmt"
 	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/Myriad-Dreamin/artisan"
-	"github.com/Myriad-Dreamin/go-ves/ves/model"
-	"github.com/Myriad-Dreamin/go-ves/ves/model/fset"
 	"github.com/Myriad-Dreamin/minimum-lib/sugar"
 	"log"
 	"os"
@@ -173,22 +171,17 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	mockList := []*Struct{
-		newStruct(&model.SessionDB{}),
-		newStruct(&model.SessionAccountDB{}),
-		newStruct(&fset.SessionFSet{}),
-	}
 
-	var x uiptypes.BlockChainInterface
+	var x uip.BlockChainInterface
 	externMockList := []*Struct{
-		newStruct(&opintent.OpIntentInitializer{}),
+		newStruct(&opintent.Initializer{}),
 		newStructByType(reflect.TypeOf(&x).Elem()),
 	}
 	for _, s := range []struct {
 		l  []*Struct
 		fp string
 	}{
-		{mockList, "./gen-model-interface.go"}, {externMockList, "./gen-external-interface.go"},
+		{externMockList, "./gen-external-interface.go"},
 	} {
 		printMock(s.l, s.fp)
 	}

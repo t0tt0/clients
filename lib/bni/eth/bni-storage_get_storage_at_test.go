@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/HyperService-Consortium/go-ethabi"
 	"github.com/HyperService-Consortium/go-uip/const/value_type"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/Myriad-Dreamin/go-ves/config"
 	"github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/sugar"
@@ -15,12 +15,12 @@ import (
 func TestBN_GetStorageAt(t *testing.T) {
 	type fields struct {
 		dns    types.ChainDNSInterface
-		signer uiptypes.Signer
+		signer uip.Signer
 	}
 	type args struct {
-		chainID         uiptypes.ChainID
-		typeID          uiptypes.TypeID
-		contractAddress uiptypes.ContractAddress
+		chainID         uip.ChainID
+		typeID          uip.TypeID
+		contractAddress uip.ContractAddress
 		pos             []byte
 		description     []byte
 	}
@@ -28,7 +28,7 @@ func TestBN_GetStorageAt(t *testing.T) {
 		name   string
 		fields fields
 		args   args
-		//want    uiptypes.Variable
+		//want    uip.Variable
 		wantErr bool
 	}{
 		{"test_easy", fields{

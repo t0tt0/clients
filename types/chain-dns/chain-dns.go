@@ -2,18 +2,18 @@ package chain_dns
 
 import (
 	"errors"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/Myriad-Dreamin/go-ves/types"
 )
 
 type NSBHostOption string
 
 type ChainInfo struct {
-	ChainType uiptypes.ChainType
+	ChainType uip.ChainType
 	Host      string
 }
 
-func (c ChainInfo) GetChainType() uiptypes.ChainType {
+func (c ChainInfo) GetChainType() uip.ChainType {
 	return c.ChainType
 }
 
@@ -21,7 +21,7 @@ func (c ChainInfo) GetChainHost() string {
 	return c.Host
 }
 
-type HostMap map[uiptypes.ChainID]ChainInfo
+type HostMap map[uip.ChainID]ChainInfo
 
 type ServerOptions struct {
 	HostMap HostMap

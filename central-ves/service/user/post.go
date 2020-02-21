@@ -2,8 +2,7 @@ package userservice
 
 import (
 	"github.com/Myriad-Dreamin/go-ves/central-ves/control/auth"
-	base_service "github.com/Myriad-Dreamin/go-ves/lib/base-service"
-	"github.com/Myriad-Dreamin/go-ves/lib/serial"
+	"github.com/Myriad-Dreamin/go-ves/lib/backend/serial"
 	types2 "github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 )
@@ -11,7 +10,7 @@ import (
 type PostRequest struct {
 }
 
-func (srv *Service) SerializePost(c controller.MContext) base_service.CRUDEntity {
+func (srv *Service) SerializePost(c controller.MContext) interface{} {
 	panic("abort")
 }
 

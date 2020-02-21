@@ -1,7 +1,9 @@
 package model
 
-import (
-	dblayer "github.com/Myriad-Dreamin/go-ves/ves/model/db-layer"
-)
+import "github.com/Myriad-Dreamin/go-ves/ves/model/internal/database"
 
-type Filter = dblayer.Filter
+type Filter = database.Filter
+type ObjectFilter = database.ObjectFilter
+type TransactionFilter = database.TransactionFilter
+type SessionFilter = database.SessionFilter
+type SessionAccountFilter = database.SessionAccountFilter

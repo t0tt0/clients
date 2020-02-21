@@ -5,7 +5,7 @@
 package chs
 
 import (
-	"github.com/Myriad-Dreamin/go-ves/central-ves/model/fset"
+	"github.com/Myriad-Dreamin/go-ves/central-ves/model"
 	"github.com/Myriad-Dreamin/minimum-lib/logger"
 	"sync"
 )
@@ -37,10 +37,10 @@ type Hub struct {
 	Unregister chan *Client
 
 	mapMutex sync.Mutex
-	db       *fset.AccountFSet
+	db       *model.AccountFSet
 }
 
-func NewHub(logger logger.Logger, db *fset.AccountFSet) *Hub {
+func NewHub(logger logger.Logger, db *model.AccountFSet) *Hub {
 	return &Hub{
 		Logger:             logger,
 		db:                 db,

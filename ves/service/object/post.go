@@ -1,14 +1,13 @@
 package objectservice
 
 import (
-	base_service "github.com/Myriad-Dreamin/go-ves/lib/base-service"
-	"github.com/Myriad-Dreamin/go-ves/lib/gin-helper"
+	"github.com/Myriad-Dreamin/go-ves/lib/backend/gin-helper"
 	"github.com/Myriad-Dreamin/go-ves/ves/control"
 	"github.com/Myriad-Dreamin/go-ves/ves/model"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 )
 
-func (svc *Service) SerializePost(c controller.MContext) base_service.CRUDEntity {
+func (svc *Service) SerializePost(c controller.MContext) interface{} {
 	var req control.PostObjectRequest
 	if !ginhelper.BindRequest(c, &req) {
 		return nil

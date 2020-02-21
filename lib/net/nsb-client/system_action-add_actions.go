@@ -5,11 +5,11 @@ import (
 	appl "github.com/HyperService-Consortium/NSB/application"
 	transactiontype "github.com/HyperService-Consortium/NSB/application/transaction-type"
 	"github.com/HyperService-Consortium/NSB/grpc/nsbrpc"
-	uiptypes "github.com/HyperService-Consortium/go-uip/uiptypes"
+	uip "github.com/HyperService-Consortium/go-uip/uip"
 )
 
 func (nc *NSBClient) AddActions(
-	user uiptypes.Signer, toAddress []byte, predictNumbers int,
+	user uip.Signer, toAddress []byte, predictNumbers int,
 ) *AddActionsBatcher {
 	return &AddActionsBatcher{
 		nc:        nc,
@@ -21,7 +21,7 @@ func (nc *NSBClient) AddActions(
 
 type AddActionsBatcher struct {
 	nc        *NSBClient
-	user      uiptypes.Signer
+	user      uip.Signer
 	toAddress []byte
 	argss     []appl.ArgsAddAction
 }

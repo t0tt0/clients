@@ -7,8 +7,8 @@ github.com/DATA-DOG/go-sqlmock v1.4.1 h1:ThlnYciV1iM/V0OSF/dtkqWb6xo5qITT1TJBG1M
 github.com/DATA-DOG/go-sqlmock v1.4.1/go.mod h1:f/Ixk793poVmq4qj/V1dPUg2JEAKC73Q5eFN3EC/SaM=
 github.com/DeanThompson/ginpprof v0.0.0-20190408063150-3be636683586 h1:vDSj8WQZoe+dhK9JVwkSEBwtmcJw5rJ7l1L0Yik8Ku0=
 github.com/DeanThompson/ginpprof v0.0.0-20190408063150-3be636683586/go.mod h1:kMi/fSDAgvjo9TYfYwYeQ2vkyj+VTR/tB6u/Tjh39t0=
-github.com/HyperService-Consortium/NSB v0.7.3-0.20191110033951-7a0fad01c5fb h1:7J2+EnT0VsvhVJyA5Mfk1YtQRQAyygDPdP+9oDkhkXw=
-github.com/HyperService-Consortium/NSB v0.7.3-0.20191110033951-7a0fad01c5fb/go.mod h1:dqnG46T6ZuGlOdhJh/Q9P42MLQw83yumpeZfIpx34+k=
+github.com/HyperService-Consortium/NSB v0.7.4-0.20200220123026-f58d4378d7a6 h1:mk1ueR0UA4bamlJ4Ldv4mUbDJHy7yTyUpkKbXFknB64=
+github.com/HyperService-Consortium/NSB v0.7.4-0.20200220123026-f58d4378d7a6/go.mod h1:CCnK0PzEBZzV3d/0RlDIOuUZPBlvYMRK4uhihMabhMU=
 github.com/HyperService-Consortium/go-ethabi v0.9.1 h1:KO5jE1PDMTHuMr+Kp3LxQOm+bD132F0vsDyS9ILBY58=
 github.com/HyperService-Consortium/go-ethabi v0.9.1/go.mod h1:ngPlugEdGFUTCnDFwAoog6YLGdm959cSzgizwzbsJiI=
 github.com/HyperService-Consortium/go-hexutil v1.0.1 h1:pThbi0a+9z7Oq7s3AcRgRsGKWc1qlq7sMBdDscSTKQs=
@@ -17,8 +17,8 @@ github.com/HyperService-Consortium/go-mpt v1.1.1-0.20190903152503-b63ec8d75bd4 h
 github.com/HyperService-Consortium/go-mpt v1.1.1-0.20190903152503-b63ec8d75bd4/go.mod h1:tYeCvWyIQt4xuaLANWvVi3kvTIuAe6FmyC2G6A8mBIM=
 github.com/HyperService-Consortium/go-rlp v1.0.1-0.20190903144357-b5693c05a6b8 h1:KBmZ/AwlF/iKvbQwGL6+09bbZHzksJFr/6tjKzX29ME=
 github.com/HyperService-Consortium/go-rlp v1.0.1-0.20190903144357-b5693c05a6b8/go.mod h1:f6lLuGRJua3AHgMk4m6XvsF64GFlr5ekGeb2n+ymYfQ=
-github.com/HyperService-Consortium/go-uip v0.0.0-20200117063617-d1d70e0d421c h1:zNN/CAI1Zr8PrmsR5ntbHwYRDMWNiIHMbRv+XGnskHw=
-github.com/HyperService-Consortium/go-uip v0.0.0-20200117063617-d1d70e0d421c/go.mod h1:Dsr7r708Jus0ojCM0Bve+Y3CE8A630KTFVooQVgAv9U=
+github.com/HyperService-Consortium/go-uip v0.0.0-20200220185050-7073779ca691 h1:GfDoLpQ3zwneehcKX9esJ2jvLo3iw3sRp/VdYtisNvw=
+github.com/HyperService-Consortium/go-uip v0.0.0-20200220185050-7073779ca691/go.mod h1:NcvLB95lHN867SaUNi8+PWgO0TNWZGX/1O29L1XQMhA=
 github.com/Joker/hpp v0.0.0-20180418125244-6893e659854a h1:PiDAizhfJbwZMISZ1Itx1ZTFeOFCml89Ofmz3V8rhoU=
 github.com/Joker/hpp v0.0.0-20180418125244-6893e659854a/go.mod h1:MzD2WMdSxvbHw5fM/OXOFily/lipJWRc9C1px0Mt0ZE=
 github.com/Joker/jade v1.0.0 h1:lOCEPvTAtWfLpSZYMOv/g44MGQFAolbKh2khHHGu0Kc=
@@ -189,7 +189,6 @@ github.com/go-xorm/xorm v0.7.6/go.mod h1:nqz2TAsuOHWH2yk4FYWtacCGgdbrcdZ5mF1Xadq
 github.com/gogo/protobuf v1.1.1/go.mod h1:r8qH/GZQm5c6nD/R0oafs1akxWv10x8SbQlK7atdtwQ=
 github.com/gogo/protobuf v1.2.0/go.mod h1:r8qH/GZQm5c6nD/R0oafs1akxWv10x8SbQlK7atdtwQ=
 github.com/gogo/protobuf v1.2.1/go.mod h1:hp+jE20tsWTFYpLwKvXlhS1hjn+gTNwPg2I6zVXpSg4=
-github.com/gogo/protobuf v1.3.0/go.mod h1:SlYgWuQ5SjCEi6WLHjHCa1yvBfUnHcTbrrZtXPKa29o=
 github.com/gogo/protobuf v1.3.1 h1:DqDEcV5aeaTmdFBePNpYsp3FlcVH/2ISVVM9Qf8PSls=
 github.com/gogo/protobuf v1.3.1/go.mod h1:SlYgWuQ5SjCEi6WLHjHCa1yvBfUnHcTbrrZtXPKa29o=
 github.com/golang-sql/civil v0.0.0-20190719163853-cb61b32ac6fe h1:lXe2qZdvpiX5WZkZR4hgp4KJVfY3nMkvmwbVkpv1rVY=

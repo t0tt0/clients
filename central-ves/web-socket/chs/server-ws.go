@@ -2,7 +2,7 @@ package chs
 
 import (
 	"context"
-	ves_websocket "github.com/Myriad-Dreamin/go-ves/lib/ves-websocket"
+	ves_websocket "github.com/Myriad-Dreamin/go-ves/lib/net/ves-websocket"
 	"go.uber.org/atomic"
 	"net/http"
 )

@@ -1,13 +1,13 @@
 package bni
 
 import (
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/Myriad-Dreamin/go-ves/types"
 )
 
 type BN struct {
 	dns    types.ChainDNSInterface
-	signer uiptypes.Signer
+	signer uip.Signer
 }
 
 func NewBN(dns types.ChainDNSInterface) *BN {

@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"github.com/HyperService-Consortium/go-uip/const/trans_type"
 	"github.com/HyperService-Consortium/go-uip/const/value_type"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/Myriad-Dreamin/go-ves/config"
 	"github.com/Myriad-Dreamin/go-ves/lib/upstream"
 	"github.com/Myriad-Dreamin/go-ves/types"
@@ -18,17 +18,17 @@ import (
 func TestBN_Translate(t *testing.T) {
 	type fields struct {
 		dns    types.ChainDNSInterface
-		signer uiptypes.Signer
+		signer uip.Signer
 	}
 	type args struct {
-		intent  *uiptypes.TransactionIntent
-		storage uiptypes.Storage
+		intent  *uip.TransactionIntent
+		storage uip.Storage
 	}
 	tests := []struct {
 		name   string
 		fields fields
 		args   args
-		//want    uiptypes.RawTransaction
+		//want    uip.RawTransaction
 		wantErr bool
 		assert  upstream.GJSONAssertion
 	}{
@@ -36,15 +36,15 @@ func TestBN_Translate(t *testing.T) {
 			dns:    config.ChainDNS,
 			signer: nil,
 		}, args{
-			intent: &uiptypes.TransactionIntent{
+			intent: &uip.TransactionIntent{
 				TransType: trans_type.ContractInvoke,
 				Src:       sugar.HandlerError(hex.DecodeString("93334ae4b2d42ebba8cc7c797bfeb02bfb3349d6")).([]byte),
 				Dst:       sugar.HandlerError(hex.DecodeString("263fef3fe76fd4075ac16271d5115d01206d3674")).([]byte),
 				Meta: sugar.HandlerError(
 					upstream.Serializer.Meta.Contract.Marshal(
-						&uiptypes.ContractInvokeMeta{
+						&uip.ContractInvokeMeta{
 							FuncName: "updateStake",
-							Params: []uiptypes.RawParams{
+							Params: []uip.RawParam{
 								{
 									Type: "uint256",
 									Value: marshal(h{
@@ -68,7 +68,7 @@ func TestBN_Translate(t *testing.T) {
 			dns:    config.ChainDNS,
 			signer: nil,
 		}, args{
-			intent: &uiptypes.TransactionIntent{
+			intent: &uip.TransactionIntent{
 				TransType: trans_type.Payment,
 				Src:       sugar.HandlerError(hex.DecodeString("ce4871f094b30ed5bed4aa19d28cf654c6e8b3f3")).([]byte),
 				Dst:       sugar.HandlerError(hex.DecodeString("d977c0b967631f5bcc1f112fcb926ae53a1432c4")).([]byte),
@@ -88,15 +88,15 @@ func TestBN_Translate(t *testing.T) {
 			dns:    config.ChainDNS,
 			signer: nil,
 		}, args{
-			intent: &uiptypes.TransactionIntent{
+			intent: &uip.TransactionIntent{
 				TransType: trans_type.ContractInvoke,
 				Src:       sugar.HandlerError(hex.DecodeString("93334ae4b2d42ebba8cc7c797bfeb02bfb3349d6")).([]byte),
 				Dst:       sugar.HandlerError(hex.DecodeString("263fef3fe76fd4075ac16271d5115d01206d3674")).([]byte),
 				Meta: sugar.HandlerError(
 					upstream.Serializer.Meta.Contract.Marshal(
-						&uiptypes.ContractInvokeMeta{
+						&uip.ContractInvokeMeta{
 							FuncName: "updateStake",
-							Params: []uiptypes.RawParams{
+							Params: []uip.RawParam{
 								{
 									Type: "uint256",
 									Value: marshal(h{

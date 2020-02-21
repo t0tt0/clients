@@ -4,14 +4,14 @@ import (
 	"bytes"
 	transactiontype "github.com/HyperService-Consortium/NSB/application/transaction-type"
 	"github.com/HyperService-Consortium/NSB/grpc/nsbrpc"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client/nsb-message"
 	"github.com/gogo/protobuf/proto"
 	"math/rand"
 	"time"
 )
 
-func (*NSBClient) Sign(s uiptypes.Signer, txHeader *nsbrpc.TransactionHeader) *nsbrpc.TransactionHeader {
+func (*NSBClient) Sign(s uip.Signer, txHeader *nsbrpc.TransactionHeader) *nsbrpc.TransactionHeader {
 	// bug: buf.Reset()
 	buf := bytes.NewBuffer(make([]byte, mxBytes))
 	buf.Write(txHeader.Src)
@@ -29,7 +29,7 @@ func (*NSBClient) Sign(s uiptypes.Signer, txHeader *nsbrpc.TransactionHeader) *n
 }
 
 func (nc *NSBClient) CreateContractPacket(
-	s uiptypes.Signer, toAddress, value []byte, pair *nsbrpc.FAPair,
+	s uip.Signer, toAddress, value []byte, pair *nsbrpc.FAPair,
 ) (*nsbrpc.TransactionHeader, error) {
 	data, err := proto.Marshal(pair)
 	if err != nil {
@@ -69,7 +69,7 @@ func (nc *NSBClient) CreateUnsignedNormalPacket(
 }
 
 func (nc *NSBClient) CreateNormalPacket(
-	s uiptypes.Signer, toAddress, data, value []byte,
+	s uip.Signer, toAddress, data, value []byte,
 ) (*nsbrpc.TransactionHeader, error) {
 	txHeader, err := nc.CreateUnsignedNormalPacket(s.GetPublicKey(), toAddress, data, value)
 	if err != nil {
@@ -103,7 +103,7 @@ func (nc *NSBClient) sendTransaction(txHeader *nsbrpc.TransactionHeader, err err
 	return nc.sendTx(transactiontype.SendTransaction, txHeader, err)
 }
 
-func (nc *NSBClient) sign(user uiptypes.Signer, txHeader *nsbrpc.TransactionHeader, err error) (*nsbrpc.TransactionHeader, error) {
+func (nc *NSBClient) sign(user uip.Signer, txHeader *nsbrpc.TransactionHeader, err error) (*nsbrpc.TransactionHeader, error) {
 	if err != nil {
 		return nil, err
 	}

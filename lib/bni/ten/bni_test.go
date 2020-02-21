@@ -5,23 +5,23 @@ import (
 	"fmt"
 	"github.com/HyperService-Consortium/go-uip/const/trans_type"
 	"github.com/HyperService-Consortium/go-uip/signaturer"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/Myriad-Dreamin/go-ves/config"
 	"github.com/Myriad-Dreamin/go-ves/types"
 	"golang.org/x/crypto/ed25519"
 	"testing"
 )
 
-var _ uiptypes.BlockChainInterface = new(BN)
+var _ uip.BlockChainInterface = new(BN)
 
 func TestBN_Translate(t *testing.T) {
 	type fields struct {
 		dns    types.ChainDNSInterface
-		signer uiptypes.Signer
+		signer uip.Signer
 	}
 	type args struct {
-		intent  *uiptypes.TransactionIntent
-		storage uiptypes.Storage
+		intent  *uip.TransactionIntent
+		storage uip.Storage
 	}
 
 	var ten, err = signaturer.NewTendermintNSBSigner(ed25519.NewKeyFromSeed(append(make([]byte, 31), 2)))
@@ -40,11 +40,11 @@ func TestBN_Translate(t *testing.T) {
 		name   string
 		fields fields
 		args   args
-		//want    uiptypes.RawTransaction
+		//want    uip.RawTransaction
 		wantErr bool
 	}{
 		{"test_easy", fields{dns: config.ChainDNS, signer: ten}, args{
-			intent: &uiptypes.TransactionIntent{
+			intent: &uip.TransactionIntent{
 				TransType: trans_type.Payment,
 				Src:       ten.GetPublicKey(),
 				Dst:       ten2.GetPublicKey(),

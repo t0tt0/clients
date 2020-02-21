@@ -2,12 +2,12 @@ package vesclient
 
 import (
 	"github.com/HyperService-Consortium/go-uip/signaturer"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
-	"github.com/Myriad-Dreamin/go-ves/lib/wrapper"
+	"github.com/HyperService-Consortium/go-uip/uip"
+	"github.com/Myriad-Dreamin/go-ves/lib/backend/wrapper"
 	"github.com/Myriad-Dreamin/go-ves/types"
 )
 
-func (vc *VesClient) ensureGetNSBSigner(signer *uiptypes.Signer) bool {
+func (vc *VesClient) ensureGetNSBSigner(signer *uip.Signer) bool {
 	if *signer != nil {
 		return true
 	}
@@ -21,7 +21,7 @@ func (vc *VesClient) ensureGetNSBSigner(signer *uiptypes.Signer) bool {
 
 }
 
-func (vc *VesClient) getNSBSigner() (uiptypes.Signer, error) {
+func (vc *VesClient) getNSBSigner() (uip.Signer, error) {
 	if vc.nsbSigner != nil {
 		return vc.nsbSigner, nil
 	}

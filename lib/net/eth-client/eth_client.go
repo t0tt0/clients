@@ -1,6 +1,7 @@
 package ethclient
 
 import (
+	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"github.com/tidwall/gjson"
@@ -67,6 +68,7 @@ var ErrInvalidEthPos = errors.New("invalid pos")
 
 // GetStorageAt return the value of position on the address
 func (eth *EthClient) GetStorageAt(contractAddress, pos []byte, tag string) (string, error) {
+	pos = []byte(hex.EncodeToString(pos))
 	for i := range pos {
 		if !('0' <= pos[i] && pos[i] <= '9') && !('a' <= pos[i] && pos[i] <= 'f') {
 			return "", ErrInvalidEthPos

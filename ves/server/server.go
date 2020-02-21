@@ -4,18 +4,16 @@ import (
 	"context"
 	"encoding/hex"
 	"github.com/DeanThompson/ginpprof"
-	base_account "github.com/HyperService-Consortium/go-uip/base-account"
 	"github.com/HyperService-Consortium/go-uip/signaturer"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	xconfig "github.com/Myriad-Dreamin/go-ves/config"
-	"github.com/Myriad-Dreamin/go-ves/lib/jwt"
+	"github.com/Myriad-Dreamin/go-ves/lib/backend/jwt"
 	"github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/go-ves/ves/config"
 	"github.com/Myriad-Dreamin/go-ves/ves/control"
 	"github.com/Myriad-Dreamin/go-ves/ves/control/router"
 	"github.com/Myriad-Dreamin/go-ves/ves/lib/plugin"
 	"github.com/Myriad-Dreamin/go-ves/ves/model"
-	dblayer "github.com/Myriad-Dreamin/go-ves/ves/model/db-layer"
 	"github.com/Myriad-Dreamin/go-ves/ves/model/index"
 	"github.com/Myriad-Dreamin/go-ves/ves/service"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
@@ -36,7 +34,7 @@ type Server struct {
 	Module          module.Module
 	CloseHandler    types.CloseHandler
 	ServiceProvider *service.Provider
-	ModelProvider   *model.Provider
+	ModelProvider   model.Provider
 	RouterProvider  *router.Provider
 	plugins         []plugin.Plugin
 
@@ -119,7 +117,6 @@ func newServer(options []Option) (srv *Server, err error) {
 	srv.HTTPEngine = control.NewHttpEngine(srv.Module)
 	srv.GRPCEngine = control.NewGRPCEngine(srv.Module)
 
-	_ = model.SetProvider(srv.ModelProvider)
 	srv.Module.Provide(config.ModulePath.Minimum.Provider.Service, srv.ServiceProvider)
 	srv.Module.Provide(config.ModulePath.Minimum.Provider.Model, srv.ModelProvider)
 	srv.Module.Provide(config.ModulePath.Minimum.Provider.Router, srv.RouterProvider)
@@ -250,7 +247,7 @@ func (srv *Server) Serve(httpPort, gRPCPort string) {
 		go plg.Work(ctx)
 	}
 
-	if err := dblayer.GetRawInstance().Ping(); err != nil {
+	if err := model.GetRawInstance().Ping(); err != nil {
 		srv.Logger.Debug("database died", "error", err)
 		return
 	}
@@ -293,10 +290,10 @@ func (srv *Server) handlerPanicError(err interface{}) {
 func (srv *Server) InitRespAccount() bool {
 	signer := sugar.HandlerError(signaturer.NewTendermintNSBSigner(
 		sugar.HandlerError(
-			hex.DecodeString(srv.Cfg.BaseParametersConfig.NSBSignerPrivateKey)).([]byte))).(uiptypes.Signer)
+			hex.DecodeString(srv.Cfg.BaseParametersConfig.NSBSignerPrivateKey)).([]byte))).(uip.Signer)
 	srv.Module.Provide(config.ModulePath.Global.Signer, signer)
 	////&uipbase.Account{Address: server.Signer.GetPublicKey(), ChainId: 3}
-	srv.Module.Provide(config.ModulePath.Global.RespAccount, &base_account.Account{
+	srv.Module.Provide(config.ModulePath.Global.RespAccount, &uip.AccountImpl{
 		ChainId: srv.Cfg.BaseParametersConfig.NSBSignerChainID,
 		Address: signer.GetPublicKey(),
 	})

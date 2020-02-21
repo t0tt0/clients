@@ -8,7 +8,6 @@ import (
 	"github.com/Myriad-Dreamin/go-ves/ves/config"
 	"github.com/Myriad-Dreamin/go-ves/ves/control"
 	"github.com/Myriad-Dreamin/go-ves/ves/model"
-	"github.com/Myriad-Dreamin/go-ves/ves/model/fset"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 )
 
@@ -16,10 +15,10 @@ type Service struct {
 	cfg *config.ServerConfig
 	key string
 
-	accountDB      control.SessionAccountDBI
-	db             control.SessionDBI
-	sesFSet        control.SessionFSetI
-	opInitializer  control.OpIntentInitializerI
+	accountDB      model.SessionAccountDB
+	db             model.SessionDB
+	sesFSet        model.SessionFSetI
+	opInitializer  control.InitializerI
 	signer         control.Signer
 	logger         types.Logger
 	cVes           control.CentralVESClient
@@ -63,16 +62,16 @@ func (svc *Service) InformShortenMerkleProof(context.Context, *uiprpc.ShortenMer
 func (svc *Service) SessionServiceSignatureXXX() interface{} { return svc }
 
 func NewService(m module.Module) (control.SessionService, error) {
-	provider := m.Require(config.ModulePath.Minimum.Provider.Model).(*model.Provider)
+	provider := m.Require(config.ModulePath.Minimum.Provider.Model).(model.Provider)
 	index := m.Require(config.ModulePath.DBInstance.Index).(types.Index)
 	var a = &Service{
 		key:       "sid",
 		accountDB: provider.SessionAccountDB(),
 		db:        provider.SessionDB(),
-		sesFSet:   fset.NewSessionFSet(provider, index),
+		sesFSet:   model.NewSessionFSet(provider, index),
 
 		dns:            m.Require(config.ModulePath.Service.ChainDNS).(control.ChainDNS),
-		opInitializer:  m.Require(config.ModulePath.Service.OpIntentInitializer).(control.OpIntentInitializerI),
+		opInitializer:  m.Require(config.ModulePath.Service.OpIntentInitializer).(control.InitializerI),
 		cfg:            m.Require(config.ModulePath.Minimum.Global.Configuration).(*config.ServerConfig),
 		logger:         m.Require(config.ModulePath.Minimum.Global.Logger).(types.Logger),
 		cVes:           m.Require(config.ModulePath.Global.CentralVESClient).(control.CentralVESClient),

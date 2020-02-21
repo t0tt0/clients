@@ -73,9 +73,10 @@ func (srv *Server) PrepareDatabase() bool {
 }
 
 func (srv *Server) MockDatabase() bool {
+
 	srv.Cfg.DatabaseConfig.Debug(srv.Logger)
 
-	if !model.InstallMock(srv.Module) {
+	if !model.InstallMock(srv.Module, nil) {
 		return false
 	}
 

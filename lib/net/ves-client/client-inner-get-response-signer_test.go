@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	ChainType "github.com/HyperService-Consortium/go-uip/const/chain_type"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"testing"
 	"time"
 )
@@ -30,7 +30,7 @@ var (
 					Alias:     nsbBaseKey,
 					Address:   encodeAddress(accountInvertFindPublicKey1),
 					Addition:  "",
-					ChainType: uiptypes.ChainTypeUnderlyingType(ChainType.Ethereum),
+					ChainType: uip.ChainTypeUnderlyingType(ChainType.Ethereum),
 					ChainID:   1,
 				},
 			},
@@ -40,7 +40,7 @@ var (
 
 func TestVesClient_getRespSigner(t *testing.T) {
 	type args struct {
-		acc uiptypes.Account
+		acc uip.Account
 	}
 	tests := []struct {
 		name      string

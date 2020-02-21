@@ -9,7 +9,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	uiptypes "github.com/HyperService-Consortium/go-uip/uiptypes"
+	uip "github.com/HyperService-Consortium/go-uip/uip"
 	nsbclient "github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client"
 
 	signaturer "github.com/HyperService-Consortium/go-uip/signaturer"
@@ -48,7 +48,7 @@ var ProofSize, TxIntentSize, TxpaddingSize int
 
 var bb, bg, idleProof, txpadding []byte
 
-func NSBRoutine(signer uiptypes.Signer, index int) {
+func NSBRoutine(signer uip.Signer, index int) {
 	// info, err := cli.GetAbciInfo()
 	iscAddress, err := cli.CreateISC(signer, []uint32{0}, [][]byte{signer.GetPublicKey()}, nil, txpadding)
 	if err != nil {

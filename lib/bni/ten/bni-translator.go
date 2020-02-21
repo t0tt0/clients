@@ -6,14 +6,18 @@ import (
 	"github.com/HyperService-Consortium/NSB/grpc/nsbrpc"
 	"github.com/HyperService-Consortium/NSB/math"
 	"github.com/HyperService-Consortium/go-uip/const/trans_type"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	payment_option "github.com/Myriad-Dreamin/go-ves/lib/bni/payment-option"
 	"github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client"
 	"github.com/gogo/protobuf/proto"
 	"github.com/tidwall/gjson"
 )
 
-func (bn *BN) Translate(intent *uiptypes.TransactionIntent, storage uiptypes.Storage) (uiptypes.RawTransaction, error) {
+func (bn *BN) ParseTransactionIntent(intent uip.TxIntentI) (uip.TxIntentI, error) {
+	return intent, nil
+}
+
+func (bn *BN) Translate(intent *uip.TransactionIntent, storage uip.Storage) (uip.RawTransaction, error) {
 	switch intent.TransType {
 	case trans_type.Payment:
 		meta := gjson.ParseBytes(intent.Meta)
@@ -27,7 +31,7 @@ func (bn *BN) Translate(intent *uiptypes.TransactionIntent, storage uiptypes.Sto
 		}
 		return newRawTransaction(transactiontype.SystemCall, header), nil
 	case trans_type.ContractInvoke:
-		// var meta uiptypes.ContractInvokeMeta
+		// var meta uip.ContractInvokeMeta
 		//
 		// err := json.Unmarshal(intent.Meta, &meta)
 		// if err != nil {
@@ -62,7 +66,7 @@ func (bn *BN) Translate(intent *uiptypes.TransactionIntent, storage uiptypes.Sto
 	}
 }
 
-func (bn *BN) Deserialize(raw []byte) (uiptypes.RawTransaction, error) {
+func (bn *BN) Deserialize(raw []byte) (uip.RawTransaction, error) {
 
 	var txHeader nsbrpc.TransactionHeader
 	err := proto.Unmarshal(raw, &txHeader)

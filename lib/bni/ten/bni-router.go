@@ -2,7 +2,7 @@ package bni
 
 import (
 	"encoding/json"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	nsbcli "github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client"
 	"github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client/nsb-message"
 	"net/url"
@@ -12,14 +12,14 @@ func (bn *BN) MustWithSigner() bool {
 	return true
 }
 
-func (bn *BN) RouteWithSigner(signer uiptypes.Signer) (uiptypes.Router, error) {
+func (bn *BN) RouteWithSigner(signer uip.Signer) (uip.Router, error) {
 	nbn := *bn
 	nbn.signer = signer
 	return &nbn, nil
 }
 
-func (bn *BN) RouteRaw(destination uiptypes.ChainID, rawTransaction uiptypes.RawTransaction) (
-	transactionReceipt uiptypes.TransactionReceipt, err error) {
+func (bn *BN) RouteRaw(destination uip.ChainID, rawTransaction uip.RawTransaction) (
+	transactionReceipt uip.TransactionReceipt, err error) {
 	if !rawTransaction.Signed() {
 		return nil, ErrNotSigned
 	}
@@ -40,7 +40,7 @@ func (bn *BN) RouteRaw(destination uiptypes.ChainID, rawTransaction uiptypes.Raw
 	return b, nil
 }
 
-func (bn *BN) WaitForTransact(_ uiptypes.ChainID, transactionReceipt uiptypes.TransactionReceipt,
+func (bn *BN) WaitForTransact(_ uip.ChainID, transactionReceipt uip.TransactionReceipt,
 	options ...interface{}) (blockID []byte, color []byte, err error) {
 	var res nsb_message.ResultInfo
 	err = json.Unmarshal(transactionReceipt, &res)
@@ -51,7 +51,7 @@ func (bn *BN) WaitForTransact(_ uiptypes.ChainID, transactionReceipt uiptypes.Tr
 	return []byte(res.Height), []byte(res.Hash), err
 }
 
-//func (bn *BN) Route(intent *uiptypes.TransactionIntent, kvGetter uiptypes.KVGetter) ([]byte, error) {
+//func (bn *BN) Route(intent *uip.TransactionIntent, kvGetter uip.KVGetter) ([]byte, error) {
 //	// todo
 //	onChainTransaction, err := bn.Translate(intent, kvGetter)
 //	if err != nil {

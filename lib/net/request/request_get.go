@@ -55,19 +55,19 @@ func getc(s string, handler func(*Resp) error, v ...interface{}) error {
 	return err
 }
 
-func (jc *RequestClient) Get() (io.ReadCloser, error) {
+func (jc *Client) Get() (io.ReadCloser, error) {
 	return get(jc.BaseURL, jc.Header)
 }
 
-func (jc *RequestClient) GetWithKVMap(request map[string]interface{}) (io.ReadCloser, error) {
+func (jc *Client) GetWithKVMap(request map[string]interface{}) (io.ReadCloser, error) {
 	return get(jc.BaseURL, jc.Header, request)
 }
 
-func (jc *RequestClient) GetWithParams(params ...interface{}) (io.ReadCloser, error) {
+func (jc *Client) GetWithParams(params ...interface{}) (io.ReadCloser, error) {
 	return get(jc.BaseURL, append(params, jc.Header)...)
 }
 
-func (jc *RequestClient) GetWithStruct(request interface{}) (io.ReadCloser, error) {
+func (jc *Client) GetWithStruct(request interface{}) (io.ReadCloser, error) {
 	v, err := query.Values(request)
 	if err != nil {
 		return nil, err
@@ -84,7 +84,7 @@ func (jc *RequestClient) GetWithStruct(request interface{}) (io.ReadCloser, erro
 	return get(s.String(), jc.Header)
 }
 
-func (jc *RequestClientX) Get(params ...interface{}) (io.ReadCloser, error) {
+func (jc *ClientX) Get(params ...interface{}) (io.ReadCloser, error) {
 	fin, r := false, jc.BaseURL
 	for idx, param := range params {
 		if reflect.TypeOf(param).Kind() == reflect.Struct {

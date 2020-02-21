@@ -2,20 +2,20 @@ package mock
 
 import (
 	"bytes"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/golang/mock/gomock"
 )
 
 type matchSignature struct {
-	s uiptypes.Signature
+	s uip.Signature
 }
 
-func MatchSignature(s uiptypes.Signature) gomock.Matcher {
+func MatchSignature(s uip.Signature) gomock.Matcher {
 	return matchSignature{s: s}
 }
 
 func (m matchSignature) Matches(x interface{}) bool {
-	if s, ok := x.(uiptypes.Signature); ok {
+	if s, ok := x.(uip.Signature); ok {
 		return bytes.Equal(s.GetContent(), m.s.GetContent()) && s.GetSignatureType() == m.s.GetSignatureType()
 	}
 	return false

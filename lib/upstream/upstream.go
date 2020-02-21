@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"github.com/HyperService-Consortium/go-uip/const/value_type"
 	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/Myriad-Dreamin/minimum-lib/sugar"
 	"github.com/tidwall/gjson"
 	"math/big"
@@ -26,11 +26,11 @@ type _serializer struct {
 
 var Serializer = _serializer{}
 
-func (mcs) Unmarshal(b []byte, meta *uiptypes.ContractInvokeMeta) error {
+func (mcs) Unmarshal(b []byte, meta *uip.ContractInvokeMeta) error {
 	return json.Unmarshal(b, meta)
 }
 
-func (mcs) Marshal(meta *uiptypes.ContractInvokeMeta) ([]byte, error) {
+func (mcs) Marshal(meta *uip.ContractInvokeMeta) ([]byte, error) {
 	return json.Marshal(meta)
 }
 
@@ -103,11 +103,11 @@ type MockBNIStorage struct {
 	Data []MockData
 }
 
-func (m MockBNIStorage) GetTransactionProof(chainID uiptypes.ChainID, blockID uiptypes.BlockID, color []byte) (uiptypes.MerkleProof, error) {
+func (m MockBNIStorage) GetTransactionProof(chainID uip.ChainID, blockID uip.BlockID, color []byte) (uip.MerkleProof, error) {
 	panic("implement me")
 }
 
-func (m MockBNIStorage) GetStorageAt(chainID uiptypes.ChainID, typeID uiptypes.TypeID, contractAddress uiptypes.ContractAddress, pos []byte, description []byte) (uiptypes.Variable, error) {
+func (m MockBNIStorage) GetStorageAt(chainID uip.ChainID, typeID uip.TypeID, contractAddress uip.ContractAddress, pos []byte, description []byte) (uip.Variable, error) {
 	for _, d := range m.Data {
 		if d.ChainID == chainID && d.TypeID == typeID &&
 			bytes.Equal(d.ContractAddress, contractAddress) &&
@@ -126,16 +126,16 @@ func (m *MockBNIStorage) insertMockData(data []MockData) {
 type testFunc = func(t *testing.T)
 
 type bNIStorageTestSet struct {
-	s uiptypes.Storage
+	s uip.Storage
 }
 
 type MockData struct {
-	ChainID         uiptypes.ChainID
-	TypeID          uiptypes.TypeID
-	ContractAddress uiptypes.ContractAddress
+	ChainID         uip.ChainID
+	TypeID          uip.TypeID
+	ContractAddress uip.ContractAddress
 	Pos             []byte
 	Description     []byte
-	V               uiptypes.Variable
+	V               uip.Variable
 }
 
 type MockValue struct {
@@ -143,7 +143,7 @@ type MockValue struct {
 	V interface{}
 }
 
-func (m MockValue) GetType() uiptypes.TypeID {
+func (m MockValue) GetType() uip.TypeID {
 	return m.T
 }
 
@@ -329,7 +329,7 @@ func (b bNIStorageTestSet) RunTests(t *testing.T) {
 	t.Run("testGetInt256", b.testGetInt256)
 }
 
-func assertType(l *testing.T, x uiptypes.Variable, t value_type.Type, k reflect.Kind) bool {
+func assertType(l *testing.T, x uip.Variable, t value_type.Type, k reflect.Kind) bool {
 	l.Helper()
 	if x.GetType() != t {
 		l.Fatal("bad type")
@@ -344,7 +344,7 @@ func assertType(l *testing.T, x uiptypes.Variable, t value_type.Type, k reflect.
 	return true
 }
 
-func assertTypeOf(l *testing.T, x uiptypes.Variable, t value_type.Type, r reflect.Type) bool {
+func assertTypeOf(l *testing.T, x uip.Variable, t value_type.Type, r reflect.Type) bool {
 	l.Helper()
 	if x.GetType() != t {
 		l.Fatal("bad type")
@@ -360,7 +360,7 @@ func assertTypeOf(l *testing.T, x uiptypes.Variable, t value_type.Type, r reflec
 }
 
 func (b bNIStorageTestSet) testGetInt32(t *testing.T) {
-	x := sugar.HandlerError(b.s.GetStorageAt(2, value_type.Int32, make([]byte, 32), make([]byte, 2), make([]byte, 2))).(uiptypes.Variable)
+	x := sugar.HandlerError(b.s.GetStorageAt(2, value_type.Int32, make([]byte, 32), make([]byte, 2), make([]byte, 2))).(uip.Variable)
 	if !assertType(t, x, value_type.Int32, reflect.Int32) {
 		return
 	}
@@ -370,7 +370,7 @@ func (b bNIStorageTestSet) testGetInt32(t *testing.T) {
 }
 
 func (b bNIStorageTestSet) testGetInt64(t *testing.T) {
-	x := sugar.HandlerError(b.s.GetStorageAt(2, value_type.Int64, make([]byte, 32), make([]byte, 2), make([]byte, 2))).(uiptypes.Variable)
+	x := sugar.HandlerError(b.s.GetStorageAt(2, value_type.Int64, make([]byte, 32), make([]byte, 2), make([]byte, 2))).(uip.Variable)
 	if !assertType(t, x, value_type.Int64, reflect.Int64) {
 		return
 	}
@@ -382,7 +382,7 @@ func (b bNIStorageTestSet) testGetInt64(t *testing.T) {
 var bigInt3 = big.NewInt(3)
 
 func (b bNIStorageTestSet) testGetInt128(t *testing.T) {
-	x := sugar.HandlerError(b.s.GetStorageAt(2, value_type.Int128, make([]byte, 32), make([]byte, 2), make([]byte, 2))).(uiptypes.Variable)
+	x := sugar.HandlerError(b.s.GetStorageAt(2, value_type.Int128, make([]byte, 32), make([]byte, 2), make([]byte, 2))).(uip.Variable)
 	if !assertTypeOf(t, x, value_type.Int128, reflect.TypeOf(bigInt3)) {
 		return
 	}
@@ -392,7 +392,7 @@ func (b bNIStorageTestSet) testGetInt128(t *testing.T) {
 }
 
 func (b bNIStorageTestSet) testGetInt256(t *testing.T) {
-	x := sugar.HandlerError(b.s.GetStorageAt(2, value_type.Int256, make([]byte, 32), make([]byte, 2), make([]byte, 2))).(uiptypes.Variable)
+	x := sugar.HandlerError(b.s.GetStorageAt(2, value_type.Int256, make([]byte, 32), make([]byte, 2), make([]byte, 2))).(uip.Variable)
 	if !assertTypeOf(t, x, value_type.Int256, reflect.TypeOf(bigInt3)) {
 		return
 	}

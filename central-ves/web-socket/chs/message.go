@@ -1,7 +1,7 @@
 package chs
 
 import (
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/Myriad-Dreamin/go-ves/grpc/wsrpc"
 	"github.com/gogo/protobuf/proto"
 )
@@ -13,7 +13,7 @@ type WriteMessageTask struct {
 
 type BroMessage = WriteMessageTask
 type UniMessage struct {
-	Target uiptypes.Account
+	Target uip.Account
 	Task   *WriteMessageTask
 }
 

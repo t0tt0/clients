@@ -5,7 +5,7 @@ import (
 	"encoding/hex"
 	signaturetype "github.com/HyperService-Consortium/go-uip/const/signature_type"
 	"github.com/HyperService-Consortium/go-uip/signaturer"
-	uiptypes "github.com/HyperService-Consortium/go-uip/uiptypes"
+	uip "github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
 	uiprpc_base "github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
 	"github.com/Myriad-Dreamin/go-ves/grpc/wsrpc"
@@ -16,20 +16,20 @@ import (
 // ECCKey is the private key object in memory
 type ECCKey struct {
 	PrivateKey []byte                         `json:"private_key"`
-	ChainID    uiptypes.ChainIDUnderlyingType `json:"chain_id"`
+	ChainID    uip.ChainIDUnderlyingType `json:"chain_id"`
 }
 
 // ECCKeyAlias is the private key object in json
 type ECCKeyAlias struct {
 	PrivateKey string                         `json:"private_key"`
-	ChainID    uiptypes.ChainIDUnderlyingType `json:"chain_id"`
+	ChainID    uip.ChainIDUnderlyingType `json:"chain_id"`
 	Alias      string                         `json:"alias"`
 }
 
 // EthAccount is the account object in memory
 type EthAccount struct {
 	Address    string                         `json:"address"`
-	ChainID    uiptypes.ChainIDUnderlyingType `json:"chain_id"`
+	ChainID    uip.ChainIDUnderlyingType `json:"chain_id"`
 	PassPhrase string                         `json:"pass_phrase"`
 }
 
@@ -52,7 +52,7 @@ type EthAccounts struct {
 }
 
 func NewEthAccount(publicAddress, passPhrase []byte,
-	chainID uiptypes.ChainIDUnderlyingType) (EthAccount, error) {
+	chainID uip.ChainIDUnderlyingType) (EthAccount, error) {
 	return EthAccount{
 		Address: hex.EncodeToString(publicAddress),
 		ChainID: chainID, PassPhrase: string(passPhrase)}, nil
@@ -67,9 +67,9 @@ func (signer EthAccount) GetEthPassword() string {
 	return signer.PassPhrase
 }
 
-func (signer EthAccount) Sign(b []byte, ctxVars ...interface{}) (uiptypes.Signature, error) {
+func (signer EthAccount) Sign(b []byte, ctxVars ...interface{}) (uip.Signature, error) {
 	// todo: sign b
-	return signaturer.FromRaw(b, uiptypes.SignatureTypeUnderlyingType(signaturetype.Secp256k1)), nil
+	return signaturer.FromRaw(b, uip.SignatureTypeUnderlyingType(signaturetype.Secp256k1)), nil
 }
 
 func (vc *VesClient) sendAck(acc *uiprpc_base.Account, sessionID []byte, host string, signature []byte) error {

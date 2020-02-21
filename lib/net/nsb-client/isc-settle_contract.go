@@ -5,11 +5,11 @@ import (
 	"github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client/nsb-message"
 
 	"github.com/HyperService-Consortium/NSB/grpc/nsbrpc"
-	uiptypes "github.com/HyperService-Consortium/go-uip/uiptypes"
+	uip "github.com/HyperService-Consortium/go-uip/uip"
 )
 
 func (nc *NSBClient) SettleContract(
-	user uiptypes.Signer, contractAddress []byte,
+	user uip.Signer, contractAddress []byte,
 ) (*nsb_message.DeliverTx, error) {
 	// fmt.Println(string(buf.Bytes()))
 	fap, err := nc.settleContract()

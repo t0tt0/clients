@@ -2,8 +2,8 @@ package vesclient
 
 import (
 	"bytes"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
-	"github.com/Myriad-Dreamin/go-ves/lib/ves-websocket"
+	"github.com/HyperService-Consortium/go-uip/uip"
+	"github.com/Myriad-Dreamin/go-ves/lib/net/ves-websocket"
 	"github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/logger"
 	"go.uber.org/zap/zapcore"
@@ -21,10 +21,10 @@ type fields struct {
 	name                   []byte
 	db                     AccountDBInterface
 	conn                   ves_websocket.VESWSSocket
-	nsbSigner              uiptypes.Signer
+	nsbSigner              uip.Signer
 	dns                    types.ChainDNSInterface
 	nsbClient              types.NSBClient
-	waitOpt                uiptypes.RouteOptionTimeout
+	waitOpt                uip.RouteOptionTimeout
 	cb                     chan *bytes.Buffer
 	quit                   chan bool
 	nsbip                  string
@@ -33,13 +33,13 @@ type fields struct {
 }
 
 type fieldOptionDNS types.ChainDNSInterface
-type fieldOptionNSBSigner uiptypes.Signer
+type fieldOptionNSBSigner uip.Signer
 type fieldOptionAccountDB AccountDBInterface
 type fieldOptionNSBBase string
 
 type fieldOption struct {
 	dns       types.ChainDNSInterface
-	nsbSigner uiptypes.Signer
+	nsbSigner uip.Signer
 	accountDB AccountDBInterface
 	nsbBase   string
 }

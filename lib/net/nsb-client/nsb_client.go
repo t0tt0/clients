@@ -7,8 +7,8 @@ import (
 	"fmt"
 	transactiontype "github.com/HyperService-Consortium/NSB/application/transaction-type"
 	"github.com/HyperService-Consortium/NSB/grpc/nsbrpc"
+	"github.com/Myriad-Dreamin/go-ves/lib/backend/wrapper"
 	"github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client/nsb-message"
-	"github.com/Myriad-Dreamin/go-ves/lib/wrapper"
 	"github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/golang/protobuf/proto"
 	"io"
@@ -21,7 +21,7 @@ import (
 	"github.com/Myriad-Dreamin/go-ves/lib/net/request"
 	jsonrpcclient "github.com/Myriad-Dreamin/go-ves/lib/net/rpc-client"
 
-	bytespool "github.com/Myriad-Dreamin/go-ves/lib/bytes-pool"
+	bytespool "github.com/Myriad-Dreamin/go-ves/lib/basic/bytes-pool"
 )
 
 var SentBytes, ReceivedBytes uint64
@@ -56,7 +56,7 @@ func decorateHost(host string) string {
 
 // NSBClient provides interface to blockchain nsb
 type NSBClient struct {
-	handler    *request.RequestClient
+	handler    *request.Client
 	bufferPool *bytespool.BytesPool
 }
 

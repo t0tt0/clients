@@ -1,34 +1,33 @@
 package objectservice
 
 import (
-	base_service "github.com/Myriad-Dreamin/go-ves/lib/base-service"
 	"github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/go-ves/ves/control"
 	"github.com/Myriad-Dreamin/go-ves/ves/model"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 )
 
-func (svc *Service) CreateEntity(id uint) base_service.CRUDEntity {
+func (svc *Service) CreateEntity(id uint) interface{} {
 	return &model.Object{ID: id}
 }
 
-func (svc *Service) GetEntity(id uint) (base_service.CRUDEntity, error) {
+func (svc *Service) GetEntity(id uint) (interface{}, error) {
 	return svc.db.ID(id)
 }
 
-func (svc *Service) ResponsePost(obj base_service.CRUDEntity) interface{} {
+func (svc *Service) ResponsePost(obj interface{}) interface{} {
 	return svc.AfterPost(control.SerializePostObjectReply(types.CodeOK, obj.(*model.Object)))
 }
 
-func (svc *Service) DeleteHook(c controller.MContext, obj base_service.CRUDEntity) bool {
+func (svc *Service) DeleteHook(c controller.MContext, obj interface{}) bool {
 	return svc.deleteHook(c, obj.(*model.Object))
 }
 
-func (svc *Service) ResponseGet(_ controller.MContext, obj base_service.CRUDEntity) interface{} {
+func (svc *Service) ResponseGet(_ controller.MContext, obj interface{}) interface{} {
 	return control.SerializeGetObjectReply(types.CodeOK, obj.(*model.Object))
 }
 
-func (svc *Service) ResponseInspect(_ controller.MContext, obj base_service.CRUDEntity) interface{} {
+func (svc *Service) ResponseInspect(_ controller.MContext, obj interface{}) interface{} {
 	return control.SerializeInspectObjectReply(types.CodeOK, obj.(*model.Object))
 }
 
@@ -44,7 +43,7 @@ func (svc *Service) GetPutRequest() interface{} {
 	return new(control.PutObjectRequest)
 }
 
-func (svc *Service) FillPutFields(c controller.MContext, object base_service.CRUDEntity, req interface{}) []string {
+func (svc *Service) FillPutFields(c controller.MContext, object interface{}, req interface{}) []string {
 	return svc.fillPutFields(c, object.(*model.Object), req.(*control.PutObjectRequest))
 }
 

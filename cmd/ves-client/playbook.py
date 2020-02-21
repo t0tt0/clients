@@ -214,6 +214,7 @@ class Playbook(object):
             role.try_login()
             for account in role.accounts:
                 role.try_register_account(account)
+                print(account)
                 self.role_map[role.name] = role
 
     def close(self):
@@ -239,7 +240,7 @@ def run_playbook(playbook: Playbook):
 
 
 if __name__ == '__main__':
-    pb = Playbook(file_path='playbook.example.yaml')
+    pb = Playbook(file_path='playbook.yaml')
     run_playbook(pb)
     input('enter any keys to exit')
     pb.close()

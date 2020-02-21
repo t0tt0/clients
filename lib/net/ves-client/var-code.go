@@ -1,8 +1,8 @@
 package vesclient
 
 import (
-	"github.com/Myriad-Dreamin/go-ves/lib/serial"
-	"github.com/Myriad-Dreamin/go-ves/lib/wrapper"
+	"github.com/Myriad-Dreamin/go-ves/lib/backend/serial"
+	"github.com/Myriad-Dreamin/go-ves/lib/backend/wrapper"
 	"github.com/Myriad-Dreamin/go-ves/types"
 )
 

@@ -1,11 +1,10 @@
 package vesclient
 
 import (
-	"github.com/HyperService-Consortium/go-uip/base-account"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/Myriad-Dreamin/dorm"
-	"github.com/Myriad-Dreamin/go-ves/lib/encoding"
-	"github.com/Myriad-Dreamin/go-ves/lib/extend-traits"
+	"github.com/Myriad-Dreamin/go-ves/lib/backend/extend-traits"
+	"github.com/Myriad-Dreamin/go-ves/lib/basic/encoding"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"github.com/jinzhu/gorm"
 	"time"
@@ -39,8 +38,8 @@ type Account struct {
 	Alias     string                           `dorm:"alias" gorm:"alias;not_null" json:"alias"`
 	Address   string                           `dorm:"address" gorm:"address;not_null" json:"address"`
 	Addition  string                           `dorm:"addition" gorm:"addition;not_null" json:"addition"`
-	ChainType uiptypes.ChainTypeUnderlyingType `dorm:"chain_type" gorm:"chain_type;not_null" json:"chain_type"`
-	ChainID   uiptypes.ChainIDUnderlyingType   `dorm:"chain_id" gorm:"chain_id;not_null" json:"chain_id"`
+	ChainType uip.ChainTypeUnderlyingType `dorm:"chain_type" gorm:"chain_type;not_null" json:"chain_type"`
+	ChainID   uip.ChainIDUnderlyingType   `dorm:"chain_id" gorm:"chain_id;not_null" json:"chain_id"`
 }
 
 // TableName specification
@@ -115,7 +114,7 @@ func (accountDB *AccountDB) ID_(db *gorm.DB, id uint) (account *Account, err err
 	return wrapToAccount(accountDB.module.accountTraits.ID_(db, id))
 }
 
-func (accountDB *AccountDB) InvertFind(acc uiptypes.Account) (account *Account, err error) {
+func (accountDB *AccountDB) InvertFind(acc uip.Account) (account *Account, err error) {
 	return wrapToAccount(accountDB.module.accountTraits.accountInvertFind(
 		acc.GetChainId(), encodeAddress(acc.GetAddress())))
 }
@@ -124,7 +123,7 @@ func (accountDB *AccountDB) QueryAlias(alias string) (account *Account, err erro
 	return wrapToAccount(accountDB.module.accountTraits.accountQueryAlias(alias))
 }
 
-func (accountDB *AccountDB) FindAccounts(id uint, chainID uiptypes.ChainIDUnderlyingType) ([]uiptypes.Account, error) {
+func (accountDB *AccountDB) FindAccounts(id uint, chainID uip.ChainIDUnderlyingType) ([]uip.Account, error) {
 	var mid []string
 	var err = accountDB.db.Where("id = ? and chain_id = ?", id, chainID).
 		Select("address").
@@ -132,13 +131,13 @@ func (accountDB *AccountDB) FindAccounts(id uint, chainID uiptypes.ChainIDUnderl
 	if err != nil {
 		return nil, err
 	}
-	var results []uiptypes.Account
+	var results []uip.Account
 	for i := range mid {
 		add, err := encoding.DecodeBase64(mid[i])
 		if err != nil {
 			return nil, err
 		}
-		results = append(results, &base_account.Account{
+		results = append(results, &uip.AccountImpl{
 			ChainId: chainID,
 			Address: add,
 		})
@@ -192,8 +191,8 @@ type AccountDBInterface interface {
 	Delete(acc *Account) (int64, error)
 	ID(id uint) (account *Account, err error)
 	ID_(db *gorm.DB, id uint) (account *Account, err error)
-	InvertFind(acc uiptypes.Account) (account *Account, err error)
+	InvertFind(acc uip.Account) (account *Account, err error)
 	QueryAlias(alias string) (account *Account, err error)
-	FindAccounts(id uint, chainID uiptypes.ChainIDUnderlyingType) ([]uiptypes.Account, error)
+	FindAccounts(id uint, chainID uip.ChainIDUnderlyingType) ([]uip.Account, error)
 	QueryChain() *AccountQuery
 }

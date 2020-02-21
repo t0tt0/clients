@@ -2,7 +2,7 @@ package chs
 
 import (
 	"context"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/model/fset"
+	"github.com/Myriad-Dreamin/go-ves/central-ves/model"
 	"github.com/Myriad-Dreamin/minimum-lib/logger"
 	"net/http"
 )
@@ -13,13 +13,13 @@ type Server struct {
 	Logger logger.Logger
 	*http.Server
 	hub     *Hub
-	UserDB  *fset.AccountFSet
+	UserDB  *model.AccountFSet
 	rpcPort string
 	Nsbip   string
 }
 
 // NewServer return a pointer of Server
-func NewServer(rpcPort, addr string, db *fset.AccountFSet, rOptions ...interface{}) (srv *Server, err error) {
+func NewServer(rpcPort, addr string, db *model.AccountFSet, rOptions ...interface{}) (srv *Server, err error) {
 	options := parseOptions(rOptions)
 	srv = &Server{
 		Server: &http.Server{
@@ -42,7 +42,7 @@ func (srv *Server) Start(ctx context.Context) error {
 	return srv.ListenAndServe(ctx, srv.Addr)
 }
 
-func (srv *Server) ProvideUserDB(db *fset.AccountFSet) {
+func (srv *Server) ProvideUserDB(db *model.AccountFSet) {
 	srv.UserDB = db
 	srv.hub.db = db
 }

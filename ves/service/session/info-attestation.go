@@ -3,10 +3,10 @@ package sessionservice
 import (
 	"context"
 	"github.com/HyperService-Consortium/go-uip/signaturer"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
 	uiprpc_base "github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
-	"github.com/Myriad-Dreamin/go-ves/lib/wrapper"
+	"github.com/Myriad-Dreamin/go-ves/lib/backend/wrapper"
 	"github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/go-ves/types/nsb-interface"
 )
@@ -15,9 +15,9 @@ type AttestationAdapdator struct {
 	*uiprpc_base.Attestation
 }
 
-func (atte *AttestationAdapdator) GetSignatures() []uiptypes.Signature {
+func (atte *AttestationAdapdator) GetSignatures() []uip.Signature {
 	var ss = atte.Attestation.GetSignatures()
-	ret := make([]uiptypes.Signature, len(ss))
+	ret := make([]uip.Signature, len(ss))
 	for _, s := range ss {
 		ret = append(ret, signaturer.FromRaw(s.Content, s.SignatureType))
 	}

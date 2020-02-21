@@ -2,12 +2,11 @@ package sessionservice
 
 import (
 	"errors"
-	base_variable "github.com/HyperService-Consortium/go-uip/base-variable"
 	"github.com/HyperService-Consortium/go-uip/const/trans_type"
 	"github.com/HyperService-Consortium/go-uip/const/value_type"
 	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
-	"github.com/Myriad-Dreamin/go-ves/lib/encoding"
+	"github.com/HyperService-Consortium/go-uip/uip"
+	"github.com/Myriad-Dreamin/go-ves/lib/basic/encoding"
 	"github.com/Myriad-Dreamin/go-ves/lib/upstream"
 	"github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/go-ves/ves/mock"
@@ -59,17 +58,17 @@ func Test_prepareTranslateEnvironment_ensureValue(t *testing.T) {
 		ti.ChainID, value_type.Uint256,
 		sugar.HandlerError(encoding.DecodeHex("00")).([]byte),
 		sugar.HandlerError(encoding.DecodeHex("00")).([]byte),
-		[]byte("goodButErrorType")).Return(base_variable.Variable{
+		[]byte("goodButErrorType")).Return(uip.VariableImpl{
 		Type: value_type.Uint128, Value: nil}, nil)
 
 	bn.EXPECT().GetStorageAt(
 		ti.ChainID, value_type.Uint256,
 		sugar.HandlerError(encoding.DecodeHex("00")).([]byte),
 		sugar.HandlerError(encoding.DecodeHex("00")).([]byte),
-		[]byte("goodButErrorType2")).Return(base_variable.Variable{
+		[]byte("goodButErrorType2")).Return(uip.VariableImpl{
 		Type: value_type.Uint128, Value: 1}, nil)
 
-	v := base_variable.Variable{
+	v := uip.VariableImpl{
 		Type: value_type.Uint256, Value: big.NewInt(1)}
 	bn.EXPECT().GetStorageAt(
 		ti.ChainID, value_type.Uint256,
@@ -94,7 +93,7 @@ func Test_prepareTranslateEnvironment_ensureValue(t *testing.T) {
 		[]byte("good"), v).Return(nil)
 
 	type args struct {
-		param uiptypes.RawParams
+		param uip.RawParam
 	}
 	tests := []struct {
 		name     string
@@ -110,7 +109,7 @@ func Test_prepareTranslateEnvironment_ensureValue(t *testing.T) {
 			param: newRawMeta(value_type.Uint256, ""),
 		}},
 		{name: "notEnoughParamInformation", env: createTranslateEnvField(), args: args{
-			param: uiptypes.RawParams{
+			param: uip.RawParam{
 				Type: valueTypeToString(value_type.Uint256),
 				Value: marshal(map[string]interface{}{
 					"contract": "xx",
@@ -172,9 +171,9 @@ func Test_prepareTranslateEnvironment_do(t *testing.T) {
 	ti1 := *ti
 	ti1.TransType = trans_type.ContractInvoke
 	ti1.Meta = sugar.HandlerError(upstream.Serializer.Meta.Contract.Marshal(
-		&uiptypes.ContractInvokeMeta{
+		&uip.ContractInvokeMeta{
 			FuncName: "updateStake",
-			Params: []uiptypes.RawParams{
+			Params: []uip.RawParam{
 				{
 					Type: "uint256",
 					Value: marshal(map[string]interface{}{
@@ -227,9 +226,9 @@ func Test_prepareTranslateEnvironment_doContractInvoke(t *testing.T) {
 
 	ti.Meta = nil
 	ti0.Meta = sugar.HandlerError(upstream.Serializer.Meta.Contract.Marshal(
-		&uiptypes.ContractInvokeMeta{
+		&uip.ContractInvokeMeta{
 			FuncName: "updateStake",
-			Params: []uiptypes.RawParams{
+			Params: []uip.RawParam{
 				{
 					Type:  "uint256",
 					Value: nil,
@@ -237,9 +236,9 @@ func Test_prepareTranslateEnvironment_doContractInvoke(t *testing.T) {
 			},
 		})).([]byte)
 	ti1.Meta = sugar.HandlerError(upstream.Serializer.Meta.Contract.Marshal(
-		&uiptypes.ContractInvokeMeta{
+		&uip.ContractInvokeMeta{
 			FuncName: "updateStake",
-			Params: []uiptypes.RawParams{
+			Params: []uip.RawParam{
 				{
 					Type: "uint256",
 					Value: marshal(map[string]interface{}{

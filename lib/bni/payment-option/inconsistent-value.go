@@ -5,11 +5,11 @@ import (
 	"errors"
 	"fmt"
 	"github.com/HyperService-Consortium/go-uip/const/value_type"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/tidwall/gjson"
 )
 
-func ParseInconsistentValueOption(meta gjson.Result, storage uiptypes.Storage, defaultValue string) (string, error) {
+func ParseInconsistentValueOption(meta gjson.Result, storage uip.Storage, defaultValue string) (string, error) {
 	optionIc := meta.Get("value-inconsistent")
 	if optionIc.Exists() {
 		t := optionIc.Get("type").String()
@@ -56,9 +56,9 @@ func ParseInconsistentValueOption(meta gjson.Result, storage uiptypes.Storage, d
 }
 
 type Need struct {
-	ChainID         uiptypes.ChainID
-	TypeID          uiptypes.TypeID
-	ContractAddress uiptypes.ContractAddress
+	ChainID         uip.ChainID
+	TypeID          uip.TypeID
+	ContractAddress uip.ContractAddress
 	Pos             []byte
 	Description     []byte
 }

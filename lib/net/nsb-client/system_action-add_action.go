@@ -5,11 +5,11 @@ import (
 	appl "github.com/HyperService-Consortium/NSB/application"
 	transactiontype "github.com/HyperService-Consortium/NSB/application/transaction-type"
 	"github.com/HyperService-Consortium/NSB/grpc/nsbrpc"
-	uiptypes "github.com/HyperService-Consortium/go-uip/uiptypes"
+	uip "github.com/HyperService-Consortium/go-uip/uip"
 )
 
 func (nc *NSBClient) AddAction(
-	user uiptypes.Signer, toAddress []byte,
+	user uip.Signer, toAddress []byte,
 	iscAddress []byte, tid uint64, aid uint64, stype uint32, content []byte, signature []byte,
 ) ([]byte, error) {
 	// fmt.Println(string(buf.Bytes()))

@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"github.com/HyperService-Consortium/go-ethabi"
 	"github.com/HyperService-Consortium/go-uip/const/value_type"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/tidwall/gjson"
 	"golang.org/x/crypto/sha3"
 	"math/big"
@@ -33,11 +33,11 @@ func decorateValuePrefix(hexs string) string {
 	return hexs
 }
 
-func convertToEthVariable(variable uiptypes.Variable) interface{} {
+func convertToEthVariable(variable uip.Variable) interface{} {
 	return variable.GetValue()
 }
 
-func ContractInvocationDataABI(chainID uiptypes.ChainID, meta *uiptypes.ContractInvokeMeta, storage uiptypes.Storage) ([]byte, error) {
+func ContractInvocationDataABI(chainID uip.ChainID, meta *uip.ContractInvokeMeta, storage uip.Storage) ([]byte, error) {
 
 	abiencoder := ethabi.NewEncoder()
 	//Encodes(descs []string, vals []interface{})

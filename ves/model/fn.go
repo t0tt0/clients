@@ -1,17 +1,17 @@
 package model
 
-import dblayer "github.com/Myriad-Dreamin/go-ves/ves/model/db-layer"
+import "github.com/Myriad-Dreamin/go-ves/ves/model/internal/database"
 
-func DecodeAddress(src string) []byte {
-	return dblayer.DecodeAddress(src)
+func DecodeAddress(src string) ([]byte, error) {
+	return database.DecodeAddress(src)
 }
 func EncodeAddress(src []byte) string {
-	return dblayer.EncodeAddress(src)
+	return database.EncodeAddress(src)
 }
 
-func DecodeContent(src string) []byte {
-	return dblayer.DecodeContent(src)
+func DecodeContent(src string) ([]byte, error) {
+	return database.DecodeContent(src)
 }
 func EncodeContent(src []byte) string {
-	return dblayer.EncodeContent(src)
+	return database.EncodeContent(src)
 }

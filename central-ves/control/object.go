@@ -2,10 +2,9 @@
 package control
 
 import (
-    "github.com/Myriad-Dreamin/minimum-lib/controller"
-    "github.com/Myriad-Dreamin/go-model-traits/gorm-crud-dao"
-    "github.com/Myriad-Dreamin/go-ves/central-ves/model/db-layer"
-
+	"github.com/Myriad-Dreamin/go-model-traits/gorm-crud-dao"
+	"github.com/Myriad-Dreamin/go-ves/central-ves/model"
+	"github.com/Myriad-Dreamin/minimum-lib/controller"
 )
 
 var _ controller.MContext
@@ -24,8 +23,8 @@ type ObjectService interface {
 type ListObjectsRequest = gorm_crud_dao.Filter
 
 type ListObjectsReply struct {
-    Code int `json:"code" form:"code"`
-    Objects []dblayer.Object `json:"objects" form:"objects"`
+    Code int                  `json:"code" form:"code"`
+    Objects []model.Object `json:"objects" form:"objects"`
 }
 
 type PostObjectRequest struct {
@@ -33,45 +32,45 @@ type PostObjectRequest struct {
 }
 
 type PostObjectReply struct {
-    Code int `json:"code" form:"code"`
-    Object *dblayer.Object `form:"object" json:"object"`
+    Code int                `json:"code" form:"code"`
+    Object *model.Object `form:"object" json:"object"`
 }
 
 type InspectObjectReply struct {
-    Code int `json:"code" form:"code"`
-    Object *dblayer.Object `json:"object" form:"object"`
+    Code int                `json:"code" form:"code"`
+    Object *model.Object `json:"object" form:"object"`
 }
 
 type GetObjectReply struct {
-    Code int `json:"code" form:"code"`
-    Object *dblayer.Object `json:"object" form:"object"`
+    Code int                `json:"code" form:"code"`
+    Object *model.Object `json:"object" form:"object"`
 }
 
 type PutObjectRequest struct {
 
 }
-func PSerializeListObjectsReply(_code int, _objects []dblayer.Object) *ListObjectsReply {
+func PSerializeListObjectsReply(_code int, _objects []model.Object) *ListObjectsReply {
 
     return &ListObjectsReply{
         Code: _code,
         Objects: _objects,
     }
 }
-func SerializeListObjectsReply(_code int, _objects []dblayer.Object) ListObjectsReply {
+func SerializeListObjectsReply(_code int, _objects []model.Object) ListObjectsReply {
 
     return ListObjectsReply{
         Code: _code,
         Objects: _objects,
     }
 }
-func _packSerializeListObjectsReply(_code int, _objects []dblayer.Object) ListObjectsReply {
+func _packSerializeListObjectsReply(_code int, _objects []model.Object) ListObjectsReply {
 
     return ListObjectsReply{
         Code: _code,
         Objects: _objects,
     }
 }
-func PackSerializeListObjectsReply(_code []int, _objects [][]dblayer.Object) (pack []ListObjectsReply) {
+func PackSerializeListObjectsReply(_code []int, _objects [][]model.Object) (pack []ListObjectsReply) {
 	for i := range _code {
 		pack = append(pack, _packSerializeListObjectsReply(_code[i], _objects[i]))
 	}
@@ -98,82 +97,82 @@ func _packSerializePostObjectRequest() PostObjectRequest {
 func PackSerializePostObjectRequest() (pack []PostObjectRequest) {
 	return
 }
-func PSerializePostObjectReply(_code int, _object *dblayer.Object) *PostObjectReply {
+func PSerializePostObjectReply(_code int, _object *model.Object) *PostObjectReply {
 
     return &PostObjectReply{
         Code: _code,
         Object: _object,
     }
 }
-func SerializePostObjectReply(_code int, _object *dblayer.Object) PostObjectReply {
+func SerializePostObjectReply(_code int, _object *model.Object) PostObjectReply {
 
     return PostObjectReply{
         Code: _code,
         Object: _object,
     }
 }
-func _packSerializePostObjectReply(_code int, _object *dblayer.Object) PostObjectReply {
+func _packSerializePostObjectReply(_code int, _object *model.Object) PostObjectReply {
 
     return PostObjectReply{
         Code: _code,
         Object: _object,
     }
 }
-func PackSerializePostObjectReply(_code []int, _object []*dblayer.Object) (pack []PostObjectReply) {
+func PackSerializePostObjectReply(_code []int, _object []*model.Object) (pack []PostObjectReply) {
 	for i := range _code {
 		pack = append(pack, _packSerializePostObjectReply(_code[i], _object[i]))
 	}
 	return
 }
-func PSerializeInspectObjectReply(_code int, _object *dblayer.Object) *InspectObjectReply {
+func PSerializeInspectObjectReply(_code int, _object *model.Object) *InspectObjectReply {
 
     return &InspectObjectReply{
         Code: _code,
         Object: _object,
     }
 }
-func SerializeInspectObjectReply(_code int, _object *dblayer.Object) InspectObjectReply {
+func SerializeInspectObjectReply(_code int, _object *model.Object) InspectObjectReply {
 
     return InspectObjectReply{
         Code: _code,
         Object: _object,
     }
 }
-func _packSerializeInspectObjectReply(_code int, _object *dblayer.Object) InspectObjectReply {
+func _packSerializeInspectObjectReply(_code int, _object *model.Object) InspectObjectReply {
 
     return InspectObjectReply{
         Code: _code,
         Object: _object,
     }
 }
-func PackSerializeInspectObjectReply(_code []int, _object []*dblayer.Object) (pack []InspectObjectReply) {
+func PackSerializeInspectObjectReply(_code []int, _object []*model.Object) (pack []InspectObjectReply) {
 	for i := range _code {
 		pack = append(pack, _packSerializeInspectObjectReply(_code[i], _object[i]))
 	}
 	return
 }
-func PSerializeGetObjectReply(_code int, _object *dblayer.Object) *GetObjectReply {
+func PSerializeGetObjectReply(_code int, _object *model.Object) *GetObjectReply {
 
     return &GetObjectReply{
         Code: _code,
         Object: _object,
     }
 }
-func SerializeGetObjectReply(_code int, _object *dblayer.Object) GetObjectReply {
+func SerializeGetObjectReply(_code int, _object *model.Object) GetObjectReply {
 
     return GetObjectReply{
         Code: _code,
         Object: _object,
     }
 }
-func _packSerializeGetObjectReply(_code int, _object *dblayer.Object) GetObjectReply {
+func _packSerializeGetObjectReply(_code int, _object *model.Object) GetObjectReply {
 
     return GetObjectReply{
         Code: _code,
         Object: _object,
     }
 }
-func PackSerializeGetObjectReply(_code []int, _object []*dblayer.Object) (pack []GetObjectReply) {
+func PackSerializeGetObjectReply(_code []int, _object []*model.Object) (pack []GetObjectReply) {
 	for i := range _code {
 		pack = append(pack, _packSerializeGetObjectReply(_code[i], _object[i]))
 	}

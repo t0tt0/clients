@@ -3,32 +3,32 @@ package chainInfoservice
 import (
 	"github.com/Myriad-Dreamin/go-ves/central-ves/control"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/model"
-	base_service "github.com/Myriad-Dreamin/go-ves/lib/base-service"
 	types2 "github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 )
 
-func (svc *Service) CreateEntity(id uint) base_service.CRUDEntity {
+
+func (svc *Service) CreateEntity(id uint) interface{} {
 	return &model.ChainInfo{ID: id}
 }
 
-func (svc *Service) GetEntity(id uint) (base_service.CRUDEntity, error) {
+func (svc *Service) GetEntity(id uint) (interface{}, error) {
 	return svc.db.ID(id)
 }
 
-func (svc *Service) ResponsePost(obj base_service.CRUDEntity) interface{} {
+func (svc *Service) ResponsePost(obj interface{}) interface{} {
 	return svc.AfterPost(control.SerializePostChainInfoReply(types2.CodeOK, obj.(*model.ChainInfo)))
 }
 
-func (svc *Service) DeleteHook(c controller.MContext, obj base_service.CRUDEntity) bool {
+func (svc *Service) DeleteHook(c controller.MContext, obj interface{}) bool {
 	return svc.deleteHook(c, obj.(*model.ChainInfo))
 }
 
-func (svc *Service) ResponseGet(_ controller.MContext, obj base_service.CRUDEntity) interface{} {
+func (svc *Service) ResponseGet(_ controller.MContext, obj interface{}) interface{} {
 	return control.SerializeGetChainInfoReply(types2.CodeOK, obj.(*model.ChainInfo))
 }
 
-func (svc *Service) ResponseInspect(_ controller.MContext, obj base_service.CRUDEntity) interface{} {
+func (svc *Service) ResponseInspect(_ controller.MContext, obj interface{}) interface{} {
 	return control.SerializeInspectChainInfoReply(types2.CodeOK, obj.(*model.ChainInfo))
 }
 
@@ -44,7 +44,7 @@ func (svc *Service) GetPutRequest() interface{} {
 	return new(control.PutChainInfoRequest)
 }
 
-func (svc *Service) FillPutFields(c controller.MContext, chainInfo base_service.CRUDEntity, req interface{}) []string {
+func (svc *Service) FillPutFields(c controller.MContext, chainInfo interface{}, req interface{}) []string {
 	return svc.fillPutFields(c, chainInfo.(*model.ChainInfo), req.(*control.PutChainInfoRequest))
 }
 

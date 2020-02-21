@@ -2,11 +2,10 @@
 package control
 
 import (
-    "github.com/Myriad-Dreamin/minimum-lib/controller"
-    "github.com/Myriad-Dreamin/go-model-traits/gorm-crud-dao"
-    "time"
-    "github.com/Myriad-Dreamin/go-ves/central-ves/model/db-layer"
-
+	"github.com/Myriad-Dreamin/go-model-traits/gorm-crud-dao"
+	"github.com/Myriad-Dreamin/go-ves/central-ves/model"
+	"github.com/Myriad-Dreamin/minimum-lib/controller"
+	"time"
 )
 
 var _ controller.MContext
@@ -67,8 +66,8 @@ type ChangePasswordRequest struct {
 }
 
 type InspectUserReply struct {
-    Code int `json:"code" form:"code"`
-    User *dblayer.User `json:"user" form:"user"`
+    Code int           `json:"code" form:"code"`
+    User *model.User `json:"user" form:"user"`
 }
 
 type GetUserReply struct {
@@ -107,34 +106,34 @@ func PackSerializeListUsersReply(_code []int, _users [][]ListUserReply) (pack []
 	}
 	return
 }
-func PSerializeListUserReply(vUser dblayer.User) *ListUserReply {
+func PSerializeListUserReply(vUser model.User) *ListUserReply {
 
     return &ListUserReply{
         Id: vUser.ID,
         LastLogin: vUser.LastLogin,
     }
 }
-func SerializeListUserReply(vUser dblayer.User) ListUserReply {
+func SerializeListUserReply(vUser model.User) ListUserReply {
 
     return ListUserReply{
         Id: vUser.ID,
         LastLogin: vUser.LastLogin,
     }
 }
-func _packSerializeListUserReply(vUser dblayer.User) ListUserReply {
+func _packSerializeListUserReply(vUser model.User) ListUserReply {
 
     return ListUserReply{
         Id: vUser.ID,
         LastLogin: vUser.LastLogin,
     }
 }
-func PackSerializeListUserReply(vUser []dblayer.User) (pack []ListUserReply) {
+func PackSerializeListUserReply(vUser []model.User) (pack []ListUserReply) {
 	for i := range vUser {
 		pack = append(pack, _packSerializeListUserReply(vUser[i]))
 	}
 	return
 }
-func PSerializeLoginRequest(user *dblayer.User, _password string) *LoginRequest {
+func PSerializeLoginRequest(user *model.User, _password string) *LoginRequest {
 
     return &LoginRequest{
         Id: user.ID,
@@ -142,7 +141,7 @@ func PSerializeLoginRequest(user *dblayer.User, _password string) *LoginRequest 
         Password: _password,
     }
 }
-func SerializeLoginRequest(user *dblayer.User, _password string) LoginRequest {
+func SerializeLoginRequest(user *model.User, _password string) LoginRequest {
 
     return LoginRequest{
         Id: user.ID,
@@ -150,7 +149,7 @@ func SerializeLoginRequest(user *dblayer.User, _password string) LoginRequest {
         Password: _password,
     }
 }
-func _packSerializeLoginRequest(user *dblayer.User, _password string) LoginRequest {
+func _packSerializeLoginRequest(user *model.User, _password string) LoginRequest {
 
     return LoginRequest{
         Id: user.ID,
@@ -158,13 +157,13 @@ func _packSerializeLoginRequest(user *dblayer.User, _password string) LoginReque
         Password: _password,
     }
 }
-func PackSerializeLoginRequest(user []*dblayer.User, _password []string) (pack []LoginRequest) {
+func PackSerializeLoginRequest(user []*model.User, _password []string) (pack []LoginRequest) {
 	for i := range user {
 		pack = append(pack, _packSerializeLoginRequest(user[i], _password[i]))
 	}
 	return
 }
-func PSerializeLoginReply(_code int, user *dblayer.User, _identity []string, _token string, _refreshToken string) *LoginReply {
+func PSerializeLoginReply(_code int, user *model.User, _identity []string, _token string, _refreshToken string) *LoginReply {
 
     return &LoginReply{
         Code: _code,
@@ -175,7 +174,7 @@ func PSerializeLoginReply(_code int, user *dblayer.User, _identity []string, _to
         RefreshToken: _refreshToken,
     }
 }
-func SerializeLoginReply(_code int, user *dblayer.User, _identity []string, _token string, _refreshToken string) LoginReply {
+func SerializeLoginReply(_code int, user *model.User, _identity []string, _token string, _refreshToken string) LoginReply {
 
     return LoginReply{
         Code: _code,
@@ -186,7 +185,7 @@ func SerializeLoginReply(_code int, user *dblayer.User, _identity []string, _tok
         RefreshToken: _refreshToken,
     }
 }
-func _packSerializeLoginReply(_code int, user *dblayer.User, _identity []string, _token string, _refreshToken string) LoginReply {
+func _packSerializeLoginReply(_code int, user *model.User, _identity []string, _token string, _refreshToken string) LoginReply {
 
     return LoginReply{
         Code: _code,
@@ -197,61 +196,61 @@ func _packSerializeLoginReply(_code int, user *dblayer.User, _identity []string,
         RefreshToken: _refreshToken,
     }
 }
-func PackSerializeLoginReply(_code []int, user []*dblayer.User, _identity [][]string, _token []string, _refreshToken []string) (pack []LoginReply) {
+func PackSerializeLoginReply(_code []int, user []*model.User, _identity [][]string, _token []string, _refreshToken []string) (pack []LoginReply) {
 	for i := range _code {
 		pack = append(pack, _packSerializeLoginReply(_code[i], user[i], _identity[i], _token[i], _refreshToken[i]))
 	}
 	return
 }
-func PSerializeRegisterRequest(user *dblayer.User, _password string) *RegisterRequest {
+func PSerializeRegisterRequest(user *model.User, _password string) *RegisterRequest {
 
     return &RegisterRequest{
         Name: user.Name,
         Password: _password,
     }
 }
-func SerializeRegisterRequest(user *dblayer.User, _password string) RegisterRequest {
+func SerializeRegisterRequest(user *model.User, _password string) RegisterRequest {
 
     return RegisterRequest{
         Name: user.Name,
         Password: _password,
     }
 }
-func _packSerializeRegisterRequest(user *dblayer.User, _password string) RegisterRequest {
+func _packSerializeRegisterRequest(user *model.User, _password string) RegisterRequest {
 
     return RegisterRequest{
         Name: user.Name,
         Password: _password,
     }
 }
-func PackSerializeRegisterRequest(user []*dblayer.User, _password []string) (pack []RegisterRequest) {
+func PackSerializeRegisterRequest(user []*model.User, _password []string) (pack []RegisterRequest) {
 	for i := range user {
 		pack = append(pack, _packSerializeRegisterRequest(user[i], _password[i]))
 	}
 	return
 }
-func PSerializeRegisterReply(_code int, user *dblayer.User) *RegisterReply {
+func PSerializeRegisterReply(_code int, user *model.User) *RegisterReply {
 
     return &RegisterReply{
         Code: _code,
         Id: user.ID,
     }
 }
-func SerializeRegisterReply(_code int, user *dblayer.User) RegisterReply {
+func SerializeRegisterReply(_code int, user *model.User) RegisterReply {
 
     return RegisterReply{
         Code: _code,
         Id: user.ID,
     }
 }
-func _packSerializeRegisterReply(_code int, user *dblayer.User) RegisterReply {
+func _packSerializeRegisterReply(_code int, user *model.User) RegisterReply {
 
     return RegisterReply{
         Code: _code,
         Id: user.ID,
     }
 }
-func PackSerializeRegisterReply(_code []int, user []*dblayer.User) (pack []RegisterReply) {
+func PackSerializeRegisterReply(_code []int, user []*model.User) (pack []RegisterReply) {
 	for i := range _code {
 		pack = append(pack, _packSerializeRegisterReply(_code[i], user[i]))
 	}
@@ -284,34 +283,34 @@ func PackSerializeChangePasswordRequest(_oldPassword []string, _newPassword []st
 	}
 	return
 }
-func PSerializeInspectUserReply(_code int, _user *dblayer.User) *InspectUserReply {
+func PSerializeInspectUserReply(_code int, _user *model.User) *InspectUserReply {
 
     return &InspectUserReply{
         Code: _code,
         User: _user,
     }
 }
-func SerializeInspectUserReply(_code int, _user *dblayer.User) InspectUserReply {
+func SerializeInspectUserReply(_code int, _user *model.User) InspectUserReply {
 
     return InspectUserReply{
         Code: _code,
         User: _user,
     }
 }
-func _packSerializeInspectUserReply(_code int, _user *dblayer.User) InspectUserReply {
+func _packSerializeInspectUserReply(_code int, _user *model.User) InspectUserReply {
 
     return InspectUserReply{
         Code: _code,
         User: _user,
     }
 }
-func PackSerializeInspectUserReply(_code []int, _user []*dblayer.User) (pack []InspectUserReply) {
+func PackSerializeInspectUserReply(_code []int, _user []*model.User) (pack []InspectUserReply) {
 	for i := range _code {
 		pack = append(pack, _packSerializeInspectUserReply(_code[i], _user[i]))
 	}
 	return
 }
-func PSerializeGetUserReply(_code int, user *dblayer.User) *GetUserReply {
+func PSerializeGetUserReply(_code int, user *model.User) *GetUserReply {
 
     return &GetUserReply{
         Code: _code,
@@ -319,7 +318,7 @@ func PSerializeGetUserReply(_code int, user *dblayer.User) *GetUserReply {
         LastLogin: user.LastLogin,
     }
 }
-func SerializeGetUserReply(_code int, user *dblayer.User) GetUserReply {
+func SerializeGetUserReply(_code int, user *model.User) GetUserReply {
 
     return GetUserReply{
         Code: _code,
@@ -327,7 +326,7 @@ func SerializeGetUserReply(_code int, user *dblayer.User) GetUserReply {
         LastLogin: user.LastLogin,
     }
 }
-func _packSerializeGetUserReply(_code int, user *dblayer.User) GetUserReply {
+func _packSerializeGetUserReply(_code int, user *model.User) GetUserReply {
 
     return GetUserReply{
         Code: _code,
@@ -335,7 +334,7 @@ func _packSerializeGetUserReply(_code int, user *dblayer.User) GetUserReply {
         LastLogin: user.LastLogin,
     }
 }
-func PackSerializeGetUserReply(_code []int, user []*dblayer.User) (pack []GetUserReply) {
+func PackSerializeGetUserReply(_code []int, user []*model.User) (pack []GetUserReply) {
 	for i := range _code {
 		pack = append(pack, _packSerializeGetUserReply(_code[i], user[i]))
 	}

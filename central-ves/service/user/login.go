@@ -3,8 +3,8 @@ package userservice
 import (
 	"github.com/Myriad-Dreamin/go-ves/central-ves/control"
 	"github.com/Myriad-Dreamin/go-ves/central-ves/model"
-	ginhelper "github.com/Myriad-Dreamin/go-ves/lib/gin-helper"
-	"github.com/Myriad-Dreamin/go-ves/lib/serial"
+	ginhelper "github.com/Myriad-Dreamin/go-ves/lib/backend/gin-helper"
+	"github.com/Myriad-Dreamin/go-ves/lib/backend/serial"
 	types2 "github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"net/http"
@@ -22,7 +22,7 @@ func (srv *Service) Login(c controller.MContext) {
 	var user *model.User
 	var err error
 	if req.Id != 0 {
-		user, err = srv.userDB.Query(req.Id)
+		user, err = srv.userDB.ID(req.Id)
 	} else if len(req.Name) != 0 {
 		user, err = srv.userDB.QueryName(req.Name)
 	} else {
@@ -35,7 +35,8 @@ func (srv *Service) Login(c controller.MContext) {
 		return
 	}
 
-	if !ginhelper.AuthenticatePassword(c, user, req.Password) {
+	ok, err := srv.userDB.AuthenticatePassword(user, req.Password)
+	if !ginhelper.AuthenticatePassword(c, ok, err) {
 		return
 	}
 
@@ -57,7 +58,7 @@ func (srv *Service) Login(c controller.MContext) {
 
 		c.JSON(http.StatusOK, control.SerializeLoginReply(types2.CodeOK, user, identities, token, refreshToken))
 
-		aff, err := user.UpdateFields([]string{"last_login"})
+		aff, err := srv.userDB.UpdateFields(user, []string{"last_login"})
 		if err != nil || aff == 0 {
 			srv.logger.Debug("update last login failed", "error", err, "affected", aff)
 		}

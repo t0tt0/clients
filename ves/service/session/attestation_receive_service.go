@@ -14,9 +14,9 @@ package sessionservice
 //	*uipbase.Attestation
 //}
 //
-//func (atte *AtteAdapdator) GetSignatures() []uiptypes.Signature {
+//func (atte *AtteAdapdator) GetSignatures() []uip.Signature {
 //	var ss = atte.Attestation.GetSignatures()
-//	ret := make([]uiptypes.Signature, len(ss))
+//	ret := make([]uip.Signature, len(ss))
 //	for _, s := range ss {
 //		ret = append(ret, signaturer.FromRaw(s.Content, s.SignatureType))
 //	}

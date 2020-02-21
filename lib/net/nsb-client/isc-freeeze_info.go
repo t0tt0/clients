@@ -5,11 +5,11 @@ import (
 	transactiontype "github.com/HyperService-Consortium/NSB/application/transaction-type"
 	ISC "github.com/HyperService-Consortium/NSB/contract/isc"
 	"github.com/HyperService-Consortium/NSB/grpc/nsbrpc"
-	uiptypes "github.com/HyperService-Consortium/go-uip/uiptypes"
+	uip "github.com/HyperService-Consortium/go-uip/uip"
 )
 
 func (nc *NSBClient) FreezeInfo(
-	user uiptypes.Signer, contractAddress []byte,
+	user uip.Signer, contractAddress []byte,
 	tid uint64,
 ) ([]byte, error) {
 	// fmt.Println(string(buf.Bytes()))

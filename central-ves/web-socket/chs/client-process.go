@@ -2,7 +2,7 @@ package chs
 
 import (
 	"fmt"
-	base_account "github.com/HyperService-Consortium/go-uip/base-account"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/Myriad-Dreamin/go-ves/grpc/wsrpc"
 	"github.com/gogo/protobuf/proto"
 )
@@ -57,7 +57,7 @@ func (c *Client) ProcessMessage(message []byte, messageID wsrpc.MessageType) {
 			var t wsrpc.ClientHelloReply
 			t.GrpcHost = gRpcIPs[0]
 			t.NsbHost = c.Hub.Server.Nsbip
-			c.Hub.Unicast <- &UniMessage{Target: &base_account.Account{
+			c.Hub.Unicast <- &UniMessage{Target: &uip.AccountImpl{
 				ChainId: PlaceHolderChain, Address: s.GetName(),
 			}, Task: NewWriteMessageTask(wsrpc.CodeClientHelloReply, &t)}
 		default:

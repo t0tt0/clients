@@ -4,7 +4,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"github.com/HyperService-Consortium/go-uip/const/trans_type"
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
+	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/Myriad-Dreamin/go-ves/config"
 	"github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/sugar"
@@ -14,11 +14,11 @@ import (
 func TestBN_Route(t *testing.T) {
 	type fields struct {
 		dns    types.ChainDNSInterface
-		signer uiptypes.Signer
+		signer uip.Signer
 	}
 	type args struct {
-		intent  *uiptypes.TransactionIntent
-		storage uiptypes.Storage
+		intent  *uip.TransactionIntent
+		storage uip.Storage
 	}
 	tests := []struct {
 		name    string
@@ -33,7 +33,7 @@ func TestBN_Route(t *testing.T) {
 					pb: sugar.HandlerError(hex.DecodeString("0a8f483d32e20a7b17b598235489570b92f67e31")).([]byte),
 					ps: "123456"},
 			}, args{
-				intent: &uiptypes.TransactionIntent{
+				intent: &uip.TransactionIntent{
 					TransType: trans_type.Payment,
 					Src:       sugar.HandlerError(hex.DecodeString("0a8f483d32e20a7b17b598235489570b92f67e31")).([]byte),
 					Dst:       sugar.HandlerError(hex.DecodeString("0a8f483d32e20a7b17b598235489570b92f67e31")).([]byte),

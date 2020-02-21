@@ -3,8 +3,8 @@ package transfer_test
 import (
 	"fmt"
 	"github.com/Myriad-Dreamin/go-ves/config"
-	"github.com/Myriad-Dreamin/go-ves/lib/database/index"
-	multi_index "github.com/Myriad-Dreamin/go-ves/lib/database/multi_index"
+	"github.com/Myriad-Dreamin/go-ves/lib/backend/database/index"
+	multi_index "github.com/Myriad-Dreamin/go-ves/lib/backend/database/multi_index"
 	"github.com/Myriad-Dreamin/go-ves/types"
 	"log"
 	_ "net/http/pprof"

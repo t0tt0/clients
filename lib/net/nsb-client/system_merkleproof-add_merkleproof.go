@@ -7,11 +7,11 @@ import (
 
 	appl "github.com/HyperService-Consortium/NSB/application"
 	"github.com/HyperService-Consortium/NSB/grpc/nsbrpc"
-	uiptypes "github.com/HyperService-Consortium/go-uip/uiptypes"
+	uip "github.com/HyperService-Consortium/go-uip/uip"
 )
 
 func (nc *NSBClient) AddMerkleProof(
-	user uiptypes.Signer, toAddress []byte,
+	user uip.Signer, toAddress []byte,
 	merkletype uint16, rootHash, proof, key, value []byte,
 ) (*nsb_message.ResultInfo, error) {
 	// fmt.Println(string(buf.Bytes()))

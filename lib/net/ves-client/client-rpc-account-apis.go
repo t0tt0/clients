@@ -1,9 +1,9 @@
 package vesclient
 
 import (
-	"github.com/HyperService-Consortium/go-uip/uiptypes"
-	ginhelper "github.com/Myriad-Dreamin/go-ves/lib/gin-helper"
-	"github.com/Myriad-Dreamin/go-ves/lib/miris"
+	"github.com/HyperService-Consortium/go-uip/uip"
+	ginhelper "github.com/Myriad-Dreamin/go-ves/lib/backend/gin-helper"
+	"github.com/Myriad-Dreamin/go-ves/lib/backend/miris"
 	"github.com/Myriad-Dreamin/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"github.com/kataras/iris"
@@ -20,8 +20,8 @@ func (vc *VesClient) buildAccountRPCApis(p iris.Party) {
 
 type PostAccountRequest struct {
 	Alias string `json:"alias" form:"alias"`
-	ChainType uiptypes.ChainTypeUnderlyingType `json:"chain_type" form:"chain_type"`
-	ChainID   uiptypes.ChainIDUnderlyingType   `json:"chain_id" form:"chain_id"`
+	ChainType uip.ChainTypeUnderlyingType `json:"chain_type" form:"chain_type"`
+	ChainID   uip.ChainIDUnderlyingType   `json:"chain_id" form:"chain_id"`
 	Addition []byte `json:"addition" form:"addition"`
 	Address   []byte                           `json:"address" form:"address"`
 }
