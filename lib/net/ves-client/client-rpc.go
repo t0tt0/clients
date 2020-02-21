@@ -2,7 +2,7 @@ package vesclient
 
 import (
 	"fmt"
-	"github.com/Myriad-Dreamin/go-ves/lib/backend/miris"
+	"github.com/HyperService-Consortium/go-ves/lib/backend/miris"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"github.com/kataras/iris"
 	"net/http"

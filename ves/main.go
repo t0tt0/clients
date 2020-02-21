@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	"github.com/Myriad-Dreamin/go-ves/ves/server"
+	"github.com/HyperService-Consortium/go-ves/ves/server"
 	"log"
 	_ "net/http/pprof"
 )

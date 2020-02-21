@@ -7,8 +7,8 @@ import (
 
 	gjson "github.com/tidwall/gjson"
 
-	bytespool "github.com/Myriad-Dreamin/go-ves/lib/basic/bytes-pool"
-	request "github.com/Myriad-Dreamin/go-ves/lib/net/request"
+	bytespool "github.com/HyperService-Consortium/go-ves/lib/basic/bytes-pool"
+	request "github.com/HyperService-Consortium/go-ves/lib/net/request"
 )
 
 func decorateHost(host string) string {

@@ -1,14 +1,14 @@
 package sessionservice
 
 import (
-	"github.com/Myriad-Dreamin/go-ves/lib/backend/wrapper"
-	"github.com/Myriad-Dreamin/go-ves/types"
+	"github.com/HyperService-Consortium/go-ves/lib/backend/wrapper"
+	"github.com/HyperService-Consortium/go-ves/types"
 	"golang.org/x/net/context"
 
 	transtype "github.com/HyperService-Consortium/go-uip/const/trans_type"
 	"github.com/HyperService-Consortium/go-uip/uip"
-	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
-	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
+	"github.com/HyperService-Consortium/go-ves/grpc/uiprpc"
+	"github.com/HyperService-Consortium/go-ves/grpc/uiprpc-base"
 )
 
 func (svc *Service) SessionRequireRawTransact(

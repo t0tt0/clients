@@ -4,8 +4,8 @@ import (
 	"fmt"
 	ChainType "github.com/HyperService-Consortium/go-uip/const/chain_type"
 	"github.com/HyperService-Consortium/go-uip/uip"
-	ethbni "github.com/Myriad-Dreamin/go-ves/lib/bni/eth"
-	tenbni "github.com/Myriad-Dreamin/go-ves/lib/bni/ten"
+	ethbni "github.com/HyperService-Consortium/go-ves/lib/bni/eth"
+	tenbni "github.com/HyperService-Consortium/go-ves/lib/bni/ten"
 	"reflect"
 	"testing"
 )

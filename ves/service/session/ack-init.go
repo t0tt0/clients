@@ -2,9 +2,9 @@ package sessionservice
 
 import (
 	"github.com/HyperService-Consortium/go-uip/signaturer"
-	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
-	"github.com/Myriad-Dreamin/go-ves/lib/backend/wrapper"
-	"github.com/Myriad-Dreamin/go-ves/types"
+	"github.com/HyperService-Consortium/go-ves/grpc/uiprpc"
+	"github.com/HyperService-Consortium/go-ves/lib/backend/wrapper"
+	"github.com/HyperService-Consortium/go-ves/types"
 	"golang.org/x/net/context"
 )
 

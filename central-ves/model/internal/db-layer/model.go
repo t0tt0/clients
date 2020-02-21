@@ -1,7 +1,7 @@
 package dblayer
 
 import (
-	"github.com/Myriad-Dreamin/go-ves/central-ves/model/internal/database"
+	"github.com/HyperService-Consortium/go-ves/central-ves/model/internal/database"
 )
 
 type ChainInfo = database.ChainInfo

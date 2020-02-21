@@ -3,10 +3,10 @@ package sessionservice
 import (
 	ChainType "github.com/HyperService-Consortium/go-uip/const/chain_type"
 	"github.com/HyperService-Consortium/go-uip/uip"
-	"github.com/Myriad-Dreamin/go-ves/lib/backend/wrapper"
-	ethbni "github.com/Myriad-Dreamin/go-ves/lib/bni/eth"
-	tenbni "github.com/Myriad-Dreamin/go-ves/lib/bni/ten"
-	"github.com/Myriad-Dreamin/go-ves/types"
+	"github.com/HyperService-Consortium/go-ves/lib/backend/wrapper"
+	ethbni "github.com/HyperService-Consortium/go-ves/lib/bni/eth"
+	tenbni "github.com/HyperService-Consortium/go-ves/lib/bni/ten"
+	"github.com/HyperService-Consortium/go-ves/types"
 )
 
 func (svc *Service) getBlockChainInterface(chainID uint64) (uip.BlockChainInterface, error) {

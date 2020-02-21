@@ -3,7 +3,7 @@ package service
 
 import (
 	"fmt"
-	"github.com/Myriad-Dreamin/go-ves/ves/control"
+	"github.com/HyperService-Consortium/go-ves/ves/control"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"path"
 )

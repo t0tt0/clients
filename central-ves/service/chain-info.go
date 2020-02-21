@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/Myriad-Dreamin/go-ves/central-ves/control"
-	chainInfoservice "github.com/Myriad-Dreamin/go-ves/central-ves/service/chain-info"
+	"github.com/HyperService-Consortium/go-ves/central-ves/control"
+	chainInfoservice "github.com/HyperService-Consortium/go-ves/central-ves/service/chain-info"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 )
 

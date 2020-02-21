@@ -1,6 +1,6 @@
 package server
 
-import "github.com/Myriad-Dreamin/go-ves/central-ves/config"
+import "github.com/HyperService-Consortium/go-ves/central-ves/config"
 
 func (srv *Server) LoadConfig(cfgPath string) bool {
 	srv.Cfg = config.Default()

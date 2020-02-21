@@ -3,7 +3,7 @@ package wsrpc
 import (
 	"bytes"
 	"encoding/binary"
-	"github.com/Myriad-Dreamin/go-ves/types"
+	"github.com/HyperService-Consortium/go-ves/types"
 	"sync"
 
 	"github.com/gogo/protobuf/proto"

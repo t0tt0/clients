@@ -3,15 +3,15 @@ package vesclient
 import (
 	"errors"
 	"github.com/HyperService-Consortium/go-uip/uip"
-	"github.com/Myriad-Dreamin/go-ves/lib/backend/wrapper"
-	"github.com/Myriad-Dreamin/go-ves/types"
+	"github.com/HyperService-Consortium/go-ves/lib/backend/wrapper"
+	"github.com/HyperService-Consortium/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/sugar"
 	"os"
 	"testing"
 )
 
 var describer = wrapper.Describer{
-	Pack: "github.com/Myriad-Dreamin/go-ves/lib/net/ves-client",
+	Pack: "github.com/HyperService-Consortium/go-ves/lib/net/ves-client",
 	Rel:  sugar.HandlerError(os.Getwd()).(string)}
 
 type ChainDNSMockData struct {

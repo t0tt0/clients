@@ -1,6 +1,6 @@
 package dblayer
 
-import "github.com/Myriad-Dreamin/go-ves/ves/model/internal/database"
+import "github.com/HyperService-Consortium/go-ves/ves/model/internal/database"
 
 type Object = database.Object
 type Transaction = database.Transaction

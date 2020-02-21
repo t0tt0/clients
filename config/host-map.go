@@ -3,8 +3,8 @@ package config
 import (
 	ChainType "github.com/HyperService-Consortium/go-uip/const/chain_type"
 	"github.com/HyperService-Consortium/go-uip/uip"
-	"github.com/Myriad-Dreamin/go-ves/types"
-	chain_dns "github.com/Myriad-Dreamin/go-ves/types/chain-dns"
+	"github.com/HyperService-Consortium/go-ves/types"
+	chain_dns "github.com/HyperService-Consortium/go-ves/types/chain-dns"
 )
 
 var HostMap = chain_dns.HostMap{

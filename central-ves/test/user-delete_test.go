@@ -1,8 +1,8 @@
 package tests
 
 import (
-	"github.com/Myriad-Dreamin/go-ves/central-ves/test/tester"
-	types2 "github.com/Myriad-Dreamin/go-ves/types"
+	"github.com/HyperService-Consortium/go-ves/central-ves/test/tester"
+	types2 "github.com/HyperService-Consortium/go-ves/types"
 	"net/http"
 	"reflect"
 	"strconv"

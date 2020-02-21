@@ -3,7 +3,7 @@ package sessionservice
 import (
 	"errors"
 	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
-	"github.com/Myriad-Dreamin/go-ves/types"
+	"github.com/HyperService-Consortium/go-ves/types"
 	"github.com/golang/mock/gomock"
 	"reflect"
 	"testing"

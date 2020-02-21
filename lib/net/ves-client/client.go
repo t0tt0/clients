@@ -2,12 +2,12 @@ package vesclient
 
 import (
 	"github.com/HyperService-Consortium/go-uip/uip"
-	xconfig "github.com/Myriad-Dreamin/go-ves/config"
-	core_cfg "github.com/Myriad-Dreamin/go-ves/lib/backend/core-cfg"
-	nsbcli "github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client"
-	"github.com/Myriad-Dreamin/go-ves/lib/net/ves-websocket"
-	"github.com/Myriad-Dreamin/go-ves/types"
-	"github.com/Myriad-Dreamin/go-ves/ves/config"
+	xconfig "github.com/HyperService-Consortium/go-ves/config"
+	core_cfg "github.com/HyperService-Consortium/go-ves/lib/backend/core-cfg"
+	nsbcli "github.com/HyperService-Consortium/go-ves/lib/net/nsb-client"
+	"github.com/HyperService-Consortium/go-ves/lib/net/ves-websocket"
+	"github.com/HyperService-Consortium/go-ves/types"
+	"github.com/HyperService-Consortium/go-ves/ves/config"
 	"github.com/Myriad-Dreamin/minimum-lib/logger"
 	"github.com/gorilla/websocket"
 	"net/url"

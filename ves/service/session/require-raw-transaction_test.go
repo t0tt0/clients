@@ -2,9 +2,9 @@ package sessionservice
 
 import (
 	"errors"
-	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
-	"github.com/Myriad-Dreamin/go-ves/types"
-	"github.com/Myriad-Dreamin/go-ves/ves/model"
+	"github.com/HyperService-Consortium/go-ves/grpc/uiprpc"
+	"github.com/HyperService-Consortium/go-ves/types"
+	"github.com/HyperService-Consortium/go-ves/ves/model"
 	"github.com/golang/mock/gomock"
 	"golang.org/x/net/context"
 	"reflect"

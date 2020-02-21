@@ -3,11 +3,11 @@ package vesclient
 import (
 	ChainType "github.com/HyperService-Consortium/go-uip/const/chain_type"
 	"github.com/HyperService-Consortium/go-uip/uip"
-	"github.com/Myriad-Dreamin/go-ves/lib/backend/wrapper"
-	"github.com/Myriad-Dreamin/go-ves/types"
+	"github.com/HyperService-Consortium/go-ves/lib/backend/wrapper"
+	"github.com/HyperService-Consortium/go-ves/types"
 
-	ethbni "github.com/Myriad-Dreamin/go-ves/lib/bni/eth"
-	nsbbni "github.com/Myriad-Dreamin/go-ves/lib/bni/ten"
+	ethbni "github.com/HyperService-Consortium/go-ves/lib/bni/eth"
+	nsbbni "github.com/HyperService-Consortium/go-ves/lib/bni/ten"
 )
 
 func (vc *VesClient) ensureRouter(chainID uint64, router *uip.Router) bool {

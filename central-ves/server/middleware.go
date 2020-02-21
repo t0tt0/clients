@@ -1,10 +1,10 @@
 package server
 
 import (
-	"github.com/Myriad-Dreamin/go-ves/central-ves/config"
-	ginhelper "github.com/Myriad-Dreamin/go-ves/lib/backend/gin-helper"
-	"github.com/Myriad-Dreamin/go-ves/lib/backend/jwt"
-	types2 "github.com/Myriad-Dreamin/go-ves/types"
+	"github.com/HyperService-Consortium/go-ves/central-ves/config"
+	ginhelper "github.com/HyperService-Consortium/go-ves/lib/backend/gin-helper"
+	"github.com/HyperService-Consortium/go-ves/lib/backend/jwt"
+	types2 "github.com/HyperService-Consortium/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"github.com/gin-contrib/cors"
 	//"github.com/Myriad-Dreamin/gin-middleware/auth/privileger"

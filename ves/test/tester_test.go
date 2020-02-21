@@ -1,8 +1,8 @@
 package tests
 
 import (
-	"github.com/Myriad-Dreamin/go-ves/ves/server"
-	"github.com/Myriad-Dreamin/go-ves/ves/test/tester"
+	"github.com/HyperService-Consortium/go-ves/ves/server"
+	"github.com/HyperService-Consortium/go-ves/ves/test/tester"
 	doc_gen "github.com/Myriad-Dreamin/minimum-lib/generate/doc-gen"
 	"github.com/Myriad-Dreamin/minimum-lib/sugar"
 	"os"

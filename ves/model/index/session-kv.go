@@ -2,7 +2,7 @@ package index
 
 import (
 	"bytes"
-	"github.com/Myriad-Dreamin/go-ves/types"
+	"github.com/HyperService-Consortium/go-ves/types"
 )
 
 type SessionKV struct {

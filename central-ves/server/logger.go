@@ -2,7 +2,7 @@ package server
 
 import (
 	"fmt"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/config"
+	"github.com/HyperService-Consortium/go-ves/central-ves/config"
 	"github.com/Myriad-Dreamin/minimum-lib/logger"
 	"go.uber.org/zap/zapcore"
 )

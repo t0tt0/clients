@@ -3,7 +3,7 @@ package jwt
 import (
 	"encoding/json"
 	"fmt"
-	mgin "github.com/Myriad-Dreamin/go-ves/lib/backend/gin"
+	mgin "github.com/HyperService-Consortium/go-ves/lib/backend/gin"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"github.com/gin-gonic/gin"
 	"net/http"

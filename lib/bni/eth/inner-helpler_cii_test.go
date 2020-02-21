@@ -4,7 +4,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"github.com/Myriad-Dreamin/go-ves/config"
+	"github.com/HyperService-Consortium/go-ves/config"
 	"testing"
 
 	TransType "github.com/HyperService-Consortium/go-uip/const/trans_type"

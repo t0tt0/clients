@@ -3,8 +3,8 @@ package vesclient
 import (
 	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/Myriad-Dreamin/dorm"
-	"github.com/Myriad-Dreamin/go-ves/lib/backend/extend-traits"
-	"github.com/Myriad-Dreamin/go-ves/lib/basic/encoding"
+	"github.com/HyperService-Consortium/go-ves/lib/backend/extend-traits"
+	"github.com/HyperService-Consortium/go-ves/lib/basic/encoding"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"github.com/jinzhu/gorm"
 	"time"

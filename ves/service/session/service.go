@@ -3,11 +3,11 @@ package sessionservice
 
 import (
 	"context"
-	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
-	"github.com/Myriad-Dreamin/go-ves/types"
-	"github.com/Myriad-Dreamin/go-ves/ves/config"
-	"github.com/Myriad-Dreamin/go-ves/ves/control"
-	"github.com/Myriad-Dreamin/go-ves/ves/model"
+	"github.com/HyperService-Consortium/go-ves/grpc/uiprpc"
+	"github.com/HyperService-Consortium/go-ves/types"
+	"github.com/HyperService-Consortium/go-ves/ves/config"
+	"github.com/HyperService-Consortium/go-ves/ves/control"
+	"github.com/HyperService-Consortium/go-ves/ves/model"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 )
 

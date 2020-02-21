@@ -2,10 +2,10 @@ package transfer_test
 
 import (
 	"fmt"
-	"github.com/Myriad-Dreamin/go-ves/config"
-	"github.com/Myriad-Dreamin/go-ves/lib/backend/database/index"
-	multi_index "github.com/Myriad-Dreamin/go-ves/lib/backend/database/multi_index"
-	"github.com/Myriad-Dreamin/go-ves/types"
+	"github.com/HyperService-Consortium/go-ves/config"
+	"github.com/HyperService-Consortium/go-ves/lib/backend/database/index"
+	multi_index "github.com/HyperService-Consortium/go-ves/lib/backend/database/multi_index"
+	"github.com/HyperService-Consortium/go-ves/types"
 	"log"
 	_ "net/http/pprof"
 	"testing"

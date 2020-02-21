@@ -4,8 +4,8 @@ import (
 	"encoding/hex"
 	"github.com/HyperService-Consortium/go-uip/const/transaction_state_type"
 	"github.com/HyperService-Consortium/go-uip/uip"
-	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
-	"github.com/Myriad-Dreamin/go-ves/grpc/wsrpc"
+	"github.com/HyperService-Consortium/go-ves/grpc/uiprpc-base"
+	"github.com/HyperService-Consortium/go-ves/grpc/wsrpc"
 )
 
 type attestationReceiveRequestService struct {

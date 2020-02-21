@@ -1,6 +1,6 @@
 package model
 
-import "github.com/Myriad-Dreamin/go-ves/ves/model/internal/database"
+import "github.com/HyperService-Consortium/go-ves/ves/model/internal/database"
 
 type Filter = database.Filter
 type ObjectFilter = database.ObjectFilter

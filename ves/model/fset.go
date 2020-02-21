@@ -2,8 +2,8 @@ package model
 
 import (
 	"github.com/HyperService-Consortium/go-uip/uip"
-	"github.com/Myriad-Dreamin/go-ves/types"
-	"github.com/Myriad-Dreamin/go-ves/ves/model/internal/fset"
+	"github.com/HyperService-Consortium/go-ves/types"
+	"github.com/HyperService-Consortium/go-ves/ves/model/internal/fset"
 )
 
 type SessionFSet = fset.SessionFSet

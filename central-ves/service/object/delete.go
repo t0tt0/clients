@@ -1,9 +1,9 @@
 package objectservice
 
 import (
-	"github.com/Myriad-Dreamin/go-ves/central-ves/model"
-	"github.com/Myriad-Dreamin/go-ves/lib/backend/serial"
-	types2 "github.com/Myriad-Dreamin/go-ves/types"
+	"github.com/HyperService-Consortium/go-ves/central-ves/model"
+	"github.com/HyperService-Consortium/go-ves/lib/backend/serial"
+	types2 "github.com/HyperService-Consortium/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"net/http"
 )

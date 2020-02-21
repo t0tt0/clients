@@ -3,8 +3,8 @@ package sessionservice
 import (
 	"encoding/json"
 	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
-	"github.com/Myriad-Dreamin/go-ves/lib/backend/wrapper"
-	"github.com/Myriad-Dreamin/go-ves/types"
+	"github.com/HyperService-Consortium/go-ves/lib/backend/wrapper"
+	"github.com/HyperService-Consortium/go-ves/types"
 )
 
 func (svc *Service) getTransactionIntent(sessionID []byte, transactionID int64) (*opintent.TransactionIntent, error) {

@@ -3,10 +3,10 @@ package vesclient
 import (
 	"context"
 	"fmt"
-	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
-	uiprpc_base "github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
-	"github.com/Myriad-Dreamin/go-ves/lib/backend/wrapper"
-	"github.com/Myriad-Dreamin/go-ves/types"
+	"github.com/HyperService-Consortium/go-ves/grpc/uiprpc"
+	uiprpc_base "github.com/HyperService-Consortium/go-ves/grpc/uiprpc-base"
+	"github.com/HyperService-Consortium/go-ves/lib/backend/wrapper"
+	"github.com/HyperService-Consortium/go-ves/types"
 )
 
 func (vc *VesClient) SendOpIntentsByStrings(

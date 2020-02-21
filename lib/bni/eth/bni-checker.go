@@ -1,7 +1,7 @@
 package bni
 
 import (
-	"github.com/Myriad-Dreamin/go-ves/lib/upstream"
+	"github.com/HyperService-Consortium/go-ves/lib/upstream"
 )
 
 func (bn *BN) CheckAddress(addr []byte) error {

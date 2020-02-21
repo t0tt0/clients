@@ -6,7 +6,7 @@ import (
     "os"
     "strings"
     "log"
-    "github.com/Myriad-Dreamin/go-ves/types"
+    "github.com/HyperService-Consortium/go-ves/types"
     "github.com/Myriad-Dreamin/minimum-lib/sugar"
     "flag"
 )

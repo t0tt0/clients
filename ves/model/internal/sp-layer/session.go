@@ -1,7 +1,7 @@
 package splayer
 
 import (
-	"github.com/Myriad-Dreamin/go-ves/ves/model/internal/abstraction"
+	"github.com/HyperService-Consortium/go-ves/ves/model/internal/abstraction"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 )
 

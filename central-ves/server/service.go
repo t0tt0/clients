@@ -3,7 +3,7 @@ package server
 import (
 	"fmt"
 	"github.com/Myriad-Dreamin/functional-go"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/service"
+	"github.com/HyperService-Consortium/go-ves/central-ves/service"
 )
 
 type serviceResult struct {

@@ -3,10 +3,10 @@ package model
 import (
 	"database/sql"
 	"github.com/Myriad-Dreamin/dorm"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/config"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/model/internal/abstraction"
-	mcore "github.com/Myriad-Dreamin/go-ves/lib/backend/core"
-	"github.com/Myriad-Dreamin/go-ves/types"
+	"github.com/HyperService-Consortium/go-ves/central-ves/config"
+	"github.com/HyperService-Consortium/go-ves/central-ves/model/internal/abstraction"
+	mcore "github.com/HyperService-Consortium/go-ves/lib/backend/core"
+	"github.com/HyperService-Consortium/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"github.com/jinzhu/gorm"
 )

@@ -1,7 +1,7 @@
 package server
 
 import (
-	"github.com/Myriad-Dreamin/go-ves/ves/control/router"
+	"github.com/HyperService-Consortium/go-ves/ves/control/router"
 )
 
 func (srv *Server) BuildRouter() bool {

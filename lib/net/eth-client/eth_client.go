@@ -7,8 +7,8 @@ import (
 	"github.com/tidwall/gjson"
 	"net/url"
 
-	"github.com/Myriad-Dreamin/go-ves/lib/net/eth-client/jsonobj"
-	jsonrpc_client "github.com/Myriad-Dreamin/go-ves/lib/net/rpc-client"
+	"github.com/HyperService-Consortium/go-ves/lib/net/eth-client/jsonobj"
+	jsonrpc_client "github.com/HyperService-Consortium/go-ves/lib/net/rpc-client"
 )
 
 // EthClient provide interface to ethereum rpc service

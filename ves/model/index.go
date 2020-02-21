@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/Myriad-Dreamin/go-ves/ves/model/index"
+	"github.com/HyperService-Consortium/go-ves/ves/model/index"
 	"github.com/syndtr/goleveldb/leveldb/opt"
 )
 

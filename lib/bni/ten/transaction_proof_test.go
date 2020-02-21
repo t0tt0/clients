@@ -3,7 +3,7 @@ package bni
 import (
 	"encoding/hex"
 	"fmt"
-	"github.com/Myriad-Dreamin/go-ves/config"
+	"github.com/HyperService-Consortium/go-ves/config"
 	"testing"
 )
 

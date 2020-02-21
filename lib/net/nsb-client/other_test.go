@@ -3,7 +3,7 @@ package nsbcli
 import (
 	"github.com/HyperService-Consortium/NSB/grpc/nsbrpc"
 	"github.com/HyperService-Consortium/go-uip/uip"
-	"github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client/nsb-message"
+	"github.com/HyperService-Consortium/go-ves/lib/net/nsb-client/nsb-message"
 	"io"
 	"reflect"
 	"testing"

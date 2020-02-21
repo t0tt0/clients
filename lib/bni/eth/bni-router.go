@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/HyperService-Consortium/go-uip/uip"
-	ethclient "github.com/Myriad-Dreamin/go-ves/lib/net/eth-client"
+	ethclient "github.com/HyperService-Consortium/go-ves/lib/net/eth-client"
 	"github.com/tidwall/gjson"
 	"strconv"
 	"time"

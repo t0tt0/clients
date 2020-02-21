@@ -2,8 +2,8 @@ package nsbi
 
 import (
 	uip "github.com/HyperService-Consortium/go-uip/uip"
-	nsbcli "github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client"
-	"github.com/Myriad-Dreamin/go-ves/ves/control"
+	nsbcli "github.com/HyperService-Consortium/go-ves/lib/net/nsb-client"
+	"github.com/HyperService-Consortium/go-ves/ves/control"
 )
 
 type NSBClientImpl struct {

@@ -24,7 +24,7 @@ func TestStack(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	fmt.Println(stack.Rel("github.com/Myriad-Dreamin/go-ves", x))
+	fmt.Println(stack.Rel("github.com/HyperService-Consortium/go-ves", x))
 }
 
 func TestDescriptor(t *testing.T) {
@@ -46,7 +46,7 @@ func TestDescriptor(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	fmt.Println(stack.Rel("github.com/Myriad-Dreamin/go-ves", x))
+	fmt.Println(stack.Rel("github.com/HyperService-Consortium/go-ves", x))
 }
 
 func ErrC(i int) string {
@@ -79,7 +79,7 @@ func TestStack2(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	fmt.Println(stack.Rel("github.com/Myriad-Dreamin/go-ves", x))
+	fmt.Println(stack.Rel("github.com/HyperService-Consortium/go-ves", x))
 }
 
 func BenchmarkWrap(b *testing.B) {

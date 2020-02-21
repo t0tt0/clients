@@ -1,7 +1,7 @@
 package router
 
 import (
-	"github.com/Myriad-Dreamin/go-ves/central-ves/control/auth"
+	"github.com/HyperService-Consortium/go-ves/central-ves/control/auth"
 )
 
 func ApplyAuth(router *RootRouter) {

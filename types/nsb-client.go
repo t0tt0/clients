@@ -2,7 +2,7 @@ package types
 
 import (
 	"github.com/HyperService-Consortium/go-uip/uip"
-	nsb_message "github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client/nsb-message"
+	nsb_message "github.com/HyperService-Consortium/go-ves/lib/net/nsb-client/nsb-message"
 )
 
 type NSBClient interface {

@@ -1,9 +1,9 @@
 package vesclient
 
 import (
-	"github.com/Myriad-Dreamin/go-ves/lib/backend/serial"
-	"github.com/Myriad-Dreamin/go-ves/lib/backend/wrapper"
-	"github.com/Myriad-Dreamin/go-ves/types"
+	"github.com/HyperService-Consortium/go-ves/lib/backend/serial"
+	"github.com/HyperService-Consortium/go-ves/lib/backend/wrapper"
+	"github.com/HyperService-Consortium/go-ves/types"
 )
 
 type Code int

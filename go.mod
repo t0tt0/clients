@@ -1,4 +1,4 @@
-module github.com/Myriad-Dreamin/go-ves
+module github.com/HyperService-Consortium/go-ves
 
 go 1.13
 

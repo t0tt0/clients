@@ -1,11 +1,11 @@
 package model
 
 import (
-	"github.com/Myriad-Dreamin/go-ves/central-ves/model/internal/abstraction"
-	dblayer "github.com/Myriad-Dreamin/go-ves/central-ves/model/internal/db-layer"
-	mcore "github.com/Myriad-Dreamin/go-ves/lib/backend/core"
-	extend_traits "github.com/Myriad-Dreamin/go-ves/lib/backend/extend-traits"
-	"github.com/Myriad-Dreamin/go-ves/lib/basic/fcg"
+	"github.com/HyperService-Consortium/go-ves/central-ves/model/internal/abstraction"
+	dblayer "github.com/HyperService-Consortium/go-ves/central-ves/model/internal/db-layer"
+	mcore "github.com/HyperService-Consortium/go-ves/lib/backend/core"
+	extend_traits "github.com/HyperService-Consortium/go-ves/lib/backend/extend-traits"
+	"github.com/HyperService-Consortium/go-ves/lib/basic/fcg"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 )
 

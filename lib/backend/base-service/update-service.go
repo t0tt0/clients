@@ -3,7 +3,7 @@ package base_service
 import (
 	"github.com/Myriad-Dreamin/dorm"
 	dorm_crud_dao "github.com/Myriad-Dreamin/go-model-traits/dorm-crud-dao"
-	ginhelper "github.com/Myriad-Dreamin/go-ves/lib/backend/gin-helper"
+	ginhelper "github.com/HyperService-Consortium/go-ves/lib/backend/gin-helper"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"net/http"
 )

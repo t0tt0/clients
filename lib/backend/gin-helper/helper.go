@@ -1,10 +1,10 @@
 package ginhelper
 
 import (
-	"github.com/Myriad-Dreamin/go-ves/lib/backend/errorc"
-	jwt2 "github.com/Myriad-Dreamin/go-ves/lib/backend/jwt"
-	"github.com/Myriad-Dreamin/go-ves/lib/backend/serial"
-	types2 "github.com/Myriad-Dreamin/go-ves/types"
+	"github.com/HyperService-Consortium/go-ves/lib/backend/errorc"
+	jwt2 "github.com/HyperService-Consortium/go-ves/lib/backend/jwt"
+	"github.com/HyperService-Consortium/go-ves/lib/backend/serial"
+	types2 "github.com/HyperService-Consortium/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"github.com/tidwall/gjson"
 	"net/http"

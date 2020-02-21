@@ -1,6 +1,6 @@
 package model
 
-import "github.com/Myriad-Dreamin/go-ves/ves/model/internal/database"
+import "github.com/HyperService-Consortium/go-ves/ves/model/internal/database"
 
 func DecodeAddress(src string) ([]byte, error) {
 	return database.DecodeAddress(src)

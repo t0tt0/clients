@@ -3,7 +3,7 @@ package control
 
 import (
 	"github.com/Myriad-Dreamin/go-model-traits/gorm-crud-dao"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/model"
+	"github.com/HyperService-Consortium/go-ves/central-ves/model"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 )
 

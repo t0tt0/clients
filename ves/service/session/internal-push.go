@@ -3,11 +3,11 @@ package sessionservice
 import (
 	"context"
 	"encoding/hex"
-	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
-	uiprpc_base "github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
-	"github.com/Myriad-Dreamin/go-ves/lib/backend/wrapper"
-	"github.com/Myriad-Dreamin/go-ves/types"
-	"github.com/Myriad-Dreamin/go-ves/ves/model"
+	"github.com/HyperService-Consortium/go-ves/grpc/uiprpc"
+	uiprpc_base "github.com/HyperService-Consortium/go-ves/grpc/uiprpc-base"
+	"github.com/HyperService-Consortium/go-ves/lib/backend/wrapper"
+	"github.com/HyperService-Consortium/go-ves/types"
+	"github.com/HyperService-Consortium/go-ves/ves/model"
 	"time"
 )
 

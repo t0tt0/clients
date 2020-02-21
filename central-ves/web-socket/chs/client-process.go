@@ -3,7 +3,7 @@ package chs
 import (
 	"fmt"
 	"github.com/HyperService-Consortium/go-uip/uip"
-	"github.com/Myriad-Dreamin/go-ves/grpc/wsrpc"
+	"github.com/HyperService-Consortium/go-ves/grpc/wsrpc"
 	"github.com/gogo/protobuf/proto"
 )
 

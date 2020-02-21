@@ -6,8 +6,8 @@ import (
 	"github.com/HyperService-Consortium/go-uip/const/trans_type"
 	"github.com/HyperService-Consortium/go-uip/signaturer"
 	"github.com/HyperService-Consortium/go-uip/uip"
-	"github.com/Myriad-Dreamin/go-ves/config"
-	"github.com/Myriad-Dreamin/go-ves/types"
+	"github.com/HyperService-Consortium/go-ves/config"
+	"github.com/HyperService-Consortium/go-ves/types"
 	"golang.org/x/crypto/ed25519"
 	"testing"
 )

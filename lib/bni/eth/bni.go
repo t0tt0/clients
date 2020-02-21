@@ -1,7 +1,7 @@
 package bni
 
 import (
-	"github.com/Myriad-Dreamin/go-ves/types"
+	"github.com/HyperService-Consortium/go-ves/types"
 	"time"
 
 	"github.com/HyperService-Consortium/go-uip/uip"

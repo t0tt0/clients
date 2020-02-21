@@ -6,8 +6,8 @@ package mock
 
 import (
 	uip "github.com/HyperService-Consortium/go-uip/uip"
-	types "github.com/Myriad-Dreamin/go-ves/types"
-	model "github.com/Myriad-Dreamin/go-ves/ves/model"
+	types "github.com/HyperService-Consortium/go-ves/types"
+	model "github.com/HyperService-Consortium/go-ves/ves/model"
 	gomock "github.com/golang/mock/gomock"
 	reflect "reflect"
 )

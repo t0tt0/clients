@@ -3,7 +3,7 @@ package chain_dns
 import (
 	"errors"
 	"github.com/HyperService-Consortium/go-uip/uip"
-	"github.com/Myriad-Dreamin/go-ves/types"
+	"github.com/HyperService-Consortium/go-ves/types"
 )
 
 type NSBHostOption string

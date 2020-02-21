@@ -2,7 +2,7 @@ package tests
 
 import (
 	"fmt"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/control"
+	"github.com/HyperService-Consortium/go-ves/central-ves/control"
 	"testing"
 )
 

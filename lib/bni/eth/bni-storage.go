@@ -11,7 +11,7 @@ import (
 	"github.com/HyperService-Consortium/go-uip/const/value_type"
 	merkleproof "github.com/HyperService-Consortium/go-uip/merkle-proof"
 	"github.com/HyperService-Consortium/go-uip/uip"
-	ethclient "github.com/Myriad-Dreamin/go-ves/lib/net/eth-client"
+	ethclient "github.com/HyperService-Consortium/go-ves/lib/net/eth-client"
 	"github.com/tidwall/gjson"
 	"math/big"
 	"net/url"

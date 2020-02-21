@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	vesclient "github.com/Myriad-Dreamin/go-ves/lib/net/ves-client"
+	vesclient "github.com/HyperService-Consortium/go-ves/lib/net/ves-client"
 )
 
 var (

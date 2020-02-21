@@ -2,8 +2,8 @@ package main
 
 import (
 	"flag"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/server"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/web-socket"
+	"github.com/HyperService-Consortium/go-ves/central-ves/server"
+	"github.com/HyperService-Consortium/go-ves/central-ves/web-socket"
 	_ "net/http/pprof"
 )
 

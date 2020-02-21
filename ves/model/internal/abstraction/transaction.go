@@ -2,7 +2,7 @@ package abstraction
 
 import (
 	"github.com/Myriad-Dreamin/dorm"
-	database2 "github.com/Myriad-Dreamin/go-ves/ves/model/internal/database"
+	database2 "github.com/HyperService-Consortium/go-ves/ves/model/internal/database"
 	"github.com/jinzhu/gorm"
 )
 

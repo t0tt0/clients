@@ -1,6 +1,6 @@
 package vesclient
 
-import "github.com/Myriad-Dreamin/go-ves/grpc/wsrpc"
+import "github.com/HyperService-Consortium/go-ves/grpc/wsrpc"
 
 func (vc *VesClient) SayClientHello(name []byte) error {
 	clientHello := vc.getClientHello()

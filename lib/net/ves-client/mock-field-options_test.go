@@ -3,8 +3,8 @@ package vesclient
 import (
 	"bytes"
 	"github.com/HyperService-Consortium/go-uip/uip"
-	"github.com/Myriad-Dreamin/go-ves/lib/net/ves-websocket"
-	"github.com/Myriad-Dreamin/go-ves/types"
+	"github.com/HyperService-Consortium/go-ves/lib/net/ves-websocket"
+	"github.com/HyperService-Consortium/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/logger"
 	"go.uber.org/zap/zapcore"
 	"log"

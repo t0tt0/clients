@@ -1,9 +1,9 @@
 package dblayer
 
 import (
-	extend_traits "github.com/Myriad-Dreamin/go-ves/lib/backend/extend-traits"
-	"github.com/Myriad-Dreamin/go-ves/ves/model/internal/abstraction"
-	"github.com/Myriad-Dreamin/go-ves/ves/model/internal/database"
+	extend_traits "github.com/HyperService-Consortium/go-ves/lib/backend/extend-traits"
+	"github.com/HyperService-Consortium/go-ves/ves/model/internal/abstraction"
+	"github.com/HyperService-Consortium/go-ves/ves/model/internal/database"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"github.com/jinzhu/gorm"
 )

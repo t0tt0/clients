@@ -2,9 +2,9 @@ package vesclient
 
 import (
 	"github.com/HyperService-Consortium/go-uip/uip"
-	ginhelper "github.com/Myriad-Dreamin/go-ves/lib/backend/gin-helper"
-	"github.com/Myriad-Dreamin/go-ves/lib/backend/miris"
-	"github.com/Myriad-Dreamin/go-ves/types"
+	ginhelper "github.com/HyperService-Consortium/go-ves/lib/backend/gin-helper"
+	"github.com/HyperService-Consortium/go-ves/lib/backend/miris"
+	"github.com/HyperService-Consortium/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"github.com/kataras/iris"
 	"net/http"

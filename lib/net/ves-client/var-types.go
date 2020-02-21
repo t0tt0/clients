@@ -6,9 +6,9 @@ import (
 	signaturetype "github.com/HyperService-Consortium/go-uip/const/signature_type"
 	"github.com/HyperService-Consortium/go-uip/signaturer"
 	uip "github.com/HyperService-Consortium/go-uip/uip"
-	"github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
-	uiprpc_base "github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
-	"github.com/Myriad-Dreamin/go-ves/grpc/wsrpc"
+	"github.com/HyperService-Consortium/go-ves/grpc/uiprpc"
+	uiprpc_base "github.com/HyperService-Consortium/go-ves/grpc/uiprpc-base"
+	"github.com/HyperService-Consortium/go-ves/grpc/wsrpc"
 	"google.golang.org/grpc"
 	"time"
 )

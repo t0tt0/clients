@@ -1,9 +1,9 @@
 package sessionservice
 
 import (
-	ethbni "github.com/Myriad-Dreamin/go-ves/lib/bni/eth"
-	tenbni "github.com/Myriad-Dreamin/go-ves/lib/bni/ten"
-	"github.com/Myriad-Dreamin/go-ves/types"
+	ethbni "github.com/HyperService-Consortium/go-ves/lib/bni/eth"
+	tenbni "github.com/HyperService-Consortium/go-ves/lib/bni/ten"
+	"github.com/HyperService-Consortium/go-ves/types"
 	"github.com/golang/mock/gomock"
 	"reflect"
 	"testing"

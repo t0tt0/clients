@@ -55,7 +55,7 @@ dependencies = namedtuple(
      'control_gen_file',
      'control_gen_main_file',
      ])(*
-        ['github.com/Myriad-Dreamin/go-ves/vesx',
+        ['github.com/HyperService-Consortium/go-ves/vesx',
          'github.com/Myriad-Dreamin/go-magic-package/package-attach-to-path',
          'golang.org/x/tools/cmd/stringer',
          'template/control/pure-object/pure-object-router.go.template',

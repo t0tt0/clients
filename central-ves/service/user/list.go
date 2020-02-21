@@ -1,9 +1,9 @@
 package userservice
 
 import (
-	"github.com/Myriad-Dreamin/go-ves/central-ves/control"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/model"
-	types2 "github.com/Myriad-Dreamin/go-ves/types"
+	"github.com/HyperService-Consortium/go-ves/central-ves/control"
+	"github.com/HyperService-Consortium/go-ves/central-ves/model"
+	types2 "github.com/HyperService-Consortium/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 )
 

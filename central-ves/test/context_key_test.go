@@ -1,7 +1,7 @@
 package tests
 
 import (
-	"github.com/Myriad-Dreamin/go-ves/central-ves/test/tester"
+	"github.com/HyperService-Consortium/go-ves/central-ves/test/tester"
 	"reflect"
 )
 

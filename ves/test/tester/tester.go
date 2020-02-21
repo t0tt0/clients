@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/Myriad-Dreamin/go-ves/ves/server"
+	"github.com/HyperService-Consortium/go-ves/ves/server"
 	"github.com/Myriad-Dreamin/minimum-lib/sugar"
 	"io"
 	"testing"

@@ -2,8 +2,8 @@ package vesclient
 
 import (
 	"fmt"
-	ginhelper "github.com/Myriad-Dreamin/go-ves/lib/backend/gin-helper"
-	"github.com/Myriad-Dreamin/go-ves/types"
+	ginhelper "github.com/HyperService-Consortium/go-ves/lib/backend/gin-helper"
+	"github.com/HyperService-Consortium/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"net/http"
 	"strings"

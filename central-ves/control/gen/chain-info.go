@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/Myriad-Dreamin/artisan"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/model"
+	"github.com/HyperService-Consortium/go-ves/central-ves/model"
 )
 
 type ChainInfoCategories struct {

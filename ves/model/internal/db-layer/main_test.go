@@ -2,8 +2,8 @@ package dblayer_test
 
 import (
 	"github.com/DATA-DOG/go-sqlmock"
-	"github.com/Myriad-Dreamin/go-ves/ves/config"
-	"github.com/Myriad-Dreamin/go-ves/ves/model"
+	"github.com/HyperService-Consortium/go-ves/ves/config"
+	"github.com/HyperService-Consortium/go-ves/ves/model"
 	"github.com/Myriad-Dreamin/minimum-lib/logger"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"go.uber.org/zap/zapcore"

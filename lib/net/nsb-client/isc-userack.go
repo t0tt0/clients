@@ -3,7 +3,7 @@ package nsbcli
 import (
 	"encoding/json"
 	transactiontype "github.com/HyperService-Consortium/NSB/application/transaction-type"
-	"github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client/nsb-message"
+	"github.com/HyperService-Consortium/go-ves/lib/net/nsb-client/nsb-message"
 
 	ISC "github.com/HyperService-Consortium/NSB/contract/isc"
 	"github.com/HyperService-Consortium/NSB/grpc/nsbrpc"

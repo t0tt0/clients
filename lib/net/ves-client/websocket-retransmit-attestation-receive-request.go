@@ -1,8 +1,8 @@
 package vesclient
 
 import (
-	uiprpc_base "github.com/Myriad-Dreamin/go-ves/grpc/uiprpc-base"
-	"github.com/Myriad-Dreamin/go-ves/grpc/wsrpc"
+	uiprpc_base "github.com/HyperService-Consortium/go-ves/grpc/uiprpc-base"
+	"github.com/HyperService-Consortium/go-ves/grpc/wsrpc"
 )
 
 func (vc *VesClient) RetransmitAttestationReceiveRequest(

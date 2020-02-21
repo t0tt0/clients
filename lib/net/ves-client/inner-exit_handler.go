@@ -5,7 +5,7 @@ import (
 	"os/signal"
 	"syscall"
 
-	log "github.com/Myriad-Dreamin/go-ves/lib/basic/log"
+	log "github.com/HyperService-Consortium/go-ves/lib/basic/log"
 )
 
 type handler struct {

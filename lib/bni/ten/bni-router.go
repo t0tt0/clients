@@ -3,8 +3,8 @@ package bni
 import (
 	"encoding/json"
 	"github.com/HyperService-Consortium/go-uip/uip"
-	nsbcli "github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client"
-	"github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client/nsb-message"
+	nsbcli "github.com/HyperService-Consortium/go-ves/lib/net/nsb-client"
+	"github.com/HyperService-Consortium/go-ves/lib/net/nsb-client/nsb-message"
 	"net/url"
 )
 

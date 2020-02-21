@@ -5,7 +5,7 @@ import (
 	"errors"
 	merkleproof "github.com/HyperService-Consortium/go-uip/merkle-proof"
 	"github.com/HyperService-Consortium/go-uip/uip"
-	nsbcli "github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client"
+	nsbcli "github.com/HyperService-Consortium/go-ves/lib/net/nsb-client"
 )
 
 func (bn *BN) GetTransactionProof(chainID uint64, blockID []byte, additional []byte) (uip.MerkleProof, error) {

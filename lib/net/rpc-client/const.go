@@ -1,6 +1,6 @@
 package jsonrpcclient
 
-import bytespool "github.com/Myriad-Dreamin/go-ves/lib/basic/bytes-pool"
+import bytespool "github.com/HyperService-Consortium/go-ves/lib/basic/bytes-pool"
 
 const (
 	httpPrefix   = "http://"

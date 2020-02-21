@@ -6,7 +6,7 @@ import (
 	"errors"
 	"github.com/HyperService-Consortium/go-uip/const/trans_type"
 	"github.com/HyperService-Consortium/go-uip/uip"
-	payment_option "github.com/Myriad-Dreamin/go-ves/lib/bni/payment-option"
+	payment_option "github.com/HyperService-Consortium/go-ves/lib/bni/payment-option"
 	"github.com/tidwall/gjson"
 )
 

@@ -3,8 +3,8 @@ package dblayer_test
 import (
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/HyperService-Consortium/go-uip/uip"
-	"github.com/Myriad-Dreamin/go-ves/ves/config"
-	dblayer "github.com/Myriad-Dreamin/go-ves/ves/model/internal/db-layer"
+	"github.com/HyperService-Consortium/go-ves/ves/config"
+	dblayer "github.com/HyperService-Consortium/go-ves/ves/model/internal/db-layer"
 	"github.com/Myriad-Dreamin/minimum-lib/sugar"
 	"testing"
 )

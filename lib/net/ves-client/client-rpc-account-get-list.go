@@ -1,7 +1,7 @@
 package vesclient
 
 import (
-	"github.com/Myriad-Dreamin/go-ves/types"
+	"github.com/HyperService-Consortium/go-ves/types"
 	"github.com/kataras/iris"
 )
 

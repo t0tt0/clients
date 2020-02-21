@@ -7,9 +7,9 @@ package mock
 import (
 	context "context"
 	uip "github.com/HyperService-Consortium/go-uip/uip"
-	uiprpc "github.com/Myriad-Dreamin/go-ves/grpc/uiprpc"
-	nsb_message "github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client/nsb-message"
-	types "github.com/Myriad-Dreamin/go-ves/types"
+	uiprpc "github.com/HyperService-Consortium/go-ves/grpc/uiprpc"
+	nsb_message "github.com/HyperService-Consortium/go-ves/lib/net/nsb-client/nsb-message"
+	types "github.com/HyperService-Consortium/go-ves/types"
 	gomock "github.com/golang/mock/gomock"
 	grpc "google.golang.org/grpc"
 	reflect "reflect"

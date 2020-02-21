@@ -1,7 +1,7 @@
 package abstraction
 
 import (
-	database2 "github.com/Myriad-Dreamin/go-ves/ves/model/internal/database"
+	database2 "github.com/HyperService-Consortium/go-ves/ves/model/internal/database"
 )
 
 // SessionAccountDB ...

@@ -6,7 +6,7 @@ import (
 	"errors"
 	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/Myriad-Dreamin/dorm"
-	"github.com/Myriad-Dreamin/go-ves/lib/basic/encoding"
+	"github.com/HyperService-Consortium/go-ves/lib/basic/encoding"
 	"github.com/jinzhu/gorm"
 )
 

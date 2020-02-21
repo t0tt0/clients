@@ -5,7 +5,7 @@ import (
 	transactiontype "github.com/HyperService-Consortium/NSB/application/transaction-type"
 	"github.com/HyperService-Consortium/NSB/grpc/nsbrpc"
 	uip "github.com/HyperService-Consortium/go-uip/uip"
-	"github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client/nsb-message"
+	"github.com/HyperService-Consortium/go-ves/lib/net/nsb-client/nsb-message"
 )
 
 func (nc *NSBClient) InsuranceClaim(

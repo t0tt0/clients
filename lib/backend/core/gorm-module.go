@@ -3,7 +3,7 @@ package mcore
 import (
 	"errors"
 	"github.com/DATA-DOG/go-sqlmock"
-	"github.com/Myriad-Dreamin/go-ves/lib/backend/core-cfg"
+	"github.com/HyperService-Consortium/go-ves/lib/backend/core-cfg"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"github.com/jinzhu/gorm"
 )

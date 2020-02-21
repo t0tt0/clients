@@ -3,7 +3,7 @@ package jsonobj
 import (
 	"bytes"
 	"encoding/hex"
-	bytespool "github.com/Myriad-Dreamin/go-ves/lib/basic/bytes-pool"
+	bytespool "github.com/HyperService-Consortium/go-ves/lib/basic/bytes-pool"
 	"strconv"
 	"strings"
 )

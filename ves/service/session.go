@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/Myriad-Dreamin/go-ves/ves/control"
-	sessionservice "github.com/Myriad-Dreamin/go-ves/ves/service/session"
+	"github.com/HyperService-Consortium/go-ves/ves/control"
+	sessionservice "github.com/HyperService-Consortium/go-ves/ves/service/session"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 )
 

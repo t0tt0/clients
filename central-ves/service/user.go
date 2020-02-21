@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/Myriad-Dreamin/go-ves/central-ves/control"
-	userservice "github.com/Myriad-Dreamin/go-ves/central-ves/service/user"
+	"github.com/HyperService-Consortium/go-ves/central-ves/control"
+	userservice "github.com/HyperService-Consortium/go-ves/central-ves/service/user"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 )
 

@@ -2,8 +2,8 @@ package vesclient
 
 import (
 	"encoding/hex"
-	"github.com/Myriad-Dreamin/go-ves/grpc/wsrpc"
-	nsbcli "github.com/Myriad-Dreamin/go-ves/lib/net/nsb-client"
+	"github.com/HyperService-Consortium/go-ves/grpc/wsrpc"
+	nsbcli "github.com/HyperService-Consortium/go-ves/lib/net/nsb-client"
 )
 
 func (vc *VesClient) ProcessRequestComingRequest(requestComingRequest *wsrpc.RequestComingRequest) {

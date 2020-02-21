@@ -1,6 +1,6 @@
 package abstraction
 
-import "github.com/Myriad-Dreamin/go-ves/central-ves/model/internal/database"
+import "github.com/HyperService-Consortium/go-ves/central-ves/model/internal/database"
 
 type UserDB interface {
 	GetTraits() ORMTraits

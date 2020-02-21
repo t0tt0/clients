@@ -2,8 +2,8 @@ package dblayer
 
 import (
 	"github.com/Myriad-Dreamin/dorm"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/model/internal/abstraction"
-	"github.com/Myriad-Dreamin/go-ves/central-ves/model/internal/database"
+	"github.com/HyperService-Consortium/go-ves/central-ves/model/internal/abstraction"
+	"github.com/HyperService-Consortium/go-ves/central-ves/model/internal/database"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"github.com/jinzhu/gorm"
 )

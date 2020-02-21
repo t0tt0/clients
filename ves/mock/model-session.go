@@ -5,8 +5,8 @@
 package mock
 
 import (
-	abstraction "github.com/Myriad-Dreamin/go-ves/ves/model/internal/abstraction"
-	database "github.com/Myriad-Dreamin/go-ves/ves/model/internal/database"
+	abstraction "github.com/HyperService-Consortium/go-ves/ves/model/internal/abstraction"
+	database "github.com/HyperService-Consortium/go-ves/ves/model/internal/database"
 	gomock "github.com/golang/mock/gomock"
 	reflect "reflect"
 )

@@ -1,8 +1,8 @@
 package control
 
 import (
-	"github.com/Myriad-Dreamin/go-ves/central-ves/config"
-	mgin "github.com/Myriad-Dreamin/go-ves/lib/backend/gin"
+	"github.com/HyperService-Consortium/go-ves/central-ves/config"
+	mgin "github.com/HyperService-Consortium/go-ves/lib/backend/gin"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"github.com/gin-gonic/gin"

@@ -1,7 +1,7 @@
 package router
 
 import (
-	"github.com/Myriad-Dreamin/go-ves/ves/service"
+	"github.com/HyperService-Consortium/go-ves/ves/service"
 )
 
 type ObjectRouter struct {

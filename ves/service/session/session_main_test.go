@@ -4,11 +4,11 @@ import (
 	"encoding/json"
 	"github.com/HyperService-Consortium/go-uip/const/value_type"
 	"github.com/HyperService-Consortium/go-uip/uip"
-	"github.com/Myriad-Dreamin/go-ves/lib/backend/wrapper"
-	logger2 "github.com/Myriad-Dreamin/go-ves/lib/basic/log"
-	"github.com/Myriad-Dreamin/go-ves/types"
-	"github.com/Myriad-Dreamin/go-ves/ves/config"
-	"github.com/Myriad-Dreamin/go-ves/ves/mock"
+	"github.com/HyperService-Consortium/go-ves/lib/backend/wrapper"
+	logger2 "github.com/HyperService-Consortium/go-ves/lib/basic/log"
+	"github.com/HyperService-Consortium/go-ves/types"
+	"github.com/HyperService-Consortium/go-ves/ves/config"
+	"github.com/HyperService-Consortium/go-ves/ves/mock"
 	"github.com/Myriad-Dreamin/minimum-lib/logger"
 	"github.com/Myriad-Dreamin/minimum-lib/sugar"
 	"github.com/golang/mock/gomock"
@@ -19,7 +19,7 @@ import (
 )
 
 var describer = wrapper.Describer{
-	Pack: "github.com/Myriad-Dreamin/go-ves/ves/service/session",
+	Pack: "github.com/HyperService-Consortium/go-ves/ves/service/session",
 	Rel:  sugar.HandlerError(os.Getwd()).(string)}
 
 var (

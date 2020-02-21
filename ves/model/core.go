@@ -3,8 +3,8 @@ package model
 import (
 	"database/sql"
 	"github.com/Myriad-Dreamin/dorm"
-	mcore "github.com/Myriad-Dreamin/go-ves/lib/backend/core"
-	"github.com/Myriad-Dreamin/go-ves/ves/config"
+	mcore "github.com/HyperService-Consortium/go-ves/lib/backend/core"
+	"github.com/HyperService-Consortium/go-ves/ves/config"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"github.com/jinzhu/gorm"
 )
