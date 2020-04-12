@@ -35,7 +35,7 @@ func TestBN_GetStorageAt(t *testing.T) {
 			dns:    config.ChainDNS,
 			signer: nil,
 		}, args{
-			chainID:         6,
+			chainID:         7,
 			typeID:          value_type.Uint256,
 			contractAddress: sugar.HandlerError(hex.DecodeString("263fef3fe76fd4075ac16271d5115d01206d3674")).([]byte),
 			pos:             []byte("01"),

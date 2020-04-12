@@ -102,10 +102,10 @@ func (bn *BN) WaitForTransact(chainID uip.ChainID, transactionReceipt uip.Transa
 	return nil, nil, ErrTimeout
 }
 
-func (bn *BN) Route(intent *uip.TransactionIntent, storage uip.Storage) ([]byte, error) {
+func (bn *BN) Route(intent uip.TransactionIntent, storage uip.Storage) ([]byte, error) {
 	rawTransaction, err := bn.Translate(intent, storage)
 	if err != nil {
 		return nil, err
 	}
-	return bn.RouteRaw(intent.ChainID, rawTransaction)
+	return bn.RouteRaw(intent.GetChainID(), rawTransaction)
 }

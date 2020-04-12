@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/HyperService-Consortium/go-uip/const/trans_type"
+	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-uip/uip"
 	payment_option "github.com/HyperService-Consortium/go-ves/lib/bni/payment-option"
 	"github.com/tidwall/gjson"
@@ -14,8 +15,10 @@ func (bn *BN) ParseTransactionIntent(intent uip.TxIntentI) (uip.TxIntentI, error
 	return intent, nil
 }
 
-func (bn *BN) Translate(intent *uip.TransactionIntent, storage uip.Storage) (uip.RawTransaction, error) {
-	switch intent.TransType {
+func (bn *BN) Translate(x uip.TransactionIntent, storage uip.Storage) (uip.RawTransaction, error) {
+	//todo remove assertion
+	intent := x.(*opintent.TransactionIntent)
+	switch intent.GetTxType() {
 	case trans_type.Payment:
 		meta := gjson.ParseBytes(intent.Meta)
 		value, err := payment_option.ParseInconsistentValueOption(meta, storage, intent.Amt)
@@ -40,20 +43,18 @@ func (bn *BN) Translate(intent *uip.TransactionIntent, storage uip.Storage) (uip
 		//fmt.Println("...", string(b))
 		return NewRawTransaction(b, intent.Src, false), err
 	case trans_type.ContractInvoke:
-		var meta uip.ContractInvokeMeta
-		err := json.Unmarshal(intent.Meta, &meta)
+		var meta opintent.ContractInvokeMeta
+		err := contractMetaEncoder.Unmarshal(intent.Meta, &meta)
 		if err != nil {
 			return nil, err
 		}
-		//_ = meta
-		// todo, test
+
 		data, err := ContractInvocationDataABI(intent.ChainID, &meta, storage)
 		if err != nil {
 			return nil, err
 		}
 
 		hexdata := hex.EncodeToString(data)
-		// meta.FuncName
 
 		b, err := json.Marshal(map[string]interface{}{
 			"jsonrpc": "2.0",

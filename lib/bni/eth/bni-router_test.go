@@ -4,8 +4,10 @@ import (
 	"encoding/hex"
 	"fmt"
 	"github.com/HyperService-Consortium/go-uip/const/trans_type"
+	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/HyperService-Consortium/go-ves/config"
+	dep_uip "github.com/HyperService-Consortium/go-ves/dependency/uip"
 	"github.com/HyperService-Consortium/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/sugar"
 	"testing"
@@ -17,7 +19,7 @@ func TestBN_Route(t *testing.T) {
 		signer uip.Signer
 	}
 	type args struct {
-		intent  *uip.TransactionIntent
+		intent  uip.TransactionIntent
 		storage uip.Storage
 	}
 	tests := []struct {
@@ -30,16 +32,18 @@ func TestBN_Route(t *testing.T) {
 			"test_easy", fields{
 				dns: config.ChainDNS,
 				signer: passwordSigner{
-					pb: sugar.HandlerError(hex.DecodeString("0a8f483d32e20a7b17b598235489570b92f67e31")).([]byte),
+					pb: sugar.HandlerError(hex.DecodeString("6d8c6cb9d26b5a21ae498a22385ae4265f494cfc")).([]byte),
 					ps: "123456"},
 			}, args{
-				intent: &uip.TransactionIntent{
-					TransType: trans_type.Payment,
-					Src:       sugar.HandlerError(hex.DecodeString("0a8f483d32e20a7b17b598235489570b92f67e31")).([]byte),
-					Dst:       sugar.HandlerError(hex.DecodeString("0a8f483d32e20a7b17b598235489570b92f67e31")).([]byte),
-					Meta:      nil,
-					Amt:       "03e8",
-					ChainID:   6,
+				intent: &dep_uip.TransactionIntent{
+					TransactionIntent: &opintent.TransactionIntent{
+						TransType: trans_type.Payment,
+						Src:       sugar.HandlerError(hex.DecodeString("6d8c6cb9d26b5a21ae498a22385ae4265f494cfc")).([]byte),
+						Dst:       sugar.HandlerError(hex.DecodeString("6d8c6cb9d26b5a21ae498a22385ae4265f494cfc")).([]byte),
+						Meta:      nil,
+						Amt:       "03e8",
+						ChainID:   7,
+					},
 				},
 				storage: nil,
 			}, false},
