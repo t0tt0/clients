@@ -6,6 +6,7 @@ package mock
 
 import (
 	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
+	parser "github.com/HyperService-Consortium/go-uip/op-intent/parser"
 	uip "github.com/HyperService-Consortium/go-uip/uip"
 	gomock "github.com/golang/mock/gomock"
 	reflect "reflect"
@@ -34,55 +35,11 @@ func (m *OpIntentInitializer) EXPECT() *OpIntentInitializerMockRecorder {
 	return m.recorder
 }
 
-// InitContent mocks base method
-func (m *OpIntentInitializer) InitContent(arg0 *opintent.RawIntent, arg1 []uint8) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "InitContent", arg0, arg1)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// InitContent indicates an expected call of InitContent
-func (mr *OpIntentInitializerMockRecorder) InitContent(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "InitContent", reflect.TypeOf((*OpIntentInitializer)(nil).InitContent), arg0, arg1)
-}
-
-// InitContents mocks base method
-func (m *OpIntentInitializer) InitContents(arg0 [][]uint8) (*opintent.RawIntents, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "InitContents", arg0)
-	ret0, _ := ret[0].(*opintent.RawIntents)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// InitContents indicates an expected call of InitContents
-func (mr *OpIntentInitializerMockRecorder) InitContents(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "InitContents", reflect.TypeOf((*OpIntentInitializer)(nil).InitContents), arg0)
-}
-
-// InitDependencies mocks base method
-func (m *OpIntentInitializer) InitDependencies(arg0 [][]uint8) (*opintent.RawDependenciesInfo, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "InitDependencies", arg0)
-	ret0, _ := ret[0].(*opintent.RawDependenciesInfo)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// InitDependencies indicates an expected call of InitDependencies
-func (mr *OpIntentInitializerMockRecorder) InitDependencies(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "InitDependencies", reflect.TypeOf((*OpIntentInitializer)(nil).InitDependencies), arg0)
-}
-
 // Parse mocks base method
-func (m *OpIntentInitializer) Parse(arg0 uip.OpIntents) (opintent.TxIntents, error) {
+func (m *OpIntentInitializer) Parse(arg0 opintent.OpIntents) (parser.TxIntents, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Parse", arg0)
-	ret0, _ := ret[0].(opintent.TxIntents)
+	ret0, _ := ret[0].(parser.TxIntents)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -93,53 +50,38 @@ func (mr *OpIntentInitializerMockRecorder) Parse(arg0 interface{}) *gomock.Call 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Parse", reflect.TypeOf((*OpIntentInitializer)(nil).Parse), arg0)
 }
 
-// ParseDependencies mocks base method
-func (m *OpIntentInitializer) ParseDependencies(arg0 opintent.RawDependenciesI, arg1 map[string]int) (*opintent.DependenciesInfo, error) {
+// ParseR mocks base method
+func (m *OpIntentInitializer) ParseR(arg0 opintent.OpIntentsPacket) (parser.TxIntents, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ParseDependencies", arg0, arg1)
-	ret0, _ := ret[0].(*opintent.DependenciesInfo)
+	ret := m.ctrl.Call(m, "ParseR", arg0)
+	ret0, _ := ret[0].(parser.TxIntents)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// ParseDependencies indicates an expected call of ParseDependencies
-func (mr *OpIntentInitializerMockRecorder) ParseDependencies(arg0, arg1 interface{}) *gomock.Call {
+// ParseR indicates an expected call of ParseR
+func (mr *OpIntentInitializerMockRecorder) ParseR(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ParseDependencies", reflect.TypeOf((*OpIntentInitializer)(nil).ParseDependencies), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ParseR", reflect.TypeOf((*OpIntentInitializer)(nil).ParseR), arg0)
 }
 
-// ParseIntent mocks base method
-func (m *OpIntentInitializer) ParseIntent(arg0 opintent.RawIntentI) ([]uip.TxIntentI, error) {
+// Parse_ mocks base method
+func (m *OpIntentInitializer) Parse_(arg0 *parser.LexerResult) (parser.TxIntents, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ParseIntent", arg0)
-	ret0, _ := ret[0].([]uip.TxIntentI)
+	ret := m.ctrl.Call(m, "Parse_", arg0)
+	ret0, _ := ret[0].(parser.TxIntents)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// ParseIntent indicates an expected call of ParseIntent
-func (mr *OpIntentInitializerMockRecorder) ParseIntent(arg0 interface{}) *gomock.Call {
+// Parse_ indicates an expected call of Parse_
+func (mr *OpIntentInitializerMockRecorder) Parse_(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ParseIntent", reflect.TypeOf((*OpIntentInitializer)(nil).ParseIntent), arg0)
-}
-
-// ParseIntents mocks base method
-func (m *OpIntentInitializer) ParseIntents(arg0 opintent.RawIntentsI) (opintent.TxIntentsImpl, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ParseIntents", arg0)
-	ret0, _ := ret[0].(opintent.TxIntentsImpl)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// ParseIntents indicates an expected call of ParseIntents
-func (mr *OpIntentInitializerMockRecorder) ParseIntents(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ParseIntents", reflect.TypeOf((*OpIntentInitializer)(nil).ParseIntents), arg0)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Parse_", reflect.TypeOf((*OpIntentInitializer)(nil).Parse_), arg0)
 }
 
 // TopologicalSort mocks base method
-func (m *OpIntentInitializer) TopologicalSort(arg0 opintent.ArrayI, arg1 []opintent.Dependency) error {
+func (m *OpIntentInitializer) TopologicalSort(arg0 opintent.ArrayI, arg1 []parser.Dependency) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "TopologicalSort", arg0, arg1)
 	ret0, _ := ret[0].(error)
@@ -205,7 +147,7 @@ func (mr *BlockChainInterfaceMockRecorder) Deserialize(arg0 interface{}) *gomock
 }
 
 // GetStorageAt mocks base method
-func (m *BlockChainInterface) GetStorageAt(arg0 uint64, arg1 uip.TypeID, arg2, arg3, arg4 []uint8) (uip.Variable, error) {
+func (m *BlockChainInterface) GetStorageAt(arg0 uint64, arg1 uint16, arg2, arg3, arg4 []uint8) (uip.Variable, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetStorageAt", arg0, arg1, arg2, arg3, arg4)
 	ret0, _ := ret[0].(uip.Variable)
@@ -248,6 +190,21 @@ func (mr *BlockChainInterfaceMockRecorder) MustWithSigner() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "MustWithSigner", reflect.TypeOf((*BlockChainInterface)(nil).MustWithSigner))
 }
 
+// ParseTransactionIntent mocks base method
+func (m *BlockChainInterface) ParseTransactionIntent(arg0 uip.TxIntentI) (uip.TxIntentI, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ParseTransactionIntent", arg0)
+	ret0, _ := ret[0].(uip.TxIntentI)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ParseTransactionIntent indicates an expected call of ParseTransactionIntent
+func (mr *BlockChainInterfaceMockRecorder) ParseTransactionIntent(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ParseTransactionIntent", reflect.TypeOf((*BlockChainInterface)(nil).ParseTransactionIntent), arg0)
+}
+
 // RouteRaw mocks base method
 func (m *BlockChainInterface) RouteRaw(arg0 uint64, arg1 uip.RawTransaction) ([]uint8, error) {
 	m.ctrl.T.Helper()
@@ -279,7 +236,7 @@ func (mr *BlockChainInterfaceMockRecorder) RouteWithSigner(arg0 interface{}) *go
 }
 
 // Translate mocks base method
-func (m *BlockChainInterface) Translate(arg0 *uip.TransactionIntent, arg1 uip.Storage) (uip.RawTransaction, error) {
+func (m *BlockChainInterface) Translate(arg0 uip.TransactionIntent, arg1 uip.Storage) (uip.RawTransaction, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Translate", arg0, arg1)
 	ret0, _ := ret[0].(uip.RawTransaction)
@@ -312,19 +269,4 @@ func (mr *BlockChainInterfaceMockRecorder) WaitForTransact(arg0, arg1 interface{
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "WaitForTransact", reflect.TypeOf((*BlockChainInterface)(nil).WaitForTransact), varargs...)
-}
-
-// ParseTransactionIntent mocks base method
-func (m *BlockChainInterface) ParseTransactionIntent(intent uip.TxIntentI) (uip.TxIntentI, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ParseTransactionIntent", intent)
-	ret0, _ := ret[0].(uip.TxIntentI)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// ParseTransactionIntent indicates an expected call of ParseTransactionIntent
-func (mr *BlockChainInterfaceMockRecorder) ParseTransactionIntent(intent interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ParseTransactionIntent", reflect.TypeOf((*BlockChainInterface)(nil).ParseTransactionIntent), intent)
 }

@@ -1,6 +1,9 @@
 package types
 
-import uip "github.com/HyperService-Consortium/go-uip/uip"
+import (
+	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
+	uip "github.com/HyperService-Consortium/go-uip/uip"
+)
 
 type isc_address = []byte
 
@@ -29,7 +32,7 @@ type Session interface {
 	GetTransactingTransaction() (transaction_local_id, error)
 
 	// error reports Internal errors, help_info reports Logic errors
-	InitFromOpIntents(opIntents uip.OpIntents) error
+	InitFromOpIntents(opIntents opintent.OpIntents) error
 	AckForInit(uip.Account, uip.Signature) (success_or_not, help_info, error)
 	NotifyAttestation(NSBInterface, uip.BlockChainInterface, uip.Attestation) (success_or_not, help_info, error)
 	ProcessAttestation(NSBInterface, uip.BlockChainInterface, uip.Attestation) (success_or_not, help_info, error)

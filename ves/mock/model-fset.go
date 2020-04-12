@@ -110,7 +110,7 @@ func (mr *SessionFSetMockRecorder) GetTransactingTransaction(arg0 interface{}) *
 }
 
 // InitSessionInfo mocks base method
-func (m *SessionFSet) InitSessionInfo(arg0 []uint8, arg1 []*uip.TransactionIntent, arg2 []*model.SessionAccount) (*model.Session, error) {
+func (m *SessionFSet) InitSessionInfo(arg0 []uint8, arg1 []uip.Instruction, arg2 []*model.SessionAccount) (*model.Session, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "InitSessionInfo", arg0, arg1, arg2)
 	ret0, _ := ret[0].(*model.Session)

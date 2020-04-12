@@ -1,13 +1,13 @@
 package fset
 
 import (
+	"bytes"
 	"fmt"
 	"github.com/HyperService-Consortium/NSB/contract/isc/TxState"
 	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/HyperService-Consortium/go-ves/lib/backend/wrapper"
 	"github.com/HyperService-Consortium/go-ves/lib/basic/encoding"
-	"github.com/HyperService-Consortium/go-ves/lib/upstream"
 	"github.com/HyperService-Consortium/go-ves/types"
 	"github.com/HyperService-Consortium/go-ves/ves/model/internal/abstraction"
 	database2 "github.com/HyperService-Consortium/go-ves/ves/model/internal/database"
@@ -63,7 +63,7 @@ func (s SessionFSet) GetTransactingTransaction(ses *database2.Session) ([]byte, 
 }
 
 func (s SessionFSet) InitSessionInfo(
-	iscAddress []byte, intents []*opintent.TransactionIntent, accounts []*database2.SessionAccount) (
+	iscAddress []byte, intents []uip.Instruction, accounts []*database2.SessionAccount) (
 	ses *database2.Session, err error) {
 	ses = database2.NewSession(iscAddress)
 	for i := range accounts {
@@ -81,7 +81,8 @@ func (s SessionFSet) InitSessionInfo(
 
 	ses.TransactionCount = int64(len(intents))
 	for i := range intents {
-		b, err := upstream.Serializer.TransactionIntent.Marshal(intents[i])
+		var b = bytes.NewBuffer(nil)
+		err := opintent.EncodeInstruction(b, intents[i])
 		if err != nil {
 			return nil, wrapper.Wrap(types.CodeTransactionIntentSerializeError, err)
 		}
@@ -89,7 +90,7 @@ func (s SessionFSet) InitSessionInfo(
 		if _, err = s.TransactionDB.Create(&database2.Transaction{
 			SessionID: ses.ISCAddress,
 			Index:     int64(i),
-			Content:   database2.EncodeContent(b),
+			Content:   database2.EncodeContent(b.Bytes()),
 		}); err != nil {
 			return nil, wrapper.Wrap(types.CodeSessionInsertTransactionError, err)
 		}

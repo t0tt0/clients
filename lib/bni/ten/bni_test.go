@@ -4,9 +4,11 @@ import (
 	"encoding/hex"
 	"fmt"
 	"github.com/HyperService-Consortium/go-uip/const/trans_type"
+	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-uip/signaturer"
 	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/HyperService-Consortium/go-ves/config"
+	dep_uip "github.com/HyperService-Consortium/go-ves/dependency/uip"
 	"github.com/HyperService-Consortium/go-ves/types"
 	"golang.org/x/crypto/ed25519"
 	"testing"
@@ -20,7 +22,7 @@ func TestBN_Translate(t *testing.T) {
 		signer uip.Signer
 	}
 	type args struct {
-		intent  *uip.TransactionIntent
+		intent  uip.TransactionIntent
 		storage uip.Storage
 	}
 
@@ -44,13 +46,15 @@ func TestBN_Translate(t *testing.T) {
 		wantErr bool
 	}{
 		{"test_easy", fields{dns: config.ChainDNS, signer: ten}, args{
-			intent: &uip.TransactionIntent{
-				TransType: trans_type.Payment,
-				Src:       ten.GetPublicKey(),
-				Dst:       ten2.GetPublicKey(),
-				Meta:      nil,
-				Amt:       "15",
-				ChainID:   3,
+			intent: &dep_uip.TransactionIntent{
+				TransactionIntent: &opintent.TransactionIntent{
+					TransType: trans_type.Payment,
+					Src:       ten.GetPublicKey(),
+					Dst:       ten2.GetPublicKey(),
+					Meta:      nil,
+					Amt:       "15",
+					ChainID:   3,
+				},
 			},
 			storage: nil,
 		}, false},

@@ -7,8 +7,10 @@ github.com/DATA-DOG/go-sqlmock v1.4.1 h1:ThlnYciV1iM/V0OSF/dtkqWb6xo5qITT1TJBG1M
 github.com/DATA-DOG/go-sqlmock v1.4.1/go.mod h1:f/Ixk793poVmq4qj/V1dPUg2JEAKC73Q5eFN3EC/SaM=
 github.com/DeanThompson/ginpprof v0.0.0-20190408063150-3be636683586 h1:vDSj8WQZoe+dhK9JVwkSEBwtmcJw5rJ7l1L0Yik8Ku0=
 github.com/DeanThompson/ginpprof v0.0.0-20190408063150-3be636683586/go.mod h1:kMi/fSDAgvjo9TYfYwYeQ2vkyj+VTR/tB6u/Tjh39t0=
-github.com/HyperService-Consortium/NSB v0.7.4-0.20200220123026-f58d4378d7a6 h1:mk1ueR0UA4bamlJ4Ldv4mUbDJHy7yTyUpkKbXFknB64=
-github.com/HyperService-Consortium/NSB v0.7.4-0.20200220123026-f58d4378d7a6/go.mod h1:CCnK0PzEBZzV3d/0RlDIOuUZPBlvYMRK4uhihMabhMU=
+github.com/HyperService-Consortium/NSB v0.7.4-0.20200408080811-f102bb825821 h1:VmlK+t+Dsdiff3VuYDLiwhzz6mVPSq19IwKiH2ifyvk=
+github.com/HyperService-Consortium/NSB v0.7.4-0.20200408080811-f102bb825821/go.mod h1:XOUm2prOum31uQTgYuiY4+pKyphe1ObR46iQVh8Tw2k=
+github.com/HyperService-Consortium/NSB v0.8.0 h1:zji6ZeNJphCUZuh7yKSToBKU39hCHd5EiBdV9AkVpG4=
+github.com/HyperService-Consortium/NSB v0.8.0/go.mod h1:pycrBuQyb5NpYjqze1ge3/xhTlMaArjgd6ypP3RQCTM=
 github.com/HyperService-Consortium/go-ethabi v0.9.1 h1:KO5jE1PDMTHuMr+Kp3LxQOm+bD132F0vsDyS9ILBY58=
 github.com/HyperService-Consortium/go-ethabi v0.9.1/go.mod h1:ngPlugEdGFUTCnDFwAoog6YLGdm959cSzgizwzbsJiI=
 github.com/HyperService-Consortium/go-hexutil v1.0.1 h1:pThbi0a+9z7Oq7s3AcRgRsGKWc1qlq7sMBdDscSTKQs=
@@ -17,8 +19,10 @@ github.com/HyperService-Consortium/go-mpt v1.1.1-0.20190903152503-b63ec8d75bd4 h
 github.com/HyperService-Consortium/go-mpt v1.1.1-0.20190903152503-b63ec8d75bd4/go.mod h1:tYeCvWyIQt4xuaLANWvVi3kvTIuAe6FmyC2G6A8mBIM=
 github.com/HyperService-Consortium/go-rlp v1.0.1-0.20190903144357-b5693c05a6b8 h1:KBmZ/AwlF/iKvbQwGL6+09bbZHzksJFr/6tjKzX29ME=
 github.com/HyperService-Consortium/go-rlp v1.0.1-0.20190903144357-b5693c05a6b8/go.mod h1:f6lLuGRJua3AHgMk4m6XvsF64GFlr5ekGeb2n+ymYfQ=
-github.com/HyperService-Consortium/go-uip v0.0.0-20200220185050-7073779ca691 h1:GfDoLpQ3zwneehcKX9esJ2jvLo3iw3sRp/VdYtisNvw=
-github.com/HyperService-Consortium/go-uip v0.0.0-20200220185050-7073779ca691/go.mod h1:NcvLB95lHN867SaUNi8+PWgO0TNWZGX/1O29L1XQMhA=
+github.com/HyperService-Consortium/go-uip v0.0.0-20200408052624-8f276ad3e377 h1:VJRRvW8keCIOB4n09/P5gN94osRkH/er/Luxn7LEwlw=
+github.com/HyperService-Consortium/go-uip v0.0.0-20200408052624-8f276ad3e377/go.mod h1:lTOAVepEPTDAf5lrTOWbQBj1q6ajUrZsU62l9rd6OeU=
+github.com/HyperService-Consortium/go-uip v0.0.0-20200408075657-d2425491ab24 h1:nHye1ubP60qilAWv7ZfB6B2vScImQoAHw+a9XzlXgLo=
+github.com/HyperService-Consortium/go-uip v0.0.0-20200408075657-d2425491ab24/go.mod h1:lTOAVepEPTDAf5lrTOWbQBj1q6ajUrZsU62l9rd6OeU=
 github.com/Joker/hpp v0.0.0-20180418125244-6893e659854a h1:PiDAizhfJbwZMISZ1Itx1ZTFeOFCml89Ofmz3V8rhoU=
 github.com/Joker/hpp v0.0.0-20180418125244-6893e659854a/go.mod h1:MzD2WMdSxvbHw5fM/OXOFily/lipJWRc9C1px0Mt0ZE=
 github.com/Joker/jade v1.0.0 h1:lOCEPvTAtWfLpSZYMOv/g44MGQFAolbKh2khHHGu0Kc=
@@ -46,6 +50,8 @@ github.com/Myriad-Dreamin/go-model-traits v0.0.0-20191209220601-85cd28b274b0/go.
 github.com/Myriad-Dreamin/go-parse-package v1.0.0/go.mod h1:kb2R+hypYiYQm3D4JqY/IuI4GG9cdh735vW/AMJyFgE=
 github.com/Myriad-Dreamin/go-parse-package v1.0.1 h1:SXAcWHcj4uix6jCaY6/7Rw4ENaUxepjpNgFJu0xP2AQ=
 github.com/Myriad-Dreamin/go-parse-package v1.0.1/go.mod h1:kb2R+hypYiYQm3D4JqY/IuI4GG9cdh735vW/AMJyFgE=
+github.com/Myriad-Dreamin/gvm v1.0.2 h1:h2vALOU+X1CYiOBdSSrOI/bs7tRBF9PfAMTtdiWucIE=
+github.com/Myriad-Dreamin/gvm v1.0.2/go.mod h1:s/IIw20tyOGuO5cOqLnQLUYZ+47unK/EsoQZz04nOxI=
 github.com/Myriad-Dreamin/market v0.0.0-20191102045134-4a108d71ca6f/go.mod h1:bFqLiwxZQmGNxA8XKnnr6KdC9w5ET7cJJ9mWUMDdr/0=
 github.com/Myriad-Dreamin/minimum-lib v0.0.0-20191222020721-aa5c7417baf3/go.mod h1:GKUoai77HJVOQtM7DoI3qwm77AOzFAy3LpeUzYjLgzg=
 github.com/Myriad-Dreamin/minimum-lib v0.0.0-20200117225041-ec905257618d h1:RNmfwpYUNmry36Cbco79BUfiIp/t7vIFx+WCRFIojN8=
@@ -189,6 +195,7 @@ github.com/go-xorm/xorm v0.7.6/go.mod h1:nqz2TAsuOHWH2yk4FYWtacCGgdbrcdZ5mF1Xadq
 github.com/gogo/protobuf v1.1.1/go.mod h1:r8qH/GZQm5c6nD/R0oafs1akxWv10x8SbQlK7atdtwQ=
 github.com/gogo/protobuf v1.2.0/go.mod h1:r8qH/GZQm5c6nD/R0oafs1akxWv10x8SbQlK7atdtwQ=
 github.com/gogo/protobuf v1.2.1/go.mod h1:hp+jE20tsWTFYpLwKvXlhS1hjn+gTNwPg2I6zVXpSg4=
+github.com/gogo/protobuf v1.3.0/go.mod h1:SlYgWuQ5SjCEi6WLHjHCa1yvBfUnHcTbrrZtXPKa29o=
 github.com/gogo/protobuf v1.3.1 h1:DqDEcV5aeaTmdFBePNpYsp3FlcVH/2ISVVM9Qf8PSls=
 github.com/gogo/protobuf v1.3.1/go.mod h1:SlYgWuQ5SjCEi6WLHjHCa1yvBfUnHcTbrrZtXPKa29o=
 github.com/golang-sql/civil v0.0.0-20190719163853-cb61b32ac6fe h1:lXe2qZdvpiX5WZkZR4hgp4KJVfY3nMkvmwbVkpv1rVY=
@@ -416,6 +423,8 @@ github.com/stretchr/testify v1.2.2/go.mod h1:a8OnRcib4nhh0OaRAV+Yts87kKdq0PP7pXf
 github.com/stretchr/testify v1.3.0/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UVUgZn+9EI=
 github.com/stretchr/testify v1.4.0 h1:2E4SXV/wtOkTonXsotYi4li6zVWxYlZuYNCXe9XRJyk=
 github.com/stretchr/testify v1.4.0/go.mod h1:j7eGeouHqKxXV5pUuKE4zz7dFj8WfuZ+81PSLYec5m4=
+github.com/stretchr/testify v1.5.1 h1:nOGnQDM7FYENwehXlg/kFVnos3rEvtKTjRvOWSzb6H4=
+github.com/stretchr/testify v1.5.1/go.mod h1:5W2xD1RspED5o8YsWQXVCued0rvSQ+mT+I5cxcmMvtA=
 github.com/swaggo/files v0.0.0-20190704085106-630677cd5c14/go.mod h1:gxQT6pBGRuIGunNf/+tSOB5OHvguWi8Tbt82WOkf35E=
 github.com/swaggo/gin-swagger v1.2.0/go.mod h1:qlH2+W7zXGZkczuL+r2nEBR2JTT+/lX05Nn6vPhc7OI=
 github.com/swaggo/swag v1.5.1/go.mod h1:1Bl9F/ZBpVWh22nY0zmYyASPO1lI/zIwRDrpZU+tv8Y=

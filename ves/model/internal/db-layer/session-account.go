@@ -8,8 +8,6 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-var ()
-
 func wrapToSessionAccount(sessionAccount interface{}, err error) (*SessionAccount, error) {
 	if sessionAccount == nil {
 		return nil, err

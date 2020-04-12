@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
@@ -42,14 +41,16 @@ func main() {
 		var ier = sugar.HandlerError(opintent.NewInitializer(config.UserMap, getter.NewBlockChainGetter(config.ChainDNS))).(*opintent.Initializer)
 		res := sugar.HandlerError(ier.Parse(intents)).(opintent.TxIntents).GetTxIntents()
 		for _, intent := range res {
-			intent := intent.GetIntent()
+			intent := intent.GetInstruction()
 			fmt.Println("=================================================================")
-			fmt.Println("src:", hex.EncodeToString(intent.Src))
-			fmt.Println("dst:", hex.EncodeToString(intent.Dst))
-			fmt.Println("meta:", string(intent.Meta))
-			fmt.Println("trans_type:", intent.TransType)
-			fmt.Println("chain_id:", intent.ChainID)
-			fmt.Println("amt:", intent.Amt)
+			//todo
+			fmt.Println(intent.GetType())
+			//fmt.Println("src:", hex.EncodeToString(intent.Src))
+			//fmt.Println("dst:", hex.EncodeToString(intent.Dst))
+			//fmt.Println("meta:", string(intent.Meta))
+			//fmt.Println("trans_type:", intent.TransType)
+			//fmt.Println("chain_id:", intent.ChainID)
+			//fmt.Println("amt:", intent.Amt)
 		}
 	}, "intent.json")
 }

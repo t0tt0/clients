@@ -2,9 +2,10 @@ package model
 
 import (
 	"database/sql"
-	"github.com/Myriad-Dreamin/dorm"
 	mcore "github.com/HyperService-Consortium/go-ves/lib/backend/core"
 	"github.com/HyperService-Consortium/go-ves/ves/config"
+	"github.com/HyperService-Consortium/go-ves/ves/model/internal/abstraction"
+	"github.com/Myriad-Dreamin/dorm"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"github.com/jinzhu/gorm"
 )
@@ -47,3 +48,7 @@ func (p *DBLayerModule) Configuration(cfg *config.ServerConfig) {
 	p.GetRawSQLInstance().SetMaxIdleConns(cfg.DatabaseConfig.MaxIdle)
 	p.GetRawSQLInstance().SetMaxOpenConns(cfg.DatabaseConfig.MaxActive)
 }
+
+type ORMTraits = abstraction.ORMTraits
+type SessionAccountQueryOption = abstraction.SessionAccountQueryOption
+type SessionQueryOption = abstraction.SessionQueryOption

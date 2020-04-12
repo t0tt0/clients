@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	testHost = "127.0.0.1:8545"
+	testHost = "121.89.200.234:8545"
 )
 
 func TestGetEthAccounts(t *testing.T) {
@@ -20,7 +20,7 @@ func TestGetEthAccounts(t *testing.T) {
 }
 
 func TestUnlock(t *testing.T) {
-	ok, err := NewEthClient(testHost).PersonalUnlockAccout("0x0ac45f1e6b8d47ac4c73aee62c52794b5898da9f", "123456", 600)
+	ok, err := NewEthClient(testHost).PersonalUnlockAccout("0x6d8c6cb9d26b5a21ae498a22385ae4265f494cfc", "123456", 600)
 
 	if ok == false || err != nil {
 		if ok == false {
@@ -38,7 +38,7 @@ func TestUnlock(t *testing.T) {
 	}
 }
 
-const objjj = `{"from":"0x0ac45f1e6b8d47ac4c73aee62c52794b5898da9f", "to": "0x981739a13593980763de3353340617ef16da6354", "value": "0x1"}`
+const objjj = `{"from":"0x6d8c6cb9d26b5a21ae498a22385ae4265f494cfc", "to": "0x6d8c6cb9d26b5a21ae498a22385ae4265f494cfc", "value": "0x1"}`
 
 func TestSendTransaction(t *testing.T) {
 	b, err := NewEthClient(testHost).SendTransaction([]byte(objjj))

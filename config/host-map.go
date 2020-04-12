@@ -32,6 +32,10 @@ var HostMap = chain_dns.HostMap{
 		Host:      "39.100.145.91:8545",
 		ChainType: ChainType.Ethereum,
 	},
+	7: chain_dns.ChainInfo{
+		Host:      "121.89.200.234:8545",
+		ChainType: ChainType.Ethereum,
+	},
 }
 
 func GetHostMap() chain_dns.HostMap {

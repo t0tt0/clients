@@ -30,7 +30,7 @@ func (svc *attestationReceiveRequestService) serve() {
 	}
 
 	switch attestation.Aid {
-	/* 0~4 */
+	/* 0~3 */
 	case TxState.Unknown:
 		svc.procTxStateUnknown()
 	case TxState.Initing:
@@ -39,10 +39,10 @@ func (svc *attestationReceiveRequestService) serve() {
 		svc.procTxStateInitialized()
 	case TxState.Instantiating:
 		svc.procTxStateInstantiating()
-	case TxState.Instantiated:
-		svc.procTxStateInstantiated()
+	//case TxState.Instantiated:
+	//	svc.procTxStateInstantiated()
 
-	/* 5~7 */
+	/* 4~6 */
 	case TxState.Open:
 		svc.procTxStateOpen()
 	case TxState.Opened:
@@ -79,17 +79,17 @@ func (svc *attestationReceiveRequestService) procTxStateInstantiating() {
 	}
 }
 
-func (svc *attestationReceiveRequestService) procTxStateInstantiated() {
+func (svc *attestationReceiveRequestService) procTxStateOpen() {
 	if svc.newReq = svc.generateNewAttestationFromOld(); svc.newReq != nil && svc.doTransaction() {
 		svc.tellOthers()
 	}
 }
 
-func (svc *attestationReceiveRequestService) procTxStateOpen() {
-	if svc.newReq = svc.generateNewAttestationFromOld(); svc.newReq != nil {
-		svc.tellOthers()
-	}
-}
+//func (svc *attestationReceiveRequestService) procTxStateOpen() {
+//	if svc.newReq = svc.generateNewAttestationFromOld(); svc.newReq != nil {
+//		svc.tellOthers()
+//	}
+//}
 
 func (svc *attestationReceiveRequestService) procTxStateOpened() {
 	if svc.newReq = svc.generateNewAttestationFromOld(); svc.newReq != nil {
@@ -177,7 +177,7 @@ func (svc *attestationReceiveRequestService) checkSignaturesAndSign(
 type _ARRDoTransactionService struct {
 	*attestationReceiveRequestService
 
-	router uip.Router
+	router     uip.Router
 	translator uip.Translator
 }
 

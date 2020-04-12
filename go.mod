@@ -4,18 +4,18 @@ go 1.13
 
 replace (
 	github.com/HyperService-Consortium/go-hexutil => github.com/HyperService-Consortium/go-hexutil v1.0.1
-	github.com/HyperService-Consortium/go-uip => github.com/HyperService-Consortium/go-uip v0.0.0-20200220185050-7073779ca691
+	github.com/HyperService-Consortium/go-uip => github.com/HyperService-Consortium/go-uip v0.0.0-20200408075657-d2425491ab24
 )
 
 require (
 	github.com/BurntSushi/toml v0.3.1
 	github.com/DATA-DOG/go-sqlmock v1.4.1
 	github.com/DeanThompson/ginpprof v0.0.0-20190408063150-3be636683586
-	github.com/HyperService-Consortium/NSB v0.7.4-0.20200220123026-f58d4378d7a6
+	github.com/HyperService-Consortium/NSB v0.8.0
 	github.com/HyperService-Consortium/go-ethabi v0.9.1
 	github.com/HyperService-Consortium/go-mpt v1.1.1-0.20190903152503-b63ec8d75bd4
 	github.com/HyperService-Consortium/go-rlp v1.0.1-0.20190903144357-b5693c05a6b8
-	github.com/HyperService-Consortium/go-uip v0.0.0-20200220185050-7073779ca691
+	github.com/HyperService-Consortium/go-uip v0.0.0-20200408075657-d2425491ab24
 	github.com/Joker/jade v1.0.0 // indirect
 	github.com/Myriad-Dreamin/artisan v0.8.1-0.20200204040619-76955d01aad9
 	github.com/Myriad-Dreamin/dorm v0.0.0-20191205101004-33dbc61bb34e
@@ -24,6 +24,7 @@ require (
 	github.com/Myriad-Dreamin/go-magic-package v0.0.0-20191102120213-a407f918fece
 	github.com/Myriad-Dreamin/go-model-traits v0.0.0-20191209220601-85cd28b274b0
 	github.com/Myriad-Dreamin/go-parse-package v1.0.1
+	github.com/Myriad-Dreamin/gvm v1.0.2
 	github.com/Myriad-Dreamin/minimum-lib v0.0.0-20200117225041-ec905257618d
 	github.com/Myriad-Dreamin/mydrest v1.0.1
 	github.com/Myriad-Dreamin/screenrus v1.0.0
@@ -70,7 +71,7 @@ require (
 	github.com/shurcooL/sanitized_anchor_name v1.0.0 // indirect
 	github.com/sirupsen/logrus v1.4.2
 	github.com/smartystreets/goconvey v1.6.4 // indirect
-	github.com/stretchr/testify v1.4.0
+	github.com/stretchr/testify v1.5.1
 	github.com/syndtr/goleveldb v1.0.1-0.20190318030020-c3a204f8e965
 	github.com/tidwall/gjson v1.4.0
 	github.com/xeipuuv/gojsonschema v1.2.0 // indirect

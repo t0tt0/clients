@@ -2,11 +2,9 @@ package upstream
 
 import (
 	"bytes"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/HyperService-Consortium/go-uip/const/value_type"
-	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/Myriad-Dreamin/minimum-lib/sugar"
 	"github.com/tidwall/gjson"
@@ -14,33 +12,6 @@ import (
 	"reflect"
 	"testing"
 )
-
-type mcs struct{}
-type ts struct {}
-type _serializer struct {
-	TransactionIntent ts
-	Meta              struct {
-		Contract mcs
-	}
-}
-
-var Serializer = _serializer{}
-
-func (mcs) Unmarshal(b []byte, meta *uip.ContractInvokeMeta) error {
-	return json.Unmarshal(b, meta)
-}
-
-func (mcs) Marshal(meta *uip.ContractInvokeMeta) ([]byte, error) {
-	return json.Marshal(meta)
-}
-
-func (ts) Unmarshal(b []byte, meta *opintent.TransactionIntent) error {
-	return json.Unmarshal(b, meta)
-}
-
-func (ts) Marshal(meta *opintent.TransactionIntent) ([]byte, error) {
-	return json.Marshal(meta)
-}
 
 type Kv struct {
 	K string

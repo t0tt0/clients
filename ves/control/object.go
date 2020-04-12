@@ -1,8 +1,8 @@
 package control
 
 import (
-	"github.com/Myriad-Dreamin/go-model-traits/gorm-crud-dao"
 	"github.com/HyperService-Consortium/go-ves/ves/model"
+	"github.com/Myriad-Dreamin/go-model-traits/gorm-crud-dao"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 )
 
@@ -20,7 +20,7 @@ type ObjectService interface {
 type ListObjectsRequest = gorm_crud_dao.Filter
 
 type ListObjectsReply struct {
-	Code    int              `json:"code" form:"code"`
+	Code    int            `json:"code" form:"code"`
 	Objects []model.Object `json:"objects" form:"objects"`
 }
 
@@ -28,18 +28,18 @@ type PostObjectRequest struct {
 }
 
 type PostObjectReply struct {
-	Code   int             `form:"code" json:"code"`
+	Code   int           `json:"code" form:"code"`
 	Object *model.Object `json:"object" form:"object"`
 }
 
 type InspectObjectReply struct {
-	Code   int             `json:"code" form:"code"`
+	Code   int           `json:"code" form:"code"`
 	Object *model.Object `json:"object" form:"object"`
 }
 
 type GetObjectReply struct {
-	Code   int             `json:"code" form:"code"`
-	Object *model.Object `form:"object" json:"object"`
+	Code   int           `json:"code" form:"code"`
+	Object *model.Object `json:"object" form:"object"`
 }
 
 type PutObjectRequest struct {

@@ -9,6 +9,7 @@ import (
 	"github.com/tidwall/gjson"
 )
 
+//todo fix to uip.VTok
 func ParseInconsistentValueOption(meta gjson.Result, storage uip.Storage, defaultValue string) (string, error) {
 	optionIc := meta.Get("value-inconsistent")
 	if optionIc.Exists() {
