@@ -1,15 +1,14 @@
 package bni
 
 import (
-	"bytes"
 	"errors"
 	"fmt"
 	"github.com/HyperService-Consortium/go-ethabi"
 	"github.com/HyperService-Consortium/go-uip/const/token_type"
 	"github.com/HyperService-Consortium/go-uip/const/value_type"
-	"github.com/HyperService-Consortium/go-uip/lib/serial"
 	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-uip/uip"
+	dep_uip "github.com/HyperService-Consortium/go-ves/dependency/uip"
 	"github.com/Myriad-Dreamin/gvm"
 	"golang.org/x/crypto/sha3"
 	"reflect"
@@ -17,37 +16,7 @@ import (
 )
 
 //var contractMetaEncoder = opintent.Serializer.Meta.Contract
-type _contractMetaEncoder struct{}
-
-func (*_contractMetaEncoder) Marshal(meta *opintent.ContractInvokeMeta) (_ []byte, err error) {
-	var w = bytes.NewBuffer(nil)
-	serial.Write(w, meta.Code, &err)
-	serial.Write(w, meta.Meta, &err)
-	serial.Write(w, meta.FuncName, &err)
-	serial.Write(w, uint64(len(meta.Params)), &err)
-	for i := range meta.Params {
-		opintent.EncodeVTok(w, meta.Params[i], &err)
-	}
-	return w.Bytes(), err
-}
-func (*_contractMetaEncoder) Unmarshal(b []byte, meta *opintent.ContractInvokeMeta) (err error) {
-	var r = bytes.NewReader(b)
-	serial.Read(r, &meta.Code, &err)
-	serial.Read(r, &meta.Meta, &err)
-	serial.Read(r, &meta.FuncName, &err)
-	var paramsLength uint64
-	serial.Read(r, &paramsLength, &err)
-	if err != nil {
-		return
-	}
-	meta.Params = make([]uip.VTok, paramsLength)
-	for i := range meta.Params {
-		opintent.DecodeVTok(r, &meta.Params[i], &err)
-	}
-	return
-}
-
-var contractMetaEncoder *_contractMetaEncoder
+var contractMetaEncoder *dep_uip.ContractMetaEncoder
 
 func decoratePrefix(hexs string) string {
 	if !strings.HasPrefix(hexs, "0x") {
@@ -142,7 +111,7 @@ func ContractInvocationDataABI(_ uip.ChainID, meta *opintent.ContractInvokeMeta,
 			if contract, ok = param.Contract.(uip.Account); !ok {
 				return nil, fmt.Errorf("assuming contract is uip.Account ,but got %v", reflect.TypeOf(contract))
 			}
-			v, err := storage.GetStorageAt(contract.GetChainId(), value_type.FromString(t), contract.GetAddress(),
+			v, err := storage.GetStorageAt(contract.GetChainId(), value_type.Type(param.GetGVMType()), contract.GetAddress(),
 				param.Pos, param.Field)
 			if err != nil {
 				return nil, err

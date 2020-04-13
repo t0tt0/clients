@@ -7,8 +7,6 @@ github.com/DATA-DOG/go-sqlmock v1.4.1 h1:ThlnYciV1iM/V0OSF/dtkqWb6xo5qITT1TJBG1M
 github.com/DATA-DOG/go-sqlmock v1.4.1/go.mod h1:f/Ixk793poVmq4qj/V1dPUg2JEAKC73Q5eFN3EC/SaM=
 github.com/DeanThompson/ginpprof v0.0.0-20190408063150-3be636683586 h1:vDSj8WQZoe+dhK9JVwkSEBwtmcJw5rJ7l1L0Yik8Ku0=
 github.com/DeanThompson/ginpprof v0.0.0-20190408063150-3be636683586/go.mod h1:kMi/fSDAgvjo9TYfYwYeQ2vkyj+VTR/tB6u/Tjh39t0=
-github.com/HyperService-Consortium/NSB v0.7.4-0.20200408080811-f102bb825821 h1:VmlK+t+Dsdiff3VuYDLiwhzz6mVPSq19IwKiH2ifyvk=
-github.com/HyperService-Consortium/NSB v0.7.4-0.20200408080811-f102bb825821/go.mod h1:XOUm2prOum31uQTgYuiY4+pKyphe1ObR46iQVh8Tw2k=
 github.com/HyperService-Consortium/NSB v0.8.0 h1:zji6ZeNJphCUZuh7yKSToBKU39hCHd5EiBdV9AkVpG4=
 github.com/HyperService-Consortium/NSB v0.8.0/go.mod h1:pycrBuQyb5NpYjqze1ge3/xhTlMaArjgd6ypP3RQCTM=
 github.com/HyperService-Consortium/go-ethabi v0.9.1 h1:KO5jE1PDMTHuMr+Kp3LxQOm+bD132F0vsDyS9ILBY58=
@@ -19,8 +17,6 @@ github.com/HyperService-Consortium/go-mpt v1.1.1-0.20190903152503-b63ec8d75bd4 h
 github.com/HyperService-Consortium/go-mpt v1.1.1-0.20190903152503-b63ec8d75bd4/go.mod h1:tYeCvWyIQt4xuaLANWvVi3kvTIuAe6FmyC2G6A8mBIM=
 github.com/HyperService-Consortium/go-rlp v1.0.1-0.20190903144357-b5693c05a6b8 h1:KBmZ/AwlF/iKvbQwGL6+09bbZHzksJFr/6tjKzX29ME=
 github.com/HyperService-Consortium/go-rlp v1.0.1-0.20190903144357-b5693c05a6b8/go.mod h1:f6lLuGRJua3AHgMk4m6XvsF64GFlr5ekGeb2n+ymYfQ=
-github.com/HyperService-Consortium/go-uip v0.0.0-20200408052624-8f276ad3e377 h1:VJRRvW8keCIOB4n09/P5gN94osRkH/er/Luxn7LEwlw=
-github.com/HyperService-Consortium/go-uip v0.0.0-20200408052624-8f276ad3e377/go.mod h1:lTOAVepEPTDAf5lrTOWbQBj1q6ajUrZsU62l9rd6OeU=
 github.com/HyperService-Consortium/go-uip v0.0.0-20200408075657-d2425491ab24 h1:nHye1ubP60qilAWv7ZfB6B2vScImQoAHw+a9XzlXgLo=
 github.com/HyperService-Consortium/go-uip v0.0.0-20200408075657-d2425491ab24/go.mod h1:lTOAVepEPTDAf5lrTOWbQBj1q6ajUrZsU62l9rd6OeU=
 github.com/Joker/hpp v0.0.0-20180418125244-6893e659854a h1:PiDAizhfJbwZMISZ1Itx1ZTFeOFCml89Ofmz3V8rhoU=

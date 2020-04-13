@@ -8,7 +8,6 @@ import (
 	"github.com/HyperService-Consortium/go-uip/signaturer"
 	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/HyperService-Consortium/go-ves/config"
-	dep_uip "github.com/HyperService-Consortium/go-ves/dependency/uip"
 	"github.com/HyperService-Consortium/go-ves/types"
 	"golang.org/x/crypto/ed25519"
 	"testing"
@@ -46,15 +45,13 @@ func TestBN_Translate(t *testing.T) {
 		wantErr bool
 	}{
 		{"test_easy", fields{dns: config.ChainDNS, signer: ten}, args{
-			intent: &dep_uip.TransactionIntent{
-				TransactionIntent: &opintent.TransactionIntent{
-					TransType: trans_type.Payment,
-					Src:       ten.GetPublicKey(),
-					Dst:       ten2.GetPublicKey(),
-					Meta:      nil,
-					Amt:       "15",
-					ChainID:   3,
-				},
+			intent: &opintent.TransactionIntent{
+				TransType: trans_type.Payment,
+				Src:       ten.GetPublicKey(),
+				Dst:       ten2.GetPublicKey(),
+				Meta:      nil,
+				Amt:       "15",
+				ChainID:   3,
 			},
 			storage: nil,
 		}, false},

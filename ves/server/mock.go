@@ -4,11 +4,12 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"github.com/Myriad-Dreamin/go-magic-package/instance"
-	parser "github.com/Myriad-Dreamin/go-parse-package"
 	"github.com/HyperService-Consortium/go-ves/lib/backend/serial"
 	"github.com/HyperService-Consortium/go-ves/types"
+	"github.com/HyperService-Consortium/go-ves/ves/config"
 	"github.com/HyperService-Consortium/go-ves/ves/model"
+	"github.com/Myriad-Dreamin/go-magic-package/instance"
+	parser "github.com/Myriad-Dreamin/go-parse-package"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"io"
 	"io/ioutil"
@@ -50,6 +51,7 @@ func Mock(options ...Option) (srv *Mocker) {
 	if err != nil {
 		panic(err)
 	}
+	srv.Cfg = config.Default()
 	srv.header = make(map[string]string)
 	if !(srv.InitRespAccount() &&
 		srv.UseDefaultConfig() &&

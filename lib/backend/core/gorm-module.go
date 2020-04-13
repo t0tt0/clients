@@ -39,6 +39,7 @@ func (m *GormModule) InstallFromConfiguration(dep module.Module) bool {
 }
 
 type MockCallback func(dep module.Module, s sqlmock.Sqlmock) error
+
 func (m *GormModule) InstallMockFromConfiguration(
 	callback MockCallback) func(dep module.Module) bool {
 	return func(dep module.Module) bool {
@@ -123,10 +124,12 @@ func MockGORM(callback MockCallback) InitGormFunc {
 			return nil, err
 		}
 		dep.Provide(DefaultNamespace.Global.SQLMock, sqlMock)
-		if err := callback(dep, sqlMock); err != nil {
-			return nil, err
+		if callback != nil {
+			if err := callback(dep, sqlMock); err != nil {
+				return nil, err
+			}
 		}
-		db , e = gorm.Open("mock", mockDB)
+		db, e = gorm.Open("mock", mockDB)
 		if e != nil {
 			return nil, e
 		}

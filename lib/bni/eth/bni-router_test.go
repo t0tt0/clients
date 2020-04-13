@@ -7,7 +7,6 @@ import (
 	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/HyperService-Consortium/go-ves/config"
-	dep_uip "github.com/HyperService-Consortium/go-ves/dependency/uip"
 	"github.com/HyperService-Consortium/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/sugar"
 	"testing"
@@ -35,15 +34,13 @@ func TestBN_Route(t *testing.T) {
 					pb: sugar.HandlerError(hex.DecodeString("6d8c6cb9d26b5a21ae498a22385ae4265f494cfc")).([]byte),
 					ps: "123456"},
 			}, args{
-				intent: &dep_uip.TransactionIntent{
-					TransactionIntent: &opintent.TransactionIntent{
-						TransType: trans_type.Payment,
-						Src:       sugar.HandlerError(hex.DecodeString("6d8c6cb9d26b5a21ae498a22385ae4265f494cfc")).([]byte),
-						Dst:       sugar.HandlerError(hex.DecodeString("6d8c6cb9d26b5a21ae498a22385ae4265f494cfc")).([]byte),
-						Meta:      nil,
-						Amt:       "03e8",
-						ChainID:   7,
-					},
+				intent: &opintent.TransactionIntent{
+					TransType: trans_type.Payment,
+					Src:       sugar.HandlerError(hex.DecodeString("6d8c6cb9d26b5a21ae498a22385ae4265f494cfc")).([]byte),
+					Dst:       sugar.HandlerError(hex.DecodeString("6d8c6cb9d26b5a21ae498a22385ae4265f494cfc")).([]byte),
+					Meta:      nil,
+					Amt:       "03e8",
+					ChainID:   7,
 				},
 				storage: nil,
 			}, false},

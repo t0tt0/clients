@@ -1,12 +1,6 @@
 package transfer_test
 
 import (
-	"fmt"
-	"github.com/HyperService-Consortium/go-ves/config"
-	"github.com/HyperService-Consortium/go-ves/lib/backend/database/index"
-	multi_index "github.com/HyperService-Consortium/go-ves/lib/backend/database/multi_index"
-	"github.com/HyperService-Consortium/go-ves/types"
-	"log"
 	_ "net/http/pprof"
 	"testing"
 )
@@ -16,43 +10,43 @@ const cVesPort, cVesAddr = ":23352", ":23452"
 const cfgPath = "./ves-server-config.toml"
 const nsbHost = "127.0.0.1:26657"
 
-func Prepare() (muldb types.MultiIndex, sindb types.Index) {
-	var cfg = config.Config()
-	var err error
-
-	switch cfg.DatabaseConfig.Engine {
-	case "xorm":
-		var dbConfig = cfg.DatabaseConfig
-		var reqString = fmt.Sprintf(
-			"%s:%s@%s(%s)/%s?charset=%s",
-			dbConfig.UserName, dbConfig.Password,
-			dbConfig.ConnectionType, dbConfig.RemoteHost,
-			dbConfig.BaseName, dbConfig.Encoding,
-		)
-
-		muldb, err = multi_index.GetXORMMultiIndex(dbConfig.Type, reqString)
-		if err != nil {
-			log.Fatalf("failed to get muldb: %v", err)
-			return
-		}
-	default:
-		log.Fatal("unrecognized database engine")
-		return
-	}
-
-	switch cfg.KVDBConfig.Type {
-	case "leveldb":
-		sindb, err = index.GetIndex(cfg.KVDBConfig.Path)
-		if err != nil {
-			log.Fatalf("failed to get sindb: %v", err)
-			return
-		}
-	default:
-		log.Fatal("unrecognized kvdb type")
-	}
-
-	return muldb, sindb
-}
+//func Prepare() (muldb types.MultiIndex, sindb types.Index) {
+//	var cfg = config.Config()
+//	var err error
+//
+//	switch cfg.DatabaseConfig.Engine {
+//	case "xorm":
+//		var dbConfig = cfg.DatabaseConfig
+//		var reqString = fmt.Sprintf(
+//			"%s:%s@%s(%s)/%s?charset=%s",
+//			dbConfig.UserName, dbConfig.Password,
+//			dbConfig.ConnectionType, dbConfig.RemoteHost,
+//			dbConfig.BaseName, dbConfig.Encoding,
+//		)
+//
+//		muldb, err = multi_index.GetXORMMultiIndex(dbConfig.Type, reqString)
+//		if err != nil {
+//			log.Fatalf("failed to get muldb: %v", err)
+//			return
+//		}
+//	default:
+//		log.Fatal("unrecognized database engine")
+//		return
+//	}
+//
+//	switch cfg.KVDBConfig.Type {
+//	case "leveldb":
+//		sindb, err = index.GetIndex(cfg.KVDBConfig.Path)
+//		if err != nil {
+//			log.Fatalf("failed to get sindb: %v", err)
+//			return
+//		}
+//	default:
+//		log.Fatal("unrecognized kvdb type")
+//	}
+//
+//	return muldb, sindb
+//}
 
 func TestTransfer(t *testing.T) {
 	//go func() {

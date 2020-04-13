@@ -2,21 +2,22 @@ package sessionservice
 
 import (
 	"encoding/hex"
-	"encoding/json"
+	"errors"
 	"fmt"
+	"github.com/HyperService-Consortium/go-uip/const/token_type"
 	"github.com/HyperService-Consortium/go-uip/const/trans_type"
 	"github.com/HyperService-Consortium/go-uip/const/value_type"
 	"github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-uip/uip"
+	dep_uip "github.com/HyperService-Consortium/go-ves/dependency/uip"
 	"github.com/HyperService-Consortium/go-ves/lib/backend/wrapper"
-	"github.com/HyperService-Consortium/go-ves/lib/basic/encoding"
 	payment_option "github.com/HyperService-Consortium/go-ves/lib/bni/payment-option"
 	"github.com/HyperService-Consortium/go-ves/lib/upstream"
 	"github.com/HyperService-Consortium/go-ves/types"
 	"github.com/HyperService-Consortium/go-ves/ves/control"
 	"github.com/HyperService-Consortium/go-ves/ves/model"
 	"github.com/tidwall/gjson"
-	"strconv"
+	"reflect"
 )
 
 type prepareTranslateEnvironment struct {
@@ -31,12 +32,12 @@ func newPrepareTranslateEnvironment(service *Service, ses *model.Session,
 	return &prepareTranslateEnvironment{Service: service, ses: ses, ti: ti, bn: bn}
 }
 
-func (svc *prepareTranslateEnvironment) do() error {
+func (svc *prepareTranslateEnvironment) ensure() error {
 	switch svc.ti.TransType {
 	case trans_type.ContractInvoke:
-		return svc.doContractInvoke()
+		return svc.ensureContractInvoke()
 	case trans_type.Payment:
-		return svc.doPayment()
+		return svc.ensurePayment()
 	default:
 		return wrapper.WrapCode(types.CodeTransactionTypeNotFound)
 	}
@@ -51,9 +52,12 @@ func (w wrapPos) Error() string {
 	return fmt.Sprintf("<%d,%v>", w.i, w.err)
 }
 
-func (svc *prepareTranslateEnvironment) doContractInvoke() error {
-	var meta uip.ContractInvokeMeta
-	err := json.Unmarshal(svc.ti.Meta, &meta)
+// todo: remove
+var upstreamDecoder *dep_uip.ContractMetaEncoder
+
+func (svc *prepareTranslateEnvironment) ensureContractInvoke() error {
+	var meta opintent.ContractInvokeMeta
+	err := upstreamDecoder.Unmarshal(svc.ti.Meta, &meta)
 	if err != nil {
 		return wrapper.Wrap(types.CodeDeserializeTransactionError, err)
 	}
@@ -66,7 +70,7 @@ func (svc *prepareTranslateEnvironment) doContractInvoke() error {
 	return nil
 }
 
-func (svc *prepareTranslateEnvironment) doPayment() error {
+func (svc *prepareTranslateEnvironment) ensurePayment() error {
 	n, ok, err := payment_option.NeedInconsistentValueOption(gjson.ParseBytes(svc.ti.Meta))
 	if err != nil {
 		return wrapper.Wrap(types.CodeParsePaymentOptionInconsistentValueError, err)
@@ -80,33 +84,95 @@ func (svc *prepareTranslateEnvironment) doPayment() error {
 	return nil
 }
 
-func (svc *prepareTranslateEnvironment) ensureValue(param uip.RawParam) error {
-	var intDesc uip.TypeID
-	if intDesc = value_type.FromString(param.Type); intDesc == value_type.Unknown {
-		return wrapper.WrapString(types.CodeValueTypeNotFound, strconv.Itoa(int(intDesc)))
-	}
+// to do
+//type variableImpl struct {
+//	uip.Variable
+//}
+//
+//func (v variableImpl) Unwrap() interface{} {
+//	panic("implement me")
+//}
+//
+//func (v variableImpl) Encode() ([]byte, error) {
+//	switch value_type.Type(v.GetGVMType()) {
+//	case value_type.Uint8:
+//		return opintent.Uint8(v.Unwrap().(uint8)).Encode()
+//	case value_type.Uint16:
+//		return opintent.Uint16(v.Unwrap().(uint16)).Encode()
+//	case value_type.Uint32:
+//		return opintent.Uint32(v.Unwrap().(uint32)).Encode()
+//	case value_type.Uint64:
+//		return opintent.Uint64(v.Unwrap().(uint64)).Encode()
+//
+//	case value_type.Int8:
+//		return opintent.Int8(v.Unwrap().(int8)).Encode()
+//	case value_type.Int16:
+//		return opintent.Int16(v.Unwrap().(int16)).Encode()
+//	case value_type.Int32:
+//		return opintent.Int32(v.Unwrap().(int32)).Encode()
+//	case value_type.Int64:
+//		return opintent.Int64(v.Unwrap().(int64)).Encode()
+//
+//	case value_type.Uint128:
+//		return (*opintent.Uint128)(v.Unwrap().(*big.Int)).Encode()
+//	case value_type.Uint256:
+//		return (*opintent.Uint256)(v.Unwrap().(*big.Int)).Encode()
+//	case value_type.Int128:
+//		return (*opintent.Int128)(v.Unwrap().(*big.Int)).Encode()
+//	case value_type.Int256:
+//		return (*opintent.Int256)(v.Unwrap().(*big.Int)).Encode()
+//
+//	case value_type.String:
+//		return opintent.String(v.Unwrap().(string)).Encode()
+//	case value_type.Bytes:
+//		return opintent.Bytes(v.Unwrap().([]byte)).Encode()
+//	case value_type.Bool:
+//		return opintent.Bool(v.Unwrap().(bool)).Encode()
+//	case value_type.Unknown:
+//		return opintent.Undefined.Encode()
+//	}
+//	panic(fmt.Errorf("unknown reference type: %v", gvm_type.ExplainGVMType(v.GetGVMType())))
+//}
+//
+//func (v variableImpl) Marshal(w io.Writer, err *error) {
+//	panic("implement me")
+//}
+//
+//func (v variableImpl) Unmarshal(r io.Reader, i *uip.VTok, err *error) {
+//	panic("implement me")
+//}
+//
+//func (v variableImpl) GetGVMTok() token_type.Type {
+//	return token_type.Constant
+//}
+//
+//func (v variableImpl) GetGVMType() gvm.RefType {
+//	return gvm.RefType(v.Variable.GetType())
+//}
+//
+//func (v variableImpl) Eval(g *interface{}) (gvm.Ref, error) {
+//	return v, nil
+//}
 
-	result := gjson.ParseBytes(param.Value)
-	if !result.Get("constant").Exists() {
-		if result.Get("contract").Exists() &&
-			result.Get("pos").Exists() &&
-			result.Get("field").Exists() {
-			// todo move to uip
-			ca, err := encoding.DecodeHex(result.Get("contract").String())
-			if err != nil {
-				return wrapper.Wrap(types.CodeBadContractField, err)
-			}
-			pos, err := encoding.DecodeHex(result.Get("pos").String())
-			if err != nil {
-				return wrapper.Wrap(types.CodeBadPosField, err)
-			}
-			desc := []byte(result.Get("field").String())
-			if err = svc.ensureStorage(
-				svc.bn, svc.ti.ChainID, intDesc, ca, pos, desc); err != nil {
-				return err
-			}
-		} else {
-			return wrapper.WrapCode(types.CodeNotEnoughParamInformation)
+func (svc *prepareTranslateEnvironment) ensureValue(param uip.VTok) error {
+
+	if param.GetGVMTok() != token_type.Constant {
+		if param.GetGVMTok() != token_type.StateVariable {
+			return errors.New("only support token_type.{Constant,StateVariable} now")
+		}
+
+		// todo remove assertion
+		param := param.(*opintent.StateVariable)
+
+		var contract uip.Account
+		var ok bool
+		if contract, ok = param.Contract.(uip.Account); !ok {
+			return fmt.Errorf("assuming contract is uip.Account ,but got %v", reflect.TypeOf(contract))
+		}
+		err := svc.ensureStorage(svc.bn, contract.GetChainId(), value_type.Type(
+			param.GetGVMType()), contract.GetAddress(), param.Pos, param.Field)
+		if err != nil {
+			return err
 		}
 	}
 

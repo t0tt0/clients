@@ -24,7 +24,7 @@ package sessionservice
 //}
 //
 //func (s AttestationReceiveService) Serve() (*uiprpc.AttestationReceiveReply, error) {
-//	// todo
+//	// to do!!
 //	s.DB.ActivateSession(s.GetSessionId())
 //	ses, err := s.DB.FindSessionInfo(s.GetSessionId())
 //	if err != nil {

@@ -88,7 +88,7 @@ func createFields(rawOpts ...interface{}) fields {
 		closeSessionSubscriber: nil,
 		name:                   nil,
 		db:                     options.accountDB,
-		conn:                   nil,
+		conn:                   ves_websocket.VESWSSocket{},
 		nsbSigner:              options.nsbSigner,
 		dns:                    options.dns,
 		nsbClient:              nil,

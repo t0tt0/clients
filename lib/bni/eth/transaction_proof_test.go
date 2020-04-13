@@ -4,6 +4,8 @@ import (
 	"encoding/binary"
 	"encoding/hex"
 	"fmt"
+	"github.com/HyperService-Consortium/go-ves/config"
+	"github.com/stretchr/testify/assert"
 	"testing"
 
 	"github.com/HyperService-Consortium/go-rlp"
@@ -31,7 +33,8 @@ func TestGetTransactionProofByIndex(t *testing.T) {
 	var buf = make([]byte, 8)
 	binary.BigEndian.PutUint64(buf, uint64(3))
 
-	fmt.Println(new(BN).GetTransactionProof(1, blockbytes, buf))
+	_, err = (&BN{dns: config.ChainDNS}).GetTransactionProof(7, blockbytes, buf)
+	assert.NoError(t, err)
 }
 
 func TestGetTransactionProof(t *testing.T) {

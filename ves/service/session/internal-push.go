@@ -3,6 +3,8 @@ package sessionservice
 import (
 	"context"
 	"encoding/hex"
+	"github.com/HyperService-Consortium/go-uip/const/trans_type"
+	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-ves/grpc/uiprpc"
 	uiprpc_base "github.com/HyperService-Consortium/go-ves/grpc/uiprpc-base"
 	"github.com/HyperService-Consortium/go-ves/lib/backend/wrapper"
@@ -17,25 +19,32 @@ func (svc *Service) pushTransaction(
 	if err != nil {
 		return err
 	}
-	var accounts []*uiprpc_base.Account
-	accounts = append(accounts, &uiprpc_base.Account{
-		Address: ti.Src,
-		ChainId: ti.ChainID,
-	})
-	svc.logger.Info("sending attestation request", "chain id", ti.ChainID, "address", hex.EncodeToString(ti.Src))
 
-	ctx, cancel := context.WithTimeout(ctx, time.Second*10)
-	defer cancel()
-	reply, err := svc.cVes.InternalAttestationSending(ctx, &uiprpc.InternalRequestComingRequest{
-		SessionId: ses.GetGUID(),
-		Host:      svc.cfg.BaseParametersConfig.ExposeHost,
-		Accounts:  accounts,
-	})
-	if err != nil {
-		return wrapper.Wrap(types.CodeAttestationSendError, err)
-	}
-	if reply.GetOk() != true {
-		return wrapper.WrapCode(types.CodeAttestationSendError)
+	if ti.GetType() == trans_type.Payment || ti.GetType() == trans_type.ContractInvoke {
+		ti := ti.(*opintent.TransactionIntent)
+		var accounts []*uiprpc_base.Account
+		accounts = append(accounts, &uiprpc_base.Account{
+			Address: ti.Src,
+			ChainId: ti.ChainID,
+		})
+		svc.logger.Info("sending attestation request", "chain id", ti.ChainID, "address", hex.EncodeToString(ti.Src))
+
+		ctx, cancel := context.WithTimeout(ctx, time.Second*10)
+		defer cancel()
+		reply, err := svc.cVes.InternalAttestationSending(ctx, &uiprpc.InternalRequestComingRequest{
+			SessionId: ses.GetGUID(),
+			Host:      svc.cfg.BaseParametersConfig.ExposeHost,
+			Accounts:  accounts,
+		})
+		if err != nil {
+			return wrapper.Wrap(types.CodeAttestationSendError, err)
+		}
+		if reply.GetOk() != true {
+			return wrapper.WrapCode(types.CodeAttestationSendError)
+		}
+
+	} else {
+		svc.logger.Warn("gotten type is not a valid transaction", "type", ti.GetType())
 	}
 
 	return nil

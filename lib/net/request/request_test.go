@@ -42,7 +42,7 @@ func (s *service) myController(r *Resp) (err error) {
 
 func TestGetParamAndGroup(t *testing.T) {
 	var params = &mParam4{}
-	NSBApi := NewRequestClient("http://47.251.2.73:26657")
+	NSBApi := NewRequestClient("http://121.89.200.234:26657")
 	var b, b2 = make([]byte, 1024*1024), make([]byte, 1024*1024)
 	bb, err := NSBApi.Group("/net_info").GetWithStruct(params)
 	s.AssertNoErr(t, err)
@@ -60,7 +60,7 @@ func TestGetParamAndGroup(t *testing.T) {
 
 	s.AssertEqual(t, string(b), string(b2))
 
-	NSBApiX := NewRequestClientX("http://47.251.2.73:26657")
+	NSBApiX := NewRequestClientX("http://121.89.200.234:26657")
 	bb2, err = NSBApiX.Group("/net_info").Get(params)
 	s.AssertNoErr(t, err)
 	_, err = bb2.Read(b2)

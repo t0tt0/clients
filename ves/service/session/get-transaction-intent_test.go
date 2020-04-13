@@ -5,7 +5,7 @@ import (
 	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-ves/types"
 	"github.com/golang/mock/gomock"
-	"reflect"
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
@@ -85,7 +85,7 @@ func TestService_getTransactionIntent(t *testing.T) {
 				return
 			}
 
-			if !reflect.DeepEqual(*got, *tt.want) {
+			if !assert.EqualValues(t, got, tt.want) {
 				t.Errorf("getTransactionIntent() got = %v, want %v", got, tt.want)
 			}
 		})

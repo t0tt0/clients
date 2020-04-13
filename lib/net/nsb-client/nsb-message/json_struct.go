@@ -13,9 +13,11 @@ type AbciInfo struct {
 
 // AbciInfoResponse is struct description of abci information response in json
 type AbciInfoResponse struct {
-	Data       string `json:"data"`
-	Version    string `json:"version"`
-	AppVersion string `json:"app_version"`
+	Data             string `json:"data"`
+	Version          string `json:"version"`
+	AppVersion       string `json:"app_version"`
+	LastBlockHeight  string `json:"last_block_height"`
+	LastBlockAppHash []byte `json:"last_block_app_hash"`
 }
 
 /******************************* block_info ***********************************/

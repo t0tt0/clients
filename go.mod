@@ -41,7 +41,6 @@ require (
 	github.com/gin-gonic/gin v1.5.0
 	github.com/go-logfmt/logfmt v0.4.0 // indirect
 	github.com/go-sql-driver/mysql v1.5.0
-	github.com/go-xorm/xorm v0.7.6
 	github.com/gogo/protobuf v1.3.1
 	github.com/golang/mock v1.4.0
 	github.com/golang/protobuf v1.3.2

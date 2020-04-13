@@ -6,8 +6,8 @@ import (
 	"github.com/HyperService-Consortium/NSB/grpc/nsbrpc"
 	"github.com/HyperService-Consortium/NSB/math"
 	"github.com/HyperService-Consortium/go-uip/const/trans_type"
+	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-uip/uip"
-	dep_uip "github.com/HyperService-Consortium/go-ves/dependency/uip"
 	payment_option "github.com/HyperService-Consortium/go-ves/lib/bni/payment-option"
 	"github.com/HyperService-Consortium/go-ves/lib/net/nsb-client"
 	"github.com/gogo/protobuf/proto"
@@ -19,7 +19,7 @@ func (bn *BN) ParseTransactionIntent(intent uip.TxIntentI) (uip.TxIntentI, error
 }
 
 func (bn *BN) Translate(x uip.TransactionIntent, storage uip.Storage) (uip.RawTransaction, error) {
-	intent := x.(*dep_uip.TransactionIntent)
+	intent := x.(*opintent.TransactionIntent)
 
 	switch intent.TransType {
 	case trans_type.Payment:

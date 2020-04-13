@@ -25,15 +25,15 @@ func dataGoodTransactionIntent(t *testing.T) (
 		TransType: trans_type.Payment,
 		Src:       srcAcc.Address,
 		Dst:       srcAcc.Address,
-		Meta:      nil,
+		Meta:      json.RawMessage{},
 		Amt:       "3e8",
 		ChainID:   srcAcc.ChainId,
 	}
-	b, err := json.Marshal(&ti)
+	b, err := opintent.EncodeInstructions([]uip.Instruction{&ti})
 	if err != nil {
 		t.Fatal("ser", err)
 	}
-	return srcAcc, &ti, b
+	return srcAcc, &ti, b[0]
 }
 
 func dataTransactionIntentWithBadChainID(t *testing.T) (

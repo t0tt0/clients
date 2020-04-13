@@ -25,11 +25,12 @@ func (svc *Service) SessionRequireRawTransact(
 		return nil, err
 	}
 
-	if err = newPrepareTranslateEnvironment(svc, ses, ti, bn).do(); err != nil {
+	if err = newPrepareTranslateEnvironment(svc, ses, ti, bn).ensure(); err != nil {
 		return nil, wrapper.Wrap(types.CodeTransactionPrepareTranslateError, err)
 	}
 
 	var b uip.RawTransaction
+
 	b, err = bn.Translate(ti, svc.storageHandler)
 	if err != nil {
 		return nil, wrapper.Wrap(types.CodeTransactionTranslateError, err)

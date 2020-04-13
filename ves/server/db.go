@@ -3,10 +3,10 @@ package server
 import (
 	"fmt"
 	"github.com/DATA-DOG/go-sqlmock"
-	"github.com/Myriad-Dreamin/functional-go"
 	"github.com/HyperService-Consortium/go-ves/ves/config"
 	"github.com/HyperService-Consortium/go-ves/ves/model"
 	"github.com/HyperService-Consortium/go-ves/ves/model/index"
+	"github.com/Myriad-Dreamin/functional-go"
 	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"github.com/Myriad-Dreamin/minimum-lib/rbac"
 	"reflect"
@@ -20,7 +20,7 @@ type dbResult struct {
 func (srv *Server) registerDatabaseService() bool {
 
 	for _, dbResult := range []dbResult{
-        {"transactionDB", functional.Decay(model.NewTransactionDB(srv.Module))},
+		{"transactionDB", functional.Decay(model.NewTransactionDB(srv.Module))},
 		{"sessionAccountDB", functional.Decay(model.NewSessionAccountDB(srv.Module))},
 		{"sessionDB", functional.Decay(model.NewSessionDB(srv.Module))},
 		{"objectDB", functional.Decay(model.NewObjectDB(srv.Module))},
@@ -80,6 +80,14 @@ func (srv *Server) MockDatabase() bool {
 	srv.Cfg.DatabaseConfig.Debug(srv.Logger)
 
 	if !model.InstallMock(srv.Module, func(dep module.Module, s sqlmock.Sqlmock) error {
+		s.ExpectExec(`CREATE TABLE "transaction"`).WillReturnResult(
+			sqlmock.NewResult(0, 1))
+		s.ExpectExec(`CREATE TABLE "session_account"`).WillReturnResult(
+			sqlmock.NewResult(0, 1))
+		s.ExpectExec(`CREATE UNIQUE INDEX sa_sca`).WillReturnResult(
+			sqlmock.NewResult(0, 1))
+		s.ExpectExec(`CREATE TABLE "session"`).WillReturnResult(
+			sqlmock.NewResult(0, 1))
 		return nil
 	}) {
 		return false

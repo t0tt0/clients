@@ -3,6 +3,7 @@ package sessionservice
 import (
 	"encoding/json"
 	"github.com/HyperService-Consortium/go-uip/const/value_type"
+	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/HyperService-Consortium/go-ves/lib/backend/wrapper"
 	logger2 "github.com/HyperService-Consortium/go-ves/lib/basic/log"
@@ -205,22 +206,23 @@ func valueTypeToString(t value_type.Type) string {
 
 }
 
-func newRawMeta(t value_type.Type, value string) uip.RawParam {
-	return uip.RawParam{
-		Type: valueTypeToString(t),
-		Value: marshal(map[string]interface{}{
-			"constant": value,
-		}),
-	}
-}
-
-func newVarRawMeta(t value_type.Type, contract, pos, field string) uip.RawParam {
-	return uip.RawParam{
-		Type: valueTypeToString(t),
-		Value: marshal(map[string]interface{}{
-			"contract": contract,
-			"pos":      pos,
-			"field":    field,
-		}),
+//func newRawMeta(t value_type.Type, value string) uip.RawParam {
+//	return uip.RawParam{
+//		Type: valueTypeToString(t),
+//		Value: marshal(map[string]interface{}{
+//			"constant": value,
+//		}),
+//	}
+//}
+//
+func newVarRawMeta(t value_type.Type, chainID uip.ChainID, contract, pos, field []byte) *opintent.StateVariable {
+	return &opintent.StateVariable{
+		Type: t,
+		Contract: opintent.NamespacedRawAccount{
+			Address: contract,
+			ChainID: chainID,
+		},
+		Pos:   pos,
+		Field: field,
 	}
 }

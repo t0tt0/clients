@@ -31,7 +31,7 @@ package sessionservice
 //
 //	var merkle = s.GetMerkleproof()
 //
-//	// todo: verify merkle proof
+//	// to do: verify merkle proof
 //
 //	err = s.DB.SetKV(
 //		ses.GetGUID(),

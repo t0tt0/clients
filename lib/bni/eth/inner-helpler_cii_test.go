@@ -3,6 +3,7 @@ package bni
 import (
 	"encoding/hex"
 	"fmt"
+	"github.com/HyperService-Consortium/go-ves/config"
 	"testing"
 
 	valuetype "github.com/HyperService-Consortium/go-uip/const/value_type"
@@ -67,8 +68,8 @@ func TestDataTransaction(t *testing.T) {
 
 func TestGetStorageAt(t *testing.T) {
 	b, _ := hex.DecodeString("1234567812345678123456781234567812345678")
-	fmt.Println(new(BN).GetStorageAt(1, valuetype.Bool, b, []byte{1}, []byte("some varible")))
-	fmt.Println(new(BN).GetStorageAt(1, valuetype.Uint256, b, []byte{1}, []byte("some varible")))
+	fmt.Println((&BN{dns: config.ChainDNS}).GetStorageAt(7, valuetype.Bool, b, []byte{1}, []byte("some varible")))
+	fmt.Println((&BN{dns: config.ChainDNS}).GetStorageAt(7, valuetype.Uint256, b, []byte{1}, []byte("some varible")))
 }
 
 /*

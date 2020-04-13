@@ -8,7 +8,6 @@ import (
 	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/HyperService-Consortium/go-ves/config"
-	dep_uip "github.com/HyperService-Consortium/go-ves/dependency/uip"
 	"github.com/HyperService-Consortium/go-ves/lib/upstream"
 	"github.com/HyperService-Consortium/go-ves/types"
 	"github.com/Myriad-Dreamin/minimum-lib/sugar"
@@ -91,7 +90,7 @@ func TestBN_Translate(t *testing.T) {
 				Dst:       sugar.HandlerError(hex.DecodeString("263fef3fe76fd4075ac16271d5115d01206d3674")).([]byte),
 				Meta: sugar.HandlerError(
 					contractMetaEncoder.Marshal(
-						&dep_uip.ContractInvokeMeta{
+						&opintent.ContractInvokeMeta{
 							FuncName: "updateStake",
 							Params: []uip.VTok{
 								&opintent.StateVariable{

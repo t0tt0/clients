@@ -1,7 +1,6 @@
 package nsbcli
 
 import (
-	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	transactiontype "github.com/HyperService-Consortium/NSB/application/transaction-type"
@@ -13,13 +12,12 @@ import (
 	bytespool "github.com/HyperService-Consortium/go-ves/lib/basic/bytes-pool"
 	"github.com/HyperService-Consortium/go-ves/lib/net/nsb-client/nsb-message"
 	"github.com/HyperService-Consortium/go-ves/lib/net/request"
-	"github.com/tidwall/gjson"
 	"io"
 	"reflect"
 	"testing"
 )
 
-var nc = NewNSBClient("127.0.0.1:26657")
+var nc = NewNSBClient("121.89.200.234:26657")
 var signer = HandlerError(signaturer.NewTendermintNSBSigner(make([]byte, 64))).(*signaturer.TendermintNSBSigner)
 
 func PrettifyStruct(i interface{}) string {
@@ -70,9 +68,9 @@ func TestNSBClient_GetAbciInfo(t *testing.T) {
 				t.Fatalf("GetAbciInfo() got = %v, want not nil", got)
 			}
 			if tt.wantErr == false {
-				rt := gjson.Get(got.Data, "state_root").Str
-				if _, err := hex.DecodeString(rt); len(rt) != 64 || err != nil {
-					t.Fatalf("GetAbciInfo().state_root got = %v, throw with (%v, %v)", rt, len(rt), err)
+				rt := got.LastBlockAppHash
+				if len(rt) != 32 {
+					t.Fatalf("GetAbciInfo().state_root got = %v, length %v", rt, len(rt))
 				}
 			}
 			//if !reflect.DeepEqual(got, tt.want) {

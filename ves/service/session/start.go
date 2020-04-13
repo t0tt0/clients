@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/hex"
-	"github.com/HyperService-Consortium/go-uip/const/trans_type"
 	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/HyperService-Consortium/go-ves/grpc/uiprpc"
@@ -17,7 +16,7 @@ import (
 func (svc *Service) SessionStart(ctx context.Context, in *uiprpc.SessionStartRequest) (*uiprpc.SessionStartReply, error) {
 	var (
 		ses        *model.Session
-		intents    []*opintent.TransactionIntent
+		intents    []uip.Instruction
 		accounts   []*model.SessionAccount
 		iscAddress []byte
 		err        error
@@ -57,17 +56,17 @@ func (svc *Service) SessionStart(ctx context.Context, in *uiprpc.SessionStartReq
 	}, nil
 }
 
-func (svc *Service) initOpIntents(opIntents uip.OpIntents) (
-	intents []*opintent.TransactionIntent, accounts []*model.SessionAccount, err error) {
+func (svc *Service) initOpIntents(opIntents opintent.OpIntents) (
+	intents []uip.Instruction, accounts []*model.SessionAccount, err error) {
 	var xIntents opintent.TxIntents
 	xIntents, err = svc.opInitializer.Parse(opIntents)
 	if err != nil {
 		return
 	}
 	var yIntents = xIntents.GetTxIntents()
-	intents = make([]*opintent.TransactionIntent, len(yIntents))
+	intents = make([]uip.Instruction, len(yIntents))
 	for i := range yIntents {
-		intents[i] = yIntents[i].GetIntent()
+		intents[i] = yIntents[i].GetInstruction()
 	}
 	c := uniquer.MakeUniquer()
 	if c.Insert(svc.respAccount.GetChainId(), svc.respAccount.GetAddress()) {
@@ -75,27 +74,29 @@ func (svc *Service) initOpIntents(opIntents uip.OpIntents) (
 	}
 	for _, intent := range intents {
 		//transactions = append(transactions, intent.Bytes())
-		if c.Insert(intent.ChainID, intent.Src) {
-			accounts = append(accounts, model.NewSessionAccount(intent.ChainID, intent.Src))
-		}
-
-		if len(intent.Dst) != 0 && intent.TransType != trans_type.ContractInvoke && c.Insert(intent.ChainID, intent.Dst) {
-			accounts = append(accounts, model.NewSessionAccount(intent.ChainID, intent.Dst))
-		}
+		var _ = intent
+		panic("todo")
+		//if c.Insert(intent.ChainID, intent.Src) {
+		//	accounts = append(accounts, model.NewSessionAccount(intent.ChainID, intent.Src))
+		//}
+		//
+		//if len(intent.Dst) != 0 && intent.TransType != trans_type.ContractInvoke && c.Insert(intent.ChainID, intent.Dst) {
+		//	accounts = append(accounts, model.NewSessionAccount(intent.ChainID, intent.Dst))
+		//}
 	}
 	return
 }
 
 func (svc *Service) initISCAddress(
-	intents []*opintent.TransactionIntent, accounts []*model.SessionAccount) (
+	intents []uip.Instruction, accounts []*model.SessionAccount) (
 	iscAddress []byte, err error) {
 	var (
-		txs       = make([][]byte, len(intents))
 		owners    = make([][]byte, 0, len(accounts))
 		signature uip.Signature
 	)
-	for i, intent := range intents {
-		txs[i] = intent.Bytes()
+	txs, err := opintent.EncodeInstructions(intents)
+	if err != nil {
+		return nil, err
 	}
 	for _, owner := range accounts {
 		owners = append(owners, owner.GetAddress())
