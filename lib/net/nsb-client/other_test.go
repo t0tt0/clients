@@ -12,7 +12,7 @@ import (
 func TestNSBClient_CreateISC(t *testing.T) {
 	type args struct {
 		user                    uip.Signer
-		funds                   []uint32
+		funds                   []uint64
 		iscOwners               [][]byte
 		bytesTransactionIntents [][]byte
 		vesSig                  []byte
@@ -752,7 +752,7 @@ func TestNSBClient_addMerkleProof(t *testing.T) {
 
 func TestNSBClient_createISC(t *testing.T) {
 	type args struct {
-		funds                   []uint32
+		funds                   []uint64
 		iscOwners               [][]byte
 		bytesTransactionIntents [][]byte
 		vesSig                  []byte

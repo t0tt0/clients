@@ -11,7 +11,7 @@ require (
 	github.com/BurntSushi/toml v0.3.1
 	github.com/DATA-DOG/go-sqlmock v1.4.1
 	github.com/DeanThompson/ginpprof v0.0.0-20190408063150-3be636683586
-	github.com/HyperService-Consortium/NSB v0.8.0
+	github.com/HyperService-Consortium/NSB v0.7.4-0.20200408080811-f102bb825821
 	github.com/HyperService-Consortium/go-ethabi v0.9.1
 	github.com/HyperService-Consortium/go-mpt v1.1.1-0.20190903152503-b63ec8d75bd4
 	github.com/HyperService-Consortium/go-rlp v1.0.1-0.20190903144357-b5693c05a6b8

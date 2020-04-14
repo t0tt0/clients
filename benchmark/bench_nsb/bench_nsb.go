@@ -50,7 +50,7 @@ var bb, bg, idleProof, txpadding []byte
 
 func NSBRoutine(signer uip.Signer, index int) {
 	// info, err := cli.GetAbciInfo()
-	iscAddress, err := cli.CreateISC(signer, []uint32{0}, [][]byte{signer.GetPublicKey()}, nil, txpadding)
+	iscAddress, err := cli.CreateISC(signer, []uint64{0}, [][]byte{signer.GetPublicKey()}, nil, txpadding)
 	if err != nil {
 		badSession.Add(1)
 		fmt.Println(err)

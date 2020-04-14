@@ -1,22 +1,16 @@
 package nsbcli
 
 import (
-	"encoding/base64"
-	"encoding/hex"
 	"encoding/json"
 	transactiontype "github.com/HyperService-Consortium/NSB/application/transaction-type"
-	"math/big"
-
 	ISC "github.com/HyperService-Consortium/NSB/contract/isc"
-	iscTransactionIntent "github.com/HyperService-Consortium/NSB/contract/isc/transaction"
 	"github.com/HyperService-Consortium/NSB/grpc/nsbrpc"
-	nsbmath "github.com/HyperService-Consortium/NSB/math"
 	uip "github.com/HyperService-Consortium/go-uip/uip"
 )
 
 func (nc *NSBClient) CreateISC(
 	user uip.Signer,
-	funds []uint32, iscOwners [][]byte,
+	funds []uint64, iscOwners [][]byte,
 	bytesTransactionIntents [][]byte,
 	vesSig []byte,
 ) ([]byte, error) {
@@ -38,64 +32,62 @@ func (nc *NSBClient) CreateISC(
 }
 
 func (nc *NSBClient) createISC(
-	funds []uint32, iscOwners [][]byte,
+	funds []uint64, iscOwners [][]byte,
 	bytesTransactionIntents [][]byte,
 	vesSig []byte,
 ) (*nsbrpc.FAPair, error) {
-	var transactionIntents []*iscTransactionIntent.TransactionIntent
-	var txm map[string]interface{}
-	for idx, txb := range bytesTransactionIntents {
-		err := json.Unmarshal(txb, &txm)
-		if err != nil {
-			return nil, err
-		}
-		var txi = new(iscTransactionIntent.TransactionIntent)
-		if txm["src"] == nil && txm["from"] == nil {
-			return nil, errNilSrc
-		}
-		if txm["src"] != nil {
-			txi.Fr, err = base64.StdEncoding.DecodeString(txm["src"].(string))
-			if err != nil {
-				return nil, err
-			}
-		} else {
-			txi.Fr, err = base64.StdEncoding.DecodeString(txm["from"].(string))
-			if err != nil {
-				return nil, err
-			}
-		}
-		if txm["dst"] != nil {
-			txi.To, err = base64.StdEncoding.DecodeString(txm["dst"].(string))
-			if err != nil {
-				return nil, err
-			}
-		} else if txm["from"] != nil {
-			txi.To, err = base64.StdEncoding.DecodeString(txm["from"].(string))
-			if err != nil {
-				return nil, err
-			}
-		}
-		if txm["meta"] != nil {
-			txi.Meta, err = base64.StdEncoding.DecodeString(txm["meta"].(string))
-			if err != nil {
-				return nil, err
-			}
-		}
-		txi.Seq = nsbmath.NewUint256FromBigInt(big.NewInt(int64(idx)))
-		if txm["amt"] != nil {
-			b, _ := hex.DecodeString(txm["amt"].(string))
-			txi.Amt = nsbmath.NewUint256FromBytes(b)
-		} else {
-			txi.Amt = nsbmath.NewUint256FromBytes([]byte{0})
-		}
-		transactionIntents = append(transactionIntents, txi)
-		// fmt.Println("encoding", txm)
-	}
+	//for idx, txb := range bytesTransactionIntents {
+	//	err := json.Unmarshal(txb, &txm)
+	//	if err != nil {
+	//		return nil, err
+	//	}
+	//	var txi = new(iscTransactionIntent.TransactionIntent)
+	//	if txm["src"] == nil && txm["from"] == nil {
+	//		return nil, errNilSrc
+	//	}
+	//	if txm["src"] != nil {
+	//		txi.Fr, err = base64.StdEncoding.DecodeString(txm["src"].(string))
+	//		if err != nil {
+	//			return nil, err
+	//		}
+	//	} else {
+	//		txi.Fr, err = base64.StdEncoding.DecodeString(txm["from"].(string))
+	//		if err != nil {
+	//			return nil, err
+	//		}
+	//	}
+	//	if txm["dst"] != nil {
+	//		txi.To, err = base64.StdEncoding.DecodeString(txm["dst"].(string))
+	//		if err != nil {
+	//			return nil, err
+	//		}
+	//	} else if txm["from"] != nil {
+	//		txi.To, err = base64.StdEncoding.DecodeString(txm["from"].(string))
+	//		if err != nil {
+	//			return nil, err
+	//		}
+	//	}
+	//	if txm["meta"] != nil {
+	//		txi.Meta, err = base64.StdEncoding.DecodeString(txm["meta"].(string))
+	//		if err != nil {
+	//			return nil, err
+	//		}
+	//	}
+	//	txi.Seq = nsbmath.NewUint256FromBigInt(big.NewInt(int64(idx)))
+	//	if txm["amt"] != nil {
+	//		b, _ := hex.DecodeString(txm["amt"].(string))
+	//		txi.Amt = nsbmath.NewUint256FromBytes(b)
+	//	} else {
+	//		txi.Amt = nsbmath.NewUint256FromBytes([]byte{0})
+	//	}
+	//	transactionIntents = append(transactionIntents, txi)
+	//	// fmt.Println("encoding", txm)
+	//}
 
 	var args ISC.ArgsCreateNewContract
 	args.IscOwners = iscOwners
 	args.Funds = funds
-	args.TransactionIntents = transactionIntents
+	args.TransactionIntents = bytesTransactionIntents
 	args.VesSig = vesSig
 	b, err := json.Marshal(args)
 	if err != nil {

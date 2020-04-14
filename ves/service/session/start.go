@@ -105,7 +105,7 @@ func (svc *Service) initISCAddress(
 		err = wrapper.Wrap(types.CodeSessionSignTxsError, err)
 		return
 	}
-	if iscAddress, err = svc.nsbClient.CreateISC(svc.signer, make([]uint32, len(owners)), owners, txs, signature.Bytes()); err != nil {
+	if iscAddress, err = svc.nsbClient.CreateISC(svc.signer, make([]uint64, len(owners)), owners, txs, signature.Bytes()); err != nil {
 		err = wrapper.Wrap(types.CodeSessionRequestNSBError, err)
 		return
 	}

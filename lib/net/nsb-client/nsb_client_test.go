@@ -5,6 +5,7 @@ import (
 	"fmt"
 	transactiontype "github.com/HyperService-Consortium/NSB/application/transaction-type"
 	"github.com/HyperService-Consortium/NSB/contract/delegate"
+	"github.com/HyperService-Consortium/NSB/contract/isc"
 	"github.com/HyperService-Consortium/NSB/grpc/nsbrpc"
 	"github.com/HyperService-Consortium/NSB/math"
 	"github.com/HyperService-Consortium/go-uip/signaturer"
@@ -123,19 +124,38 @@ func TestNSBClient_sendContractTx(t *testing.T) {
 		want    *nsb_message.ResultInfo
 		wantErr bool
 	}{
-
-		{name: "test_easy", fields: getNormalField(), args: args{
+		//{name: "test_easy", fields: getNormalField(), args: args{
+		//	transType: transactiontype.CreateContract,
+		//	txContent: HandlerError(nc.CreateContractPacket(
+		//		signer,
+		//		nil,
+		//		nil,
+		//		&nsbrpc.FAPair{
+		//			FuncName: "option",
+		//			Args: HandlerError(json.Marshal(&delegate.ArgsCreateNewContract{
+		//				Delegates:  [][]byte{{0}},
+		//				District:   "",
+		//				TotalVotes: math.NewUint256FromHexString("1111"),
+		//			})).([]byte),
+		//		})).(*nsbrpc.TransactionHeader),
+		//}, want: nil, wantErr: false},
+		//iscOwners:       [][]byte{ctx.s},
+		//			funds:           []uint64{0},
+		//			instructions:    funcSetA(),
+		//			rawInstructions: encodeInstructions(funcSetA()),
+		{name: "test_isc", fields: getNormalField(), args: args{
 			transType: transactiontype.CreateContract,
 			txContent: HandlerError(nc.CreateContractPacket(
 				signer,
 				nil,
 				nil,
 				&nsbrpc.FAPair{
-					FuncName: "option",
-					Args: HandlerError(json.Marshal(&delegate.ArgsCreateNewContract{
-						Delegates:  nil,
-						District:   "",
-						TotalVotes: math.NewUint256FromHexString("1111"),
+					FuncName: "isc",
+					Args: HandlerError(json.Marshal(&isc.ArgsCreateNewContract{
+						IscOwners:          [][]byte{signer.GetPublicKey()},
+						Funds:              []uint64{0},
+						VesSig:             nil,
+						TransactionIntents: nil,
 					})).([]byte),
 				})).(*nsbrpc.TransactionHeader),
 		}, want: nil, wantErr: false},

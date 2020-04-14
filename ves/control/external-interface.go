@@ -33,6 +33,6 @@ type NSBClient interface {
 		user uip.Signer, contractAddress []byte,
 		tid, aid uint64,
 	) (*nsb_message.DeliverTx, error)
-	CreateISC(signer uip.Signer, uint32s []uint32, bytes [][]byte, bytes2 [][]byte, bytes3 []byte) ([]byte, error)
+	CreateISC(signer uip.Signer, uint64s []uint64, bytes [][]byte, bytes2 [][]byte, bytes3 []byte) ([]byte, error)
 	SettleContract(signer uip.Signer, bytes []byte) (*nsb_message.DeliverTx, error)
 }

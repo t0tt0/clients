@@ -7,6 +7,8 @@ github.com/DATA-DOG/go-sqlmock v1.4.1 h1:ThlnYciV1iM/V0OSF/dtkqWb6xo5qITT1TJBG1M
 github.com/DATA-DOG/go-sqlmock v1.4.1/go.mod h1:f/Ixk793poVmq4qj/V1dPUg2JEAKC73Q5eFN3EC/SaM=
 github.com/DeanThompson/ginpprof v0.0.0-20190408063150-3be636683586 h1:vDSj8WQZoe+dhK9JVwkSEBwtmcJw5rJ7l1L0Yik8Ku0=
 github.com/DeanThompson/ginpprof v0.0.0-20190408063150-3be636683586/go.mod h1:kMi/fSDAgvjo9TYfYwYeQ2vkyj+VTR/tB6u/Tjh39t0=
+github.com/HyperService-Consortium/NSB v0.7.4-0.20200408080811-f102bb825821 h1:VmlK+t+Dsdiff3VuYDLiwhzz6mVPSq19IwKiH2ifyvk=
+github.com/HyperService-Consortium/NSB v0.7.4-0.20200408080811-f102bb825821/go.mod h1:XOUm2prOum31uQTgYuiY4+pKyphe1ObR46iQVh8Tw2k=
 github.com/HyperService-Consortium/NSB v0.8.0 h1:zji6ZeNJphCUZuh7yKSToBKU39hCHd5EiBdV9AkVpG4=
 github.com/HyperService-Consortium/NSB v0.8.0/go.mod h1:pycrBuQyb5NpYjqze1ge3/xhTlMaArjgd6ypP3RQCTM=
 github.com/HyperService-Consortium/go-ethabi v0.9.1 h1:KO5jE1PDMTHuMr+Kp3LxQOm+bD132F0vsDyS9ILBY58=

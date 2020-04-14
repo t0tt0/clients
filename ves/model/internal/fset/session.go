@@ -3,7 +3,7 @@ package fset
 import (
 	"bytes"
 	"fmt"
-	"github.com/HyperService-Consortium/NSB/contract/isc/TxState"
+	TxState "github.com/HyperService-Consortium/go-uip/const/transaction_state_type"
 	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/HyperService-Consortium/go-ves/lib/backend/wrapper"
@@ -148,7 +148,7 @@ func (s SessionFSet) NotifyAttestation(
 	switch attestation.GetAid() {
 	case TxState.Unknown, TxState.Initing, TxState.Inited:
 		return nil
-	case TxState.Instantiating, TxState.Instantiated, TxState.Open, TxState.Opened:
+	case TxState.Instantiating, TxState.Open, TxState.Opened:
 		return nil
 	case TxState.Closed:
 		ses.UnderTransacting++
