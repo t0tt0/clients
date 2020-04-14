@@ -20,7 +20,7 @@ func TestGetEthAccounts(t *testing.T) {
 }
 
 func TestUnlock(t *testing.T) {
-	ok, err := NewEthClient(testHost).PersonalUnlockAccout("0x6d8c6cb9d26b5a21ae498a22385ae4265f494cfc", "123456", 600)
+	ok, err := NewEthClient(testHost).PersonalUnlockAccout("0x4b3a59cd1183ab81b3c31b5a22bce26adf928ac2", "123456", 600)
 
 	if ok == false || err != nil {
 		if ok == false {
@@ -38,7 +38,7 @@ func TestUnlock(t *testing.T) {
 	}
 }
 
-const objjj = `{"from":"0x6d8c6cb9d26b5a21ae498a22385ae4265f494cfc", "to": "0x6d8c6cb9d26b5a21ae498a22385ae4265f494cfc", "value": "0x1"}`
+const objjj = `{"from":"0x4b3a59cd1183ab81b3c31b5a22bce26adf928ac2", "to": "0x4b3a59cd1183ab81b3c31b5a22bce26adf928ac2", "value": "0x1"}`
 
 func TestSendTransaction(t *testing.T) {
 	b, err := NewEthClient(testHost).SendTransaction([]byte(objjj))

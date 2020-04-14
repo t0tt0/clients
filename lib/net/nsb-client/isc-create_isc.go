@@ -5,6 +5,7 @@ import (
 	transactiontype "github.com/HyperService-Consortium/NSB/application/transaction-type"
 	ISC "github.com/HyperService-Consortium/NSB/contract/isc"
 	"github.com/HyperService-Consortium/NSB/grpc/nsbrpc"
+	"github.com/HyperService-Consortium/go-uip/isc"
 	uip "github.com/HyperService-Consortium/go-uip/uip"
 )
 
@@ -28,7 +29,12 @@ func (nc *NSBClient) CreateISC(
 		return nil, err
 	}
 
-	return ret.DeliverTx.Data, nil
+	var reply isc.NewContractReply
+	err = json.Unmarshal(ret.DeliverTx.Data, &reply)
+	if err != nil {
+		return nil, err
+	}
+	return reply.Address, nil
 }
 
 func (nc *NSBClient) createISC(

@@ -18,8 +18,10 @@ class VESLocalClient:
         return self.process.wait()
 
     @staticmethod
-    def from_role(role, port=None, log_file_path=None, log_file=None, stdout=None, stderr=None):
+    def from_role(role, port=None,
+                  ves_client_binary='../binary/ves-client', log_file_path=None, log_file=None, stdout=None, stderr=None):
         """
+        :param ves_client_binary:
         :param port:
         :param log_file_path:
         :param stderr:
@@ -33,7 +35,7 @@ class VESLocalClient:
         port = port or str(random.randint(28000, 40000))
         return VESLocalClient(
             subprocess.Popen(
-                ['../binary/ves-client',
+                [ves_client_binary,
                  '-name', role.name,
                  '-port', ":" + port],
                 stdout=stdout or log_file, stderr=stderr or log_file

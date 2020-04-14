@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"context"
 	"encoding/hex"
+	"github.com/HyperService-Consortium/go-uip/const/instruction_type"
+	"github.com/HyperService-Consortium/go-uip/const/trans_type"
 	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/HyperService-Consortium/go-ves/grpc/uiprpc"
@@ -73,16 +75,21 @@ func (svc *Service) initOpIntents(opIntents opintent.OpIntents) (
 		accounts = append(accounts, model.NewSessionAccount(svc.respAccount.GetChainId(), svc.respAccount.GetAddress()))
 	}
 	for _, intent := range intents {
-		//transactions = append(transactions, intent.Bytes())
-		var _ = intent
-		panic("todo")
-		//if c.Insert(intent.ChainID, intent.Src) {
-		//	accounts = append(accounts, model.NewSessionAccount(intent.ChainID, intent.Src))
-		//}
-		//
-		//if len(intent.Dst) != 0 && intent.TransType != trans_type.ContractInvoke && c.Insert(intent.ChainID, intent.Dst) {
-		//	accounts = append(accounts, model.NewSessionAccount(intent.ChainID, intent.Dst))
-		//}
+		switch intent.GetType() {
+		case instruction_type.Payment, instruction_type.ContractInvoke:
+
+			//todo: remove assertion
+			intent := intent.(*opintent.TransactionIntent)
+
+			if c.Insert(intent.ChainID, intent.Src) {
+				accounts = append(accounts, model.NewSessionAccount(intent.ChainID, intent.Src))
+			}
+
+			if len(intent.Dst) != 0 &&
+				intent.TransType != trans_type.ContractInvoke && c.Insert(intent.ChainID, intent.Dst) {
+				accounts = append(accounts, model.NewSessionAccount(intent.ChainID, intent.Dst))
+			}
+		}
 	}
 	return
 }

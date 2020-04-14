@@ -2,9 +2,11 @@ package server
 
 import (
 	"fmt"
-	"github.com/Myriad-Dreamin/functional-go"
+	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/HyperService-Consortium/go-ves/central-ves/config"
 	"github.com/HyperService-Consortium/go-ves/central-ves/model"
+	"github.com/Myriad-Dreamin/functional-go"
+	"github.com/Myriad-Dreamin/minimum-lib/module"
 	"github.com/Myriad-Dreamin/minimum-lib/rbac"
 )
 
@@ -76,7 +78,17 @@ func (srv *Server) MockDatabase() bool {
 
 	srv.Cfg.DatabaseConfig.Debug(srv.Logger)
 
-	if !model.InstallMock(srv.Module, nil) {
+	if !model.InstallMock(srv.Module, func(dep module.Module, s sqlmock.Sqlmock) error {
+		s.ExpectExec(`CREATE TABLE "chain_info"`).WillReturnResult(
+			sqlmock.NewResult(0, 1))
+		s.ExpectExec(`CREATE UNIQUE INDEX`).WillReturnResult(
+			sqlmock.NewResult(0, 1))
+		s.ExpectExec(`CREATE TABLE "user"`).WillReturnResult(
+			sqlmock.NewResult(0, 1))
+		s.ExpectExec(`CREATE TABLE "casbin_rule"`).WillReturnResult(
+			sqlmock.NewResult(0, 1))
+		return nil
+	}) {
 		return false
 	}
 

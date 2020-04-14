@@ -31,13 +31,13 @@ func TestBN_Route(t *testing.T) {
 			"test_easy", fields{
 				dns: config.ChainDNS,
 				signer: passwordSigner{
-					pb: sugar.HandlerError(hex.DecodeString("6d8c6cb9d26b5a21ae498a22385ae4265f494cfc")).([]byte),
+					pb: sugar.HandlerError(hex.DecodeString("4b3a59cd1183ab81b3c31b5a22bce26adf928ac2")).([]byte),
 					ps: "123456"},
 			}, args{
 				intent: &opintent.TransactionIntent{
 					TransType: trans_type.Payment,
-					Src:       sugar.HandlerError(hex.DecodeString("6d8c6cb9d26b5a21ae498a22385ae4265f494cfc")).([]byte),
-					Dst:       sugar.HandlerError(hex.DecodeString("6d8c6cb9d26b5a21ae498a22385ae4265f494cfc")).([]byte),
+					Src:       sugar.HandlerError(hex.DecodeString("4b3a59cd1183ab81b3c31b5a22bce26adf928ac2")).([]byte),
+					Dst:       sugar.HandlerError(hex.DecodeString("4b3a59cd1183ab81b3c31b5a22bce26adf928ac2")).([]byte),
 					Meta:      nil,
 					Amt:       "03e8",
 					ChainID:   7,

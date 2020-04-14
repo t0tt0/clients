@@ -3,3 +3,5 @@ intent.json
 __pycache__
 **.yaml
 **.out
+.idea
+example

@@ -66,7 +66,6 @@ func (p *DBLayerModule) Migrates(dep module.Module) error {
 		p.migrate(dblayer.NewTransactionDB(p.newTraits, dep)),
 		p.migrate(dblayer.NewSessionAccountDB(p.newTraits, dep)),
 		p.migrate(dblayer.NewSessionDB(p.newTraits, dep)),
-		p.migrate(dblayer.NewTransactionDB(p.newTraits, dep)),
 	})
 }
 

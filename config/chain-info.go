@@ -57,6 +57,12 @@ func getRelay(domain uint64) (uip.Account, error) {
 			ChainId: 6,
 			Address: b,
 		}, err
+	case 7:
+		b, err := hex.DecodeString("4b3a59cd1183ab81b3c31b5a22bce26adf928ac2")
+		return &uip.AccountImpl{
+			ChainId: 7,
+			Address: b,
+		}, err
 	default:
 		return nil, errors.New("not found")
 	}
@@ -98,6 +104,12 @@ func searchAccount(name string, chainId uint64) (uip.Account, error) {
 			b, err := hex.DecodeString("5539f2a34aed86f9032c908bf404eee3b0bdbddc")
 			return &uip.AccountImpl{
 				ChainId: 6,
+				Address: b,
+			}, err
+		case 7:
+			b, err := hex.DecodeString("4b3a59cd1183ab81b3c31b5a22bce26adf928ac2")
+			return &uip.AccountImpl{
+				ChainId: 7,
 				Address: b,
 			}, err
 		default:
@@ -145,6 +157,12 @@ func searchAccount(name string, chainId uint64) (uip.Account, error) {
 			b, err := hex.DecodeString("2b5680581553c2312dba96cb8d7639cc049cece7")
 			return &uip.AccountImpl{
 				ChainId: 6,
+				Address: b,
+			}, err
+		case 7: // ethereum chain 1
+			b, err := hex.DecodeString("6bce60cc3c882ccc7da13876583a4064eb6c04c9")
+			return &uip.AccountImpl{
+				ChainId: 7,
 				Address: b,
 			}, err
 		default:
@@ -209,6 +227,8 @@ func getTransactionProofType(chainId uint64) (uip.MerkleProofType, error) {
 	case 5: // ethereum chain 3
 		return merkleprooftype.SecureMerklePatriciaTrieUsingKeccak256, nil
 	case 6: // ethereum chain 4
+		return merkleprooftype.SecureMerklePatriciaTrieUsingKeccak256, nil
+	case 7: // ethereum chain 5
 		return merkleprooftype.SecureMerklePatriciaTrieUsingKeccak256, nil
 	default:
 		return merkleprooftype.Invalid, errors.New("not found")

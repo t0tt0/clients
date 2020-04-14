@@ -9,8 +9,6 @@ github.com/DeanThompson/ginpprof v0.0.0-20190408063150-3be636683586 h1:vDSj8WQZo
 github.com/DeanThompson/ginpprof v0.0.0-20190408063150-3be636683586/go.mod h1:kMi/fSDAgvjo9TYfYwYeQ2vkyj+VTR/tB6u/Tjh39t0=
 github.com/HyperService-Consortium/NSB v0.7.4-0.20200408080811-f102bb825821 h1:VmlK+t+Dsdiff3VuYDLiwhzz6mVPSq19IwKiH2ifyvk=
 github.com/HyperService-Consortium/NSB v0.7.4-0.20200408080811-f102bb825821/go.mod h1:XOUm2prOum31uQTgYuiY4+pKyphe1ObR46iQVh8Tw2k=
-github.com/HyperService-Consortium/NSB v0.8.0 h1:zji6ZeNJphCUZuh7yKSToBKU39hCHd5EiBdV9AkVpG4=
-github.com/HyperService-Consortium/NSB v0.8.0/go.mod h1:pycrBuQyb5NpYjqze1ge3/xhTlMaArjgd6ypP3RQCTM=
 github.com/HyperService-Consortium/go-ethabi v0.9.1 h1:KO5jE1PDMTHuMr+Kp3LxQOm+bD132F0vsDyS9ILBY58=
 github.com/HyperService-Consortium/go-ethabi v0.9.1/go.mod h1:ngPlugEdGFUTCnDFwAoog6YLGdm959cSzgizwzbsJiI=
 github.com/HyperService-Consortium/go-hexutil v1.0.1 h1:pThbi0a+9z7Oq7s3AcRgRsGKWc1qlq7sMBdDscSTKQs=
@@ -193,7 +191,6 @@ github.com/go-xorm/xorm v0.7.6/go.mod h1:nqz2TAsuOHWH2yk4FYWtacCGgdbrcdZ5mF1Xadq
 github.com/gogo/protobuf v1.1.1/go.mod h1:r8qH/GZQm5c6nD/R0oafs1akxWv10x8SbQlK7atdtwQ=
 github.com/gogo/protobuf v1.2.0/go.mod h1:r8qH/GZQm5c6nD/R0oafs1akxWv10x8SbQlK7atdtwQ=
 github.com/gogo/protobuf v1.2.1/go.mod h1:hp+jE20tsWTFYpLwKvXlhS1hjn+gTNwPg2I6zVXpSg4=
-github.com/gogo/protobuf v1.3.0/go.mod h1:SlYgWuQ5SjCEi6WLHjHCa1yvBfUnHcTbrrZtXPKa29o=
 github.com/gogo/protobuf v1.3.1 h1:DqDEcV5aeaTmdFBePNpYsp3FlcVH/2ISVVM9Qf8PSls=
 github.com/gogo/protobuf v1.3.1/go.mod h1:SlYgWuQ5SjCEi6WLHjHCa1yvBfUnHcTbrrZtXPKa29o=
 github.com/golang-sql/civil v0.0.0-20190719163853-cb61b32ac6fe h1:lXe2qZdvpiX5WZkZR4hgp4KJVfY3nMkvmwbVkpv1rVY=

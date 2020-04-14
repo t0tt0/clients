@@ -14,7 +14,7 @@ func TestX(t *testing.T) {
 const testServer = "localhost:23452"
 const cVesPort, cVesAddr = ":23352", ":23452"
 const cfgPath = "./ves-server-config.toml"
-const nsbHost = "39.100.145.91:26657"
+const nsbHost = "121.89.200.234:26657"
 
 //func Prepare() (muldb types.MultiIndex, sindb types.Index) {
 //	var cfg = config.Config()

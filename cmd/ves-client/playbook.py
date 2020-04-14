@@ -1,5 +1,6 @@
 import yaml
 import json
+import os.path
 
 from service_code import Code
 from cves_client import CVESClient
@@ -175,6 +176,7 @@ class Playbook(object):
         """
 
         self.role_map = dict()
+        self.base_path = os.path.abspath(os.path.dirname(file_path))
 
         if file_path is not None:
             stream = stream or open(file_path)
@@ -182,8 +184,9 @@ class Playbook(object):
             raise ValueError('stream is None')
         obj = _load(stream)
         self.name = obj.get('name', '<none>')
-        self.intent_file_name = obj.get('source', 'intent.json')
-        self.intents = self.prepare_intent_file(self.intent_file_name)
+        self.intent_file_path = self.rel_path(obj.get('source', 'intent.json'))
+        self.intents = self.prepare_intent_file(self.intent_file_path)
+
         self.central_ves = CVESClient(central_ves_host)
         r = self.central_ves.ping()
         if not r.avail:
@@ -197,7 +200,7 @@ class Playbook(object):
             parsed_roles.append(Role(
                 name=str(role['name']),
                 password=str(role['password']),
-                accounts=role['accounts'],
+                accounts=self.rel_path(role['accounts']),
                 central_ves=self.central_ves,
             ))
         return parsed_roles
@@ -221,6 +224,11 @@ class Playbook(object):
         for role in self.roles:
             role.try_close()
 
+    def rel_path(self, fp):
+        if isinstance(fp, str):
+            return os.path.join(self.base_path, fp)
+        return fp
+
 
 def run_playbook(playbook: Playbook):
     some_role: Role
@@ -231,7 +239,7 @@ def run_playbook(playbook: Playbook):
                 raise ValueError(f'<{account.domain}, {account.user_name}> is not in playbook')
             some_role = playbook.role_map[account.user_name]
     if some_role is not None:
-        r = some_role.client.send_op_intents(playbook.intent_file_name)
+        r = some_role.client.send_op_intents(playbook.intent_file_path)
         print(r, type(r), getattr(r, 'code', None),
               getattr(getattr(r, 'resp', {}), 'status_code'), getattr(r, 'body', None))
     else:
@@ -240,7 +248,7 @@ def run_playbook(playbook: Playbook):
 
 
 if __name__ == '__main__':
-    pb = Playbook(file_path='playbook.yaml')
+    pb = Playbook(file_path='./example/playbook.example.yaml')
     run_playbook(pb)
     input('enter any keys to exit')
     pb.close()
