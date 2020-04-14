@@ -28,7 +28,17 @@ func (svc *Service) SessionAckForInit(ctx context.Context, in *uiprpc.SessionAck
 	}
 
 	if c == ses.AccountsCount {
-		if err = svc.pushTransaction(ctx, ses, 0); err != nil {
+
+		pc, err := svc.nsbClient.ISCGetPC(svc.signer, ses.GetGUID())
+		if err != nil {
+			// todo: CodeGetPCError
+			return nil, wrapper.Wrap(types.CodeSelectError, err)
+		}
+
+		//todo: remove conversion
+		ses.UnderTransacting = int64(pc)
+
+		if err = svc.pushTransaction(ctx, ses, ses.UnderTransacting); err != nil {
 			return nil, err
 		}
 	}

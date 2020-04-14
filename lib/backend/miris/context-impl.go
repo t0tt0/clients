@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin/binding"
 	"github.com/kataras/iris"
 	"io"
+	"io/ioutil"
 	"mime/multipart"
 	"net/http"
 	"time"
@@ -258,7 +259,7 @@ func (c Context) ShouldBindUri(obj interface{}) error {
 }
 
 func (c Context) GetRawData() ([]byte, error) {
-	panic("implement me")
+	return ioutil.ReadAll(c.Context.Request().Body)
 }
 
 func (c Context) SetCookie(name, value string, maxAge int, path, domain string, secure, httpOnly bool) {

@@ -3,7 +3,7 @@ syntax = "proto3";
 
 package uiprpc;
 
-option go_package = "github.com/Myriad-Dreamin/go-ves/grpc/uiprpc";
+option go_package = "github.com/HyperService-Consortium/go-ves/grpc/uiprpc";
 
 import "base.proto";
 
@@ -11,6 +11,7 @@ service VES {
     rpc UserRegister (UserRegisterRequest) returns (UserRegisterReply);
 
     rpc SessionStart (SessionStartRequest) returns (SessionStartReply);
+    rpc SessionStartR (SessionStartRequestR) returns (SessionStartReply);
     rpc SessionAckForInit (SessionAckForInitRequest) returns (SessionAckForInitReply);
 
     rpc SessionRequireTransact (SessionRequireTransactRequest) returns (SessionRequireTransactReply);
@@ -54,6 +55,10 @@ message UserRegisterReply {
 
 message SessionStartRequest {
     uiprpc.base.OpIntents opintents = 1;
+}
+
+message SessionStartRequestR {
+    bytes content = 1;
 }
 
 message SessionStartReply {

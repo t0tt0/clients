@@ -46,7 +46,7 @@ func (svc *Service) InformAttestation(ctx context.Context, in *uiprpc.Attestatio
 		return nil, wrapper.Wrap(types.CodeSessionNotifyAttestationError, err)
 	}
 
-	if ses.UnderTransacting == ses.TransactionCount {
+	if ses.UnderTransacting >= ses.TransactionCount {
 		// close
 		accounts, err := svc.accountDB.ID(ses.ISCAddress)
 		if err != nil {

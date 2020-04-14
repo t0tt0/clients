@@ -11,6 +11,7 @@ type NSBInterface interface {
 	SaveAttestation(isc_address, uip.Attestation) error
 	InsuranceClaim(isc_address, uip.Attestation) error
 	SettleContract(isc_address) error
+	ISCGetPC(isc_address) (uint64, error)
 }
 
 type success_or_not = bool

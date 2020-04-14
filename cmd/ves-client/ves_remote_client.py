@@ -44,21 +44,9 @@ class VESRemoteClient(Client):
         })
 
     def send_op_intents_in_file(self, file_path):
-        _ = self.post
         with open(file_path) as intents_file:
-            intents = json.load(intents_file)
-
-        op_intents = intents.get('op-intents', [])
-        if not isinstance(op_intents, list):
-            raise TypeError(f'field op-intents require list type, {type(op_intents)} got')
-        op_intents = list(map(json.dumps, op_intents))
-
-        dependencies = intents.get('dependencies', [])
-        if not isinstance(dependencies, list):
-            raise TypeError(f'field dependencies require list type, {type(dependencies)} got')
-        dependencies = list(map(json.dumps, dependencies))
-
-        return self.send_op_intents(intents=op_intents, dependencies=dependencies)
+            response = self.post('/v1/session/raw', data=intents_file.read())
+        return response
 
     def list_keys(self):
         return self.get('v1/accounts')

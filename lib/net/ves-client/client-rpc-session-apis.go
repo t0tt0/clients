@@ -13,6 +13,7 @@ func (vc *VesClient) buildSessionRPCApis(p iris.Party) {
 	//p.Get("session-list", vc.IrisListSession)
 	id := p.Party("/session-list/{pid}")
 	p.Post("/session", miris.ToIrisHandler(vc.IrisPostSession))
+	p.Post("/session/raw", miris.ToIrisHandler(vc.IrisPostSessionR))
 	id.Delete("", miris.ToIrisHandler(vc.IrisDeleteSession))
 	id.Put("", miris.ToIrisHandler(vc.IrisPutSession))
 }

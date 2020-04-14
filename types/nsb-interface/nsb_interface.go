@@ -33,3 +33,7 @@ func (nsb *NSBClientImpl) SettleContract(iscAddress []byte) error {
 	_, err := nsb.NSBClient.SettleContract(nsb.signer, iscAddress)
 	return err
 }
+
+func (nsb *NSBClientImpl) ISCGetPC(iscAddress []byte) (uint64, error) {
+	return nsb.NSBClient.ISCGetPC(nsb.signer, iscAddress)
+}

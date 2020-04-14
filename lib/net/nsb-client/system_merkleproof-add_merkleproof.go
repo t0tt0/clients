@@ -3,9 +3,9 @@ package nsbcli
 import (
 	"encoding/json"
 	transactiontype "github.com/HyperService-Consortium/NSB/application/transaction-type"
+	system_merkle_proof "github.com/HyperService-Consortium/NSB/contract/system/merkle-proof"
 	"github.com/HyperService-Consortium/go-ves/lib/net/nsb-client/nsb-message"
 
-	appl "github.com/HyperService-Consortium/NSB/application"
 	"github.com/HyperService-Consortium/NSB/grpc/nsbrpc"
 	uip "github.com/HyperService-Consortium/go-uip/uip"
 )
@@ -34,7 +34,7 @@ func (nc *NSBClient) AddMerkleProof(
 func (nc *NSBClient) addMerkleProof(
 	merkletype uint16, rootHash []byte, proof []byte, key []byte, value []byte,
 ) (*nsbrpc.FAPair, error) {
-	var args appl.ArgsValidateMerkleProof
+	var args system_merkle_proof.ArgsValidateMerkleProof
 
 	args.Type = merkletype
 	args.RootHash = rootHash

@@ -16,21 +16,34 @@ import (
 )
 
 func (svc *Service) SessionStart(ctx context.Context, in *uiprpc.SessionStartRequest) (*uiprpc.SessionStartReply, error) {
+	if instructions, accounts, err := svc.initOpIntents(in.GetOpintents()); err != nil {
+		return nil, wrapper.Wrap(types.CodeSessionInitOpIntentsError, err)
+	} else {
+		return svc.createSession(ctx, instructions, accounts)
+	}
+}
+
+func (svc *Service) SessionStartR(ctx context.Context, in *uiprpc.SessionStartRequestR) (*uiprpc.SessionStartReply, error) {
+	if instructions, accounts, err := svc.initOpIntentsR(in); err != nil {
+		return nil, wrapper.Wrap(types.CodeSessionInitOpIntentsError, err)
+	} else {
+		return svc.createSession(ctx, instructions, accounts)
+	}
+}
+
+func (svc *Service) createSession(
+	ctx context.Context,
+	instructions []uip.Instruction, accounts []*model.SessionAccount) (*uiprpc.SessionStartReply, error) {
 	var (
 		ses        *model.Session
-		intents    []uip.Instruction
-		accounts   []*model.SessionAccount
 		iscAddress []byte
 		err        error
 	)
 
-	if intents, accounts, err = svc.initOpIntents(in.GetOpintents()); err != nil {
-		return nil, wrapper.Wrap(types.CodeSessionInitOpIntentsError, err)
-	}
-	if iscAddress, err = svc.initISCAddress(intents, accounts); err != nil {
+	if iscAddress, err = svc.initISCAddress(instructions, accounts); err != nil {
 		return nil, wrapper.Wrap(types.CodeSessionInitGUIDError, err)
 	}
-	if ses, err = svc.sesFSet.InitSessionInfo(iscAddress, intents, accounts); err != nil {
+	if ses, err = svc.sesFSet.InitSessionInfo(iscAddress, instructions, accounts); err != nil {
 		return nil, wrapper.Wrap(types.CodeSessionInitError, err)
 	}
 	svc.logger.Info("new session requested", "address", hex.EncodeToString(ses.GetGUID()))
@@ -41,7 +54,7 @@ func (svc *Service) SessionStart(ctx context.Context, in *uiprpc.SessionStartReq
 	//}
 	//
 
-	for i := range intents {
+	for i := range instructions {
 		//s.Logger.Info()
 		if _, err = svc.nsbClient.FreezeInfo(svc.signer, ses.GetGUID(), uint64(i)); err != nil {
 			return nil, wrapper.Wrap(types.CodeSessionFreezeInfoError, err)
@@ -65,6 +78,22 @@ func (svc *Service) initOpIntents(opIntents opintent.OpIntents) (
 	if err != nil {
 		return
 	}
+	return svc.collectSessionInfomation(xIntents)
+}
+
+func (svc *Service) initOpIntentsR(opIntents opintent.OpIntentsPacket) (
+	intents []uip.Instruction, accounts []*model.SessionAccount, err error) {
+	var xIntents opintent.TxIntents
+	xIntents, err = svc.opInitializer.ParseR(opIntents)
+	if err != nil {
+		return
+	}
+	return svc.collectSessionInfomation(xIntents)
+}
+
+func (svc *Service) collectSessionInfomation(xIntents opintent.TxIntents) (
+	intents []uip.Instruction, accounts []*model.SessionAccount, err error) {
+
 	var yIntents = xIntents.GetTxIntents()
 	intents = make([]uip.Instruction, len(yIntents))
 	for i := range yIntents {

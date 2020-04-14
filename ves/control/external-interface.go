@@ -35,4 +35,5 @@ type NSBClient interface {
 	) (*nsb_message.DeliverTx, error)
 	CreateISC(signer uip.Signer, uint64s []uint64, bytes [][]byte, bytes2 [][]byte, bytes3 []byte) ([]byte, error)
 	SettleContract(signer uip.Signer, bytes []byte) (*nsb_message.DeliverTx, error)
+	ISCGetPC(signer uip.Signer, bytes []byte) (uint64, error)
 }

@@ -17,6 +17,31 @@ func (vc *VesClient) SendOpIntentsByStrings(
 		stringSliceToBytesSlice(deps))
 }
 
+func (vc *VesClient) SendOpIntentsR(
+	targetHost string, content []byte) ([]byte, error) {
+	var c vesConn
+	vc.ensureVESConn(targetHost, &c)
+	fmt.Println(targetHost)
+
+	ctx, cancel := context.WithTimeout(
+		context.Background(), vc.constant.SendOpIntentsTimeout)
+	defer cancel()
+	r, err := c.SessionStartR(
+		ctx,
+		&uiprpc.SessionStartRequestR{
+			Content: content,
+		})
+	vc.mustPutVESConn(&c)
+	if err != nil {
+		return nil, wrapper.Wrap(types.CodeExecuteError, err)
+	}
+	if !r.GetOk() {
+		return nil, wrapper.WrapCode(types.CodeExecuteError)
+	}
+
+	return r.GetSessionId(), nil
+}
+
 func (vc *VesClient) SendOpIntents(
 	targetHost string, intents [][]byte, deps [][]byte) ([]byte, error) {
 	var c vesConn

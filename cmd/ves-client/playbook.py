@@ -1,6 +1,7 @@
 import yaml
 import json
 import os.path
+import logging
 
 from service_code import Code
 from cves_client import CVESClient
@@ -101,7 +102,8 @@ class Role(object):
 
 
 class Account(object):
-    def __init__(self, domain, user_name):
+    # noinspection PyPep8Naming
+    def __init__(self, domain, user_name, **kwargs):
         self.domain = domain
         self.user_name = user_name
 
@@ -112,21 +114,47 @@ class Account(object):
         return self.domain == other.domain and self.user_name == other.user_name
 
 
+class NullPlaybook(object):
+    @staticmethod
+    def parse_account(acc):
+        return acc
+
+
+def parse_obj_to_intents(op_intents: list or dict, context):
+    intents = []
+    if not isinstance(op_intents, list):
+        op_intents = [op_intents]
+    for op_intent in op_intents:
+        intents.append(OpIntent(op_intent, context))
+    return intents
+
+
 class OpIntent(object):
-    def __init__(self, intent):
+    def __init__(self, intent, context):
         self.name = intent.get('name')
-        self.op_type = intent.get('op_type', 'Payment')
-        if self.op_type == 'Payment':
-            self.src = Account(**intent['src'])
-            self.dst = Account(**intent['dst'])
+        self.type = intent.get('type', 'Payment')
+        self.resp_accounts = []
+        if self.type == 'Payment':
+            self.src = Account(**context.parse_account(intent['src']))
+            self.dst = Account(**context.parse_account(intent['dst']))
             self.resp_accounts = [
                 self.src, self.dst,
             ]
-        elif self.op_type == 'ContractInvocation':
-            self.src = Account(**intent.get('invoker'))
+        elif self.type == 'ContractInvocation':
+            self.src = Account(**context.parse_account(intent.get('invoker')))
+            # self.contract = Contract(**context.parse_account(intent.get('contract')))
             self.resp_accounts = [
                 self.src
             ]
+        elif self.type == 'IfStatement':
+            self.if_body = parse_obj_to_intents(intent.get('if', []), context)
+            self.else_body = parse_obj_to_intents(intent.get('else', []), context)
+            self.condition = intent.get('condition')
+        elif self.type == 'loopFunction':
+            self.body = parse_obj_to_intents(intent.get('loop', []), context)
+            self.times = intent.get('loopTime', 0)
+        else:
+            logging.warning('unknown type ', self.type)
 
 
 class OpIntents(object):
@@ -137,12 +165,39 @@ class OpIntents(object):
         """
         op_intents = d['op-intents']
         self.dependencies = d.get('dependencies', [])
+        self.local_accounts = self.build_local_map(d.get('accounts', []), 'userName', 'user_name')
+        self.local_contracts = self.build_local_map(d.get('contracts', []), 'contractName', 'user_name')
+        self.intents = parse_obj_to_intents(op_intents, self)
 
-        self.intents = []
-        if not isinstance(op_intents, list):
-            op_intents = [op_intents]
-        for op_intent in op_intents:
-            self.intents.append(OpIntent(op_intent))
+    def parse_account(self, acc):
+        if isinstance(acc, str):
+            xmp = self.local_accounts.get(acc)
+            k = None
+            if xmp:
+                k = xmp.get(None)
+            if k is None:
+                raise KeyError('accountName %s is not exists or ambiguous' % acc)
+            return k
+        return acc
+
+    @staticmethod
+    def build_local_map(raw_list, k, rename=None):
+        mp = dict()
+        info:dict
+        for info in raw_list:
+            un = info[k]
+            if rename is not None:
+                info.pop(k)
+                info[rename] = un
+            xmp = mp.get(un, {
+                info['domain']: info,
+                None: info,
+            })
+            if un in mp:
+                xmp[None] = None
+            mp[un] = xmp
+
+        return mp
 
 
 class Playbook(object):
@@ -224,22 +279,37 @@ class Playbook(object):
         for role in self.roles:
             role.try_close()
 
+    @staticmethod
+    def parse_account(acc):
+        return acc
+
     def rel_path(self, fp):
         if isinstance(fp, str):
             return os.path.join(self.base_path, fp)
         return fp
 
 
-def run_playbook(playbook: Playbook):
-    some_role: Role
+def check_and_get_role(playbook: Playbook, intents: list = None) -> Role or None:
+    intents = intents or playbook.intents.intents
     some_role = None
-    for intents in playbook.intents.intents:
-        for account in intents.resp_accounts:
+    for intent in intents:
+        if intent.type == 'IfStatement':
+            some_role = check_and_get_role(playbook, intent.if_body) or some_role
+            some_role = check_and_get_role(playbook, intent.else_body) or some_role
+        elif intent.type == 'loopFunction':
+            some_role = check_and_get_role(playbook, intent.body) or some_role
+
+        for account in intent.resp_accounts:
             if account.domain not in playbook.role_map[account.user_name].chain_map:
                 raise ValueError(f'<{account.domain}, {account.user_name}> is not in playbook')
             some_role = playbook.role_map[account.user_name]
+    return some_role
+
+
+def run_playbook(playbook: Playbook):
+    some_role: Role = check_and_get_role(playbook)
     if some_role is not None:
-        r = some_role.client.send_op_intents(playbook.intent_file_path)
+        r = some_role.client.send_op_intents_in_file(playbook.intent_file_path)
         print(r, type(r), getattr(r, 'code', None),
               getattr(getattr(r, 'resp', {}), 'status_code'), getattr(r, 'body', None))
     else:
