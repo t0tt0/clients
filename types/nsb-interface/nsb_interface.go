@@ -1,8 +1,8 @@
 package nsbi
 
 import (
+	nsbcli "github.com/HyperService-Consortium/NSB/lib/nsb-client"
 	uip "github.com/HyperService-Consortium/go-uip/uip"
-	nsbcli "github.com/HyperService-Consortium/go-ves/lib/net/nsb-client"
 	"github.com/HyperService-Consortium/go-ves/ves/control"
 )
 

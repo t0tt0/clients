@@ -2,9 +2,9 @@ package control
 
 import (
 	"context"
+	nsb_message "github.com/HyperService-Consortium/NSB/lib/nsb-client/nsb-message"
 	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/HyperService-Consortium/go-ves/grpc/uiprpc"
-	nsb_message "github.com/HyperService-Consortium/go-ves/lib/net/nsb-client/nsb-message"
 	"github.com/HyperService-Consortium/go-ves/types"
 	"google.golang.org/grpc"
 )

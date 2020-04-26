@@ -7,6 +7,7 @@ import (
 	"github.com/HyperService-Consortium/go-uip/const/value_type"
 	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/HyperService-Consortium/go-ves/types"
+	"github.com/Myriad-Dreamin/gvm"
 	"math/big"
 )
 
@@ -25,6 +26,18 @@ func (g *StorageHandler) GetTransactionProof(chainID uip.ChainID, blockID uip.Bl
 type variable struct {
 	Type  uip.TypeID
 	Value interface{}
+}
+
+func (v variable) Encode() ([]byte, error) {
+	panic("implement me")
+}
+
+func (v variable) GetGVMType() gvm.RefType {
+	return gvm.RefType(v.Type)
+}
+
+func (v variable) Unwrap() interface{} {
+	return v.Value
 }
 
 func (v variable) GetType() uip.TypeID {

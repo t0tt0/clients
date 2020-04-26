@@ -1,8 +1,8 @@
 package types
 
 import (
+	nsb_message "github.com/HyperService-Consortium/NSB/lib/nsb-client/nsb-message"
 	"github.com/HyperService-Consortium/go-uip/uip"
-	nsb_message "github.com/HyperService-Consortium/go-ves/lib/net/nsb-client/nsb-message"
 )
 
 type NSBClient interface {

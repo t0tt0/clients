@@ -2,11 +2,11 @@ package server
 
 import (
 	"fmt"
+	nsbcli "github.com/HyperService-Consortium/NSB/lib/nsb-client"
 	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	xconfig "github.com/HyperService-Consortium/go-ves/config"
 	"github.com/HyperService-Consortium/go-ves/grpc/uiprpc"
 	"github.com/HyperService-Consortium/go-ves/lib/bni/getter"
-	nsbcli "github.com/HyperService-Consortium/go-ves/lib/net/nsb-client"
 	"github.com/HyperService-Consortium/go-ves/types"
 	"github.com/HyperService-Consortium/go-ves/ves/config"
 	"google.golang.org/grpc"

@@ -6,9 +6,9 @@ package mock
 
 import (
 	context "context"
+	nsb_message "github.com/HyperService-Consortium/NSB/lib/nsb-client/nsb-message"
 	uip "github.com/HyperService-Consortium/go-uip/uip"
 	uiprpc "github.com/HyperService-Consortium/go-ves/grpc/uiprpc"
-	nsb_message "github.com/HyperService-Consortium/go-ves/lib/net/nsb-client/nsb-message"
 	types "github.com/HyperService-Consortium/go-ves/types"
 	gomock "github.com/golang/mock/gomock"
 	grpc "google.golang.org/grpc"

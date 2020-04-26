@@ -4,12 +4,12 @@ import (
 	"errors"
 	transactiontype "github.com/HyperService-Consortium/NSB/application/transaction-type"
 	"github.com/HyperService-Consortium/NSB/grpc/nsbrpc"
+	"github.com/HyperService-Consortium/NSB/lib/nsb-client"
 	"github.com/HyperService-Consortium/NSB/math"
 	"github.com/HyperService-Consortium/go-uip/const/trans_type"
 	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-uip/uip"
 	payment_option "github.com/HyperService-Consortium/go-ves/lib/bni/payment-option"
-	"github.com/HyperService-Consortium/go-ves/lib/net/nsb-client"
 	"github.com/gogo/protobuf/proto"
 	"github.com/tidwall/gjson"
 )

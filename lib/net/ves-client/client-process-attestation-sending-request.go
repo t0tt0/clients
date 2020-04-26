@@ -2,11 +2,11 @@ package vesclient
 
 import (
 	"encoding/hex"
+	nsbcli "github.com/HyperService-Consortium/NSB/lib/nsb-client"
 	TxState "github.com/HyperService-Consortium/go-uip/const/transaction_state_type"
 	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/HyperService-Consortium/go-ves/grpc/uiprpc-base"
 	"github.com/HyperService-Consortium/go-ves/grpc/wsrpc"
-	nsbcli "github.com/HyperService-Consortium/go-ves/lib/net/nsb-client"
 )
 
 func (vc *VesClient) ProcessAttestationSendingRequest(attestationSendingRequest *wsrpc.RequestComingRequest) {

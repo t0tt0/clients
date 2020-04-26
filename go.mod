@@ -4,19 +4,18 @@ go 1.13
 
 replace (
 	github.com/HyperService-Consortium/go-hexutil => github.com/HyperService-Consortium/go-hexutil v1.0.1
-	github.com/HyperService-Consortium/go-uip => github.com/HyperService-Consortium/go-uip v0.0.0-20200408075657-d2425491ab24
+	github.com/HyperService-Consortium/go-uip => github.com/HyperService-Consortium/go-uip v0.0.0-20200423085134-7f1d4a0ec024
 )
 
 require (
 	github.com/BurntSushi/toml v0.3.1
 	github.com/DATA-DOG/go-sqlmock v1.4.1
 	github.com/DeanThompson/ginpprof v0.0.0-20190408063150-3be636683586
-	github.com/HyperService-Consortium/NSB v0.7.4-0.20200414172424-b8a34f8e59d5
-
+	github.com/HyperService-Consortium/NSB v0.7.4-0.20200426065358-96a8ea073f42
 	github.com/HyperService-Consortium/go-ethabi v0.9.1
 	github.com/HyperService-Consortium/go-mpt v1.1.1-0.20190903152503-b63ec8d75bd4
 	github.com/HyperService-Consortium/go-rlp v1.0.1-0.20190903144357-b5693c05a6b8
-	github.com/HyperService-Consortium/go-uip v0.0.0-20200408075657-d2425491ab24
+	github.com/HyperService-Consortium/go-uip v0.0.0-20200423085134-7f1d4a0ec024
 	github.com/Joker/jade v1.0.0 // indirect
 	github.com/Myriad-Dreamin/artisan v0.8.1-0.20200204040619-76955d01aad9
 	github.com/Myriad-Dreamin/dorm v0.0.0-20191205101004-33dbc61bb34e

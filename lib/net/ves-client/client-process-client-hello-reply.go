@@ -1,8 +1,8 @@
 package vesclient
 
 import (
+	nsbcli "github.com/HyperService-Consortium/NSB/lib/nsb-client"
 	"github.com/HyperService-Consortium/go-ves/grpc/wsrpc"
-	nsbcli "github.com/HyperService-Consortium/go-ves/lib/net/nsb-client"
 )
 
 func (vc *VesClient) ProcessClientHelloReply(req *wsrpc.ClientHelloReply) {

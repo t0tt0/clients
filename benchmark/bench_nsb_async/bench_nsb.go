@@ -8,8 +8,8 @@ import (
 	"sync/atomic"
 	"time"
 
+	nsbclient "github.com/HyperService-Consortium/NSB/lib/nsb-client"
 	uip "github.com/HyperService-Consortium/go-uip/uip"
-	nsbclient "github.com/HyperService-Consortium/go-ves/lib/net/nsb-client"
 
 	signaturer "github.com/HyperService-Consortium/go-uip/signaturer"
 )

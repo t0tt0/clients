@@ -1,10 +1,10 @@
 package vesclient
 
 import (
+	nsbcli "github.com/HyperService-Consortium/NSB/lib/nsb-client"
 	"github.com/HyperService-Consortium/go-uip/uip"
 	xconfig "github.com/HyperService-Consortium/go-ves/config"
 	core_cfg "github.com/HyperService-Consortium/go-ves/lib/backend/core-cfg"
-	nsbcli "github.com/HyperService-Consortium/go-ves/lib/net/nsb-client"
 	"github.com/HyperService-Consortium/go-ves/lib/net/ves-websocket"
 	"github.com/HyperService-Consortium/go-ves/types"
 	"github.com/HyperService-Consortium/go-ves/ves/config"

@@ -6,8 +6,8 @@ import (
 	"fmt"
 	transactiontype "github.com/HyperService-Consortium/NSB/application/transaction-type"
 	"github.com/HyperService-Consortium/NSB/grpc/nsbrpc"
+	"github.com/HyperService-Consortium/NSB/lib/nsb-client"
 	"github.com/HyperService-Consortium/go-uip/uip"
-	"github.com/HyperService-Consortium/go-ves/lib/net/nsb-client"
 	"github.com/gogo/protobuf/proto"
 )
 

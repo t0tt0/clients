@@ -1,11 +1,10 @@
 package bni
 
 import (
-	"encoding/json"
 	"errors"
+	nsbcli "github.com/HyperService-Consortium/NSB/lib/nsb-client"
 	merkleproof "github.com/HyperService-Consortium/go-uip/merkle-proof"
 	"github.com/HyperService-Consortium/go-uip/uip"
-	nsbcli "github.com/HyperService-Consortium/go-ves/lib/net/nsb-client"
 )
 
 func (bn *BN) GetTransactionProof(chainID uint64, blockID []byte, additional []byte) (uip.MerkleProof, error) {
@@ -21,12 +20,7 @@ func (bn *BN) GetTransactionProof(chainID uint64, blockID []byte, additional []b
 		return nil, err
 	}
 
-	var info MerkleProofInfo
-	err = json.Unmarshal([]byte(resp.Info), &info)
-	if err != nil {
-		return nil, err
-	}
-	return merkleproof.NewMPTUsingKeccak256(info.Proof, info.Key, info.Value), nil
+	return merkleproof.NewMPTUsingKeccak256(resp.Proof, resp.Key, resp.Value), nil
 }
 
 func (bn *BN) GetStorageAt(chainID uip.ChainID, typeID uip.TypeID, contractAddress uip.ContractAddress, pos []byte, description []byte) (uip.Variable, error) {

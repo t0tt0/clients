@@ -6,7 +6,7 @@ import (
 
 	bencher "github.com/HyperService-Consortium/go-ves/benchmark/bench_nsb_action/bencher"
 
-	nsbclient "github.com/HyperService-Consortium/go-ves/lib/net/nsb-client"
+	nsbclient "github.com/HyperService-Consortium/NSB/lib/nsb-client"
 )
 
 var (

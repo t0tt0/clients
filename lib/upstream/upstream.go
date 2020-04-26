@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/HyperService-Consortium/go-uip/const/value_type"
 	"github.com/HyperService-Consortium/go-uip/uip"
+	"github.com/Myriad-Dreamin/gvm"
 	"github.com/Myriad-Dreamin/minimum-lib/sugar"
 	"github.com/tidwall/gjson"
 	"math/big"
@@ -112,6 +113,18 @@ type MockData struct {
 type MockValue struct {
 	T value_type.Type
 	V interface{}
+}
+
+func (m MockValue) GetGVMType() gvm.RefType {
+	return gvm.RefType(m.T)
+}
+
+func (m MockValue) Unwrap() interface{} {
+	return m.V
+}
+
+func (m MockValue) Encode() ([]byte, error) {
+	panic("implement me")
 }
 
 func (m MockValue) GetType() uip.TypeID {
