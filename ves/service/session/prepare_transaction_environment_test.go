@@ -6,7 +6,6 @@ import (
 	"github.com/HyperService-Consortium/go-uip/const/value_type"
 	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-uip/uip"
-	dep_uip "github.com/HyperService-Consortium/go-ves/dependency/uip"
 	"github.com/HyperService-Consortium/go-ves/lib/basic/encoding"
 	"github.com/HyperService-Consortium/go-ves/types"
 	"github.com/HyperService-Consortium/go-ves/ves/mock"
@@ -195,8 +194,6 @@ func Test_prepareTranslateEnvironment_ensureValue(t *testing.T) {
 	}
 }
 
-var contractMetaEnc *dep_uip.ContractMetaEncoder
-
 func Test_prepareTranslateEnvironment_ensure(t *testing.T) {
 	ctl := gomock.NewController(t)
 	defer ctl.Finish()
@@ -207,7 +204,7 @@ func Test_prepareTranslateEnvironment_ensure(t *testing.T) {
 	ti1 := *ti
 	ti1.TransType = trans_type.ContractInvoke
 	ti1.Meta = sugar.HandlerError(
-		contractMetaEnc.Marshal(
+		opintent.Serializer.Meta.Contract.Marshal(
 			&opintent.ContractInvokeMeta{
 				FuncName: "updateStake",
 				Params: []uip.VTok{
@@ -257,14 +254,14 @@ func Test_prepareTranslateEnvironment_doContractInvoke(t *testing.T) {
 	ti1.TransType = trans_type.ContractInvoke
 
 	ti.Meta = nil
-	//ti0.Meta = sugar.HandlerError(contractMetaEnc.Marshal(
-	//	&opintent.ContractInvokeMeta{
-	//		FuncName: "updateStake",
-	//		Params: []uip.VTok{
-	//			(*opintent.Uint256)(nil),
-	//		},
-	//	})).([]byte)
-	ti1.Meta = sugar.HandlerError(contractMetaEnc.Marshal(
+	ti0.Meta = sugar.HandlerError(opintent.Serializer.Meta.Contract.Marshal(
+		&opintent.ContractInvokeMeta{
+			FuncName: "updateStake",
+			Params: []uip.VTok{
+				opintent.LocalStateVariable{},
+			},
+		})).([]byte)
+	ti1.Meta = sugar.HandlerError(opintent.Serializer.Meta.Contract.Marshal(
 		&opintent.ContractInvokeMeta{
 			FuncName: "updateStake",
 			Params: []uip.VTok{
@@ -281,10 +278,9 @@ func Test_prepareTranslateEnvironment_doContractInvoke(t *testing.T) {
 		{name: "DeserializeTransactionError", env: createTranslateEnvField(
 			ti,
 		), wantErr: true, wantCode: types.CodeDeserializeTransactionError},
-		// todo: bug of WriteBigInt nil will throw
-		//{name: "EnsureTransactionValueError", env: createTranslateEnvField(
-		//	&ti0,
-		//), wantErr: true, wantCode: types.CodeEnsureTransactionValueError},
+		{name: "EnsureTransactionValueError", env: createTranslateEnvField(
+			&ti0,
+		), wantErr: true, wantCode: types.CodeEnsureTransactionValueError},
 		{name: "ok", env: createTranslateEnvField(
 			&ti1,
 		), wantErr: false},

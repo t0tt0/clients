@@ -41,7 +41,7 @@ func TestBN_Translate(t *testing.T) {
 				Src:       sugar.HandlerError(hex.DecodeString("93334ae4b2d42ebba8cc7c797bfeb02bfb3349d6")).([]byte),
 				Dst:       sugar.HandlerError(hex.DecodeString("263fef3fe76fd4075ac16271d5115d01206d3674")).([]byte),
 				Meta: sugar.HandlerError(
-					contractMetaEncoder.Marshal(
+					opintent.Serializer.Meta.Contract.Marshal(
 						&opintent.ContractInvokeMeta{
 							Code:     []byte("A"),
 							FuncName: "updateStake",
@@ -89,7 +89,7 @@ func TestBN_Translate(t *testing.T) {
 				Src:       sugar.HandlerError(hex.DecodeString("93334ae4b2d42ebba8cc7c797bfeb02bfb3349d6")).([]byte),
 				Dst:       sugar.HandlerError(hex.DecodeString("263fef3fe76fd4075ac16271d5115d01206d3674")).([]byte),
 				Meta: sugar.HandlerError(
-					contractMetaEncoder.Marshal(
+					opintent.Serializer.Meta.Contract.Marshal(
 						&opintent.ContractInvokeMeta{
 							FuncName: "updateStake",
 							Params: []uip.VTok{

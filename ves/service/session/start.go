@@ -107,16 +107,15 @@ func (svc *Service) collectSessionInfomation(xIntents opintent.TxIntents) (
 		switch intent.GetType() {
 		case instruction_type.Payment, instruction_type.ContractInvoke:
 
-			//todo: remove assertion
-			intent := intent.(*opintent.TransactionIntent)
+			intent := intent.(uip.TransactionIntent)
 
-			if c.Insert(intent.ChainID, intent.Src) {
-				accounts = append(accounts, model.NewSessionAccount(intent.ChainID, intent.Src))
+			if c.Insert(intent.GetChainID(), intent.GetSrc()) {
+				accounts = append(accounts, model.NewSessionAccount(intent.GetChainID(), intent.GetSrc()))
 			}
 
-			if len(intent.Dst) != 0 &&
-				intent.TransType != trans_type.ContractInvoke && c.Insert(intent.ChainID, intent.Dst) {
-				accounts = append(accounts, model.NewSessionAccount(intent.ChainID, intent.Dst))
+			if len(intent.GetDst()) != 0 &&
+				intent.GetTxType() != trans_type.ContractInvoke && c.Insert(intent.GetChainID(), intent.GetDst()) {
+				accounts = append(accounts, model.NewSessionAccount(intent.GetChainID(), intent.GetDst()))
 			}
 		}
 	}

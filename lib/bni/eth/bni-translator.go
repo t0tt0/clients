@@ -15,13 +15,11 @@ func (bn *BN) ParseTransactionIntent(intent uip.TxIntentI) (uip.TxIntentI, error
 	return intent, nil
 }
 
-func (bn *BN) Translate(x uip.TransactionIntent, storage uip.Storage) (uip.RawTransaction, error) {
-	//todo remove assertion
-	intent := x.(*opintent.TransactionIntent)
+func (bn *BN) Translate(intent uip.TransactionIntent, storage uip.Storage) (uip.RawTransaction, error) {
 	switch intent.GetTxType() {
 	case trans_type.Payment:
-		meta := gjson.ParseBytes(intent.Meta)
-		value, err := payment_option.ParseInconsistentValueOption(meta, storage, intent.Amt)
+		meta := gjson.ParseBytes(intent.GetMeta())
+		value, err := payment_option.ParseInconsistentValueOption(meta, storage, intent.GetAmt())
 		if err != nil {
 			return nil, err
 		}
@@ -33,23 +31,23 @@ func (bn *BN) Translate(x uip.TransactionIntent, storage uip.Storage) (uip.RawTr
 			"method":  "eth_sendTransaction",
 			"params": []interface{}{
 				map[string]interface{}{
-					"from":  decoratePrefix(hex.EncodeToString(intent.Src)),
-					"to":    decoratePrefix(hex.EncodeToString(intent.Dst)),
+					"from":  decoratePrefix(hex.EncodeToString(intent.GetSrc())),
+					"to":    decoratePrefix(hex.EncodeToString(intent.GetDst())),
 					"value": decorateValuePrefix(value),
 				},
 			},
 			"id": 1,
 		})
 		//fmt.Println("...", string(b))
-		return NewRawTransaction(b, intent.Src, false), err
+		return NewRawTransaction(b, intent.GetSrc(), false), err
 	case trans_type.ContractInvoke:
 		var meta opintent.ContractInvokeMeta
-		err := contractMetaEncoder.Unmarshal(intent.Meta, &meta)
+		err := opintent.Serializer.Meta.Contract.Unmarshal(intent.GetMeta(), &meta)
 		if err != nil {
 			return nil, err
 		}
 
-		data, err := ContractInvocationDataABI(intent.ChainID, &meta, storage)
+		data, err := ContractInvocationDataABI(intent.GetChainID(), &meta, storage)
 		if err != nil {
 			return nil, err
 		}
@@ -61,8 +59,8 @@ func (bn *BN) Translate(x uip.TransactionIntent, storage uip.Storage) (uip.RawTr
 			"method":  "eth_sendTransaction",
 			"params": []interface{}{
 				map[string]interface{}{
-					"from": decoratePrefix(hex.EncodeToString(intent.Src)),
-					"to":   decoratePrefix(hex.EncodeToString(intent.Dst)),
+					"from": decoratePrefix(hex.EncodeToString(intent.GetSrc())),
+					"to":   decoratePrefix(hex.EncodeToString(intent.GetDst())),
 					// todo
 					//"value": decoratePrefix(intent.Amt),
 					"data": decorateValuePrefix(hexdata),
@@ -70,7 +68,7 @@ func (bn *BN) Translate(x uip.TransactionIntent, storage uip.Storage) (uip.RawTr
 			},
 			"id": 1,
 		})
-		return NewRawTransaction(b, intent.Src, false), err
+		return NewRawTransaction(b, intent.GetSrc(), false), err
 	default:
 		return nil, errors.New("cant translate")
 	}

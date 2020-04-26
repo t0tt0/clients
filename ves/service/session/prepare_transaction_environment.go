@@ -9,7 +9,6 @@ import (
 	"github.com/HyperService-Consortium/go-uip/const/value_type"
 	"github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-uip/uip"
-	dep_uip "github.com/HyperService-Consortium/go-ves/dependency/uip"
 	"github.com/HyperService-Consortium/go-ves/lib/backend/wrapper"
 	payment_option "github.com/HyperService-Consortium/go-ves/lib/bni/payment-option"
 	"github.com/HyperService-Consortium/go-ves/lib/upstream"
@@ -52,12 +51,9 @@ func (w wrapPos) Error() string {
 	return fmt.Sprintf("<%d,%v>", w.i, w.err)
 }
 
-// todo: remove
-var upstreamDecoder *dep_uip.ContractMetaEncoder
-
 func (svc *prepareTranslateEnvironment) ensureContractInvoke() error {
 	var meta opintent.ContractInvokeMeta
-	err := upstreamDecoder.Unmarshal(svc.ti.Meta, &meta)
+	err := opintent.Serializer.Meta.Contract.Unmarshal(svc.ti.Meta, &meta)
 	if err != nil {
 		return wrapper.Wrap(types.CodeDeserializeTransactionError, err)
 	}
@@ -161,16 +157,15 @@ func (svc *prepareTranslateEnvironment) ensureValue(param uip.VTok) error {
 			return errors.New("only support token_type.{Constant,StateVariable} now")
 		}
 
-		// todo remove assertion
-		param := param.(*opintent.StateVariable)
+		param := param.(opintent.StateVariableI)
 
 		var contract uip.Account
 		var ok bool
-		if contract, ok = param.Contract.(uip.Account); !ok {
+		if contract, ok = param.GetContract().(uip.Account); !ok {
 			return fmt.Errorf("assuming contract is uip.Account ,but got %v", reflect.TypeOf(contract))
 		}
 		err := svc.ensureStorage(svc.bn, contract.GetChainId(), value_type.Type(
-			param.GetGVMType()), contract.GetAddress(), param.Pos, param.Field)
+			param.GetGVMType()), contract.GetAddress(), param.GetPos(), param.GetField())
 		if err != nil {
 			return err
 		}

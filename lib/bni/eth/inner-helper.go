@@ -8,15 +8,11 @@ import (
 	"github.com/HyperService-Consortium/go-uip/const/value_type"
 	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
 	"github.com/HyperService-Consortium/go-uip/uip"
-	dep_uip "github.com/HyperService-Consortium/go-ves/dependency/uip"
 	"github.com/Myriad-Dreamin/gvm"
 	"golang.org/x/crypto/sha3"
 	"reflect"
 	"strings"
 )
-
-//var contractMetaEncoder = opintent.Serializer.Meta.Contract
-var contractMetaEncoder *dep_uip.ContractMetaEncoder
 
 func decoratePrefix(hexs string) string {
 	if !strings.HasPrefix(hexs, "0x") {
@@ -103,16 +99,15 @@ func ContractInvocationDataABI(_ uip.ChainID, meta *opintent.ContractInvokeMeta,
 				return nil, errors.New("only support token_type.{Constant,StateVariable} now")
 			}
 
-			// todo remove assertion
-			param := param.(*opintent.StateVariable)
+			param := param.(opintent.StateVariableI)
 
 			var contract uip.Account
 			var ok bool
-			if contract, ok = param.Contract.(uip.Account); !ok {
+			if contract, ok = param.GetContract().(uip.Account); !ok {
 				return nil, fmt.Errorf("assuming contract is uip.Account ,but got %v", reflect.TypeOf(contract))
 			}
 			v, err := storage.GetStorageAt(contract.GetChainId(), value_type.Type(param.GetGVMType()), contract.GetAddress(),
-				param.Pos, param.Field)
+				param.GetPos(), param.GetField())
 			if err != nil {
 				return nil, err
 			}
