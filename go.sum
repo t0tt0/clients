@@ -17,8 +17,8 @@ github.com/HyperService-Consortium/go-mpt v1.1.1-0.20190903152503-b63ec8d75bd4 h
 github.com/HyperService-Consortium/go-mpt v1.1.1-0.20190903152503-b63ec8d75bd4/go.mod h1:tYeCvWyIQt4xuaLANWvVi3kvTIuAe6FmyC2G6A8mBIM=
 github.com/HyperService-Consortium/go-rlp v1.0.1-0.20190903144357-b5693c05a6b8 h1:KBmZ/AwlF/iKvbQwGL6+09bbZHzksJFr/6tjKzX29ME=
 github.com/HyperService-Consortium/go-rlp v1.0.1-0.20190903144357-b5693c05a6b8/go.mod h1:f6lLuGRJua3AHgMk4m6XvsF64GFlr5ekGeb2n+ymYfQ=
-github.com/HyperService-Consortium/go-uip v0.0.0-20200423085134-7f1d4a0ec024 h1:alMRu57p9SQpl9DUfjWsJFGBfGrdLbD/HJgpCodZNDc=
-github.com/HyperService-Consortium/go-uip v0.0.0-20200423085134-7f1d4a0ec024/go.mod h1:S3ElKnCcwBXDpNc7IGQaqYuG0QsWDBiTtxAi1R0u0wk=
+github.com/HyperService-Consortium/go-uip v0.0.0-20200426181430-9a0e5e4d3f54 h1:bRddSoEVbhKDhSv9wOggvk29dA/Xecaj27rUtjO5W1k=
+github.com/HyperService-Consortium/go-uip v0.0.0-20200426181430-9a0e5e4d3f54/go.mod h1:S3ElKnCcwBXDpNc7IGQaqYuG0QsWDBiTtxAi1R0u0wk=
 github.com/Joker/hpp v0.0.0-20180418125244-6893e659854a h1:PiDAizhfJbwZMISZ1Itx1ZTFeOFCml89Ofmz3V8rhoU=
 github.com/Joker/hpp v0.0.0-20180418125244-6893e659854a/go.mod h1:MzD2WMdSxvbHw5fM/OXOFily/lipJWRc9C1px0Mt0ZE=
 github.com/Joker/jade v1.0.0 h1:lOCEPvTAtWfLpSZYMOv/g44MGQFAolbKh2khHHGu0Kc=

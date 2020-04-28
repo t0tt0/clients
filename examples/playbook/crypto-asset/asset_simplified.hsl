@@ -4,10 +4,10 @@ demon example for hsl
 
 import ("contracts/CrypotAsset/asset.sol")
 
-account a1 = chain1::"0x7019fa779024c0a0eac1d8475733eefe10a49f3b" // account addr
-account a2 = chain2::"0x47a1cdb6594d6efed3a6b917f2fbaa2bbcf61a2e"
+account a1 = chain1::"0x4b3a59cd1183ab81b3c31b5a22bce26adf928ac2" // account addr
+account a2 = chain2::"0x6bce60cc3c882ccc7da13876583a4064eb6c04c9"
 
-contract c1 = chain1::CryptoAsset("0xafc7d2959e72081770304f6474151293be1fbba7")  // contract addr
+contract c1 = chain1::CryptoAsset("0xa1f92abf7332fd220631376ff119f15222626052")  // contract addr
 
 op op1 payment 20 "ether" from a2 to a1  with 1 "ether" as 2 "XYZ"
 op op2 call c1.deposit(10) using a1

@@ -64,7 +64,7 @@ func getRelay(domain uint64) (uip.Account, error) {
 			Address: b,
 		}, err
 	case 8:
-		b, err := hex.DecodeString("0201a1327c8e7ee9a8f1611913f7478f368b8b14")
+		b, err := hex.DecodeString("67f384cc492a5b50470257077c071277b189522e")
 		return &uip.AccountImpl{
 			ChainId: domain,
 			Address: b,
@@ -119,7 +119,7 @@ func searchAccount(name string, chainId uint64) (uip.Account, error) {
 				Address: b,
 			}, err
 		case 8:
-			b, err := hex.DecodeString("4b3a59cd1183ab81b3c31b5a22bce26adf928ac2")
+			b, err := hex.DecodeString("460424b0298667942bb8d2f0b23fb8fec392db74")
 			return &uip.AccountImpl{
 				ChainId: chainId,
 				Address: b,
@@ -178,7 +178,7 @@ func searchAccount(name string, chainId uint64) (uip.Account, error) {
 				Address: b,
 			}, err
 		case 8: // ethereum chain 4
-			b, err := hex.DecodeString("6bce60cc3c882ccc7da13876583a4064eb6c04c9")
+			b, err := hex.DecodeString("3e7bafeac782d07f8acfdfc7544a683c193c4447")
 			return &uip.AccountImpl{
 				ChainId: chainId,
 				Address: b,
