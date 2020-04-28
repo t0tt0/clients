@@ -1,0 +1,56 @@
+{
+  "op-intents": [
+    {
+      "name": "op1",
+      "type": "Payment",
+      "src": {
+        "domain": 8,
+        "user_name": "a2"
+      },
+      "dst": {
+        "domain": 7,
+        "user_name": "a1"
+      },
+      "amount": "20",
+      "unit": "ether",
+      "ratio": "1 ether as 2 XYZ"
+    },
+    {
+      "name": "op2",
+      "type": "ContractInvocation",
+      "invoker": "a1",
+      "func": "deposit",
+      "contract": {
+        "domain": 7,
+        "address": "0xafc7d2959e72081770304f6474151293be1fbba7"
+      },
+      "parameters": [
+        {
+          "type": "uint256",
+          "value": {
+            "constant": "10"
+          }
+        }
+      ]
+    }
+  ],
+  "contracts": [
+    {
+      "contractName": "c1",
+      "domain": 7,
+      "address": "0xafc7d2959e72081770304f6474151293be1fbba7"
+    }
+  ],
+  "accounts": [
+    {
+      "userName": "a1",
+      "domain": 7,
+      "address": "0x7019fa779024c0a0eac1d8475733eefe10a49f3b"
+    },
+    {
+      "userName": "a2",
+      "domain": 8,
+      "address": "0x47a1cdb6594d6efed3a6b917f2fbaa2bbcf61a2e"
+    }
+  ]
+}

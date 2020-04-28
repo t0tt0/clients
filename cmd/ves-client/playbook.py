@@ -306,12 +306,35 @@ def check_and_get_role(playbook: Playbook, intents: list = None) -> Role or None
     return some_role
 
 
+import threading
+
+class IOThread(threading.Thread):
+    def __init__(self, role: Role):
+        super().__init__()
+        self.role = role
+
+    def run(self):
+        while True:
+            self.role.process.stdout.writeline(
+                self.role.process.process.stdout.readline())
+
 def run_playbook(playbook: Playbook):
     some_role: Role = check_and_get_role(playbook)
     if some_role is not None:
+        threads = []
+
+        for role in playbook.roles:
+            threads.append(IOThread(role))
+
+        for thread in threads:
+            thread.start()
+
         r = some_role.client.send_op_intents_in_file(playbook.intent_file_path)
         print(r, type(r), getattr(r, 'code', None),
               getattr(getattr(r, 'resp', {}), 'status_code'), getattr(r, 'body', None))
+
+        for thread in threads:
+            thread.join()
     else:
         raise ValueError('some_role not found')
     # print(resp_accounts)

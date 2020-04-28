@@ -82,7 +82,7 @@ func (vc *VesClient) sendAck(acc *uiprpc_base.Account, sessionID []byte, host st
 	defer conn.Close()
 	c := uiprpc.NewVESClient(conn)
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*60)
 	defer cancel()
 	r, err := c.SessionAckForInit(
 		ctx,
@@ -113,7 +113,7 @@ func (vc *VesClient) informAttestation(grpcHost string, sendingAtte *wsrpc.Attes
 
 	c := uiprpc.NewVESClient(conn)
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*60)
 	defer cancel()
 
 	r, err := c.InformAttestation(

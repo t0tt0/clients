@@ -52,15 +52,17 @@ func (w wrapPos) Error() string {
 }
 
 func (svc *prepareTranslateEnvironment) ensureContractInvoke() error {
-	var meta opintent.ContractInvokeMeta
-	err := opintent.Serializer.Meta.Contract.Unmarshal(svc.ti.Meta, &meta)
-	if err != nil {
-		return wrapper.Wrap(types.CodeDeserializeTransactionError, err)
-	}
-	for i, param := range meta.Params {
+	if svc.ti.Meta != nil {
+		var meta opintent.ContractInvokeMeta
+		err := opintent.Serializer.Meta.Contract.Unmarshal(svc.ti.Meta, &meta)
+		if err != nil {
+			return wrapper.Wrap(types.CodeDeserializeTransactionError, err)
+		}
+		for i, param := range meta.Params {
 
-		if err = svc.ensureValue(param); err != nil {
-			return wrapper.Wrap(types.CodeEnsureTransactionValueError, wrapPos{i: i, err: err})
+			if err = svc.ensureValue(param); err != nil {
+				return wrapper.Wrap(types.CodeEnsureTransactionValueError, wrapPos{i: i, err: err})
+			}
 		}
 	}
 	return nil

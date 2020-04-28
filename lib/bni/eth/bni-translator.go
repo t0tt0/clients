@@ -62,6 +62,8 @@ func (bn *BN) Translate(intent uip.TransactionIntent, storage uip.Storage) (uip.
 					"from": decoratePrefix(hex.EncodeToString(intent.GetSrc())),
 					"to":   decoratePrefix(hex.EncodeToString(intent.GetDst())),
 					// todo
+					"gas": "0x7a1200",
+					// todo
 					//"value": decoratePrefix(intent.Amt),
 					"data": decorateValuePrefix(hexdata),
 				},

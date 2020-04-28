@@ -9,7 +9,7 @@ func (c *Client) CloseChan() {
 	if c.Closed.CAS(false, true) {
 		message := websocket.FormatCloseMessage(
 			websocket.ClosePolicyViolation,
-			"client hello please",
+			"client hello please, or io timeout",
 		)
 		err := c.Conn.WriteControl(websocket.CloseMessage, message, time.Now().Add(writeWait))
 		if err != nil && err != websocket.ErrCloseSent {

@@ -13,6 +13,7 @@ func VanillaMakeClient(name, addr string, options ...interface{}) (*VesClient, e
 	if err != nil {
 		log.Fatal("init vesLogger error", "error", err)
 	}
+	vesLogger.With("client-name", name)
 	vcClient, err := NewVesClient(vesLogger, ClientName(name), CVesHostOption(addr))
 	if err != nil {
 		vesLogger.Fatal("get ves client error", "error", err)
