@@ -19,21 +19,21 @@ class TeeIO(object):
 
     def write(self, s: bytes):
         s = s.decode('utf-8')
-        t = s.strip()
-        for console_filter in console_filters:
-            if t.find(console_filter) != -1:
-                t = ''
-                break
-        i = t.find('{')
-        if i != -1:
-            t = t[i:]
-        mutex.acquire()
-        if t != '':
-            print(self.n + ':', t)
-        mutex.release()
+        # t = s.strip()
+        # for console_filter in console_filters:
+        #     if t.find(console_filter) != -1:
+        #         t = ''
+        #         break
+        # i = t.find('{')
+        # if i != -1:
+        #     t = t[i:]
+        # mutex.acquire()
+        # if t != '':
+        #     print(self.n + ':', t)
+        # mutex.release()
         self.writer.write(s)
-        if t.startswith('exited'):
-            return
+        # if t.startswith('exited'):
+        #     return
 
     def writeline(self, line):
         self.write(line)
@@ -84,5 +84,6 @@ class VESLocalClient:
                 [ves_client_binary,
                  '-name', role.name,
                  '-port', ":" + port],
-                stdout=subprocess.PIPE, stderr=subprocess.PIPE
+                stdout=stdout or log_file, stderr=stderr or log_file
+                # stdout=subprocess.PIPE, stderr=subprocess.PIPE
             ), port=port, stdout=stdout or log_file, stderr=stderr or log_file)

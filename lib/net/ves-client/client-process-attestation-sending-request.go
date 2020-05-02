@@ -72,10 +72,12 @@ func (vc *VesClient) ProcessAttestationSendingRequest(attestationSendingRequest 
 	} else {
 		vc.logger.Info(
 			"insurance claiming",
+			"tid", sendingAtte.Atte.Tid,
+			"aid", TxState.Description(TxState.Instantiating),
 			"info", ret.Info,
 			"data", string(ret.Data),
 			"log", ret.Log,
-			"tags", ret.Tags,
+			"events", ret.Events,
 		)
 	}
 

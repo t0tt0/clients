@@ -166,7 +166,13 @@ func (svc *prepareTranslateEnvironment) ensureValue(param uip.VTok) error {
 		if contract, ok = param.GetContract().(uip.Account); !ok {
 			return fmt.Errorf("assuming contract is uip.Account ,but got %v", reflect.TypeOf(contract))
 		}
-		err := svc.ensureStorage(svc.bn, contract.GetChainId(), value_type.Type(
+
+		bn, err := svc.getBlockChainInterface(contract.GetChainId())
+		if err != nil {
+			return wrapper.Wrap(types.CodeGetBlockChainInterfaceError, err)
+		}
+
+		err = svc.ensureStorage(bn, contract.GetChainId(), value_type.Type(
 			param.GetGVMType()), contract.GetAddress(), param.GetPos(), param.GetField())
 		if err != nil {
 			return err

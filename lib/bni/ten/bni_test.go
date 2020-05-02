@@ -1,14 +1,15 @@
 package bni
 
 import (
-	"encoding/hex"
-	"fmt"
 	"github.com/HyperService-Consortium/go-uip/const/trans_type"
 	opintent "github.com/HyperService-Consortium/go-uip/op-intent"
+	"github.com/HyperService-Consortium/go-uip/op-intent/lexer"
 	"github.com/HyperService-Consortium/go-uip/signaturer"
 	"github.com/HyperService-Consortium/go-uip/uip"
 	"github.com/HyperService-Consortium/go-ves/config"
 	"github.com/HyperService-Consortium/go-ves/types"
+	"github.com/Myriad-Dreamin/minimum-lib/sugar"
+	"github.com/stretchr/testify/assert"
 	"golang.org/x/crypto/ed25519"
 	"testing"
 )
@@ -55,6 +56,20 @@ func TestBN_Translate(t *testing.T) {
 			},
 			storage: nil,
 		}, false},
+		{"test_contract", fields{dns: config.ChainDNS, signer: ten}, args{
+			intent: &opintent.TransactionIntent{
+				TransType: trans_type.ContractInvoke,
+				Src:       ten.GetPublicKey(),
+				Dst:       ten2.GetPublicKey(),
+				Meta:      sugar.HandlerError(opintent.Serializer.Meta.Contract.Marshal(&lexer.ContractInvokeMeta{
+					FuncName: "Vote",
+					Params:   nil,
+				})).([]byte),
+				Amt:       "0",
+				ChainID:   3,
+			},
+			storage: nil,
+		}, false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -75,7 +90,22 @@ func TestBN_Translate(t *testing.T) {
 				t.Errorf("Translate() error = %v", err)
 				return
 			}
-			fmt.Println(hex.EncodeToString(b))
+
+			tx, err := bn.Deserialize(b)
+			assert.NoError(t, err)
+
+			assert.EqualValues(t, got.(*rawTransaction).Type,
+				tx.(*rawTransaction).Type)
+			assert.EqualValues(t, got.(*rawTransaction).Header.Src,
+				tx.(*rawTransaction).Header.Src)
+			assert.EqualValues(t, got.(*rawTransaction).Header.Dst,
+				tx.(*rawTransaction).Header.Dst)
+			assert.EqualValues(t, got.(*rawTransaction).Header.Nonce,
+				tx.(*rawTransaction).Header.Nonce)
+			assert.EqualValues(t, got.(*rawTransaction).Header.Value,
+				tx.(*rawTransaction).Header.Value)
+			assert.EqualValues(t, got.(*rawTransaction).Header.Signature,
+				tx.(*rawTransaction).Header.Signature)
 		})
 	}
 }

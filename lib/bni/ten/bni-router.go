@@ -18,10 +18,22 @@ func (bn *BN) RouteWithSigner(signer uip.Signer) (uip.Router, error) {
 	return &nbn, nil
 }
 
+type Receipt struct {
+	H []byte
+	R []byte
+}
+
 func (bn *BN) RouteRaw(destination uip.ChainID, rawTransaction uip.RawTransaction) (
 	transactionReceipt uip.TransactionReceipt, err error) {
 	if !rawTransaction.Signed() {
-		return nil, ErrNotSigned
+		rawTransaction, err = rawTransaction.Sign(bn.signer)
+		if err != nil {
+			return nil, err
+		}
+
+		if !rawTransaction.Signed() {
+			return nil, ErrNotSigned
+		}
 	}
 	ci, err := bn.dns.GetChainInfo(destination)
 	if err != nil {
@@ -32,23 +44,33 @@ func (bn *BN) RouteRaw(destination uip.ChainID, rawTransaction uip.RawTransactio
 	if err != nil {
 		return nil, err
 	}
-	b, err = nsbcli.NewNSBClient((&url.URL{Scheme: "http", Host: ci.GetChainHost(), Path: "/"}).String()).BroadcastTxCommitReturnBytes(b)
+	v, err := nsbcli.NewNSBClient((&url.URL{Scheme: "http", Host: ci.GetChainHost(), Path: "/"}).String()).BroadcastTxCommitReturnBytes(b)
 	if err != nil {
 		return nil, err
 	}
 
-	return b, nil
+	b, err = json.Marshal(&Receipt{
+		H: b[1:],
+		R: v,
+	})
+
+	return b, err
 }
 
 func (bn *BN) WaitForTransact(_ uip.ChainID, transactionReceipt uip.TransactionReceipt,
 	options ...interface{}) (blockID []byte, color []byte, err error) {
+	var receipt Receipt
+	err = json.Unmarshal(transactionReceipt, &receipt)
+	if err != nil {
+		return nil, nil, err
+	}
 	var res nsb_message.ResultInfo
-	err = json.Unmarshal(transactionReceipt, &res)
+	err = json.Unmarshal(receipt.R, &res)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	return []byte(res.Height), []byte(res.Hash), err
+	return []byte(res.Height), receipt.H, err
 }
 
 //func (bn *BN) Route(intent *uip.TransactionIntent, kvGetter uip.KVGetter) ([]byte, error) {

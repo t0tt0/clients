@@ -34,36 +34,22 @@ func (bn *BN) Translate(x uip.TransactionIntent, storage uip.Storage) (uip.RawTr
 		}
 		return newRawTransaction(transactiontype.SystemCall, header), nil
 	case trans_type.ContractInvoke:
-		// var meta uip.ContractInvokeMeta
-		//
-		// err := json.Unmarshal(intent.Meta, &meta)
-		// if err != nil {
-		// 	return nil, err
-		// }
-		// //_ = meta
-		//
-		// data, err := ContractInvocationDataABI(&meta, storage)
-		// if err != nil {
-		// 	return nil, err
-		// }
-		//
-		// hexdata := hex.EncodeToString(data)
-		// // meta.FuncName
-		//
-		// return json.Marshal(map[string]interface{}{
-		// 	"jsonrpc": "2.0",
-		// 	"method":  "eth_sendTransaction",
-		// 	"params": []interface{}{
-		// 		map[string]interface{}{
-		// 			"from":  decoratePrefix(hex.EncodeToString(intent.Src)),
-		// 			"to":    decoratePrefix(hex.EncodeToString(intent.Dst)),
-		// 			"value": decoratePrefix(intent.Amt),
-		// 			"data":  decoratePrefix(hexdata),
-		// 		},
-		// 	},
-		// 	"id": 1,
-		// })
-		return nil, errors.New("todo")
+		var meta opintent.ContractInvokeMeta
+		err := opintent.Serializer.Meta.Contract.Unmarshal(intent.GetMeta(), &meta)
+		if err != nil {
+			return nil, err
+		}
+
+		var faPair nsbrpc.FAPair
+		faPair.FuncName = meta.FuncName
+		//todo
+		faPair.Args = nil
+		header, err := nsbcli.GlobalClient.CreateUnsignedContractPacket(
+			intent.Src, intent.Dst, []byte{0}, &faPair)
+		if err != nil {
+			return nil, err
+		}
+		return newRawTransaction(transactiontype.SendTransaction, header), nil
 	default:
 		return nil, errors.New("cant translate")
 	}
@@ -72,7 +58,7 @@ func (bn *BN) Translate(x uip.TransactionIntent, storage uip.Storage) (uip.RawTr
 func (bn *BN) Deserialize(raw []byte) (uip.RawTransaction, error) {
 
 	var txHeader nsbrpc.TransactionHeader
-	err := proto.Unmarshal(raw, &txHeader)
+	err := proto.Unmarshal(raw[1:], &txHeader)
 	if err != nil {
 		return nil, err
 	}

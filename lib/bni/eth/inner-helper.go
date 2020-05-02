@@ -25,9 +25,9 @@ func decorateValuePrefix(hexs string) string {
 	if !strings.HasPrefix(hexs, "0x") {
 		hexs = "0x" + hexs
 	}
-	for strings.HasPrefix(hexs, "0x0") && len(hexs) > 3 {
-		hexs = "0x" + hexs[3:]
-	}
+	//for strings.HasPrefix(hexs, "0x0") && len(hexs) > 3 {
+	//	hexs = "0x" + hexs[3:]
+	//}
 	return hexs
 }
 

@@ -145,7 +145,7 @@ func (svc *attestationReceiveRequestService) tellOthers() {
 		"info", ret.Info,
 		"data", string(ret.Data),
 		"log", ret.Log,
-		"tags", ret.Tags,
+		"events", ret.Events,
 	)
 
 	err = svc.client.RetransmitAttestationReceiveRequest(svc.newReq.Dst, svc.newReq)

@@ -33,7 +33,7 @@ func (vc *VesClient) ProcessRequestComingRequest(requestComingRequest *wsrpc.Req
 	} else {
 		vc.logger.Info(
 			"user ack to nsb",
-			"info", ret.Info, "data", string(ret.Data), "log", ret.Log, "tags", ret.Tags,
+			"info", ret.Info, "data", string(ret.Data), "log", ret.Log, "events", ret.Events,
 		)
 	}
 

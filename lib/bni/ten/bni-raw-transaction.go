@@ -8,7 +8,6 @@ import (
 	"github.com/HyperService-Consortium/NSB/grpc/nsbrpc"
 	"github.com/HyperService-Consortium/NSB/lib/nsb-client"
 	"github.com/HyperService-Consortium/go-uip/uip"
-	"github.com/gogo/protobuf/proto"
 )
 
 type rawTransaction struct {
@@ -25,11 +24,7 @@ func (r *rawTransaction) Serialize() ([]byte, error) {
 }
 
 func (r *rawTransaction) Bytes() ([]byte, error) {
-	b, err := proto.Marshal(r.Header)
-	if err != nil {
-		return nil, err
-	}
-	return b, nil
+	return nsbcli.GlobalClient.Serialize(r.Type, r.Header)
 }
 
 func (r *rawTransaction) Signed() bool {

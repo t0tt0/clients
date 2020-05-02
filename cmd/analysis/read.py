@@ -23,6 +23,7 @@ class LoggerInfo:
         _msg = info['_msg']
         if 'new session' in _msg:
             self.type = LogType.NewSession
+            self.session_id = info['session id']
             self.response_address = info['responsible address']
         elif 'user ack to server' in _msg:
             self.type = LogType.AckSession
@@ -41,14 +42,20 @@ class LoggerInfo:
             self.tid = info.get('tid')
         elif 'new transaction' in _msg:
             self.type = LogType.NewTransaction
+            self.session_id = info['session id']
+            self.response_address = info['address']
         elif 'routing' in _msg:
             self.type = LogType.RouteSuccess
+            self.receipt = info['receipt']
         elif 'route result' in _msg:
             self.type = LogType.RouteGotReceipt
+            self.block_id = info['block id']
         elif 'adding merkle proof' in _msg:
             self.type = LogType.AddMerkleProof
+            self.tx_hash = info['result']['hash']
         elif 'adding block check' in _msg:
             self.type = LogType.AddBlockCheck
+            self.tx_hash = info['result']['hash']
         elif 'session closed' in _msg:
             self.type = LogType.SessionClose
         else:
@@ -56,9 +63,11 @@ class LoggerInfo:
         # if self.type != LogType.Unknown:
         #     print(self.__dict__)
 
+fp = './res'
+
 def parseLog(name):
     lines = []
-    with open(f'./res/client.{name}.out') as f:
+    with open(f'{fp}/client.{name}.out') as f:
         lines = f.readlines()
     logger_raw_events, others = [], []
     for line in lines:
@@ -125,7 +134,8 @@ def matchState(state, event):
             return StateClosedSession(event.timestamp), True
             # return StateTransaction(event.timestamp), True
     else:
-        print(event.__dict__)
+        pass
+        # print(event.__dict__)
     return state, False
 
 
@@ -133,7 +143,7 @@ states = []
 
 if __name__ == '__main__':
     events = []
-    events += parseLog('a1') + parseLog('a2') + parseLog('ves')
+    events += parseLog('a1') + parseLog('a2') + parseLog('a3') + parseLog('ves')
     good_events, bad_events = [], []
     for r in events:
         if r.type == LogType.Unknown:
@@ -141,13 +151,54 @@ if __name__ == '__main__':
         else:
             good_events.append(r)
     good_events.sort(key=lambda r: r.timestamp)
+
+    # for event in bad_events:
+    #     print(event.type, event.info)
+
     state = StateBegin()
     for event in good_events:
         state, trans = matchState(state, event)
         if trans:
             states.append(state)
             print(event.timestamp, state.type)
-        print(event.timestamp, event.source + '\t', event.type)
+        print(event.timestamp, event.source + '\t', str(event.type)+'\t', end='')
+        if event.type == LogType.NewSession:
+            print('\tses_id:', event.session_id[:8] + '\t', 'resp_addr:', event.response_address[:8])
+            # event.response_address = info['responsible address']
+        elif event.type == LogType.AckSession:
+            print()
+        elif event.type == LogType.GenerateAttestation:
+            print('tid:', str(event.tid)+'\t\t\t', 'aid:', event.aid)
+            # event.tid = info['tid']
+            # event.aid = info['aid']
+        elif event.type == LogType.InsuranceClaim:
+            print('\ttid:', str(event.tid)+'\t\t\t', 'aid:', event.aid)
+            # event.tid = info.get('tid')
+            # event.aid = info.get('aid')
+            # if event.tid is None:
+            #     event.type = LogType.Unknown
+        elif event.type == LogType.CloseTransaction:
+            print('tid:', str(event.tid))
+            # event.tid = info.get('tid')
+        elif event.type == LogType.NewTransaction:
+            print('\tses_id:', event.session_id[:8] + '\t', 'resp_addr:', event.response_address[:8])
+        elif event.type == LogType.RouteSuccess:
+            print('\treceipt:', event.receipt[:8])
+        elif event.type == LogType.RouteGotReceipt:
+            print('block_id:', event.block_id[:12])
+        elif event.type == LogType.AddMerkleProof:
+            print('\tnsb_tx_hash:', event.tx_hash[:8])
+        elif event.type == LogType.AddBlockCheck:
+            print('\tnsb_tx_hash:', event.tx_hash[:8])
+        elif event.type == LogType.SessionClose:
+            print()
+        elif event.type == LogType.Unknown:
+            print()
+
+        # if self.type != LogType.Unknown:
+        #     print(self.__dict__)
+    
+
 
     s, t = None, None
     for state in states:
