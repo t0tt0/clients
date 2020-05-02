@@ -1,0 +1,128 @@
+{
+  "op-intents": [
+    {
+      "name": "op1",
+      "type": "ContractInvocation",
+      "invoker": "a2",
+      "func": "vote",
+      "contract": {
+        "domain": 8,
+        "address": "f02e5e002c7ce48aebfb87f848b52f93f1b358b8"
+      },
+      "parameters": []
+    },
+    {
+      "name": "op2",
+      "type": "ContractInvocation",
+      "invoker": "a1",
+      "func": "submitVotes",
+      "contract": {
+        "domain": 7,
+        "address": "3f1ef9e8bae4e4a675fffe9df0cb72aebead4a41"
+      },
+      "parameters": [
+        {
+          "type": "string",
+          "value": {
+            "contract": "c2",
+            "field": "district",
+            "pos": "01"
+          }
+        },
+        {
+          "type": "uint256",
+          "value": {
+            "contract": "c2",
+            "field": "totalVotes",
+            "pos": "00"
+          }
+        }
+      ]
+    },
+    {
+      "name": "op3",
+      "type": "ContractInvocation",
+      "invoker": "a3",
+      "func": "Vote",
+      "contract": {
+        "domain": 9,
+        "address": "76071c08f94940ad53f35bf1474610ae99569ec10e257be1426f19347d24667d"
+      },
+      "parameters": []
+    },
+    {
+      "name": "op4",
+      "type": "ContractInvocation",
+      "invoker": "a1",
+      "func": "submitVotes",
+      "contract": {
+        "domain": 7,
+        "address": "3f1ef9e8bae4e4a675fffe9df0cb72aebead4a41"
+      },
+      "parameters": [
+        {
+          "type": "string",
+          "value": {
+            "contract": "c3",
+            "field": "district",
+            "pos": "f8e93694f50197afaf2a1fceb1a0bb60dc049b7b25163b7395b669caa2e2fe05"
+          }
+        },
+        {
+          "type": "uint256",
+          "value": {
+            "contract": "c3",
+            "field": "totalVotes",
+            "pos": "f8e93694f50197afaf2a1fceb1a0bb60dc049b7b25163b7395b669caa2e2fe05"
+          }
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "left": "op1",
+      "right": "op2",
+      "dep": "before"
+    },
+    {
+      "left": "op3",
+      "right": "op4",
+      "dep": "before"
+    }
+  ],
+  "contracts": [
+    {
+      "contractName": "c1",
+      "domain": 7,
+      "address": "3f1ef9e8bae4e4a675fffe9df0cb72aebead4a41"
+    },
+    {
+      "contractName": "c2",
+      "domain": 8,
+      "address": "f02e5e002c7ce48aebfb87f848b52f93f1b358b8"
+    },
+    {
+      "contractName": "c3",
+      "domain": 9,
+      "address": "76071c08f94940ad53f35bf1474610ae99569ec10e257be1426f19347d24667d"
+    }
+  ],
+  "accounts": [
+    {
+      "userName": "a1",
+      "domain": 7,
+      "address": "4b3a59cd1183ab81b3c31b5a22bce26adf928ac2"
+    },
+    {
+      "userName": "a2",
+      "domain": 8,
+      "address": "3e7bafeac782d07f8acfdfc7544a683c193c4447"
+    },
+    {
+      "userName": "a3",
+      "domain": 9,
+      "address": "2333bbffffffffffffff2333bbffffffffffffff2333bbffffffffffffffffff"
+    }
+  ]
+}
