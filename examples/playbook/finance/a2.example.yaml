@@ -1,0 +1,9 @@
+- chain_id: 8
+  chain_type: 1
+  alias: eth1
+  address: 460424b0298667942bb8d2f0b23fb8fec392db74
+- chain_id: 3
+  chain_type: 2
+  alias: ten1
+  address: 2333aeffffffffffffff2333eeffffffffffffff2333eeffffffffffffffffff
+  private_address: 2333aeffffffffffffff2333eeffffffffffffff2333eeffffffffffffffffff2333aeffffffffffffff2333eeffffffffffffff2333eeffffffffffffffffff
