@@ -7,6 +7,8 @@ import (
 	"net/http"
 )
 
+
+//websocket server as a plugin in a central-ves server
 // Server is a client manager, named centered ves
 // it is not in the standard of uip
 type Server struct {
@@ -18,7 +20,7 @@ type Server struct {
 	Nsbip   string
 }
 
-// NewServer return a pointer of Server
+// NewServer return a pointer of c-ves websocket Server, as the configuration injected in central-ces server
 func NewServer(rpcPort, addr string, db *model.AccountFSet, rOptions ...interface{}) (srv *Server, err error) {
 	options := parseOptions(rOptions)
 	srv = &Server{

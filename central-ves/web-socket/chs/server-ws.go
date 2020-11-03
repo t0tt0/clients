@@ -7,15 +7,19 @@ import (
 	"net/http"
 )
 
+
+//handle messages in servews, clients are objectes, receiving messages from different peers
 func (srv *Server) ListenAndServe(ctx context.Context, port string) error {
 	go srv.hub.Run(ctx)
 	srv.Addr = port
 	srv.Handler.(*http.ServeMux).HandleFunc("/", srv.serveWs)
 	srv.Logger.Info("prepare to serve ws", "port", srv.Addr)
+
+	//http requests
 	return srv.Server.ListenAndServe()
 }
 
-// serveWs handles websocket requests from the peer.
+// serveWs handles websocket requests from the peer. be used in listenandserve /web-socket/chs/client-process.go
 func (srv *Server) serveWs(w http.ResponseWriter, r *http.Request) {
 	conn, err := Upgrader.Upgrade(w, r, nil)
 	if err != nil {

@@ -9,6 +9,7 @@ import (
 )
 
 type CVESWebSocketPlugin struct {
+	//web socket server
 	*chs.Server
 }
 
@@ -19,6 +20,7 @@ func New() *CVESWebSocketPlugin {
 func (srv *CVESWebSocketPlugin) Configuration(logger plugin.Logger, loader plugin.ConfigLoader, cfg *plugin.ServerConfig) (p plugin.Plugin, err error) {
 	//options := parseOptions(rOptions)
 	p = srv
+	//web socket server
 	srv.Server, err = chs.NewServer(
 		cfg.BaseParametersConfig.RPCPort,
 		cfg.BaseParametersConfig.WSPort,

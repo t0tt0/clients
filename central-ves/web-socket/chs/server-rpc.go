@@ -12,6 +12,10 @@ import (
 	"net"
 )
 
+
+
+
+//register grpc functions, from web-socket/chs/server.go
 func (srv *Server) ListenAndServeRpc(_ context.Context, port string) {
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
@@ -29,6 +33,8 @@ func (srv *Server) ListenAndServeRpc(_ context.Context, port string) {
 	return
 }
 
+
+//Implement server functions in the grpv interfaces
 func (srv *Server) InternalRequestComing(
 	ctx context.Context,
 	in *uiprpc.InternalRequestComingRequest,

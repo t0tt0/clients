@@ -8,7 +8,7 @@ import (
 )
 
 // writePump pumps messages from the hub to the websocket connection.
-//
+////
 // A goroutine running writePump is started for each connection. The
 // application ensures that there is at most one writer to a connection by
 // executing all writes from this goroutine.
