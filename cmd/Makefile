@@ -10,8 +10,7 @@ cves-server:
 	go build -x -o ./binary/central-ves-server ../central-ves
 	if [ ! -f "./binary/cves-config.toml" ]; then cp ../central-ves/config.toml ./binary/cves-config.toml; fi;
 
-server: ves-server cves-server
-
+server: ves-server cves-ser
 up: up-ves up-cves
 
 up-ves: 

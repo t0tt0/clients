@@ -161,6 +161,7 @@ func (s SessionFSet) NotifyAttestation(
 		ses.UnderTransacting = int64(pc)
 
 		if ses.UnderTransacting >= ses.TransactionCount {
+
 			err = nsb.SettleContract(ses.GetGUID())
 			if err != nil {
 				return wrapper.Wrap(types.CodeSettleContractError, err)

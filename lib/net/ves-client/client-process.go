@@ -2,7 +2,7 @@ package vesclient
 
 import "github.com/HyperService-Consortium/go-ves/grpc/wsrpc"
 
-//talk with outer central-ves servers
+//talk with outer central-ves servers with grpc interfaces
 func (vc *VesClient) ProcessMessage(message []byte, messageID wsrpc.MessageType) {
 	switch messageID {
 	/* 0~4 */

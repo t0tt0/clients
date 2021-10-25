@@ -11,6 +11,8 @@ import (
 
 func (vc *VesClient) SendOpIntentsByStrings(
 	targetHost string, intents []string, deps []string) ([]byte, error) {
+	vc.logger.Info("send op intents by strings..................")
+	//fmt.Println("content of transactions", intents)
 	return vc.SendOpIntents(
 		targetHost,
 		stringSliceToBytesSlice(intents),
@@ -20,6 +22,8 @@ func (vc *VesClient) SendOpIntentsByStrings(
 func (vc *VesClient) SendOpIntentsR(
 	targetHost string, content []byte) ([]byte, error) {
 	var c vesConn
+	vc.logger.Info("send op intentsR..................")
+	//vc.logger.Info("which trans", "transcon", )
 	vc.ensureVESConn(targetHost, &c)
 	fmt.Println(targetHost)
 

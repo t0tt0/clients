@@ -15,6 +15,7 @@ func VanillaMakeClient(name, addr string, options ...interface{}) (*VesClient, e
 	}
 	vesLogger.With("client-name", name)
 	//NewVesClient: define processmessage which sends and receives requests from other peers' cservers and servers
+	//vcClient: websocket client for the websocket connection
 	vcClient, err := NewVesClient(vesLogger, ClientName(name), CVesHostOption(addr))
 	if err != nil {
 		vesLogger.Fatal("get ves client error", "error", err)

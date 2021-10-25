@@ -41,6 +41,7 @@ func main() {
 		flag.Parse()
 	}
 	sugar.WithFile(func(f *os.File) {
+		//op initializer locally.
 		var ier = sugar.HandlerError(opintent.NewInitializer(config.UserMap, getter.NewBlockChainGetter(config.ChainDNS))).(*opintent.Initializer)
 		res := sugar.HandlerError(ier.ParseR(packet(
 			sugar.HandlerError(ioutil.ReadAll(f)).([]byte)))).(opintent.TxIntents).GetTxIntents()

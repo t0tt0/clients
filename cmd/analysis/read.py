@@ -10,8 +10,6 @@ class LogType(enum.Enum):
     CloseTransaction = 5
     RouteSuccess = 6
     RouteGotReceipt = 7
-    AddMerkleProof = 8
-    AddBlockCheck = 9
     SessionClose = 10
     NewTransaction = 11
 
@@ -50,12 +48,6 @@ class LoggerInfo:
         elif 'route result' in _msg:
             self.type = LogType.RouteGotReceipt
             self.block_id = info['block id']
-        elif 'adding merkle proof' in _msg:
-            self.type = LogType.AddMerkleProof
-            self.tx_hash = info['result']['hash']
-        elif 'adding block check' in _msg:
-            self.type = LogType.AddBlockCheck
-            self.tx_hash = info['result']['hash']
         elif 'session closed' in _msg:
             self.type = LogType.SessionClose
         else:
@@ -186,10 +178,6 @@ if __name__ == '__main__':
             print('\treceipt:', event.receipt[:8])
         elif event.type == LogType.RouteGotReceipt:
             print('block_id:', event.block_id[:12])
-        elif event.type == LogType.AddMerkleProof:
-            print('\tnsb_tx_hash:', event.tx_hash[:8])
-        elif event.type == LogType.AddBlockCheck:
-            print('\tnsb_tx_hash:', event.tx_hash[:8])
         elif event.type == LogType.SessionClose:
             print()
         elif event.type == LogType.Unknown:

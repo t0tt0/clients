@@ -9,7 +9,7 @@ import (
 )
 
 func (svc *Service) SessionAckForInit(ctx context.Context, in *uiprpc.SessionAckForInitRequest) (*uiprpc.SessionAckForInitReply, error) {
-	//s.Logger.Info("session acknowledging... ", "address", hex.EncodeToString(s.GetUser().GetAddress()))
+	//svc.logger.Info("session init acknowledging... ", "address", hex.EncodeToString(in.GetUser().GetAddress()))
 	ses, err := svc.getSession(in.GetSessionId())
 	if err != nil {
 		return nil, err
@@ -38,6 +38,8 @@ func (svc *Service) SessionAckForInit(ctx context.Context, in *uiprpc.SessionAck
 		//todo: remove conversion
 		ses.UnderTransacting = int64(pc)
 
+
+		//svc.logger.Info("ses.undertransacting transid", "transid is for ackinit", ses.UnderTransacting)
 		if err = svc.pushTransaction(ctx, ses, ses.UnderTransacting); err != nil {
 			return nil, err
 		}

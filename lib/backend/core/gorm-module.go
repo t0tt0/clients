@@ -27,6 +27,7 @@ func (m *GormModule) Install(dep module.Module) bool {
 	return m.FromContext(dep)
 }
 
+//error here..........
 func (m *GormModule) installFromConfiguration(
 	initFunc func(dep module.Module) (*gorm.DB, error), dep module.Module) bool {
 	xdb, err := initFunc(dep)
@@ -106,10 +107,17 @@ type InitGormFunc func(dep module.Module) (*gorm.DB, error)
 
 func OpenGORM(dep module.Module) (*gorm.DB, error) {
 	dialect, args, err := parseConfig(dep)
+	//logger := dep.Require(DefaultNamespace.Global.Logger).(ErrorLogger)
+	//logger.Error("check dialect", "here//////////", dialect)
+	//logger.Error("check args", "here//////////", args)
 	if err != nil {
 		return nil, err
 	}
 	db, err := gorm.Open(dialect, args)
+	//if err != nil {
+	//	logger := dep.Require(DefaultNamespace.Global.Logger).(ErrorLogger)
+	//	logger.Error("INIT GORM ERROR OPENGORM", "here//////////", err)
+	//}
 	if err != nil {
 		return nil, err
 	}

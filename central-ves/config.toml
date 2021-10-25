@@ -9,4 +9,4 @@ charset="utf8mb4"
 parse-time=true
 location="Local"
 [base-cfg]
-nsb-host="121.89.200.234:26657"
+nsb-host="localhost:26657"

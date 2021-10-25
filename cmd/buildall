@@ -1,0 +1,5 @@
+#!/bin/bash
+
+go build -x -o ./binary/ves-client ./ves-client
+go build -x -o ./binary/ves-server ../ves
+go build -x -o ./binary/central-ves-server ../central-ves

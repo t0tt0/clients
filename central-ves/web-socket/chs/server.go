@@ -20,7 +20,8 @@ type Server struct {
 	Nsbip   string
 }
 
-// NewServer return a pointer of c-ves websocket Server, as the configuration injected in central-ces server
+// NewServer return a pointer of c-ves websocket Server, as the configuration injected in central-ves server
+//addr is the websocket port defined in the config.go file
 func NewServer(rpcPort, addr string, db *model.AccountFSet, rOptions ...interface{}) (srv *Server, err error) {
 	options := parseOptions(rOptions)
 	srv = &Server{
@@ -38,7 +39,7 @@ func NewServer(rpcPort, addr string, db *model.AccountFSet, rOptions ...interfac
 	return
 }
 
-// Start the service of centered ves
+// Start the service of web socket ves in center-ves
 func (srv *Server) Start(ctx context.Context) error {
 	go srv.ListenAndServeRpc(ctx, srv.rpcPort)
 	return srv.ListenAndServe(ctx, srv.Addr)

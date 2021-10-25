@@ -14,6 +14,7 @@ func Init() {
 
 // Main is the origin main of ves client
 func Main(name string, addr string, port string) {
+//VanillaMakeClient returns a web socket client
 	vcClient, err := VanillaMakeClient(name, addr)
 	if err != nil {
 		log.Fatal("make client error", err)

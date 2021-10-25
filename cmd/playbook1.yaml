@@ -1,0 +1,26 @@
+name: example1
+source: intent2.json
+ves-clients:
+  - name: ves
+    password: 123456
+    accounts: ves.example.yaml
+  - name: a1
+    password: 123456
+    accounts: a1.example.yaml
+  - name: a2
+    password: 123456
+    accounts: a2.example.yaml
+
+
+#name: example1
+#source: intent1.json
+#ves-clients:
+#  - name: ves1
+#    password: 123456
+#    accounts: ves1.example.yaml
+#  - name: a1
+#    password: 123456
+#    accounts: a1.example.yaml
+#  - name: a22
+#    password: 123456
+#    accounts: a22.example.yaml

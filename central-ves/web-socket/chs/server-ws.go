@@ -15,7 +15,7 @@ func (srv *Server) ListenAndServe(ctx context.Context, port string) error {
 	srv.Handler.(*http.ServeMux).HandleFunc("/", srv.serveWs)
 	srv.Logger.Info("prepare to serve ws", "port", srv.Addr)
 
-	//http requests
+	//http requests, the handshake process in the websocket fuctions is conducted through http request
 	return srv.Server.ListenAndServe()
 }
 

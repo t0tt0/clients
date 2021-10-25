@@ -16,11 +16,13 @@ func (h *Hub) Run(ctx context.Context) {
 			h.broadcastMessage(message)
 		case message := <-h.Unicast:
 			if message.Target.GetChainId() == PlaceHolderChain {
+				//h.Logger.Info("in holder")
 				client, ok := h.reverseNameClients[string(message.Target.GetAddress())]
 				h.unicastMessage(client, ok, message)
 			} else {
 				user, err := h.db.InvertFind(message.Target)
 				if err != nil {
+					h.Logger.Info("i think is here.......")
 					h.Logger.Info("debugging unknown aim",
 						"err", err,
 						"chain id", message.Target.GetChainId(),
@@ -34,6 +36,7 @@ func (h *Hub) Run(ctx context.Context) {
 					continue
 				}
 				client, ok := h.reverseClients[user.ID]
+				//h.Logger.Info("not in holder", "okornot", ok)
 				h.unicastMessage(client, ok, message)
 			}
 		}

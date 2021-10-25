@@ -33,16 +33,20 @@ var HostMap = chain_dns.HostMap{
 		ChainType: ChainType.Ethereum,
 	},
 	7: chain_dns.ChainInfo{
-		Host:      "121.89.200.234:8545",
+		Host:      "localhost:24765",
 		ChainType: ChainType.Ethereum,
 	},
 	8: chain_dns.ChainInfo{
-		Host:      "localhost:8547",
+		Host:      "localhost:24768",
 		ChainType: ChainType.Ethereum,
 	},
 	9: chain_dns.ChainInfo{
-		Host:      "121.89.200.234:26657",
+		Host:      "localhost:26657",
 		ChainType: ChainType.TendermintNSB,
+	},
+	10: chain_dns.ChainInfo{
+		Host:      "localhost:24768",
+		ChainType: ChainType.Ethereum,
 	},
 }
 

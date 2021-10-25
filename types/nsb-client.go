@@ -7,9 +7,11 @@ import (
 
 type NSBClient interface {
 	FreezeInfo(signer uip.Signer, guid []byte, u uint64) ([]byte, error)
-	AddMerkleProof(user uip.Signer, toAddress []byte,
-		merkleType uint16, rootHash, proof, key, value []byte) (*nsb_message.ResultInfo, error)
-	AddBlockCheck(
+	ValidateYes(
+		user uip.Signer, toAddress []byte,
+		chainID uint64, blockID, rootHash []byte, rcType uint8,
+	) (*nsb_message.ResultInfo, error)
+	ValidateNo(
 		user uip.Signer, toAddress []byte,
 		chainID uint64, blockID, rootHash []byte, rcType uint8,
 	) (*nsb_message.ResultInfo, error)

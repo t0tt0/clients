@@ -76,8 +76,8 @@ func Default() *ServerConfig {
 				User: "id",
 			},
 			ExposeHost:          "127.0.0.1:23452",
-			NSBHost:             "121.89.200.234:26657",
-			NSBSignerPrivateKey: "2333bfffffffffffffff2333bbffffffffffffff2333bbffffffffffffffffff2333bfffffffffffffff2333bbffffffffffffff2333bbffffffffffffffffff",
+			NSBHost:             "localhost:26657",
+			NSBSignerPrivateKey: "d6ebae4950150929b4ae2d103024f41be9a9164b96223009242bb36f4636634586f57ef9acc19fb4ebc2a0ac36fa4492a7939d2031d88e5f2495c7b015f15299",
 			NSBSignerChainID:    3,
 		},
 		LevelDBConfig: LevelDBConfig{

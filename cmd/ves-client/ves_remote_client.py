@@ -13,8 +13,8 @@ class VESRemoteClient(Client):
 
     def try_ping(self, timeout=10, interval=1):
         time.sleep(0.2)
-        x = time.clock()
-        while time.clock() - x <= timeout:
+        x = time.perf_counter()
+        while time.perf_counter() - x <= timeout:
             try:
                 return self.ping()
             except Exception as e:

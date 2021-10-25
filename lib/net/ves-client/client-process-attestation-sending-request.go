@@ -26,11 +26,13 @@ func (vc *VesClient) ProcessAttestationSendingRequest(attestationSendingRequest 
 		return
 	}
 
-	vc.logger.Info(
-		"the instance of the transaction intent is",
-		"tid", transactionReply.Tid,
-		"tx", hex.EncodeToString(transactionReply.RawTransaction),
-	)
+	//vc.logger.Info(
+	//	"the instance of the transaction intent is",
+	//	"tid", transactionReply.Tid,
+	//	"tx", hex.EncodeToString(transactionReply.RawTransaction),
+	//)
+
+	//vc.logger.Info("the instance of the transaction")
 
 	signer, err := vc.getNSBSigner()
 	if err != nil {
@@ -48,6 +50,7 @@ func (vc *VesClient) ProcessAttestationSendingRequest(attestationSendingRequest 
 		vc.logger.Error("VesClient.read.AttestationSendingRequest.Sign", "host", attestationSendingRequest.GetNsbHost(), "error", err)
 		return
 	}
+
 	sendingAtte.Atte = &uiprpc_base.Attestation{
 		Tid:     transactionReply.Tid,
 		Aid:     TxState.Instantiating,
@@ -61,7 +64,7 @@ func (vc *VesClient) ProcessAttestationSendingRequest(attestationSendingRequest 
 	sendingAtte.Src = transactionReply.Src
 	sendingAtte.Dst = transactionReply.Dst
 
-	if ret, err := nsbcli.NewNSBClient(attestationSendingRequest.GetNsbHost()).InsuranceClaim(
+	if ret, err := nsbcli.NewNSBClient(attestationSendingRequest.GetNsbHost()).InsuranceClaim( //delievered in this function i think
 		signer,
 		sendingAtte.SessionId,
 		sendingAtte.Atte.Tid,
@@ -71,7 +74,7 @@ func (vc *VesClient) ProcessAttestationSendingRequest(attestationSendingRequest 
 		return
 	} else {
 		vc.logger.Info(
-			"insurance claiming",
+			"insurance claiming in sending, just send out",
 			"tid", sendingAtte.Atte.Tid,
 			"aid", TxState.Description(TxState.Instantiating),
 			"info", ret.Info,
@@ -80,6 +83,18 @@ func (vc *VesClient) ProcessAttestationSendingRequest(attestationSendingRequest 
 			"events", ret.Events,
 		)
 	}
+
+	//if _, err := nsbcli.NewNSBClient(attestationSendingRequest.GetNsbHost()).InsuranceClaim(
+	//	signer,
+	//	sendingAtte.SessionId,
+	//	sendingAtte.Atte.Tid,
+	//	TxState.Instantiating,
+	//); err != nil {
+	//	vc.logger.Error("VesClient.read.AttestationSendingRequest.InsuranceClaim", "host", attestationSendingRequest.GetNsbHost(), "error", err)
+	//	return
+	//} else {
+	//	//vc.logger.Info("insurance claiming")
+	//}
 
 	err = vc.PostRawMessage(wsrpc.CodeAttestationReceiveRequest, transactionReply.Dst, sendingAtte)
 	if err != nil {

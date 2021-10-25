@@ -3,6 +3,7 @@ module github.com/HyperService-Consortium/go-ves
 go 1.13
 
 replace (
+	github.com/HyperService-Consortium/NSB => /Users/taoyuechen/go/src/github.com/HyperService-Consortium/NSB
 	github.com/HyperService-Consortium/go-hexutil => github.com/HyperService-Consortium/go-hexutil v1.0.1
 	github.com/HyperService-Consortium/go-uip => github.com/HyperService-Consortium/go-uip v0.0.0-20200426181430-9a0e5e4d3f54
 )
@@ -12,7 +13,6 @@ require (
 	github.com/DATA-DOG/go-sqlmock v1.4.1
 	github.com/DeanThompson/ginpprof v0.0.0-20190408063150-3be636683586
 	github.com/HyperService-Consortium/NSB v0.7.4-0.20200502074130-cea8e00316d0
-
 	github.com/HyperService-Consortium/go-ethabi v0.9.1
 	github.com/HyperService-Consortium/go-mpt v1.1.1-0.20190903152503-b63ec8d75bd4
 	github.com/HyperService-Consortium/go-rlp v1.0.1-0.20190903144357-b5693c05a6b8

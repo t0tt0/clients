@@ -68,26 +68,26 @@ func NSBRoutine(signer uip.Signer, index int) {
 		}
 	}
 
-	for idx := 0; idx < 5; idx++ {
-		binary.BigEndian.PutUint64(bbg, uint64(index<<8|idx))
-		_, err = cli.AddMerkleProof(signer, nil,
-			1, bg, idleProof, bbg, bg,
-		)
-		if err != nil {
-			badSession.Add(1)
-			fmt.Println(err)
-			return
-		}
-
-		_, err = cli.AddBlockCheck(signer, nil,
-			1, bbg, bg, 1,
-		)
-		if err != nil {
-			badSession.Add(1)
-			fmt.Println(err)
-			return
-		}
-	}
+	//for idx := 0; idx < 5; idx++ {
+	//	binary.BigEndian.PutUint64(bbg, uint64(index<<8|idx))
+	//	_, err = cli.AddMerkleProof(signer, nil,
+	//		1, bg, idleProof, bbg, bg,
+	//	)
+	//	if err != nil {
+	//		badSession.Add(1)
+	//		fmt.Println(err)
+	//		return
+	//	}
+	//
+	//	_, err = cli.AddBlockCheck(signer, nil,
+	//		1, bbg, bg, 1,
+	//	)
+	//	if err != nil {
+	//		badSession.Add(1)
+	//		fmt.Println(err)
+	//		return
+	//	}
+	//}
 
 	// AddMerkleProof
 }

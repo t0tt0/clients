@@ -174,35 +174,7 @@ func (mr *NSBClientMockRecorder) FreezeInfo(signer, guid, u interface{}) *gomock
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FreezeInfo", reflect.TypeOf((*NSBClient)(nil).FreezeInfo), signer, guid, u)
 }
 
-// AddMerkleProof mocks base method
-func (m *NSBClient) AddMerkleProof(user uip.Signer, toAddress []byte, merkleType uint16, rootHash, proof, key, value []byte) (*nsb_message.ResultInfo, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "AddMerkleProof", user, toAddress, merkleType, rootHash, proof, key, value)
-	ret0, _ := ret[0].(*nsb_message.ResultInfo)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
 
-// AddMerkleProof indicates an expected call of AddMerkleProof
-func (mr *NSBClientMockRecorder) AddMerkleProof(user, toAddress, merkleType, rootHash, proof, key, value interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddMerkleProof", reflect.TypeOf((*NSBClient)(nil).AddMerkleProof), user, toAddress, merkleType, rootHash, proof, key, value)
-}
-
-// AddBlockCheck mocks base method
-func (m *NSBClient) AddBlockCheck(user uip.Signer, toAddress []byte, chainID uint64, blockID, rootHash []byte, rcType uint8) (*nsb_message.ResultInfo, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "AddBlockCheck", user, toAddress, chainID, blockID, rootHash, rcType)
-	ret0, _ := ret[0].(*nsb_message.ResultInfo)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// AddBlockCheck indicates an expected call of AddBlockCheck
-func (mr *NSBClientMockRecorder) AddBlockCheck(user, toAddress, chainID, blockID, rootHash, rcType interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddBlockCheck", reflect.TypeOf((*NSBClient)(nil).AddBlockCheck), user, toAddress, chainID, blockID, rootHash, rcType)
-}
 
 // InsuranceClaim mocks base method
 func (m *NSBClient) InsuranceClaim(user uip.Signer, contractAddress []byte, tid, aid uint64) (*nsb_message.DeliverTx, error) {

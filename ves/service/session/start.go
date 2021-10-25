@@ -46,6 +46,8 @@ func (svc *Service) createSession(
 	if ses, err = svc.sesFSet.InitSessionInfo(iscAddress, instructions, accounts); err != nil {
 		return nil, wrapper.Wrap(types.CodeSessionInitError, err)
 	}
+
+
 	svc.logger.Info("new session requested", "address", hex.EncodeToString(ses.GetGUID()))
 
 	// initializing accounts' bitmap in redis here a long time ago
@@ -141,8 +143,11 @@ func (svc *Service) initISCAddress(
 		return
 	}
 	if iscAddress, err = svc.nsbClient.CreateISC(svc.signer, make([]uint64, len(owners)), owners, txs, signature.Bytes()); err != nil {
+		svc.logger.Info("CreateISC failed", "address", hex.EncodeToString(iscAddress))
+
 		err = wrapper.Wrap(types.CodeSessionRequestNSBError, err)
 		return
 	}
+	svc.logger.Info("create isc in ves srever completed. ...", "address", hex.EncodeToString(iscAddress))
 	return
 }

@@ -9,7 +9,7 @@ import (
 	tenbni "github.com/HyperService-Consortium/go-ves/lib/bni/ten"
 	"github.com/HyperService-Consortium/go-ves/types"
 )
-
+//implement go-uip/uip/blockchain-networi.go -- blockchaingetter interface
 type BlockChainGetter struct {
 	dns types.ChainDNSInterface
 }

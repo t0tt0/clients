@@ -110,6 +110,7 @@ func (m *RawMessage) GetTo() *uiprpc_base.Account {
 	return nil
 }
 
+
 func (m *RawMessage) GetMessageType() uint32 {
 	if m != nil {
 		return m.MessageType

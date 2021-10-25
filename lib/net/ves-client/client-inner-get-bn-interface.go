@@ -9,7 +9,7 @@ import (
 	ethbni "github.com/HyperService-Consortium/go-ves/lib/bni/eth"
 	nsbbni "github.com/HyperService-Consortium/go-ves/lib/bni/ten"
 )
-
+//from websocket information, need to know which chain, not initializing ops
 func (vc *VesClient) ensureRouter(chainID uint64, router *uip.Router) bool {
 	if *router != nil {
 		return true

@@ -26,6 +26,7 @@ func (bn *BN) RouteRaw(destination uip.ChainID, rawTransaction uip.RawTransactio
 	transactionReceipt uip.TransactionReceipt, err error) {
 
 	if !rawTransaction.Signed() {
+		fmt.Println("not signed yet")
 		ci, err := bn.dns.GetChainInfo(destination)
 		if err != nil {
 			return nil, err
@@ -35,6 +36,7 @@ func (bn *BN) RouteRaw(destination uip.ChainID, rawTransaction uip.RawTransactio
 			return nil, err
 		}
 	}
+	fmt.Println("signed!!!!!")
 	return bn.createTransactionReceipt(
 		bn.sendTransaction(destination, rawTransaction))
 }
@@ -89,7 +91,7 @@ func (bn *BN) WaitForTransact(chainID uip.ChainID, transactionReceipt uip.Transa
 		if err != nil {
 			return nil, nil, err
 		}
-		fmt.Println(string(tx))
+		//fmt.Println(string(tx))
 		if gjson.GetBytes(tx, "blockNumber").Type != gjson.Null {
 			b, _ := hex.DecodeString(gjson.GetBytes(tx, "blockHash").String()[2:])
 			idx, _ := strconv.ParseUint(gjson.GetBytes(tx, "transactionIndex").String()[2:], 16, 64)
@@ -97,8 +99,11 @@ func (bn *BN) WaitForTransact(chainID uip.ChainID, transactionReceipt uip.Transa
 			binary.BigEndian.PutUint64(a, idx)
 			return b, a, nil
 		}
-		time.Sleep(time.Millisecond * 500)
+		time.Sleep(time.Millisecond * 500) //predefined timeout
 	}
+
+	time.Sleep(time.Millisecond * 200)
+
 	return nil, nil, ErrTimeout
 }
 

@@ -20,12 +20,14 @@ func init() {
 }
 
 func main() {
+//config: config file path
 	srv := server.New(*config)
 	if srv == nil {
 		return
 	}
 
 	// srv.Inject(myPlugins...)
+//New(): new plugin for the websocket server
 	if !srv.Inject(central_ves.New()) {
 		return
 	}

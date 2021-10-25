@@ -28,8 +28,8 @@ func (c *Client) ProcessMessage(message []byte, messageID wsrpc.MessageType) {
 			c.Hub.Server.Logger.Info("error", err)
 			return
 		}
-		c.Hub.Server.Logger.Info("raw proto",
-			"from", "todo", "to", s.GetTo())
+		//c.Hub.Server.Logger.Info("raw proto",
+		//	"from", "todo", "to",  s.GetMessageType(), hex.EncodeToString(s.GetContents()), hex.EncodeToString(s.GetTo().GetAddress()))
 
 		c.Hub.Unicast <- &UniMessage{Target: s.GetTo(), Task: NewRawWriteMessageTask(
 			wsrpc.MessageType(s.MessageType),

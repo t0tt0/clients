@@ -12,7 +12,7 @@ func (h *Hub) unicastMessage(client *Client, ok bool, message *UniMessage) {
 		select {
 		case client.Send <- message.Task:
 		default:
-			h.Logger.Info("remove no response client",
+			h.Logger.Error("remove no response client",
 				"chain id", message.Target.GetChainId(),
 				"address", hex.EncodeToString(message.Target.GetAddress()))
 			h.removeClient(client)

@@ -62,7 +62,7 @@ class VESLocalClient:
 
     @staticmethod
     def from_role(role, port=None,
-                  ves_client_binary='../binary/ves-client', log_file_path=None, log_file=None, stdout=None,
+                  ves_client_binary='/Users/taoyuechen/go/src/github.com/HyperService-Consortium/go-ves/cmd/binary/ves-client', log_file_path=None, log_file=None, stdout=None,
                   stderr=None):
         """
         :param ves_client_binary:

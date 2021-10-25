@@ -1,0 +1,31 @@
+{
+  "op-intents": [
+    {
+      "name": "op1",
+      "type": "Payment",
+      "src": {
+        "domain": 7,
+        "user_name": "a1"
+      },
+      "dst": {
+        "domain": 10,
+        "user_name": "a22"
+      },
+      "amount": "20",
+      "unit": "ether",
+      "ratio": "1 ether as 2 XYZ"
+    }
+  ],
+  "accounts": [
+    {
+      "userName": "a1",
+      "domain": 7,
+      "address": "d3d091e01502d53e3820aed1e6eff3af2673f346"
+    },
+    {
+      "userName": "a22",
+      "domain": 10,
+      "address": "0xe790a5c30ccaef61bc123326bd3fc65a7f039ba7"
+    }
+  ]
+}

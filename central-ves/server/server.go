@@ -139,6 +139,11 @@ func New(cfgPath string, options ...Option) (srv *Server) {
 	return
 }
 
+
+
+
+//inject() starts here
+//
 func (srv *Server) Inject(plugins ...plugin.Plugin) (injectSuccess bool) {
 	defer func() {
 		if err := recover(); err != nil {
@@ -151,10 +156,13 @@ func (srv *Server) Inject(plugins ...plugin.Plugin) (injectSuccess bool) {
 	}()
 
 	for _, plg := range plugins {
+// websocket center ves server is configured here		//
+//configuration(): new websocket server in the plugin
 		plg, _ = plg.Configuration(srv.Logger, srv.FetchConfig, srv.Cfg)
 		if plg == nil {
 			return false
 		}
+//inject(): inject the websocket server in the plugin to the center server
 		plg, _ = plg.Inject(srv.ServiceProvider, srv.ModelProvider, srv.Module)
 		if plg == nil {
 			return false
@@ -163,7 +171,13 @@ func (srv *Server) Inject(plugins ...plugin.Plugin) (injectSuccess bool) {
 	}
 	return true
 }
+//inject() ends here
 
+
+
+
+
+//http port is in the parameters
 func (srv *Server) Serve(port string) {
 	defer func() {
 		if err := recover(); err != nil {

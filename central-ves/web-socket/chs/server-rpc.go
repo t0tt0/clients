@@ -16,17 +16,19 @@ import (
 
 
 //register grpc functions, from web-socket/chs/server.go
+//websocket server
 func (srv *Server) ListenAndServeRpc(_ context.Context, port string) {
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
 		srv.Logger.Fatal("failed to listen", "error", err)
 	}
 	s := grpc.NewServer()
+ ////srv: service interfaces, centered server only uses  this websocket server to implement three functions: internals
 	uiprpc.RegisterCenteredVESServer(s, srv)
 	reflection.Register(s)
 
 	srv.Logger.Info("prepare to serve rpc", "port", port)
-
+//start listening websocket requests, grpc is based on websocket packages
 	if err := s.Serve(lis); err != nil {
 		srv.Logger.Fatal("failed to serve", "error", err)
 	}
@@ -34,7 +36,7 @@ func (srv *Server) ListenAndServeRpc(_ context.Context, port string) {
 }
 
 
-//Implement server functions in the grpv interfaces
+//Implement server functions in the grpc interfaces
 func (srv *Server) InternalRequestComing(
 	ctx context.Context,
 	in *uiprpc.InternalRequestComingRequest,
@@ -56,6 +58,7 @@ func (srv *Server) InternalAttestationSending(
 	ctx context.Context,
 	in *uiprpc.InternalRequestComingRequest,
 ) (*uiprpc.InternalRequestComingReply, error) {
+	srv.Logger.Info("shall be togetherbefore")
 	if err := srv.AttestationSending(func() (accs []uip.Account) {
 		for _, acc := range in.GetAccounts() {
 			accs = append(accs, acc)
@@ -119,10 +122,12 @@ func (srv *Server) attestationSending(acc uip.Account, iscAddress []byte, grpcHo
 		ChainId: acc.GetChainId(),
 	}
 
+	srv.Logger.Info("shall be togetherafter...")
 	// log.Infof("attestating network gate", )
 
 	srv.hub.Unicast <- &UniMessage{Target: acc, Task: NewWriteMessageTask(
 		wsrpc.CodeAttestationSendingRequest, &msg)}
+	srv.Logger.Info("shall be togetherfinally")
 	return nil
 }
 

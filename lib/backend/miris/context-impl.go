@@ -1,7 +1,6 @@
 package miris
 
 import (
-	"fmt"
 	"github.com/HyperService-Consortium/go-ves/lib/backend/serial"
 	"github.com/Myriad-Dreamin/minimum-lib/controller"
 	"github.com/gin-gonic/gin/binding"
@@ -390,7 +389,7 @@ func (c Context) FullPath() string {
 }
 
 func (c Context) QueryArray(key string) []string {
-	fmt.Println(c.Context.URLParam(key))
+	//fmt.Println(c.Context.URLParam(key))
 	panic("implement me")
 	return nil
 }

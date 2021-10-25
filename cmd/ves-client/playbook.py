@@ -2,6 +2,8 @@ import yaml
 import json
 import os.path
 import logging
+import threading
+import time
 
 from service_code import Code
 from cves_client import CVESClient
@@ -136,6 +138,7 @@ class OpIntent(object):
         self.resp_accounts = []
         if self.type == 'Payment':
             self.src = Account(**context.parse_account(intent['src']))
+
             self.dst = Account(**context.parse_account(intent['dst']))
             self.resp_accounts = [
                 self.src, self.dst,
@@ -240,6 +243,7 @@ class Playbook(object):
         obj = _load(stream)
         self.name = obj.get('name', '<none>')
         self.intent_file_path = self.rel_path(obj.get('source', 'intent.json'))
+#TODO: need to read carefully later
         self.intents = self.prepare_intent_file(self.intent_file_path)
 
         self.central_ves = CVESClient(central_ves_host)
@@ -306,7 +310,7 @@ def check_and_get_role(playbook: Playbook, intents: list = None) -> Role or None
     return some_role
 
 
-import threading
+# import threading
 
 # class IOThread(threading.Thread):
 #     def __init__(self, role: Role):
@@ -340,8 +344,66 @@ def run_playbook(playbook: Playbook):
     # print(resp_accounts)
 
 
-if __name__ == '__main__':
-    pb = Playbook(file_path='./example/playbook.example.yaml')
+def run():
+
+    print("introduce me......", threading.current_thread().name)
+    pb = Playbook(file_path='/Users/taoyuechen/go/src/github.com/HyperService-Consortium/go-ves/cmd/playbook.yaml')
     run_playbook(pb)
     input('enter any keys to exit')
+    # time.sleep(20)
+
     pb.close()
+
+    # print("introduce me......", threading.current_thread().name)
+    # pb1 = Playbook(file_path='playbook.yaml')
+    # run_playbook(pb1)
+
+    # pb.close()
+
+if __name__ == '__main__':
+
+    start_time = time.time()
+
+    print("timenow ", start_time)
+    print('start now, 0', threading.current_thread().name)
+
+
+
+    thread_list = []
+    # thread_list1 = []
+
+    N = 1
+
+    for i in range(N):
+        t = threading.Thread(target=run)
+        thread_list.append(t)
+
+    # for i in range(N*3):
+    #     t = threading.Thread(target=run)
+    #     thread_list1.append(t)
+
+
+    for t in thread_list:
+        t.setDaemon(True)
+        t.start()
+        time.sleep(5)
+
+    for t in thread_list:
+        t.join()
+
+
+    # for t in thread_list1:
+    #     t.setDaemon(True)
+    #     t.start()
+    #
+    # for t in thread_list1:
+    #     t.join()
+
+    print("all ", threading.current_thread().name)
+    print("time ", time.time() - start_time)
+
+
+
+
+
+

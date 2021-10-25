@@ -1,0 +1,13 @@
+- chain_id: 7
+  chain_type: 1
+  alias: eth1
+  address: 6bce60cc3c882ccc7da13876583a4064eb6c04c9
+- chain_id: 8
+  chain_type: 1
+  alias: eth2
+  address: c157a9260be13546d83bd089450e2cc25b38ae29
+- chain_id: 3
+  chain_type: 2
+  alias: ten1
+  address: 86f57ef9acc19fb4ebc2a0ac36fa4492a7939d2031d88e5f2495c7b015f15299
+  private_address: d6ebae4950150929b4ae2d103024f41be9a9164b96223009242bb36f4636634586f57ef9acc19fb4ebc2a0ac36fa4492a7939d2031d88e5f2495c7b015f15299

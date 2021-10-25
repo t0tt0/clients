@@ -4,6 +4,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"github.com/tidwall/gjson"
 	"net/url"
 
@@ -54,6 +55,7 @@ func (eth *EthClient) PersonalUnlockAccout(addr string, passphrase string, durat
 
 // SendTransaction return the receipt of sending transaction
 func (eth *EthClient) SendTransaction(obj []byte) (string, error) {
+	fmt.Sprintf("try send transaction")
 	b := jsonobj.GetSendTransaction(obj)
 	bb, err := eth.JsonRpcClient.PostWithBody(b)
 	jsonobj.ReturnBytes(b)

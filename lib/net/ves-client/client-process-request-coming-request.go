@@ -21,7 +21,28 @@ func (vc *VesClient) ProcessRequestComingRequest(requestComingRequest *wsrpc.Req
 	}
 
 	// todo: new nsbclient
-	if ret, err := nsbcli.NewNSBClient(requestComingRequest.GetNsbHost()).UserAck(
+	//if ret, err := nsbcli.NewNSBClient(requestComingRequest.GetNsbHost()).UserAck(
+	//	signer,
+	//	requestComingRequest.GetSessionId(),
+	//	requestComingRequest.GetAccount().GetAddress(),
+	//	// todo: signature
+	//	[]byte("123"),
+	//); err != nil {
+	//	vc.logger.Error("VesClient.read.RequestComingRequest.UserAck", "host", requestComingRequest.GetNsbHost(), "error", err)
+	//	return
+	//} else {
+	//	//vc.logger.Info(
+	//	//	"user ack to nsb",
+	//	//	"info", ret.Info, "data", string(ret.Data), "log", ret.Log, "events", ret.Events,
+	//	//)
+	//
+	//	vc.logger.Info(
+	//		"user ack to nsb",
+	//		"info", ret.Info, "data", string(ret.Data), "log", ret.Log, "events", ret.Events,
+	//	)
+	//}
+
+	if _, err := nsbcli.NewNSBClient(requestComingRequest.GetNsbHost()).UserAck(
 		signer,
 		requestComingRequest.GetSessionId(),
 		requestComingRequest.GetAccount().GetAddress(),
@@ -31,10 +52,12 @@ func (vc *VesClient) ProcessRequestComingRequest(requestComingRequest *wsrpc.Req
 		vc.logger.Error("VesClient.read.RequestComingRequest.UserAck", "host", requestComingRequest.GetNsbHost(), "error", err)
 		return
 	} else {
-		vc.logger.Info(
-			"user ack to nsb",
-			"info", ret.Info, "data", string(ret.Data), "log", ret.Log, "events", ret.Events,
-		)
+		//vc.logger.Info(
+		//	"user ack to nsb",
+		//	"info", ret.Info, "data", string(ret.Data), "log", ret.Log, "events", ret.Events,
+		//)
+
+		//vc.logger.Info("user ack to nsb")
 	}
 
 	x, err := signer.Sign(requestComingRequest.GetSessionId())
@@ -51,9 +74,7 @@ func (vc *VesClient) ProcessRequestComingRequest(requestComingRequest *wsrpc.Req
 		vc.logger.Error("VesClient.read.RequestComingRequest.sendAck", "error", err)
 		return
 	} else {
-		vc.logger.Info(
-			"user ack to server",
-		)
+		//vc.logger.Info("user ack to server")
 	}
 
 }

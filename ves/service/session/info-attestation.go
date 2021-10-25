@@ -25,7 +25,12 @@ func (atte *AttestationAdapdator) GetSignatures() []uip.Signature {
 }
 
 func (svc *Service) InformAttestation(ctx context.Context, in *uiprpc.AttestationReceiveRequest) (*uiprpc.AttestationReceiveReply, error) {
+	//svc.logger.Info("session init acknowledging... ", "address", hex.EncodeToString(svc.accountDB.ID(ses.ISCAddress))
+	//svc.logger.Info("into last function")
 	ses, err := svc.getSession(in.GetSessionId())
+
+	//svc.logger.Info("session inform attestation", "address", )
+
 	if err != nil {
 		return nil, err
 	}
@@ -42,12 +47,20 @@ func (svc *Service) InformAttestation(ctx context.Context, in *uiprpc.Attestatio
 		&AttestationAdapdator{Attestation: in.GetAtte()},
 	)
 
+
+
 	if err != nil {
+		svc.logger.Info("i think  may be here.................")
 		return nil, wrapper.Wrap(types.CodeSessionNotifyAttestationError, err)
 	}
 
+
+	//svc.logger.Info("before get", "undertransacting, is for informattestation", ses.UnderTransacting)
+	//svc.logger.Info("before get", "transactioncount, is for informattestation", ses.TransactionCount)
+
 	if ses.UnderTransacting >= ses.TransactionCount {
 		// close
+		svc.logger.Info("intohere.........................?")
 		accounts, err := svc.accountDB.ID(ses.ISCAddress)
 		if err != nil {
 			return nil, wrapper.Wrap(types.CodeSessionAccountGetTotalError, err)
@@ -57,7 +70,14 @@ func (svc *Service) InformAttestation(ctx context.Context, in *uiprpc.Attestatio
 			return nil, err
 		}
 	}
+
+	//svc.logger.Info("ses.undertransacting transid", "transid is for informattestation", ses.UnderTransacting)
+	//svc.logger.Info("lastTxID", "lasttransid is for informattestation", lastTxID)
+
+
 	if ses.UnderTransacting != lastTxID {
+		//svc.logger.Info("just test whether logger is added............")
+		//svc.logger.Info("will go into relay & push")
 		if err = svc.pushTransaction(ctx, ses, ses.UnderTransacting); err != nil {
 			return nil, err
 		}

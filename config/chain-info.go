@@ -3,6 +3,7 @@ package config
 import (
 	"encoding/hex"
 	"errors"
+	"fmt"
 	ChainType "github.com/HyperService-Consortium/go-uip/const/chain_type"
 
 	merkleprooftype "github.com/HyperService-Consortium/go-uip/const/merkle-proof-type"
@@ -39,38 +40,50 @@ func getRelay(domain uint64) (uip.Account, error) {
 			Address: b,
 		}, err
 	case 3: // tendermint chain 1
-		//2333bbffffffffffffff2333bbffffffffffffff2333bbffffffffffffffffff
-		b, err := hex.DecodeString("2333eeffffffffffffff2333eeffffffffffffff2333eeffffffffffffffffff")
+		b, err := hex.DecodeString("86f57ef9acc19fb4ebc2a0ac36fa4492a7939d2031d88e5f2495c7b015f15299")
 		return &uip.AccountImpl{
 			ChainId: domain,
 			Address: b,
 		}, err
 	case 4: // tendermint chain 2
-		b, err := hex.DecodeString("2333bbffffffffffffff2333bbffffffffffffff2333bbffffffffffffffffff")
+		fmt.Println("relay case 4.............")
+		b, err := hex.DecodeString("d1a7b1fb2da006487a828573f33e1c9bca7bed5fda3fdbc33ba25056729e8e92")
 		return &uip.AccountImpl{
 			ChainId: domain,
 			Address: b,
 		}, err
 	case 6:
+		fmt.Println("relay case 6.............")
 		b, err := hex.DecodeString("5539f2a34aed86f9032c908bf404eee3b0bdbddc")
 		return &uip.AccountImpl{
 			ChainId: domain,
 			Address: b,
 		}, err
 	case 7:
-		b, err := hex.DecodeString("0201a1327c8e7ee9a8f1611913f7478f368b8b14")
+		fmt.Println("relay case 7.............")
+		b, err := hex.DecodeString("b782edeacc48fa6161dc690043bd0db17e959bf4")
 		return &uip.AccountImpl{
 			ChainId: domain,
 			Address: b,
 		}, err
 	case 8:
-		b, err := hex.DecodeString("67f384cc492a5b50470257077c071277b189522e")
+		fmt.Println("relay case 8.............")
+		b, err := hex.DecodeString("2d05a3fbe28aadd143701727c8a766694654fb99")
+		//b, err := hex.DecodeString("2d05a3fbe28aadd143701727c8a766694654fb90")
 		return &uip.AccountImpl{
 			ChainId: domain,
 			Address: b,
 		}, err
 	case 9: // tendermint chain 1
-		b, err := hex.DecodeString("233dbfffffffffffffff2333bbffffffffffffff2333bbffffffffffffffffff")
+		fmt.Println("relay case 9.............")
+		b, err := hex.DecodeString("d1a7b1fb2da006487a828573f33e1c9bca7bed5fda3fdbc33ba25056729e8e92")
+		return &uip.AccountImpl{
+			ChainId: domain,
+			Address: b,
+		}, err
+	case 10: // playbook1 test
+		fmt.Println("relay case 10.............")
+		b, err := hex.DecodeString("6f55fcf81624e908da2ba3c83341ff707b652760")
 		return &uip.AccountImpl{
 			ChainId: domain,
 			Address: b,
@@ -85,6 +98,7 @@ func searchAccount(name string, chainId uint64) (uip.Account, error) {
 	case "":
 		return nil, errors.New("nil name is not allowed")
 	case "a1": // ethereum chain 1
+		fmt.Println("search account a1.............")
 		switch chainId {
 		case 0:
 			return nil, errors.New("nil domain is not allowed")
@@ -101,7 +115,8 @@ func searchAccount(name string, chainId uint64) (uip.Account, error) {
 				Address: b,
 			}, err
 		case 3: // tendermint chain 1
-			b, err := hex.DecodeString("604bdd2dd4b7e1b761e2ac96db99bb2bda386bb0d075b51a8f49c5103ebaa985")
+			fmt.Println("search account tendermint nsb............")
+			b, err := hex.DecodeString("2333bbffffffffffffff2333bbffffffffffffff2333bbffffffffffffffffff")
 			return &uip.AccountImpl{
 				ChainId: chainId,
 				Address: b,
@@ -119,19 +134,21 @@ func searchAccount(name string, chainId uint64) (uip.Account, error) {
 				Address: b,
 			}, err
 		case 7:
-			b, err := hex.DecodeString("4b3a59cd1183ab81b3c31b5a22bce26adf928ac2")
+			fmt.Println("search account eth1.............")
+			b, err := hex.DecodeString("d3d091e01502d53e3820aed1e6eff3af2673f346")
 			return &uip.AccountImpl{
 				ChainId: chainId,
 				Address: b,
 			}, err
 		case 8:
+			fmt.Println("search account eth2.............")
 			b, err := hex.DecodeString("460424b0298667942bb8d2f0b23fb8fec392db74")
 			return &uip.AccountImpl{
 				ChainId: chainId,
 				Address: b,
 			}, err
 		default:
-			return nil, errors.New("not found")
+			return nil, errors.New("not found relay")
 		}
 	case "a2": // ethereum chain 1
 		switch chainId {
@@ -150,7 +167,7 @@ func searchAccount(name string, chainId uint64) (uip.Account, error) {
 				Address: b,
 			}, err
 		case 3: // tendermint chain 1
-			b, err := hex.DecodeString("2333eeffffffffffffff2333eeffffffffffffff2333eeffffffffffffffffff")
+			b, err := hex.DecodeString("2333bbffffffffffffff2333bbffffffffffffff2333bbffffffffffffffffff")
 			return &uip.AccountImpl{
 				ChainId: chainId,
 				Address: b,
@@ -161,7 +178,7 @@ func searchAccount(name string, chainId uint64) (uip.Account, error) {
 			//	Address: b,
 			//}, err
 		case 4: // tendermint chain 1
-			b, err := hex.DecodeString("2333eeffffffffffffff2333eeffffffffffffff2333eeffffffffffffffffff")
+			b, err := hex.DecodeString("d1a7b1fb2da006487a828573f33e1c9bca7bed5fda3fdbc33ba25056729e8e92")
 			return &uip.AccountImpl{
 				ChainId: chainId,
 				Address: b,
@@ -184,32 +201,98 @@ func searchAccount(name string, chainId uint64) (uip.Account, error) {
 				Address: b,
 			}, err
 		case 8: // ethereum chain 4
-			b, err := hex.DecodeString("3e7bafeac782d07f8acfdfc7544a683c193c4447")
+			b, err := hex.DecodeString("c157a9260be13546d83bd089450e2cc25b38ae29")
 			return &uip.AccountImpl{
 				ChainId: chainId,
 				Address: b,
 			}, err
 		default:
-			return nil, errors.New("not found")
+			return nil, errors.New("not found account")
+		}
+	case "a22": // ethereum chain 1
+		switch chainId {
+		case 0:
+			return nil, errors.New("nil domain is not allowed")
+		case 1: // ethereum chain 1
+			b, err := hex.DecodeString("47a1cdb6594d6efed3a6b917f2fbaa2bbcf61a2e")
+			return &uip.AccountImpl{
+				ChainId: chainId,
+				Address: b,
+			}, err
+		case 2: // ethereum chain 2
+			b, err := hex.DecodeString("981739a13593980763de3353340617ef16da6354")
+			return &uip.AccountImpl{
+				ChainId: chainId,
+				Address: b,
+			}, err
+		case 3: // tendermint chain 1
+			b, err := hex.DecodeString("2333bbffffffffffffff2333bbffffffffffffff2333bbffffffffffffffffff")
+			return &uip.AccountImpl{
+				ChainId: chainId,
+				Address: b,
+			}, err
+			//b, err := hex.DecodeString("cfe900c7a56f87882f0e18e26851bce7b7e61ebeca6c4b235fa360d627dfac63")
+			//return &uip.AccountImpl{
+			//	ChainId: chainId,
+			//	Address: b,
+			//}, err
+		case 4: // tendermint chain 1
+			b, err := hex.DecodeString("d1a7b1fb2da006487a828573f33e1c9bca7bed5fda3fdbc33ba25056729e8e92")
+			return &uip.AccountImpl{
+				ChainId: chainId,
+				Address: b,
+			}, err
+			//b, err := hex.DecodeString("4f7a1b3d9f2f8f3e2c7e7729bc873fc55e607e47309941391a7a82673e563887")
+			//return &uip.AccountImpl{
+			//	ChainId: chainId,
+			//	Address: b,
+			//}, err
+		case 6: // ethereum chain 1
+			b, err := hex.DecodeString("2b5680581553c2312dba96cb8d7639cc049cece7")
+			return &uip.AccountImpl{
+				ChainId: chainId,
+				Address: b,
+			}, err
+		case 7: // ethereum chain 3
+			b, err := hex.DecodeString("6bce60cc3c882ccc7da13876583a4064eb6c04c9")
+			return &uip.AccountImpl{
+				ChainId: chainId,
+				Address: b,
+			}, err
+		case 8: // ethereum chain 4
+			b, err := hex.DecodeString("c157a9260be13546d83bd089450e2cc25b38ae29")
+			return &uip.AccountImpl{
+				ChainId: chainId,
+				Address: b,
+			}, err
+		case 10: // ethereum chain 4
+			b, err := hex.DecodeString("e790a5c30ccaef61bc123326bd3fc65a7f039ba7")
+			return &uip.AccountImpl{
+				ChainId: chainId,
+				Address: b,
+			}, err
+		default:
+			return nil, errors.New("not found account")
 		}
 	case "a3": // ethereum chain 1
+		fmt.Println("search account a3.............")
 		switch chainId {
 		case 0:
 			return nil, errors.New("nil domain is not allowed")
 		case 3: // tendermint chain 1
-			b, err := hex.DecodeString("2333eeffffffffffffff2333eeffffffffffffff2333eeffffffffffffffffff")
+			b, err := hex.DecodeString("d1a7b1fb2da006487a828573f33e1c9bca7bed5fda3fdbc33ba25056729e8e92")
 			return &uip.AccountImpl{
 				ChainId: chainId,
 				Address: b,
 			}, err
 		case 4: // tendermint chain 2
-			b, err := hex.DecodeString("2333eeffffffffffffff2333eeffffffffffffff2333eeffffffffffffffffff")
+			b, err := hex.DecodeString("d1a7b1fb2da006487a828573f33e1c9bca7bed5fda3fdbc33ba25056729e8e92")
 			return &uip.AccountImpl{
 				ChainId: chainId,
 				Address: b,
 			}, err
 		case 9: // tendermint chain 4
-			b, err := hex.DecodeString("2333bbffffffffffffff2333bbffffffffffffff2333bbffffffffffffffffff")
+			b, err := hex.DecodeString("d1a7b1fb2da006487a828573f33e1c9bca7bed5fda3fdbc33ba25056729e8e92")
 			return &uip.AccountImpl{
 				ChainId: chainId,
 				Address: b,
@@ -218,17 +301,18 @@ func searchAccount(name string, chainId uint64) (uip.Account, error) {
 			return nil, errors.New("not found")
 		}
 	case "a4": // ethereum chain 1
+		fmt.Println("search account a4.............")
 		switch chainId {
 		case 0:
 			return nil, errors.New("nil domain is not allowed")
 		case 3: // tendermint chain 1
-			b, err := hex.DecodeString("2333ffffffffffffffff2333ffffffffffffffff2333ffffffffffffffffffff")
+			b, err := hex.DecodeString("d1a7b1fb2da006487a828573f33e1c9bca7bed5fda3fdbc33ba25056729e8e92")
 			return &uip.AccountImpl{
 				ChainId: chainId,
 				Address: b,
 			}, err
 		case 4: // tendermint chain 1
-			b, err := hex.DecodeString("2333ffffffffffffffff2333ffffffffffffffff2333ffffffffffffffffffff")
+			b, err := hex.DecodeString("d1a7b1fb2da006487a828573f33e1c9bca7bed5fda3fdbc33ba25056729e8e92")
 			return &uip.AccountImpl{
 				ChainId: chainId,
 				Address: b,
@@ -237,17 +321,18 @@ func searchAccount(name string, chainId uint64) (uip.Account, error) {
 			return nil, errors.New("not found")
 		}
 	case "a5": // ethereum chain 1
+		fmt.Println("search account a5.............")
 		switch chainId {
 		case 0:
 			return nil, errors.New("nil domain is not allowed")
 		case 3: // tendermint chain 1
-			b, err := hex.DecodeString("2333bfffffffffffffff2333bbffffffffffffff2333bbffffffffffffffffff")
+			b, err := hex.DecodeString("d1a7b1fb2da006487a828573f33e1c9bca7bed5fda3fdbc33ba25056729e8e92")
 			return &uip.AccountImpl{
 				ChainId: chainId,
 				Address: b,
 			}, err
 		case 4: // tendermint chain 1
-			b, err := hex.DecodeString("2333bfffffffffffffff2333bbffffffffffffff2333bbffffffffffffffffff")
+			b, err := hex.DecodeString("d1a7b1fb2da006487a828573f33e1c9bca7bed5fda3fdbc33ba25056729e8e92")
 			return &uip.AccountImpl{
 				ChainId: chainId,
 				Address: b,
@@ -283,7 +368,9 @@ func getTransactionProofType(chainId uint64) (uip.MerkleProofType, error) {
 		return merkleprooftype.SecureMerklePatriciaTrieUsingKeccak256, nil
 	case 9: // tendermint chain 3
 		return merkleprooftype.SecureMerklePatriciaTrieUsingKeccak256, nil
+	case 10: // ethereum chain playbook test 10
+		return merkleprooftype.SecureMerklePatriciaTrieUsingKeccak256, nil
 	default:
-		return merkleprooftype.Invalid, errors.New("not found")
+		return merkleprooftype.Invalid, errors.New("not found proof")
 	}
 }

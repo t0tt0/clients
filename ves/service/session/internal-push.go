@@ -14,6 +14,7 @@ import (
 )
 
 func (svc *Service) pushTransaction(
+
 	ctx context.Context, ses *model.Session, transactionID int64) (err error) {
 	ti, err := svc.getTransactionIntent(ses.GetGUID(), transactionID)
 	if err != nil {
@@ -29,6 +30,7 @@ func (svc *Service) pushTransaction(
 		})
 		svc.logger.Info("sending attestation request", "chain id", ti.ChainID, "address", hex.EncodeToString(ti.Src))
 
+
 		ctx, cancel := context.WithTimeout(ctx, time.Second*10)
 		defer cancel()
 		reply, err := svc.cVes.InternalAttestationSending(ctx, &uiprpc.InternalRequestComingRequest{
@@ -37,8 +39,10 @@ func (svc *Service) pushTransaction(
 			Accounts:  accounts,
 		})
 		if err != nil {
+			svc.logger.Info("may wrong here......................")
 			return wrapper.Wrap(types.CodeAttestationSendError, err)
 		}
+		svc.logger.Info("sending attestation completed", "chainid", ti.ChainID, "address", hex.EncodeToString(ti.Src))
 		if reply.GetOk() != true {
 			return wrapper.WrapCode(types.CodeAttestationSendError)
 		}
