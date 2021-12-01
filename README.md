@@ -1,2 +1,1 @@
-# go-ves-v2
-new go ves
+This includes the client for processing cross-chain transactions.
