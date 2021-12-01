@@ -1,0 +1,44 @@
+2021-10-21T16:18:33.211+0800	[38;2;126;192;238mDebug[0m	[38;5;230m ves-client/websocket-wrap-say-client-hello.go:14 [0m		{"level": "info", "_msg": "say client hello to server successfully"}
+[GET /ping GET /v1/account-list POST /v1/account DELETE /v1account/{aid} PUT /v1account/{aid} POST /v1/session POST /v1/session/raw DELETE /v1/session-list/{pid} PUT /v1/session-list/{pid}]
+Now listening on: http://localhost:29467
+Application started. Press CMD+C to shut down.
+2021-10-21T16:18:33.212+0800	[38;2;126;192;238mDebug[0m	[38;5;230m ves-client/client-process-client-hello-reply.go:11 [0m		{"level": "info", "_msg": "adding default grpc ip "}
+2021-10-21T16:18:33.212+0800	[38;2;126;192;238mDebug[0m	[38;5;230m ves-client/client-process-client-hello-reply.go:15 [0m		{"level": "info", "_msg": "adding default nsb ip "}
+[36m[INFO][0m 2021/10/21 16:18 200 106.357µs 127.0.0.1 GET /ping
+
+[35m(/Users/taoyuechen/go/pkg/mod/github.com/!myriad-!dreamin/go-model-traits@v0.0.0-20191209220601-85cd28b274b0/gorm-crud-dao/create.go:12)[0m 
+[33m[2021-10-21 16:18:33][0m [31;1m UNIQUE constraint failed: account.address, account.chain_id [0m
+[36m[INFO][0m 2021/10/21 16:18 200 1.334605ms 127.0.0.1 POST /v1/account
+[36m[INFO][0m 2021/10/21 16:18 200 265.011µs 127.0.0.1 POST /v1/account
+
+[35m(/Users/taoyuechen/go/pkg/mod/github.com/!myriad-!dreamin/go-model-traits@v0.0.0-20191209220601-85cd28b274b0/gorm-crud-dao/create.go:12)[0m 
+[33m[2021-10-21 16:18:33][0m [31;1m UNIQUE constraint failed: account.address, account.chain_id [0m
+
+[35m(/Users/taoyuechen/go/pkg/mod/github.com/!myriad-!dreamin/go-model-traits@v0.0.0-20191209220601-85cd28b274b0/gorm-crud-dao/create.go:12)[0m 
+[33m[2021-10-21 16:18:33][0m [31;1m UNIQUE constraint failed: account.address, account.chain_id [0m
+[36m[INFO][0m 2021/10/21 16:18 200 527.682µs 127.0.0.1 POST /v1/account
+2021-10-21T16:18:34.516+0800	[38;2;126;192;238mDebug[0m	[38;5;230m ves-client/client-process-request-coming-request.go:11 [0m		{"level": "info", "_msg": "new session request coming", "session id": "c54108580f4b8506b5129336b8585c55d1886b00361657c59a07b7289dce5ac2", "responsible address": "86f57ef9acc19fb4ebc2a0ac36fa4492a7939d2031d88e5f2495c7b015f15299"}
+2021-10-21T16:18:34.618+0800	[38;2;126;192;238mDebug[0m	[38;5;230m ves-client/var-types.go:101 [0m		{"level": "info", "_msg": "Session ack", "ok": true, "session id": "xUEIWA9LhQa1EpM2uFhcVdGIawA2FlfFmge3KJ3OWsI="}
+2021-10-21T16:18:34.624+0800	[38;2;126;192;238mDebug[0m	[38;5;230m ves-client/client-process-request-coming-request.go:11 [0m		{"level": "info", "_msg": "new session request coming", "session id": "c54108580f4b8506b5129336b8585c55d1886b00361657c59a07b7289dce5ac2", "responsible address": "b782edeacc48fa6161dc690043bd0db17e959bf4"}
+2021-10-21T16:18:34.722+0800	[38;2;126;192;238mDebug[0m	[38;5;230m ves-client/var-types.go:101 [0m		{"level": "info", "_msg": "Session ack", "ok": true, "session id": "xUEIWA9LhQa1EpM2uFhcVdGIawA2FlfFmge3KJ3OWsI="}
+2021-10-21T16:18:34.722+0800	[38;2;126;192;238mDebug[0m	[38;5;230m ves-client/client-process-request-coming-request.go:11 [0m		{"level": "info", "_msg": "new session request coming", "session id": "c54108580f4b8506b5129336b8585c55d1886b00361657c59a07b7289dce5ac2", "responsible address": "2d05a3fbe28aadd143701727c8a766694654fb99"}
+2021-10-21T16:18:34.839+0800	[38;2;126;192;238mDebug[0m	[38;5;230m ves-client/var-types.go:101 [0m		{"level": "info", "_msg": "Session ack", "ok": true, "session id": "xUEIWA9LhQa1EpM2uFhcVdGIawA2FlfFmge3KJ3OWsI="}
+2021-10-21T16:18:34.892+0800	[38;2;126;192;238mDebug[0m	[38;5;230m ves-client/client-process-attestation-receive-request.go:32 [0m		{"level": "info", "_msg": "state...", "tell me": "Instantiating"}
+2021-10-21T16:18:34.893+0800	[38;2;126;192;238mDebug[0m	[38;5;230m ves-client/client-process-attestation-receive-request.go:90 [0m		{"level": "info", "_msg": "have changed in proctxinstanting, ", "new state, ": "Open"}
+2021-10-21T16:18:34.945+0800	[38;2;126;192;238mDebug[0m	[38;5;230m ves-client/client-process-attestation-receive-request.go:162 [0m		{"level": "info", "_msg": "tell others the current state........", "tid": 0, "aid": "Open", "info": "", "data": "", "log": "", "events": [{"type":"sendTransaction","attributes":[{"key":"VHJhbnNhY3Rpb25IYXNo","value":"MBeH1GM0aN8nrb8E23rIEgS054cR+I7hKejch3ClsoA="}]}]}
+2021-10-21T16:18:35.845+0800	[38;2;126;192;238mDebug[0m	[38;5;230m ves-client/client-process-attestation-receive-request.go:32 [0m		{"level": "info", "_msg": "state...", "tell me": "Opened"}
+2021-10-21T16:18:35.845+0800	[38;2;126;192;238mDebug[0m	[38;5;230m ves-client/client-process-attestation-receive-request.go:113 [0m		{"level": "info", "_msg": "in proctxopened..., newstate", "Closed": "(MISSING)"}
+2021-10-21T16:18:35.896+0800	[38;2;126;192;238mDebug[0m	[38;5;230m ves-client/client-process-attestation-receive-request.go:162 [0m		{"level": "info", "_msg": "tell others the current state........", "tid": 0, "aid": "Closed", "info": "", "data": "", "log": "", "events": [{"type":"sendTransaction","attributes":[{"key":"VHJhbnNhY3Rpb25IYXNo","value":"RVPZLUW+os4phwFsvJAAum4ypn9E5NdQsUemlo2EM7A="}]}]}
+2021-10-21T16:18:35.963+0800	[38;2;126;192;238mDebug[0m	[38;5;230m ves-client/client-process-attestation-sending-request.go:14 [0m		{"level": "info", "_msg": "new transaction's attestation must be created", "session id": "c54108580f4b8506b5129336b8585c55d1886b00361657c59a07b7289dce5ac2", "address": "2d05a3fbe28aadd143701727c8a766694654fb99"}
+2021-10-21T16:18:36.015+0800	[38;2;126;192;238mDebug[0m	[38;5;230m ves-client/client-process-attestation-sending-request.go:76 [0m		{"level": "info", "_msg": "insurance claiming in sending, just send out", "tid": 1, "aid": "Instantiating", "info": "", "data": "", "log": "", "events": [{"type":"sendTransaction","attributes":[{"key":"VHJhbnNhY3Rpb25IYXNo","value":"ZdlDKBnjHcks+R254he6mZ0Nc2mgj2XwRDvfgTNgX0o="}]}]}
+2021-10-21T16:18:36.015+0800	[38;2;126;192;238mDebug[0m	[38;5;230m ves-client/client-process-attestation-sending-request.go:104 [0m		{"level": "info", "_msg": "post next attestation request successfully"}
+2021-10-21T16:18:36.075+0800	[38;2;126;192;238mDebug[0m	[38;5;230m ves-client/client-process-attestation-receive-request.go:32 [0m		{"level": "info", "_msg": "state...", "tell me": "Open"}
+2021-10-21T16:18:36.075+0800	[38;2;126;192;238mDebug[0m	[38;5;230m ves-client/client-process-attestation-receive-request.go:227 [0m		{"level": "info", "_msg": "the resp is", "address": "2d05a3fbe28aadd143701727c8a766694654fb99", "chain id": 8}
+not signed yet
+signed!!!!!22021-10-21T16:19:07.849+0800	[38;2;126;192;238mDebug[0m	[38;5;230m ves-client/client-process-attestation-receive-request.go:305 [0m		{"level": "info", "_msg": "route result", "block id": "xHSgAzIYmz/7AlKA03AUGk8x9khgtGUNzNvXz6F0McY="}
+2021-10-21T16:19:08.120+0800	[38;2;126;192;238mDebug[0m	[38;5;230m ves-client/client-process-attestation-receive-request.go:355 [0m		{"level": "error", "_msg": "nsbClient.ValidateNo", "error": "<84f4446f>pos:<<github.com/HyperService-Consortium/NSB/lib/nsb-client.(*NSBClient).ValidateNo,/Users/taoyuechen/go/src/github.com/HyperService-Consortium/NSB/lib/nsb-client/system_merkeleproof_validateyes.go:55>,/Users/taoyuechen/go/src/github.com/HyperService-Consortium/NSB/lib/nsb-client/system_merkeleproof_validateyes.go:68>,<84f4446f>code:262144,<84f4446f>err:ExecContractError: the root hash is valid"}
+2021-10-21T16:19:08.120[31m[ERRO][0m 2021/10/21 16:20 http: Server closed
+2021-10-21T16:20:44.102+0800	[38;2;126;192;238mDebug[0m	[38;5;230m ves-client/main.go:28 [0m		{"level": "error", "_msg": "listen error", "error": "http: Server closed"}
+230m ves-client/client-process-attestation-receive-request.go:254 [0m		{"level": "info", "_msg": "all completed in receving attestation for a client", "newstate, ": "Opened", "oldstate": "Open"}
+[31m[ERRO][0m 2021/10/21 16:20 http: Server closed
+2021-10-21T16:20:44.102+0800	[38;2;126;192;238mDebug[0m	[38;5;230m ves-client/main.go:28 [0m		{"level": "error", "_msg": "listen error", "error": "http: Server closed"}

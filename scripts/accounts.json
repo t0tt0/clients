@@ -1,0 +1,34 @@
+[
+    {
+        "address": "0xCbcd9256F74CF5465fbC8aC6944f7e0873fCA9Ae",
+        "privateKey": "0xcdbe68945e0544278a43ea441cca8f49400aa9dc5f7dc02c83e7b8af98c740d1"
+    },
+    {
+        "address": "0x67Ca0a2c60165d1345B91cd01324498a23C6879D",
+        "privateKey": "0x23d916b6bd1eb88b531460307d92137bab0cf1343c32220bdf9f9dcbb2db3469"
+    },
+    {
+        "address": "0xe85043677AC0dfe83277Cd83E52CE2d43e871Fa1",
+        "privateKey": "0x95c0e15b8bec8ed0365d2ccbfb25de3b4c233ae593df0338f1ef85b79c0eb500"
+    },
+    {
+        "address": "0x05d739c60C913689634429A393988d88B685183F",
+        "privateKey": "0xbafa81e271c5db61ca28a1f6d3885b66e2fbcf71872947bdfbc950a0b9dd348e"
+    },
+    {
+        "address": "0xF1075F6AF05F7043782D3934204175F57E0cF50D",
+        "privateKey": "0xaf602c78b7a3dc9103e64a6bf7bb0ae48657fa834221c5da19184fc962de4141"
+    },
+    {
+        "address": "0xD8D01FA5aDc59cBFacB5eC876a5c5AB15DfB4e3f",
+        "privateKey": "0x37a538c2db9a8dd2b96ade0b7ab652b420106180281a1fcf166287aa4995b81d"
+    },
+    {
+        "address": "0x99Aa2732bFf87fD7797861734e58B6e8C5dA43be",
+        "privateKey": "0xaedb414cd36d9bb0b2db3deb95218f195a2dfca09a9fc53e041b590ed5d5393b"
+    },
+    {
+        "address": "0x18130B61a85c83d4355C67Bd31e5Dc6fd8e300E8",
+        "privateKey": "0xf66a1ffb5e172e5e1d4ce63ac42d804e2ce6555645ccc598cf5ff4090c01dadf"
+    }
+]

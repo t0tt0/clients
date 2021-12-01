@@ -1,0 +1,29 @@
+2021-10-21T16:18:34.003+0800	[38;2;126;192;238mDebug[0m	[38;5;230m ves-client/websocket-wrap-say-client-hello.go:14 [0m		{"level": "info", "_msg": "say client hello to server successfully"}
+[GET /ping GET /v1/account-list POST /v1/account DELETE /v1account/{aid} PUT /v1account/{aid} POST /v1/session POST /v1/session/raw DELETE /v1/session-list/{pid} PUT /v1/session-list/{pid}]
+Now listening on: http://localhost:37908
+Application started. Press CMD+C to shut down.
+2021-10-21T16:18:34.005+0800	[38;2;126;192;238mDebug[0m	[38;5;230m ves-client/client-process-client-hello-reply.go:11 [0m		{"level": "info", "_msg": "adding default grpc ip "}
+2021-10-21T16:18:34.005+0800	[38;2;126;192;238mDebug[0m	[38;5;230m ves-client/client-process-client-hello-reply.go:15 [0m		{"level": "info", "_msg": "adding default nsb ip "}
+[36m[INFO][0m 2021/10/21 16:18 200 115.613µs 127.0.0.1 GET /ping
+
+[35m(/Users/taoyuechen/go/pkg/mod/github.com/!myriad-!dreamin/go-model-traits@v0.0.0-20191209220601-85cd28b274b0/gorm-crud-dao/create.go:12)[0m 
+[33m[2021-10-21 16:18:34][0m [31;1m UNIQUE constraint failed: account.address, account.chain_id [0m
+[36m[INFO][0m 2021/10/21 16:18 200 1.329693ms 127.0.0.1 POST /v1/account
+[36m[INFO][0m 2021/10/21 16:18 200 304.688µs 127.0.0.1 POST /v1/account
+
+[35m(/Users/taoyuechen/go/pkg/mod/github.com/!myriad-!dreamin/go-model-traits@v0.0.0-20191209220601-85cd28b274b0/gorm-crud-dao/create.go:12)[0m 
+[33m[2021-10-21 16:18:34][0m [31;1m UNIQUE constraint failed: account.address, account.chain_id [0m
+[36m[INFO][0m 2021/10/21 16:18 200 291.224µs 127.0.0.1 POST /v1/account
+
+[35m(/Users/taoyuechen/go/pkg/mod/github.com/!myriad-!dreamin/go-model-traits@v0.0.0-20191209220601-85cd28b274b0/gorm-crud-dao/create.go:12)[0m 
+[33m[2021-10-21 16:18:34][0m [31;1m UNIQUE constraint failed: account.address, account.chain_id [0m
+2021-10-21T16:18:34.320+0800	[38;2;126;192;238mDebug[0m	[38;5;230m ves-client/client-send-opintents.go:25 [0m		{"level": "info", "_msg": "send op intentsR.................."}
+127.0.0.1:23351
+2021-10-21T16:18:34.523+0800	[38;2;126;192;238mDebug[0m	[38;5;230m ves-client/client-process-request-coming-request.go:11 [0m		{"level": "info", "_msg": "new session request coming", "session id": "c54108580f4b8506b5129336b8585c55d1886b00361657c59a07b7289dce5ac2", "responsible address": "c157a9260be13546d83bd089450e2cc25b38ae29"}
+[36m[INFO][0m 2021/10/21 16:18 200 215.761157ms 127.0.0.1 POST /v1/session/raw
+2021-10-21T16:18:34.679+0800	[38;2;126;192;238mDebug[0m	[38;5;230m ves-client/var-types.go:101 [0m		{"level": "info", "_msg": "Session ack", "ok": true, "session id": "xUEIWA9LhQa1EpM2uFhcVdGIawA2FlfFmge3KJ3OWsI="}
+2021-10-21T16:18:36.016+0800	[38;2;126;192;238mDebug[0m	[38;5;230m ves-client/client-process-attestation-receive-request.go:32 [0m		{"level": "info", "_msg": "state...", "tell me": "Instantiating"}
+2021-10-21T16:18:36.017+0800	[38;2;126;192;238mDebug[0m	[38;5;230m ves-client/client-process-attestation-receive-request.go:90 [0m		{"level": "info", "_msg": "have changed in proctxinstanting, ", "new state, ": "Open"}
+2021-10-21T16:18:36.073+0800	[38;2;126;192;238mDebug[0m	[38;5;230m ves-client/client-process-attestation-receive-request.go:162 [0m		{"level": "info", "_msg": "tell others the current state........", "tid": 1, "aid": "Open", "info": "", "data": "", "log": "", "events": [{"type":"sendTransaction","attributes":[{"key":"VHJhbnNhY3Rpb25IYXNo","value":"G4gq7jl9IJfG2mBnKC6K8wahN6F9QORWCEzRjvO9ZO8="}]}]}
+[31m[ERRO][0m 2021/10/21 16:20 http: Server closed
+2021-10-21T16:20:44.102+0800	[38;2;126;192;238mDebug[0m	[38;5;230m ves-client/main.go:28 [0m		{"level": "error", "_msg": "listen error", "error": "http: Server closed"}
